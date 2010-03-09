@@ -34,6 +34,8 @@ public class KanjiEntryTest {
         assertEquals("9055", entry.getUnicodeNumber());
 
         assertEquals("ƒC ‚¿‚ª.‚¤ ‚¿‚ª.‚¢ ‚¿‚ª.‚¦‚é -‚¿‚ª.‚¦‚é ‚½‚ª.‚¤ ‚½‚ª.‚¦‚é", entry.getReading());
+        assertEquals("ƒC", entry.getOnyomi());
+        assertEquals("‚¿‚ª.‚¤ ‚¿‚ª.‚¢ ‚¿‚ª.‚¦‚é -‚¿‚ª.‚¦‚é ‚½‚ª.‚¤ ‚½‚ª.‚¦‚é", entry.getKunyomi());
         assertEquals(2, entry.getMeanings().size());
         assertEquals("difference", entry.getMeanings().get(0));
         assertEquals("differ", entry.getMeanings().get(1));
@@ -42,7 +44,7 @@ public class KanjiEntryTest {
     @Test
     public void testKanjidic() throws Exception {
         FileInputStream fis = new FileInputStream(
-                "C:/home/nick/android/wwwjdic-test/dict/kanjidic");
+                "C:/home/nick/android/wwwjdic/wwwjdic-test/dict/kanjidic");
         List<String> lines = new ArrayList<String>();
         BufferedReader r = new BufferedReader(new InputStreamReader(fis,
                 "EUC-JP"));

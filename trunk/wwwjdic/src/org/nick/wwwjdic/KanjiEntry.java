@@ -5,200 +5,243 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class KanjiEntry implements Serializable {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private static final int KANJI_IDX = 0;
-	private static final int JISCODE_IDX = 1;
+    private static final int KANJI_IDX = 0;
+    private static final int JISCODE_IDX = 1;
 
-	private static final List<String> CODES = Arrays.asList(new String[] { "B",
-			"C", "F", "G", "J", "H", "N", "V", "D", "P", "S", "U", "I", "Q",
-			"M", "E", "K", "L", "O", "W", "Y", "X", "Z" });
+    private static final List<String> CODES = Arrays.asList(new String[] { "B",
+            "C", "F", "G", "J", "H", "N", "V", "D", "P", "S", "U", "I", "Q",
+            "M", "E", "K", "L", "O", "W", "Y", "X", "Z" });
 
-	private static final char UNICODE_CODE = 'U';
-	private static final char RADICAL_CODE = 'B';
-	private static final char CLASSICAL_RADICAL_CODE = 'C';
-	private static final char FREQ_CODE = 'F';
-	private static final char GRADE_CODE = 'G';
-	private static final char STROKE_CODE = 'S';
-	private static final char JLTP_LEVEL_CODE = 'J';
-	private static final char SKIP_CODE = 'P';
-	private static final char PINYIN_CODE = 'Y';
+    private static final char UNICODE_CODE = 'U';
+    private static final char RADICAL_CODE = 'B';
+    private static final char CLASSICAL_RADICAL_CODE = 'C';
+    private static final char FREQ_CODE = 'F';
+    private static final char GRADE_CODE = 'G';
+    private static final char STROKE_CODE = 'S';
+    private static final char JLTP_LEVEL_CODE = 'J';
+    private static final char SKIP_CODE = 'P';
+    private static final char PINYIN_CODE = 'Y';
 
-	private String kanji;
+    private static final Pattern HIRAGANA_PATTERN = Pattern.compile(
+            "\\p{InHiragana}|-", Pattern.COMMENTS);
+    private static final Pattern KATAKANA_PATTERN = Pattern.compile(
+            "\\p{InKatakana}+", Pattern.COMMENTS);
 
-	private String jisCode;
-	private String unicodeNumber;
-	private int radicalNumber;
-	private int strokeCount;
-	private Integer classicalRadicalNumber;
-	private Integer frequncyeRank;
-	private Integer grade;
-	private Integer jlptLevel;
-	private String skipCode;
+    private String kanji;
 
-	private String pinyin;
-	private String reading;
+    private String jisCode;
+    private String unicodeNumber;
+    private int radicalNumber;
+    private int strokeCount;
+    private Integer classicalRadicalNumber;
+    private Integer frequncyeRank;
+    private Integer grade;
+    private Integer jlptLevel;
+    private String skipCode;
 
-	private List<String> meanings = new ArrayList<String>();
+    private String pinyin;
+    private String reading;
+    private String onyomi;
+    private String kunyomi;
 
-	private KanjiEntry() {
-	}
+    private List<String> meanings = new ArrayList<String>();
 
-	public static KanjiEntry parseKanjidic(String kanjidicStr) {
-		KanjiEntry result = new KanjiEntry();
+    private KanjiEntry() {
+    }
 
-		String[] fields = kanjidicStr.split(" ");
+    public static KanjiEntry parseKanjidic(String kanjidicStr) {
+        KanjiEntry result = new KanjiEntry();
 
-		result.kanji = fields[KANJI_IDX];
-		result.jisCode = fields[JISCODE_IDX];
+        String[] fields = kanjidicStr.split(" ");
 
-		for (int i = JISCODE_IDX + 1; i < fields.length; i++) {
-			String field = fields[i].trim();
-			if ("".equals(field)) {
-				continue;
-			}
+        result.kanji = fields[KANJI_IDX];
+        result.jisCode = fields[JISCODE_IDX];
 
-			char code = field.charAt(0);
-			boolean isCode = CODES.contains(Character.toString(code));
-			if (isCode) {
-				switch (code) {
-				case UNICODE_CODE:
-					result.unicodeNumber = parseStrCode(field);
-					break;
-				case RADICAL_CODE:
-					result.radicalNumber = parseIntCode(field);
-					break;
-				case CLASSICAL_RADICAL_CODE:
-					result.classicalRadicalNumber = parseIntCode(field);
-					break;
-				case FREQ_CODE:
-					result.frequncyeRank = parseIntCode(field);
-					break;
-				case GRADE_CODE:
-					result.grade = parseIntCode(field);
-					break;
-				case STROKE_CODE:
-					// first one is the most common; do not overwrite
-					if (result.strokeCount == 0) {
-						result.strokeCount = parseIntCode(field);
-					}
-					break;
-				case JLTP_LEVEL_CODE:
-					result.jlptLevel = parseIntCode(field);
-					break;
-				case SKIP_CODE:
-					result.skipCode = parseStrCode(field);
-					break;
-				case PINYIN_CODE:
-					result.pinyin = parseStrCode(field);
-					break;
-				default:
-					// ignore
-				}
-			} else {
-				String readingAndMeanings = join(fields, i);
-				int bracketIdx = readingAndMeanings.indexOf('{');
-				if (bracketIdx != -1) {
-					String reading = readingAndMeanings
-							.substring(0, bracketIdx).trim();
-					result.reading = reading;
-					String meaningsStr = readingAndMeanings
-							.substring(bracketIdx);
-					String[] meanings = meaningsStr.split("\\{");
-					for (String meaning : meanings) {
-						if (!"".equals(meaning)) {
-							result.meanings.add(meaning.replace("{", "")
-									.replace("}", "").trim());
-						}
-					}
-					break;
-				} else {
-					// no meaning? take the rest as reading
-					result.reading = readingAndMeanings;
-					break;
-				}
-			}
-		}
+        for (int i = JISCODE_IDX + 1; i < fields.length; i++) {
+            String field = fields[i].trim();
+            if ("".equals(field)) {
+                continue;
+            }
 
-		return result;
-	}
+            char code = field.charAt(0);
+            boolean isCode = CODES.contains(Character.toString(code));
+            if (isCode) {
+                switch (code) {
+                case UNICODE_CODE:
+                    result.unicodeNumber = parseStrCode(field);
+                    break;
+                case RADICAL_CODE:
+                    result.radicalNumber = parseIntCode(field);
+                    break;
+                case CLASSICAL_RADICAL_CODE:
+                    result.classicalRadicalNumber = parseIntCode(field);
+                    break;
+                case FREQ_CODE:
+                    result.frequncyeRank = parseIntCode(field);
+                    break;
+                case GRADE_CODE:
+                    result.grade = parseIntCode(field);
+                    break;
+                case STROKE_CODE:
+                    // first one is the most common; do not overwrite
+                    if (result.strokeCount == 0) {
+                        result.strokeCount = parseIntCode(field);
+                    }
+                    break;
+                case JLTP_LEVEL_CODE:
+                    result.jlptLevel = parseIntCode(field);
+                    break;
+                case SKIP_CODE:
+                    result.skipCode = parseStrCode(field);
+                    break;
+                case PINYIN_CODE:
+                    result.pinyin = parseStrCode(field);
+                    break;
+                default:
+                    // ignore
+                }
+            } else {
+                String readingAndMeanings = join(fields, i);
+                int bracketIdx = readingAndMeanings.indexOf('{');
+                if (bracketIdx != -1) {
+                    String reading = readingAndMeanings
+                            .substring(0, bracketIdx).trim();
+                    result.reading = reading;
 
-	private static String join(String[] fields, int idx) {
-		StringBuffer buff = new StringBuffer();
-		for (int i = idx; i < fields.length; i++) {
-			buff.append(fields[i]);
-			if (i != fields.length - 1) {
-				buff.append(" ");
-			}
-		}
+                    result.parseReading();
 
-		return buff.toString();
-	}
+                    String meaningsStr = readingAndMeanings
+                            .substring(bracketIdx);
+                    String[] meanings = meaningsStr.split("\\{");
+                    for (String meaning : meanings) {
+                        if (!"".equals(meaning)) {
+                            result.meanings.add(meaning.replace("{", "")
+                                    .replace("}", "").trim());
+                        }
+                    }
+                    break;
+                } else {
+                    // no meaning? take the rest as reading
+                    result.reading = readingAndMeanings;
+                    break;
+                }
+            }
+        }
 
-	private static Integer parseIntCode(String field) {
-		return Integer.parseInt(field.substring(1));
-	}
+        return result;
+    }
 
-	private static String parseStrCode(String field) {
-		return field.substring(1);
-	}
+    private void parseReading() {
+        String[] readingFields = reading.split(" ");
+        StringBuffer onyomiBuff = new StringBuffer();
+        StringBuffer kunyomiBuff = new StringBuffer();
 
-	public String getKanji() {
-		return kanji;
-	}
+        for (String r : readingFields) {
+            Matcher m = KATAKANA_PATTERN.matcher(r);
+            if (m.matches()) {
+                onyomiBuff.append(r.trim());
+                onyomiBuff.append(" ");
+            }
 
-	public String getJisCode() {
-		return jisCode;
-	}
+            m = HIRAGANA_PATTERN.matcher(Character.toString(r.charAt(0)));
+            if (m.matches()) {
+                kunyomiBuff.append(r.trim());
+                kunyomiBuff.append(" ");
+            }
+        }
 
-	public String getUnicodeNumber() {
-		return unicodeNumber;
-	}
+        onyomi = onyomiBuff.toString().trim();
+        kunyomi = kunyomiBuff.toString().trim();
+    }
 
-	public int getRadicalNumber() {
-		return radicalNumber;
-	}
+    private static String join(String[] fields, int idx) {
+        StringBuffer buff = new StringBuffer();
+        for (int i = idx; i < fields.length; i++) {
+            buff.append(fields[i]);
+            if (i != fields.length - 1) {
+                buff.append(" ");
+            }
+        }
 
-	public Integer getClassicalRadicalNumber() {
-		return classicalRadicalNumber;
-	}
+        return buff.toString();
+    }
 
-	public Integer getFrequncyeRank() {
-		return frequncyeRank;
-	}
+    private static Integer parseIntCode(String field) {
+        return Integer.parseInt(field.substring(1));
+    }
 
-	public Integer getGrade() {
-		return grade;
-	}
+    private static String parseStrCode(String field) {
+        return field.substring(1);
+    }
 
-	public int getStrokeCount() {
-		return strokeCount;
-	}
+    public String getKanji() {
+        return kanji;
+    }
 
-	public Integer getJlptLevel() {
-		return jlptLevel;
-	}
+    public String getJisCode() {
+        return jisCode;
+    }
 
-	public String getSkipCode() {
-		return skipCode;
-	}
+    public String getUnicodeNumber() {
+        return unicodeNumber;
+    }
 
-	public String getPinyin() {
-		return pinyin;
-	}
+    public int getRadicalNumber() {
+        return radicalNumber;
+    }
 
-	public String getReading() {
-		return reading;
-	}
+    public Integer getClassicalRadicalNumber() {
+        return classicalRadicalNumber;
+    }
 
-	public List<String> getMeanings() {
-		return Collections.unmodifiableList(meanings);
-	}
+    public Integer getFrequncyeRank() {
+        return frequncyeRank;
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public int getStrokeCount() {
+        return strokeCount;
+    }
+
+    public Integer getJlptLevel() {
+        return jlptLevel;
+    }
+
+    public String getSkipCode() {
+        return skipCode;
+    }
+
+    public String getPinyin() {
+        return pinyin;
+    }
+
+    public String getReading() {
+        return reading;
+    }
+
+    public String getOnyomi() {
+        return onyomi;
+    }
+
+    public String getKunyomi() {
+        return kunyomi;
+    }
+
+    public List<String> getMeanings() {
+        return Collections.unmodifiableList(meanings);
+    }
 
 }
