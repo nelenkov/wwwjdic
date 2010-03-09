@@ -13,65 +13,67 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.ListView;
 
-public class ResultListView extends ListActivity {
+public class ResultListView extends ListActivity implements ResultView {
 
-    private Handler guiThread;
-    private ExecutorService transThread;
-    private Future transPending;
-    private List<DictionaryEntry> entries;
+	private Handler guiThread;
+	private ExecutorService transThread;
+	private Future transPending;
+	private List<DictionaryEntry> entries;
+	private SearchCriteria criteria;
 
-    private ProgressDialog progressDialog;
+	private ProgressDialog progressDialog;
 
-    public ResultListView() {
-        initThreading();
-    }
+	public ResultListView() {
+		initThreading();
+	}
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        SearchCriteria criteria = (SearchCriteria) getIntent()
-                .getSerializableExtra("org.nick.hello.searchCriteria");
+		criteria = (SearchCriteria) getIntent().getSerializableExtra(
+				"org.nick.hello.searchCriteria");
 
-        TranslateTask translateTask = new BackdoorTranslateTask(this, criteria);
-        progressDialog = ProgressDialog.show(this, "",
-                "Loading. Please wait...", true);
-        transPending = transThread.submit(translateTask);
-    }
+		TranslateTask translateTask = new DictionaryTranslateTask(this,
+				criteria);
+		progressDialog = ProgressDialog.show(this, "",
+				"Loading. Please wait...", true);
+		transPending = transThread.submit(translateTask);
+	}
 
-    @Override
-    protected void onDestroy() {
-        transThread.shutdownNow();
-        super.onDestroy();
-    }
+	@Override
+	protected void onDestroy() {
+		transThread.shutdownNow();
+		super.onDestroy();
+	}
 
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        Intent intent = new Intent(this, DictionaryEntryDetail.class);
-        DictionaryEntry entry = entries.get(position);
-        intent.putExtra("org.nick.hello.entry", entry);
-        startActivity(intent);
-    }
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		Intent intent = new Intent(this, DictionaryEntryDetail.class);
+		DictionaryEntry entry = entries.get(position);
+		intent.putExtra("org.nick.hello.entry", entry);
+		startActivity(intent);
+	}
 
-    private void initThreading() {
-        guiThread = new Handler();
-        transThread = Executors.newSingleThreadExecutor();
-    }
+	private void initThreading() {
+		guiThread = new Handler();
+		transThread = Executors.newSingleThreadExecutor();
+	}
 
-    void setResult(final List<DictionaryEntry> result) {
-        guiThread.post(new Runnable() {
-            public void run() {
-                entries = result;
-                DictionaryEntryAdapter adapter = new DictionaryEntryAdapter(
-                        ResultListView.this, entries);
-                // setListAdapter(new ArrayAdapter<String>(ResultListView.this,
-                // android.R.layout.simple_list_item_1, result));
-                setListAdapter(adapter);
-                getListView().setTextFilterEnabled(true);
-                setTitle(String.format("Search result: %d entries", entries
-                        .size()));
-                progressDialog.dismiss();
-            }
-        });
-    }
+	public void setResult(final List<?> result) {
+		guiThread.post(new Runnable() {
+			public void run() {
+				entries = (List<DictionaryEntry>) result;
+				DictionaryEntryAdapter adapter = new DictionaryEntryAdapter(
+						ResultListView.this, entries);
+				// setListAdapter(new ArrayAdapter<String>(ResultListView.this,
+				// android.R.layout.simple_list_item_1, result));
+				setListAdapter(adapter);
+				getListView().setTextFilterEnabled(true);
+				setTitle(String.format("%d result(s) for '%s'", entries.size(),
+						criteria.getQueryString()));
+				progressDialog.dismiss();
+			}
+		});
+	}
 }
