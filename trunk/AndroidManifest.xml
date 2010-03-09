@@ -18,9 +18,10 @@
 		</activity>
 
 	<activity android:name="DictionaryEntryDetail"></activity>
+<activity android:name="KanjiResultListView"></activity>
 </application>
 
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
-	<uses-sdk android:minSdkVersion="4"></uses-sdk>
+	<uses-sdk android:minSdkVersion="3"></uses-sdk>
 <instrumentation android:targetPackage="org.nick.hello" android:name="android.test.InstrumentationTestRunner"></instrumentation>
 </manifest> 

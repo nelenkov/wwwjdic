@@ -3,26 +3,41 @@ package org.nick.wwwjdic;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class DictionaryEntryDetail extends Activity {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.entry_details);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.entry_details);
 
-        DictionaryEntry entry = (DictionaryEntry) getIntent()
-                .getSerializableExtra("org.nick.hello.entry");
+		DictionaryEntry entry = (DictionaryEntry) getIntent()
+				.getSerializableExtra("org.nick.hello.entry");
 
-        TextView entryView = (TextView) findViewById(R.id.wordText);
-        entryView.setText(entry.getWord());
-        entryView.setTextSize(24f);
-        entryView.setTextColor(Color.WHITE);
+		setTitle(String.format("Details for %s", entry.getWord()));
 
-        TextView translationView = (TextView) findViewById(R.id.translationText);
-        translationView.setText(entry.getTranslationString());
-        translationView.setTextSize(16f);
-        translationView.setTextColor(Color.WHITE);
-    }
+		LinearLayout detailLayout = (LinearLayout) findViewById(R.id.detailLayout);
+
+		TextView entryView = (TextView) findViewById(R.id.wordText);
+		entryView.setText(entry.getWord());
+		entryView.setTextSize(26f);
+		entryView.setTextColor(Color.WHITE);
+
+		if (entry.getReading() != null) {
+			TextView readingView = new TextView(this);
+			readingView.setText(entry.getReading());
+			readingView.setTextSize(18f);
+			readingView.setTextColor(Color.WHITE);
+			detailLayout.addView(readingView);
+		}
+
+		for (String meaning : entry.getMeanings()) {
+			TextView text = new TextView(this);
+			text.setTextSize(18f);
+			text.setText(meaning);
+			detailLayout.addView(text);
+		}
+	}
 }
