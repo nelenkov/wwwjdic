@@ -16,7 +16,7 @@ public abstract class BackdoorTranslateTask extends TranslateTask {
 
     private static final Pattern WORD_PATTERN = Pattern.compile("^<br>(.+)$");
 
-    public BackdoorTranslateTask(ResultView resultListView,
+    public BackdoorTranslateTask(ResultListView resultListView,
             SearchCriteria criteria) {
         super(resultListView, criteria);
     }

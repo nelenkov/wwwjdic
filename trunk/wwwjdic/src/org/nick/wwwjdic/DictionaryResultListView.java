@@ -13,7 +13,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.ListView;
 
-public class DictionaryResultListView extends ListActivity implements ResultView {
+public class DictionaryResultListView extends ListActivity implements ResultListView {
 
     private Handler guiThread;
     private ExecutorService transThread;
