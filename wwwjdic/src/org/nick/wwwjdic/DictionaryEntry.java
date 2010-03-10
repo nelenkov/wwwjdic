@@ -60,7 +60,7 @@ public class DictionaryEntry implements Serializable {
 
         for (int i = 2; i < meaningsArr.length; i++) {
             String meaning = meaningsArr[i];
-            if (!"".equals(meaning)) {
+            if (!"".equals(meaning) && !"(P)".equals(meaning)) {
                 result.meanings.add(meaning);
             }
         }
