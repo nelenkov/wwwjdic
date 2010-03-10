@@ -10,7 +10,8 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".ResultListView" android:label="Search result">
+		<activity android:name="DictionaryResultListView"
+			android:label="Search result">
 			<intent-filter>
 				<category android:name="android.intent.category.DEFAULT" />
 				<action android:name="org.nick.hello.VIEW_LIST" />

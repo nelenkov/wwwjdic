@@ -93,7 +93,7 @@ public class Wwwjdic extends Activity implements OnClickListener,
 				if (criteria.isKanjiLookup()) {
 					intent = new Intent(this, KanjiResultListView.class);
 				} else {
-					intent = new Intent(this, ResultListView.class);
+					intent = new Intent(this, DictionaryResultListView.class);
 				}
 				intent.putExtra("org.nick.hello.searchCriteria", criteria);
 
