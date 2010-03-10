@@ -69,7 +69,6 @@ public class DictionaryEntryTest {
             assertNotNull(e);
             assertNotNull(e.getWord());
             assertNotNull(e.getTranslationString());
-            assertNotNull(e.getShortTranslation());
         }
 
     }
