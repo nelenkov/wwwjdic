@@ -3,30 +3,37 @@ package org.nick.wwwjdic;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class DictionaryTranslateTask extends BackdoorTranslateTask {
 
-    public DictionaryTranslateTask(DictionaryResultListView resultListView,
-            SearchCriteria criteria) {
-        super(resultListView, criteria);
-    }
+	public DictionaryTranslateTask(DictionaryResultListView resultListView,
+			SearchCriteria criteria) {
+		super(resultListView, criteria);
+	}
 
-    @Override
-    protected List<DictionaryEntry> parseResult(String html) {
-        List<DictionaryEntry> result = new ArrayList<DictionaryEntry>();
+	@Override
+	protected List<DictionaryEntry> parseResult(String html) {
+		List<DictionaryEntry> result = new ArrayList<DictionaryEntry>();
 
-        Pattern pattern = selectPattern();
-        String[] lines = html.split("\n");
-        for (String line : lines) {
-            Matcher m = pattern.matcher(line);
-            if (m.matches()) {
-                DictionaryEntry entry = DictionaryEntry.parseEdict(m.group(1)
-                        .trim());
-                result.add(entry);
-            }
-        }
+		boolean isInPre = false;
+		String[] lines = html.split("\n");
+		for (String line : lines) {
+			Matcher m = PRE_START_PATTERN.matcher(line);
+			if (m.matches()) {
+				isInPre = true;
+			}
 
-        return result;
-    }
+			m = PRE_END_PATTERN.matcher(line);
+			if (m.matches()) {
+				break;
+			}
+
+			if (isInPre) {
+				DictionaryEntry entry = DictionaryEntry.parseEdict(line.trim());
+				result.add(entry);
+			}
+		}
+
+		return result;
+	}
 }
