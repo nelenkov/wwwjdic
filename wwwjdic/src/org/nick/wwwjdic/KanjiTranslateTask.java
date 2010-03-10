@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class KanjiTranslateTask extends BackdoorTranslateTask {
 
-	public KanjiTranslateTask(ResultView resultListView, SearchCriteria criteria) {
+	public KanjiTranslateTask(ResultListView resultListView, SearchCriteria criteria) {
 		super(resultListView, criteria);
 	}
 

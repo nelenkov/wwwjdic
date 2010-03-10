@@ -13,7 +13,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.ListView;
 
-public class KanjiResultListView extends ListActivity implements ResultView {
+public class KanjiResultListView extends ListActivity implements ResultListView {
 
     private Handler guiThread;
     private ExecutorService transThread;
@@ -61,6 +61,7 @@ public class KanjiResultListView extends ListActivity implements ResultView {
 
     public void setResult(final List<?> result) {
         guiThread.post(new Runnable() {
+            @SuppressWarnings("unchecked")
             public void run() {
                 entries = (List<KanjiEntry>) result;
                 KanjiEntryAdapter adapter = new KanjiEntryAdapter(
