@@ -111,7 +111,7 @@ public class KanjiEntry implements Serializable {
                     // ignore
                 }
             } else {
-                String readingAndMeanings = join(fields, i);
+                String readingAndMeanings = StringUtils.join(fields, " ", i);
                 int bracketIdx = readingAndMeanings.indexOf('{');
                 if (bracketIdx != -1) {
                     String reading = readingAndMeanings
@@ -162,18 +162,6 @@ public class KanjiEntry implements Serializable {
 
         onyomi = onyomiBuff.toString().trim();
         kunyomi = kunyomiBuff.toString().trim();
-    }
-
-    private static String join(String[] fields, int idx) {
-        StringBuffer buff = new StringBuffer();
-        for (int i = idx; i < fields.length; i++) {
-            buff.append(fields[i]);
-            if (i != fields.length - 1) {
-                buff.append(" ");
-            }
-        }
-
-        return buff.toString();
     }
 
     private static Integer parseIntCode(String field) {

@@ -39,7 +39,7 @@ public abstract class TranslateTask implements Runnable {
         }
     };
 
-    protected ResultView resultListView;
+    protected ResultListView resultListView;
     protected SearchCriteria searchCriteria;
 
     protected HttpContext localContext;
@@ -48,7 +48,8 @@ public abstract class TranslateTask implements Runnable {
 
     private static final int TIMEOUT_MILLIS = 15 * 1000;
 
-    public TranslateTask(ResultView resultView, SearchCriteria searchCriteria) {
+    public TranslateTask(ResultListView resultView,
+            SearchCriteria searchCriteria) {
         this.resultListView = resultView;
         this.searchCriteria = searchCriteria;
 

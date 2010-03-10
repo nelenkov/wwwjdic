@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 public class KanjiEntryAdapter extends BaseAdapter {
 
+    private static final int SHORT_MEANING_LENGTH = 35;
+
     private final Context context;
     private final List<KanjiEntry> entries;
 
@@ -82,7 +84,9 @@ public class KanjiEntryAdapter extends BaseAdapter {
             }
 
             translationText = new TextView(context);
-            translationText.setText(entry.getMeanings().get(0));
+            String meaningsStr = StringUtils.join(entry.getMeanings(), "/", 0);
+            translationText.setText(StringUtils.shorten(meaningsStr,
+                    SHORT_MEANING_LENGTH));
             translationText.setTextSize(16f);
             translationText.setTextColor(Color.WHITE);
             readingMeaningsLayout.addView(translationText, params);
