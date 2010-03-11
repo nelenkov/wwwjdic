@@ -27,6 +27,7 @@ public class KanjiEntryTest {
         assertEquals(8, entry.getGrade().intValue());
         assertEquals("3063", entry.getJisCode());
         assertEquals(2, entry.getJlptLevel().intValue());
+        assertEquals("wi", entry.getKoreanReading());
         assertEquals("wei2", entry.getPinyin());
         assertEquals(162, entry.getRadicalNumber());
         assertEquals("3-3-10", entry.getSkipCode());
