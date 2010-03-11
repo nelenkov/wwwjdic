@@ -90,9 +90,11 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         tabHost = getTabHost();
 
         tabHost.addTab(tabHost.newTabSpec("wordTab").setIndicator("Dictionary",
-                getResources().getDrawable(android.R.drawable.ic_menu_search))
-                .setContent(R.id.wordLookupTab));
-        tabHost.addTab(tabHost.newTabSpec("kanjiTab").setIndicator("Kanji")
+                getResources().getDrawable(R.drawable.ic_tab_dict)).setContent(
+                R.id.wordLookupTab));
+        tabHost.addTab(tabHost.newTabSpec("kanjiTab").setIndicator(
+                "Kanji Lookup",
+                getResources().getDrawable(R.drawable.ic_tab_kanji))
                 .setContent(R.id.kanjiLookupTab));
 
         tabHost.setCurrentTab(0);
