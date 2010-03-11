@@ -30,6 +30,7 @@ public class KanjiEntry implements Serializable {
     private static final char STROKE_CODE = 'S';
     private static final char JLTP_LEVEL_CODE = 'J';
     private static final char SKIP_CODE = 'P';
+    private static final char KOREAN_READING_CODE = 'W';
     private static final char PINYIN_CODE = 'Y';
 
     private static final Pattern HIRAGANA_PATTERN = Pattern.compile(
@@ -49,10 +50,12 @@ public class KanjiEntry implements Serializable {
     private Integer jlptLevel;
     private String skipCode;
 
-    private String pinyin;
     private String reading;
     private String onyomi;
     private String kunyomi;
+
+    private String koreanReading;
+    private String pinyin;
 
     private List<String> meanings = new ArrayList<String>();
 
@@ -103,6 +106,9 @@ public class KanjiEntry implements Serializable {
                     break;
                 case SKIP_CODE:
                     result.skipCode = parseStrCode(field);
+                    break;
+                case KOREAN_READING_CODE:
+                    result.koreanReading = parseStrCode(field);
                     break;
                 case PINYIN_CODE:
                     result.pinyin = parseStrCode(field);
@@ -210,6 +216,10 @@ public class KanjiEntry implements Serializable {
 
     public String getSkipCode() {
         return skipCode;
+    }
+
+    public String getKoreanReading() {
+        return koreanReading;
     }
 
     public String getPinyin() {

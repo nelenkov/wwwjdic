@@ -81,31 +81,6 @@ public abstract class BackdoorTranslateTask<T> extends TranslateTask {
         }
     }
 
-    private String generateBackdoorCode(SearchCriteria criteria) {
-        StringBuffer buff = new StringBuffer();
-        buff.append(criteria.getDictionary());
-        // raw
-        buff.append("Z");
-        if (criteria.isKanjiLookup()) {
-            buff.append("M");
-        } else {
-            // unicode
-            buff.append("U");
-        }
-        if (criteria.isExactMatch()) {
-            buff.append("Q");
-        } else {
-            if (criteria.isKanjiLookup()) {
-                buff.append("J");
-            } else {
-                // English/Kanji
-                buff.append("E");
-                // for romanized Japanese
-                // buff.append("J");
-            }
-        }
-
-        return buff.toString();
-    }
+    protected abstract String generateBackdoorCode(SearchCriteria criteria);
 
 }

@@ -16,6 +16,17 @@
 		<item>River &amp; Water Systems</item>
 		<item>Automobile Industry</item>
 	</string-array>
+	<string-array name="kanji_search_types_array">
+		<item>Kanji or reading</item>
+		<item>Stroke count</item>
+		<item>Radical number</item>
+		<item>English meaning</item>
+		<item>Unicode code (hex)</item>
+		<item>JIS code (hex)</item>
+		<item>SKIP code</item>
+		<item>Pinyin reading</item>
+		<item>Korean reading</item>
+	</string-array>
 	<string name="about_text">WWWJDIC for Android, 2010</string>
 	<string name="uses_wwwjdic">Uses Jim Breen's WWWJDIC</string>
 	<string name="wwwjdic_link">http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi?1C
@@ -27,4 +38,6 @@
 	<string name="radical_strokes">Radical/strokes</string>
 	<string name="codes_more">Codes and more</string>
 	<string name="translation">Translation(s)</string>
+	<string name="select_search_type">Select search type:</string>
+	<string name="search">Search</string>
 </resources>
