@@ -27,8 +27,11 @@
 		<item>Pinyin reading</item>
 		<item>Korean reading</item>
 	</string-array>
-	<string name="about_text">WWWJDIC for Android, 2010</string>
-	<string name="uses_wwwjdic">Uses Jim Breen's WWWJDIC</string>
+	<string name="about_text">WWWJDIC for Android, ver 0.1, 2010</string>
+	<string name="about_by">by Nikolay Elenkov</string>
+	<string name="about_bugtracking">Report issues at</string>
+	<string name="bugtracker_url">http://code.google.com/p/wwwjdic/issues/</string>
+	<string name="uses_wwwjdic">Uses Jim Breen\'s WWWJDIC</string>
 	<string name="wwwjdic_link">http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi?1C
 	</string>
 	<string name="select_dictionary">Select dictionary:</string>
