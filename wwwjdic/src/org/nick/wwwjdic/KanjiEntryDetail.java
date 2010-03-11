@@ -127,6 +127,11 @@ public class KanjiEntryDetail extends Activity {
                             .getSkipCode()));
                 }
 
+                if (entry.getKoreanReading() != null) {
+                    data.add(new Pair<String, String>("Korean reading: ", entry
+                            .getKoreanReading()));
+                }
+
                 if (entry.getPinyin() != null) {
                     data.add(new Pair<String, String>("Pinyin: ", entry
                             .getPinyin()));
