@@ -73,7 +73,7 @@ public abstract class ResultListViewBase extends ListActivity implements
 
     protected void extractSearchCriteria() {
         criteria = (SearchCriteria) getIntent().getSerializableExtra(
-                "org.nick.hello.searchCriteria");
+                Constants.CRITERIA_KEY);
     }
 
 }

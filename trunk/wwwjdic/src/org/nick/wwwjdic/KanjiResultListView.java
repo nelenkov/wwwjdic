@@ -28,7 +28,7 @@ public class KanjiResultListView extends ResultListViewBase {
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Intent intent = new Intent(this, KanjiEntryDetail.class);
         KanjiEntry entry = entries.get(position);
-        intent.putExtra("org.nick.hello.kanjiEntry", entry);
+        intent.putExtra(Constants.KANJI_ENTRY_KEY, entry);
         startActivity(intent);
     }
 

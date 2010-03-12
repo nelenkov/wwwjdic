@@ -14,7 +14,6 @@
 			android:label="Search result">
 			<intent-filter>
 				<category android:name="android.intent.category.DEFAULT" />
-				<action android:name="org.nick.hello.VIEW_LIST" />
 			</intent-filter>
 		</activity>
 
@@ -25,6 +24,4 @@
 
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
 	<uses-sdk android:minSdkVersion="3"></uses-sdk>
-	<instrumentation android:targetPackage="org.nick.hello"
-		android:name="android.test.InstrumentationTestRunner"></instrumentation>
 </manifest> 

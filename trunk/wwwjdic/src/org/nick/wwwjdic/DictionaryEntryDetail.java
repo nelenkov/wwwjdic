@@ -14,7 +14,7 @@ public class DictionaryEntryDetail extends Activity {
         setContentView(R.layout.entry_details);
 
         DictionaryEntry entry = (DictionaryEntry) getIntent()
-                .getSerializableExtra("org.nick.hello.entry");
+                .getSerializableExtra(Constants.ENTRY_KEY);
 
         setTitle(String.format("Details for '%s'", entry.getWord()));
 
