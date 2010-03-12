@@ -155,16 +155,20 @@ public class KanjiEntryDetail extends Activity {
         private View createLabelTextView(Pair<String, String> data) {
             LinearLayout layout = new LinearLayout(KanjiEntryDetail.this);
             layout.setOrientation(LinearLayout.HORIZONTAL);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(5, 0, 5, 0);
 
             TextView labelView = new TextView(KanjiEntryDetail.this);
             labelView.setText(data.getFirst());
             labelView.setGravity(Gravity.LEFT);
-            layout.addView(labelView);
+            layout.addView(labelView, lp);
 
             TextView textView = new TextView(KanjiEntryDetail.this);
             textView.setText(data.getSecond());
-            textView.setGravity(Gravity.LEFT);
-            layout.addView(textView);
+            textView.setGravity(Gravity.RIGHT);
+            layout.addView(textView, lp);
 
             return layout;
         }
