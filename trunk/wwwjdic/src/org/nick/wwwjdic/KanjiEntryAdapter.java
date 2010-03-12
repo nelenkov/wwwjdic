@@ -3,7 +3,6 @@ package org.nick.wwwjdic;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -61,34 +60,30 @@ public class KanjiEntryAdapter extends BaseAdapter {
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             params.setMargins(5, 3, 5, 0);
 
-            entryText = new TextView(context);
+            entryText = new TextView(context, null, R.style.kanji_list_heading);
+            entryText.setTextSize(38f);
             entryText.setText(entry.getKanji());
-            entryText.setTextSize(40f);
-            entryText.setTextColor(Color.WHITE);
             addView(entryText, params);
 
             if (entry.getOnyomi() != null) {
-                onyomiText = new TextView(context);
+                onyomiText = new TextView(context, null,
+                        R.style.kanji_list_reading);
                 onyomiText.setText(entry.getOnyomi());
-                onyomiText.setTextSize(18f);
-                onyomiText.setTextColor(Color.WHITE);
                 readingMeaningsLayout.addView(onyomiText, params);
             }
 
             if (entry.getKunyomi() != null) {
-                kunyomiText = new TextView(context);
+                kunyomiText = new TextView(context, null,
+                        R.style.kanji_list_reading);
                 kunyomiText.setText(entry.getKunyomi());
-                kunyomiText.setTextSize(18f);
-                kunyomiText.setTextColor(Color.WHITE);
                 readingMeaningsLayout.addView(kunyomiText, params);
             }
 
-            translationText = new TextView(context);
+            translationText = new TextView(context, null,
+                    R.style.kanji_list_translation);
             String meaningsStr = StringUtils.join(entry.getMeanings(), "/", 0);
             translationText.setText(StringUtils.shorten(meaningsStr,
                     SHORT_MEANING_LENGTH));
-            translationText.setTextSize(16f);
-            translationText.setTextColor(Color.WHITE);
             readingMeaningsLayout.addView(translationText, params);
 
             addView(readingMeaningsLayout);
