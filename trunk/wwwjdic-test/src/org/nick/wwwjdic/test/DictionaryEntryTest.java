@@ -22,9 +22,8 @@ public class DictionaryEntryTest {
 
         assertEquals("先生方", entry.getWord());
         assertEquals("せんせいがた", entry.getReading());
-        assertEquals("(n)", entry.getPartOfSpeech());
         assertEquals(2, entry.getMeanings().size());
-        assertEquals("doctors", entry.getMeanings().get(0));
+        assertEquals("(n) doctors", entry.getMeanings().get(0));
         assertEquals("teachers", entry.getMeanings().get(1));
         assertEquals("[せんせいがた]  (n) doctors teachers", entry
                 .getTranslationString());
@@ -38,16 +37,61 @@ public class DictionaryEntryTest {
         assertEquals("ソルティドッグ", entry.getWord());
         assertNull(entry.getReading());
         assertEquals("(n) salty dog (cocktail)", entry.getTranslationString());
-        assertEquals("(n)", entry.getPartOfSpeech());
         assertEquals(1, entry.getMeanings().size());
-        assertEquals("salty dog (cocktail)", entry.getMeanings().get(0));
+        assertEquals("(n) salty dog (cocktail)", entry.getMeanings().get(0));
 
     }
 
     @Test
     public void testEdict() throws Exception {
-        FileInputStream fis = new FileInputStream(
-                "C:/home/nick/android/wwwjdic-test/dict/edict");
+        System.out.println("Testing EDICT...");
+        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/edict");
+    }
+
+    @Test
+    public void testEdiclsd() throws Exception {
+        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/ediclsd4");
+    }
+
+    @Test
+    public void testLawgledt() throws Exception {
+        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/lawgledt");
+    }
+
+    @Test
+    public void testCompdic() throws Exception {
+        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/compdic");
+    }
+
+    @Test
+    public void testEngscidic() throws Exception {
+        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/engscidic");
+    }
+
+    @Test
+    public void testRiverwater() throws Exception {
+        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/riverwater");
+    }
+
+    @Test
+    public void testBuddhdic() throws Exception {
+        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/Buddhdic_jp_euc.txt");
+    }
+
+    @Test
+    public void testFindic() throws Exception {
+        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/findic");
+    }
+
+    @Test
+    public void testLingdic() throws Exception {
+        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/lingdic");
+    }
+
+    private void testEdictFile(String filename) throws Exception {
+        System.out.println("Testing " + filename);
+
+        FileInputStream fis = new FileInputStream(filename);
         List<String> lines = new ArrayList<String>();
         BufferedReader r = new BufferedReader(new InputStreamReader(fis,
                 "EUC-JP"));
@@ -70,6 +114,5 @@ public class DictionaryEntryTest {
             assertNotNull(e.getWord());
             assertNotNull(e.getTranslationString());
         }
-
     }
 }
