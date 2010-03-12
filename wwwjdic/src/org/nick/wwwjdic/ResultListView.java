@@ -4,5 +4,7 @@ import java.util.List;
 
 public interface ResultListView {
 
-	void setResult(final List<?> result);
+    void setResult(final List<?> result);
+
+    void setError(final Exception ex);
 }

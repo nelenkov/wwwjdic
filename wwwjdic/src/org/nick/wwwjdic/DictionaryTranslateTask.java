@@ -3,7 +3,7 @@ package org.nick.wwwjdic;
 public class DictionaryTranslateTask extends
         BackdoorTranslateTask<DictionaryEntry> {
 
-    public DictionaryTranslateTask(DictionaryResultListView resultListView,
+    public DictionaryTranslateTask(ResultListViewBase resultListView,
             SearchCriteria criteria) {
         super(resultListView, criteria);
     }

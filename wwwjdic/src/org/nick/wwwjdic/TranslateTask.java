@@ -1,7 +1,6 @@
 package org.nick.wwwjdic;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -64,25 +63,20 @@ public abstract class TranslateTask implements Runnable {
     }
 
     public void run() {
-        List<DictionaryEntry> result = fetchResult(searchCriteria);
-        resultListView.setResult(result);
+        try {
+            List<DictionaryEntry> result = fetchResult(searchCriteria);
+            resultListView.setResult(result);
+        } catch (Exception e) {
+            Log.e("WWWJDIC", e.getMessage(), e);
+            resultListView.setError(e);
+        }
     }
 
     @SuppressWarnings("unchecked")
     private List<DictionaryEntry> fetchResult(SearchCriteria criteria) {
-        try {
-            String payload = query(criteria);
+        String payload = query(criteria);
 
-            return (List<DictionaryEntry>) parseResult(payload);
-        } catch (Exception e) {
-            Log.e("WWWJDIC", "IOException", e);
-
-            List<DictionaryEntry> result = new ArrayList<DictionaryEntry>();
-            // result.add("Error fetching search result.");
-
-            // XXX
-            return result;
-        }
+        return (List<DictionaryEntry>) parseResult(payload);
     }
 
     protected abstract String query(SearchCriteria criteria);
