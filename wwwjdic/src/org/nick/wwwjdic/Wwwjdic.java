@@ -31,16 +31,10 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 public class Wwwjdic extends TabActivity implements OnClickListener,
         OnFocusChangeListener, OnCheckedChangeListener {
 
-    private EditText inputText;
-    private CheckBox exactMatchCb;
-    private CheckBox commonWordsCb;
-    private CheckBox romanizedJapaneseCb;
-    private Spinner dictSpinner;
+    private static final String DICTIONARY_TAB = "dictionaryTab";
+    private static final String KANJI_TAB = "kanjiTab";
 
-    private EditText kanjiInputText;
-    private Spinner kanjiSearchTypeSpinner;
-
-    private TabHost tabHost;
+    private static final String TAG = "WWWJDIC";
 
     private static final Map<Integer, String> IDX_TO_DICT = new HashMap<Integer, String>();
 
@@ -82,6 +76,17 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         IDX_TO_CODE.put(8, "W");
     }
 
+    private EditText inputText;
+    private CheckBox exactMatchCb;
+    private CheckBox commonWordsCb;
+    private CheckBox romanizedJapaneseCb;
+    private Spinner dictSpinner;
+
+    private EditText kanjiInputText;
+    private Spinner kanjiSearchTypeSpinner;
+
+    private TabHost tabHost;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,11 +98,12 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
         tabHost = getTabHost();
 
-        tabHost.addTab(tabHost.newTabSpec("wordTab").setIndicator("Dictionary",
+        tabHost.addTab(tabHost.newTabSpec(DICTIONARY_TAB).setIndicator(
+                getResources().getText(R.string.dictionary),
                 getResources().getDrawable(R.drawable.ic_tab_dict)).setContent(
                 R.id.wordLookupTab));
-        tabHost.addTab(tabHost.newTabSpec("kanjiTab").setIndicator(
-                "Kanji Lookup",
+        tabHost.addTab(tabHost.newTabSpec(KANJI_TAB).setIndicator(
+                getResources().getText(R.string.kanji_lookup),
                 getResources().getDrawable(R.drawable.ic_tab_kanji))
                 .setContent(R.id.kanjiLookupTab));
 
@@ -142,8 +148,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
             try {
                 int dictIdx = dictSpinner.getSelectedItemPosition();
                 String dict = IDX_TO_DICT.get(dictIdx);
-                Log.i("WWWJDIC", Integer.toString(dictIdx));
-                Log.i("WWWJDIC", dict);
+                Log.i(TAG, Integer.toString(dictIdx));
+                Log.i(TAG, dict);
                 if (dict == null) {
                     // edict
                     dict = "1";
@@ -158,7 +164,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
                 startActivity(intent);
             } catch (RejectedExecutionException e) {
-                Log.e("WWWJDIC", "RejectedExecutionException", e);
+                Log.e(TAG, e.getMessage(), e);
             }
             break;
         case R.id.kanjiSearchButton:
@@ -170,8 +176,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                 int searchTypeIdx = kanjiSearchTypeSpinner
                         .getSelectedItemPosition();
                 String searchType = IDX_TO_CODE.get(searchTypeIdx);
-                Log.i("WWWJDIC", Integer.toString(searchTypeIdx));
-                Log.i("WWWJDIC", "kanji search type: " + searchType);
+                Log.i(TAG, Integer.toString(searchTypeIdx));
+                Log.i(TAG, "kanji search type: " + searchType);
                 if (searchType == null) {
                     // reading/kanji
                     searchType = "J";
@@ -185,7 +191,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
                 startActivity(intent);
             } catch (RejectedExecutionException e) {
-                Log.e("WWWJDIC", "RejectedExecutionException", e);
+                Log.e(TAG, "RejectedExecutionException", e);
             }
             break;
         default:
@@ -210,7 +216,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        menu.add(0, 1, 0, "About").setIcon(
+        menu.add(0, 1, 0, R.string.about).setIcon(
                 android.R.drawable.ic_menu_info_details);
         return true;
     }
@@ -251,13 +257,6 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         AlertDialog alertDialog = builder.create();
 
         return alertDialog;
-        //
-        // Dialog dialog = new Dialog(this);
-        //
-        // dialog.setContentView(R.layout.about_dialog);
-        // dialog.setTitle("About");
-        //
-        // return dialog;
     }
 
     private void hideKeyboard() {

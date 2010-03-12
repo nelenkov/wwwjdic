@@ -38,24 +38,24 @@ public abstract class ResultListViewBase extends ListActivity implements
     }
 
     protected void submitTranslateTask(TranslateTask translateTask) {
-        progressDialog = ProgressDialog.show(this, "",
-                "Loading. Please wait...", true);
+        progressDialog = ProgressDialog.show(this, "", getResources().getText(
+                R.string.loading), true);
         transPending = transThread.submit(translateTask);
     }
 
     public void setError(final Exception ex) {
         guiThread.post(new Runnable() {
             public void run() {
-                setTitle("Error");
+                setTitle(getResources().getText(R.string.error));
                 progressDialog.dismiss();
 
                 AlertDialog.Builder alert = new AlertDialog.Builder(
                         ResultListViewBase.this);
 
-                alert.setTitle("Error");
+                alert.setTitle(R.string.error);
                 alert.setMessage(ex.getMessage());
 
-                alert.setPositiveButton("OK",
+                alert.setPositiveButton(getResources().getText(R.string.ok),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                     int whichButton) {

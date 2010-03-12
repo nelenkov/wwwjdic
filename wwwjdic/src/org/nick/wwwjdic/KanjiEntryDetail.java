@@ -36,13 +36,9 @@ public class KanjiEntryDetail extends Activity {
 
         TextView radicalNumberView = (TextView) findViewById(R.id.radicalNumberText);
         radicalNumberView.setText(Integer.toString(entry.getRadicalNumber()));
-        // radicalNumberView.setTextSize(18f);
-        // radicalNumberView.setTextColor(Color.WHITE);
 
         TextView strokeCountView = (TextView) findViewById(R.id.strokeCountText);
         strokeCountView.setText(Integer.toString(entry.getStrokeCount()));
-        // strokeCountView.setTextSize(18f);
-        // strokeCountView.setTextColor(Color.WHITE);
 
         LinearLayout readingLayout = (LinearLayout) findViewById(R.id.readingLayout);
 
@@ -92,49 +88,53 @@ public class KanjiEntryDetail extends Activity {
             if (data == null) {
                 data = new ArrayList<Pair<String, String>>();
                 if (entry.getJisCode() != null) {
-                    data.add(new Pair<String, String>("JIS code: ", entry
-                            .getJisCode()));
+                    data.add(new Pair<String, String>(
+                            getStr(R.string.jis_code), entry.getJisCode()));
                 }
 
                 if (entry.getUnicodeNumber() != null) {
-                    data.add(new Pair<String, String>("Unicode number: ", entry
-                            .getUnicodeNumber()));
+                    data.add(new Pair<String, String>(
+                            getStr(R.string.unicode_number), entry
+                                    .getUnicodeNumber()));
                 }
 
                 if (entry.getClassicalRadicalNumber() != null) {
                     data.add(new Pair<String, String>(
-                            "Classical radical number: ", entry
+                            getStr(R.string.unicode_number), entry
                                     .getClassicalRadicalNumber().toString()));
                 }
 
                 if (entry.getFrequncyeRank() != null) {
-                    data.add(new Pair<String, String>("Frequency rank: ", entry
-                            .getFrequncyeRank().toString()));
+                    data.add(new Pair<String, String>(
+                            getStr(R.string.freq_rank), entry
+                                    .getFrequncyeRank().toString()));
                 }
 
                 if (entry.getGrade() != null) {
-                    data.add(new Pair<String, String>("Grade: ", entry
-                            .getGrade().toString()));
+                    data.add(new Pair<String, String>(getStr(R.string.grade),
+                            entry.getGrade().toString()));
                 }
 
                 if (entry.getJlptLevel() != null) {
-                    data.add(new Pair<String, String>("JLPT leve: ", entry
-                            .getJlptLevel().toString()));
+                    data.add(new Pair<String, String>(
+                            getStr(R.string.jlpt_level), entry.getJlptLevel()
+                                    .toString()));
                 }
 
                 if (entry.getSkipCode() != null) {
-                    data.add(new Pair<String, String>("SKIP code: ", entry
-                            .getSkipCode()));
+                    data.add(new Pair<String, String>(
+                            getStr(R.string.skip_code), entry.getSkipCode()));
                 }
 
                 if (entry.getKoreanReading() != null) {
-                    data.add(new Pair<String, String>("Korean reading: ", entry
-                            .getKoreanReading()));
+                    data.add(new Pair<String, String>(
+                            getStr(R.string.korean_reading), entry
+                                    .getKoreanReading()));
                 }
 
                 if (entry.getPinyin() != null) {
-                    data.add(new Pair<String, String>("Pinyin: ", entry
-                            .getPinyin()));
+                    data.add(new Pair<String, String>(getStr(R.string.pinyn),
+                            entry.getPinyin()));
                 }
             }
 
@@ -178,7 +178,7 @@ public class KanjiEntryDetail extends Activity {
         }
 
         public Object getGroup(int groupPosition) {
-            return "More...";
+            return getStr(R.string.more);
         }
 
         public int getGroupCount() {
@@ -198,7 +198,7 @@ public class KanjiEntryDetail extends Activity {
             textView.setLayoutParams(lp);
             textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
             textView.setPadding(36, 0, 0, 0);
-            textView.setText("More...");
+            textView.setText(getStr(R.string.more));
 
             return textView;
         }
@@ -210,5 +210,9 @@ public class KanjiEntryDetail extends Activity {
         public boolean isChildSelectable(int groupPosition, int childPosition) {
             return false;
         }
+    }
+
+    private String getStr(int id) {
+        return getResources().getText(id).toString();
     }
 }
