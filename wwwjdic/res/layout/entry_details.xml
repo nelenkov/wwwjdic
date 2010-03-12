@@ -3,5 +3,5 @@
 	android:layout_width="fill_parent" android:layout_height="wrap_content"
 	android:orientation="vertical" android:id="@+id/detailLayout">
 	<TextView android:layout_height="fill_parent"
-		android:layout_width="fill_parent" android:id="@+id/wordText"></TextView>
+		android:layout_width="fill_parent" android:id="@+id/wordText" style="@style/dict_detail_heading"></TextView>
 </LinearLayout>

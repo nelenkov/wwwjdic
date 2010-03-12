@@ -31,8 +31,6 @@ public class KanjiEntryDetail extends Activity {
 
         TextView entryView = (TextView) findViewById(R.id.kanjiText);
         entryView.setText(entry.getKanji());
-        entryView.setTextSize(40f);
-        entryView.setTextColor(Color.WHITE);
 
         TextView radicalNumberView = (TextView) findViewById(R.id.radicalNumberText);
         radicalNumberView.setText(Integer.toString(entry.getRadicalNumber()));
@@ -43,22 +41,20 @@ public class KanjiEntryDetail extends Activity {
         LinearLayout readingLayout = (LinearLayout) findViewById(R.id.readingLayout);
 
         if (entry.getReading() != null) {
-            TextView onyomiView = new TextView(this);
+            TextView onyomiView = new TextView(this, null,
+                    R.style.dict_detail_reading);
             onyomiView.setText(entry.getOnyomi());
-            onyomiView.setTextSize(18f);
-            onyomiView.setTextColor(Color.WHITE);
             readingLayout.addView(onyomiView);
 
-            TextView kunyomiView = new TextView(this);
+            TextView kunyomiView = new TextView(this, null,
+                    R.style.dict_detail_reading);
             kunyomiView.setText(entry.getKunyomi());
-            kunyomiView.setTextSize(18f);
-            kunyomiView.setTextColor(Color.WHITE);
             readingLayout.addView(kunyomiView);
         }
 
         for (String meaning : entry.getMeanings()) {
-            TextView text = new TextView(this);
-            text.setTextSize(18f);
+            TextView text = new TextView(this, null,
+                    R.style.dict_detail_meaning);
             text.setText(meaning);
             detailLayout.addView(text);
         }

@@ -3,7 +3,6 @@ package org.nick.wwwjdic;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -53,27 +52,23 @@ public class DictionaryEntryAdapter extends BaseAdapter {
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             params.setMargins(5, 3, 5, 0);
 
-            entryText = new TextView(context);
+            entryText = new TextView(context, null, R.style.dict_list_heading);
             entryText.setText(entry.getWord());
-            entryText.setTextSize(20f);
-            entryText.setTextColor(Color.WHITE);
             addView(entryText, params);
 
             if (entry.getReading() != null) {
-                readingText = new TextView(context);
+                readingText = new TextView(context, null,
+                        R.style.dict_list_reading);
                 readingText.setText(entry.getReading());
-                readingText.setTextSize(18f);
-                readingText.setTextColor(Color.WHITE);
                 addView(readingText, params);
             }
 
-            translationText = new TextView(context);
+            translationText = new TextView(context, null,
+                    R.style.dict_list_translation);
             String translationStr = StringUtils.join(entry.getMeanings(), "/",
                     0);
             translationText.setText(StringUtils.shorten(translationStr,
                     SHORT_TRANSLATION_LENGTH));
-            translationText.setTextSize(16f);
-            translationText.setTextColor(Color.WHITE);
             addView(translationText, params);
         }
     }

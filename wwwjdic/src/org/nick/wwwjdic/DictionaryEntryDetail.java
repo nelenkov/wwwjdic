@@ -22,14 +22,11 @@ public class DictionaryEntryDetail extends Activity {
 
         TextView entryView = (TextView) findViewById(R.id.wordText);
         entryView.setText(entry.getWord());
-        entryView.setTextSize(26f);
-        entryView.setTextColor(Color.WHITE);
 
         if (entry.getReading() != null) {
-            TextView readingView = new TextView(this);
+            TextView readingView = new TextView(this, null,
+                    R.style.dict_detail_reading);
             readingView.setText(entry.getReading());
-            readingView.setTextSize(18f);
-            readingView.setTextColor(Color.WHITE);
             detailLayout.addView(readingView);
         }
 
@@ -40,8 +37,8 @@ public class DictionaryEntryDetail extends Activity {
         detailLayout.addView(translationLabel);
 
         for (String meaning : entry.getMeanings()) {
-            TextView text = new TextView(this);
-            text.setTextSize(18f);
+            TextView text = new TextView(this, null,
+                    R.style.dict_detail_meaning);
             text.setText(meaning);
             detailLayout.addView(text);
         }
