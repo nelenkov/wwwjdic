@@ -28,7 +28,7 @@ public class DictionaryResultListView extends ResultListViewBase {
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Intent intent = new Intent(this, DictionaryEntryDetail.class);
         DictionaryEntry entry = entries.get(position);
-        intent.putExtra("org.nick.hello.entry", entry);
+        intent.putExtra(Constants.ENTRY_KEY, entry);
         startActivity(intent);
     }
 

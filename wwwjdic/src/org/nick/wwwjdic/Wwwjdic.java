@@ -160,7 +160,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                                 .isChecked(), commonWordsCb.isChecked(), dict);
 
                 Intent intent = new Intent(this, DictionaryResultListView.class);
-                intent.putExtra("org.nick.hello.searchCriteria", criteria);
+                intent.putExtra(Constants.CRITERIA_KEY, criteria);
 
                 startActivity(intent);
             } catch (RejectedExecutionException e) {
@@ -187,7 +187,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                         kanjiInput, searchType);
 
                 Intent intent = new Intent(this, KanjiResultListView.class);
-                intent.putExtra("org.nick.hello.searchCriteria", criteria);
+                intent.putExtra(Constants.CRITERIA_KEY, criteria);
 
                 startActivity(intent);
             } catch (RejectedExecutionException e) {

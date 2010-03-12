@@ -23,7 +23,7 @@ public class KanjiEntryDetail extends Activity {
         setContentView(R.layout.kanji_entry_details);
 
         KanjiEntry entry = (KanjiEntry) getIntent().getSerializableExtra(
-                "org.nick.hello.kanjiEntry");
+                Constants.KANJI_ENTRY_KEY);
 
         setTitle(String.format("Details for '%s'", entry.getKanji()));
 
