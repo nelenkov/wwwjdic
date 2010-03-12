@@ -17,11 +17,9 @@ public class DictionaryEntry implements Serializable {
 
     private String word;
     private String reading;
-    private String partOfSpeech;
     private List<String> meanings = new ArrayList<String>();
 
     private String tranlsationString;
-    private String meaningsString;
 
     private DictionaryEntry() {
     }
@@ -51,14 +49,8 @@ public class DictionaryEntry implements Serializable {
             }
         }
 
-        result.meaningsString = meaningsField.replace("/", " ").trim();
-
         String[] meaningsArr = meaningsField.split("/");
-        int spaceIdx = meaningsArr[1].indexOf(' ');
-        result.partOfSpeech = meaningsArr[1].substring(0, spaceIdx);
-        result.meanings.add(meaningsArr[1].substring(spaceIdx).trim());
-
-        for (int i = 2; i < meaningsArr.length; i++) {
+        for (int i = 0; i < meaningsArr.length; i++) {
             String meaning = meaningsArr[i];
             if (!"".equals(meaning) && !"(P)".equals(meaning)) {
                 result.meanings.add(meaning);
@@ -76,20 +68,12 @@ public class DictionaryEntry implements Serializable {
         return reading;
     }
 
-    public String getPartOfSpeech() {
-        return partOfSpeech;
-    }
-
     public List<String> getMeanings() {
         return Collections.unmodifiableList(meanings);
     }
 
     public String getTranslationString() {
         return tranlsationString;
-    }
-
-    public String getMeaningsString() {
-        return meaningsString;
     }
 
 }
