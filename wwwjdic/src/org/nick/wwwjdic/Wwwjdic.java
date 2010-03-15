@@ -51,6 +51,14 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         IDX_TO_DICT.put(9, "B");
         IDX_TO_DICT.put(10, "C");
         IDX_TO_DICT.put(11, "D");
+        IDX_TO_DICT.put(12, "F");
+        IDX_TO_DICT.put(13, "G");
+        IDX_TO_DICT.put(14, "H");
+        IDX_TO_DICT.put(15, "I");
+        IDX_TO_DICT.put(16, "J");
+        IDX_TO_DICT.put(17, "K");
+        IDX_TO_DICT.put(18, "L");
+        IDX_TO_DICT.put(19, "M");
     }
 
     private static final Map<Integer, String> IDX_TO_CODE = new HashMap<Integer, String>();

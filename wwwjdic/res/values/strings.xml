@@ -15,6 +15,14 @@
 		<item>Linguistics</item>
 		<item>River &amp; Water Systems</item>
 		<item>Automobile Industry</item>
+		<item>Japanese-German</item>
+		<item>Japanese-French</item>
+		<item>Japanese-Russian</item>
+		<item>Japanese-Swedish</item>
+		<item>Japanese-Hungarian</item>
+		<item>Japanese-Spanish</item>
+		<item>Japanese-Dutch</item>
+		<item>Japanese-Slovenian</item>
 	</string-array>
 	<string-array name="kanji_search_types_array">
 		<item>Kanji or reading</item>
