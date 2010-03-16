@@ -21,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -114,6 +115,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                 getResources().getText(R.string.kanji_lookup),
                 getResources().getDrawable(R.drawable.ic_tab_kanji))
                 .setContent(R.id.kanjiLookupTab));
+        tabHost.addTab(tabHost.newTabSpec(KANJI_TAB).setIndicator("Radicals")
+                .setContent(R.id.radicalLookupTab));
 
         tabHost.setCurrentTab(0);
 
@@ -144,6 +147,10 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         kajiSearchTypeAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         kanjiSearchTypeSpinner.setAdapter(kajiSearchTypeAdapter);
+
+        //
+        Button radicalLookupButton = (Button) findViewById(R.id.radicalLookupButton);
+        radicalLookupButton.setOnClickListener(this);
     }
 
     public void onClick(View v) {
@@ -201,6 +208,11 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
             } catch (RejectedExecutionException e) {
                 Log.e(TAG, "RejectedExecutionException", e);
             }
+            break;
+        case R.id.radicalLookupButton:
+            Intent intent = new Intent(this, RadicalChart.class);
+
+            startActivity(intent);
             break;
         default:
             // do nothing
