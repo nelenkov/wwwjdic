@@ -73,6 +73,18 @@
 				<Button android:layout_height="wrap_content" android:id="@+id/kanjiSearchButton"
 					android:layout_width="fill_parent" android:text="@string/search"></Button>
 			</LinearLayout>
+			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				android:id="@+id/radicalLookupTab" android:orientation="vertical"
+				android:layout_width="fill_parent" android:layout_height="fill_parent"
+				android:padding="20dip" android:layout_gravity="top"
+				android:minHeight="200px">
+				<Button xmlns:android="http://schemas.android.com/apk/res/android"
+					android:id="@+id/radicalLookupButton" android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:text="Radicals" />
+				<Button xmlns:android="http://schemas.android.com/apk/res/android"
+					android:id="@+id/radicalLookupButton" android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:text="@string/katana_radical" />
+			</LinearLayout>
 		</FrameLayout>
 	</LinearLayout>
 </TabHost>
