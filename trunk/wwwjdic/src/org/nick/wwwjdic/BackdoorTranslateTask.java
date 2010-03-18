@@ -1,7 +1,6 @@
 package org.nick.wwwjdic;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -63,9 +62,8 @@ public abstract class BackdoorTranslateTask<T> extends TranslateTask {
     @Override
     protected String query(SearchCriteria criteria) {
         try {
-            String lookupUrl = String.format("%s?%s%s", BACKDOOR_URL,
-                    generateBackdoorCode(criteria), URLEncoder.encode(criteria
-                            .getQueryString(), "UTF-8"));
+            String lookupUrl = String.format("%s?%s", BACKDOOR_URL,
+                    generateBackdoorCode(criteria));
             HttpGet get = new HttpGet(lookupUrl);
 
             String responseStr = httpclient.execute(get, responseHandler,

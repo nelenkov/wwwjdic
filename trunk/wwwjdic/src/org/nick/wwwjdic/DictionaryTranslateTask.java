@@ -1,5 +1,8 @@
 package org.nick.wwwjdic;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 public class DictionaryTranslateTask extends
         BackdoorTranslateTask<DictionaryEntry> {
 
@@ -44,6 +47,11 @@ public class DictionaryTranslateTask extends
                 // English
                 buff.append("E");
             }
+        }
+        try {
+            buff.append(URLEncoder.encode(criteria.getQueryString(), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
 
         return buff.toString();

@@ -44,8 +44,6 @@
 						android:layout_height="wrap_content" android:id="@+id/romanizedCb"
 						android:text="Romanized\nJapanese" android:textSize="12sp"></CheckBox>
 				</LinearLayout>
-
-
 				<Button android:layout_height="wrap_content" android:id="@+id/translateButton"
 					android:layout_width="fill_parent" android:text="Translate"></Button>
 			</LinearLayout>
@@ -70,20 +68,38 @@
 						android:layout_marginLeft="5px" android:minWidth="320px"
 						android:prompt="@string/select_search_type"></Spinner>
 				</LinearLayout>
+				<LinearLayout android:layout_width="fill_parent"
+					android:layout_height="wrap_content" android:orientation="horizontal"
+					android:id="@+id/strokeCountLayout" android:gravity="center_vertical|center_horizontal"
+					android:layout_gravity="center_vertical|center_horizontal">
+					<TextView android:layout_width="wrap_content"
+						android:layout_height="wrap_content" android:id="@+id/radicalLabel"
+						android:text="Radical:" android:textSize="12sp" android:textColor="#FFFF"
+						android:gravity="center_vertical"></TextView>
+					<EditText android:layout_height="wrap_content"
+						android:layout_width="wrap_content" android:id="@+id/radicalInputText"
+						android:lines="1" android:text="  " android:minWidth="40dp"
+						android:cursorVisible="false" android:focusable="false"
+						android:textSize="18sp" android:inputType="none"></EditText>
+					<Button xmlns:android="http://schemas.android.com/apk/res/android"
+						android:id="@+id/selectRadicalButton" android:layout_width="wrap_content"
+						android:layout_height="wrap_content" android:textSize="12sp"
+						android:text="Select..." />
+					<TextView android:layout_width="wrap_content"
+						android:layout_height="wrap_content" android:id="@+id/strokeCountLabel"
+						android:text="Strokes:" android:textSize="12sp" android:textColor="#FFFF"
+						android:gravity="center_vertical"></TextView>
+					<EditText android:layout_height="wrap_content"
+						android:layout_width="wrap_content" android:id="@+id/strokeCountMinInput"
+						android:lines="1" android:inputType="numberDecimal"
+						android:textSize="12sp" android:hint="min"></EditText>
+					<EditText android:layout_height="wrap_content"
+						android:layout_width="wrap_content" android:id="@+id/strokeCountMaxInput"
+						android:lines="1" android:inputType="numberDecimal"
+						android:textSize="12sp" android:hint="max"></EditText>
+				</LinearLayout>
 				<Button android:layout_height="wrap_content" android:id="@+id/kanjiSearchButton"
 					android:layout_width="fill_parent" android:text="@string/search"></Button>
-			</LinearLayout>
-			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-				android:id="@+id/radicalLookupTab" android:orientation="vertical"
-				android:layout_width="fill_parent" android:layout_height="fill_parent"
-				android:padding="20dip" android:layout_gravity="top"
-				android:minHeight="200px">
-				<Button xmlns:android="http://schemas.android.com/apk/res/android"
-					android:id="@+id/radicalLookupButton" android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:text="Radicals" />
-				<Button xmlns:android="http://schemas.android.com/apk/res/android"
-					android:id="@+id/radicalLookupButton" android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:text="@string/katana_radical" />
 			</LinearLayout>
 		</FrameLayout>
 	</LinearLayout>
