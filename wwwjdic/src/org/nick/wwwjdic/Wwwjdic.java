@@ -20,6 +20,7 @@ import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -27,10 +28,11 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TabHost;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class Wwwjdic extends TabActivity implements OnClickListener,
-        OnFocusChangeListener, OnCheckedChangeListener {
+        OnFocusChangeListener, OnCheckedChangeListener, OnItemSelectedListener {
 
     private static final String DICTIONARY_TAB = "dictionaryTab";
     private static final String KANJI_TAB = "kanjiTab";
@@ -94,6 +96,11 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
     private EditText kanjiInputText;
     private Spinner kanjiSearchTypeSpinner;
 
+    private EditText radicalEditText;
+    private Button selectRadicalButton;
+    private EditText strokeCountMinInput;
+    private EditText strokeCountMaxInput;
+
     private TabHost tabHost;
 
     /** Called when the activity is first created. */
@@ -105,20 +112,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
         setContentView(R.layout.main);
 
-        tabHost = getTabHost();
-
-        tabHost.addTab(tabHost.newTabSpec(DICTIONARY_TAB).setIndicator(
-                getResources().getText(R.string.dictionary),
-                getResources().getDrawable(R.drawable.ic_tab_dict)).setContent(
-                R.id.wordLookupTab));
-        tabHost.addTab(tabHost.newTabSpec(KANJI_TAB).setIndicator(
-                getResources().getText(R.string.kanji_lookup),
-                getResources().getDrawable(R.drawable.ic_tab_kanji))
-                .setContent(R.id.kanjiLookupTab));
-        tabHost.addTab(tabHost.newTabSpec(KANJI_TAB).setIndicator("Radicals")
-                .setContent(R.id.radicalLookupTab));
-
-        tabHost.setCurrentTab(0);
+        setupTabs();
 
         findViews();
 
@@ -147,10 +141,25 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         kajiSearchTypeAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         kanjiSearchTypeSpinner.setAdapter(kajiSearchTypeAdapter);
+        kanjiSearchTypeSpinner.setOnItemSelectedListener(this);
 
-        //
-        Button radicalLookupButton = (Button) findViewById(R.id.radicalLookupButton);
-        radicalLookupButton.setOnClickListener(this);
+        selectRadicalButton.setOnClickListener(this);
+        toggleRadicalStrokeCountPanel(false);
+    }
+
+    private void setupTabs() {
+        tabHost = getTabHost();
+
+        tabHost.addTab(tabHost.newTabSpec(DICTIONARY_TAB).setIndicator(
+                getResources().getText(R.string.dictionary),
+                getResources().getDrawable(R.drawable.ic_tab_dict)).setContent(
+                R.id.wordLookupTab));
+        tabHost.addTab(tabHost.newTabSpec(KANJI_TAB).setIndicator(
+                getResources().getText(R.string.kanji_lookup),
+                getResources().getDrawable(R.drawable.ic_tab_kanji))
+                .setContent(R.id.kanjiLookupTab));
+
+        tabHost.setCurrentTab(0);
     }
 
     public void onClick(View v) {
@@ -198,8 +207,12 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                     searchType = "J";
                 }
 
-                SearchCriteria criteria = SearchCriteria.createForKanji(
-                        kanjiInput, searchType);
+                Integer minStrokeCount = tryParseInt(strokeCountMinInput
+                        .getText().toString());
+                Integer maxStrokeCount = tryParseInt(strokeCountMaxInput
+                        .getText().toString());
+                SearchCriteria criteria = SearchCriteria.createWithStrokeCount(
+                        kanjiInput, searchType, minStrokeCount, maxStrokeCount);
 
                 Intent intent = new Intent(this, KanjiResultListView.class);
                 intent.putExtra(Constants.CRITERIA_KEY, criteria);
@@ -209,13 +222,34 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                 Log.e(TAG, "RejectedExecutionException", e);
             }
             break;
-        case R.id.radicalLookupButton:
-            Intent intent = new Intent(this, RadicalChart.class);
+        case R.id.selectRadicalButton:
+            Intent i = new Intent(this, RadicalChart.class);
 
-            startActivity(intent);
+            startActivityForResult(i, Constants.RADICAL_RETURN_RESULT);
             break;
         default:
             // do nothing
+        }
+    }
+
+    private Integer tryParseInt(String str) {
+        try {
+            return Integer.parseInt(str);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+            Intent intent) {
+        if (requestCode == Constants.RADICAL_RETURN_RESULT) {
+            if (resultCode == RESULT_OK) {
+                Radical radical = (Radical) intent.getExtras().getSerializable(
+                        Constants.RADICAL_KEY);
+                kanjiInputText.setText(Integer.toString(radical.getNumber()));
+                radicalEditText.setText(radical.getGlyph().substring(0, 1));
+            }
         }
     }
 
@@ -298,6 +332,11 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         dictSpinner = (Spinner) findViewById(R.id.dictionarySpinner);
         kanjiInputText = (EditText) findViewById(R.id.kanjiInputText);
         kanjiSearchTypeSpinner = (Spinner) findViewById(R.id.kanjiSearchTypeSpinner);
+
+        radicalEditText = (EditText) findViewById(R.id.radicalInputText);
+        strokeCountMinInput = (EditText) findViewById(R.id.strokeCountMinInput);
+        strokeCountMaxInput = (EditText) findViewById(R.id.strokeCountMaxInput);
+        selectRadicalButton = (Button) findViewById(R.id.selectRadicalButton);
     }
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -334,6 +373,24 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                 romanizedJapaneseCb.setEnabled(true);
             }
         }
+    }
+
+    public void onItemSelected(AdapterView<?> parent, View view, int position,
+            long id) {
+        if (position != 2) {
+            toggleRadicalStrokeCountPanel(false);
+        } else {
+            toggleRadicalStrokeCountPanel(true);
+        }
+    }
+
+    private void toggleRadicalStrokeCountPanel(boolean isEnabled) {
+        selectRadicalButton.setEnabled(isEnabled);
+        strokeCountMinInput.setEnabled(isEnabled);
+        strokeCountMaxInput.setEnabled(isEnabled);
+    }
+
+    public void onNothingSelected(AdapterView<?> parent) {
     }
 
 }
