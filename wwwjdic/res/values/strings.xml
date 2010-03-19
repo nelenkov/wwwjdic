@@ -35,10 +35,10 @@
 		<item>Pinyin reading</item>
 		<item>Korean reading</item>
 	</string-array>
-	<string name="about_text">WWWJDIC for Android, ver 0.1, 2010</string>
+	<string name="about_text">WWWJDIC for Android, 2010</string>
 	<string name="about_by">by Nikolay Elenkov</string>
-	<string name="about_bugtracking">Report issues at</string>
-	<string name="bugtracker_url">http://code.google.com/p/wwwjdic/issues/</string>
+	<string name="about_bugtracking">More info/issue reporting</string>
+	<string name="bugtracker_url">http://code.google.com/p/wwwjdic</string>
 	<string name="uses_wwwjdic">Uses Jim Breen\'s WWWJDIC</string>
 	<string name="wwwjdic_link">http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi?1C
 	</string>
@@ -67,5 +67,9 @@
 	<string name="dictionary">Dictionary</string>
 	<string name="kanji_lookup">Kanji Lookup</string>
 	<string name="about">About</string>
-	<string name="katana_radical">刂</string>
+	<string name="min">min</string>
+	<string name="max">max</string>
+	<string name="strokes">Strokes: </string>
+	<string name="select">Select...</string>
+	<string name="radical">Radical: </string>
 </resources>

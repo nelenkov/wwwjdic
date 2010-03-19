@@ -9,6 +9,8 @@ import android.app.Dialog;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +30,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
@@ -305,12 +308,25 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.about_dialog,
                 (ViewGroup) findViewById(R.id.layout_root));
+        TextView versionText = (TextView) layout.findViewById(R.id.versionText);
+        versionText.setText("version " + getVersionName());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(layout);
         AlertDialog alertDialog = builder.create();
 
         return alertDialog;
+    }
+
+    private String getVersionName() {
+        try {
+            PackageInfo pinfo = getPackageManager().getPackageInfo(
+                    getPackageName(), 0);
+
+            return pinfo.versionName;
+        } catch (NameNotFoundException e) {
+            return "";
+        }
     }
 
     private void hideKeyboard() {
