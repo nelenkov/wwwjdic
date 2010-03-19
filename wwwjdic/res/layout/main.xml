@@ -92,7 +92,7 @@
 					<EditText android:layout_height="wrap_content"
 						android:layout_width="wrap_content" android:id="@+id/strokeCountMinInput"
 						android:lines="1" android:inputType="numberDecimal"
-						android:textSize="12sp" android:hint="@string/min"></EditText>
+						android:textSize="12sp" android:hint="@string/min" android:imeOptions="actionNext"></EditText>
 					<EditText android:layout_height="wrap_content"
 						android:layout_width="wrap_content" android:id="@+id/strokeCountMaxInput"
 						android:lines="1" android:inputType="numberDecimal"
