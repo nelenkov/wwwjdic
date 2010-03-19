@@ -48,4 +48,13 @@
 	<style name="dict_detail_meaning">
 		<item name="android:textSize">18sp</item>
 	</style>
+	
+	<style name="radical">
+        <item name="android:textSize">34sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+    
+    <style name="radical_subscript">
+        <item name="android:textSize">12sp</item>
+    </style>
 </resources>

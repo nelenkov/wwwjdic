@@ -74,7 +74,7 @@
 					android:layout_gravity="center_vertical|center_horizontal">
 					<TextView android:layout_width="wrap_content"
 						android:layout_height="wrap_content" android:id="@+id/radicalLabel"
-						android:text="Radical:" android:textSize="12sp" android:textColor="#FFFF"
+						android:text="@string/radical" android:textSize="12sp" android:textColor="#FFFF"
 						android:gravity="center_vertical"></TextView>
 					<EditText android:layout_height="wrap_content"
 						android:layout_width="wrap_content" android:id="@+id/radicalInputText"
@@ -84,19 +84,19 @@
 					<Button xmlns:android="http://schemas.android.com/apk/res/android"
 						android:id="@+id/selectRadicalButton" android:layout_width="wrap_content"
 						android:layout_height="wrap_content" android:textSize="12sp"
-						android:text="Select..." />
+						android:text="@string/select" />
 					<TextView android:layout_width="wrap_content"
 						android:layout_height="wrap_content" android:id="@+id/strokeCountLabel"
-						android:text="Strokes:" android:textSize="12sp" android:textColor="#FFFF"
+						android:text="@string/strokes" android:textSize="12sp" android:textColor="#FFFF"
 						android:gravity="center_vertical"></TextView>
 					<EditText android:layout_height="wrap_content"
 						android:layout_width="wrap_content" android:id="@+id/strokeCountMinInput"
 						android:lines="1" android:inputType="numberDecimal"
-						android:textSize="12sp" android:hint="min"></EditText>
+						android:textSize="12sp" android:hint="@string/min"></EditText>
 					<EditText android:layout_height="wrap_content"
 						android:layout_width="wrap_content" android:id="@+id/strokeCountMaxInput"
 						android:lines="1" android:inputType="numberDecimal"
-						android:textSize="12sp" android:hint="max"></EditText>
+						android:textSize="12sp" android:hint="@string/max"></EditText>
 				</LinearLayout>
 				<Button android:layout_height="wrap_content" android:id="@+id/kanjiSearchButton"
 					android:layout_width="fill_parent" android:text="@string/search"></Button>
