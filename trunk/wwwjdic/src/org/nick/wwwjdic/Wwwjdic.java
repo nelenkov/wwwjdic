@@ -13,6 +13,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,6 +35,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.TextView.OnEditorActionListener;
 
 public class Wwwjdic extends TabActivity implements OnClickListener,
         OnFocusChangeListener, OnCheckedChangeListener, OnItemSelectedListener {
@@ -147,7 +150,34 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         kanjiSearchTypeSpinner.setOnItemSelectedListener(this);
 
         selectRadicalButton.setOnClickListener(this);
+        setupTabOrder();
         toggleRadicalStrokeCountPanel(false);
+    }
+
+    private void setupTabOrder() {
+        strokeCountMinInput
+                .setOnEditorActionListener(new OnEditorActionListener() {
+                    public boolean onEditorAction(TextView v, int actionId,
+                            KeyEvent event) {
+                        switch (actionId) {
+                        case EditorInfo.IME_ACTION_NEXT:
+
+                            EditText v1 = (EditText) v
+                                    .focusSearch(View.FOCUS_RIGHT);
+                            if (v1 != null) {
+                                if (!v1.requestFocus(View.FOCUS_RIGHT)) {
+                                    throw new IllegalStateException(
+                                            "unfocucsable view");
+                                }
+                            }
+                            break;
+                        default:
+                            v.onEditorAction(actionId);
+                            break;
+                        }
+                        return true;
+                    }
+                });
     }
 
     private void setupTabs() {
