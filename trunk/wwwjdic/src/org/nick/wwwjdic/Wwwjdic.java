@@ -119,9 +119,14 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         setContentView(R.layout.main);
 
         setupTabs();
-
         findViews();
+        setupListeners();
+        setupSpinners();
+        setupTabOrder();
+        toggleRadicalStrokeCountPanel(false);
+    }
 
+    private void setupListeners() {
         View translateButton = findViewById(R.id.translateButton);
         translateButton.setOnClickListener(this);
 
@@ -135,6 +140,10 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         exactMatchCb.setOnCheckedChangeListener(this);
         commonWordsCb.setOnCheckedChangeListener(this);
 
+        selectRadicalButton.setOnClickListener(this);
+    }
+
+    private void setupSpinners() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.dictinaries_array, R.layout.spinner_text);
         adapter
@@ -148,10 +157,6 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         kanjiSearchTypeSpinner.setAdapter(kajiSearchTypeAdapter);
         kanjiSearchTypeSpinner.setOnItemSelectedListener(this);
-
-        selectRadicalButton.setOnClickListener(this);
-        setupTabOrder();
-        toggleRadicalStrokeCountPanel(false);
     }
 
     private void setupTabOrder() {
@@ -161,7 +166,6 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                             KeyEvent event) {
                         switch (actionId) {
                         case EditorInfo.IME_ACTION_NEXT:
-
                             EditText v1 = (EditText) v
                                     .focusSearch(View.FOCUS_RIGHT);
                             if (v1 != null) {
@@ -172,7 +176,6 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                             }
                             break;
                         default:
-                            v.onEditorAction(actionId);
                             break;
                         }
                         return true;
@@ -423,6 +426,9 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
     public void onItemSelected(AdapterView<?> parent, View view, int position,
             long id) {
+        kanjiInputText.setText("");
+        kanjiInputText.requestFocus();
+
         if (position != 2) {
             toggleRadicalStrokeCountPanel(false);
         } else {
@@ -433,7 +439,15 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
     private void toggleRadicalStrokeCountPanel(boolean isEnabled) {
         selectRadicalButton.setEnabled(isEnabled);
         strokeCountMinInput.setEnabled(isEnabled);
+        strokeCountMinInput.setFocusableInTouchMode(isEnabled);
         strokeCountMaxInput.setEnabled(isEnabled);
+        strokeCountMaxInput.setFocusableInTouchMode(isEnabled);
+        if (!isEnabled) {
+            strokeCountMinInput.setText("");
+            strokeCountMaxInput.setText("");
+            radicalEditText.setText("");
+            kanjiInputText.requestFocus();
+        }
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
