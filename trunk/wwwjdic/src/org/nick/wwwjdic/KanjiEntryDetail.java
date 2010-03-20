@@ -17,202 +17,208 @@ import android.widget.TextView;
 
 public class KanjiEntryDetail extends Activity {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.kanji_entry_details);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.kanji_entry_details);
 
-        KanjiEntry entry = (KanjiEntry) getIntent().getSerializableExtra(
-                Constants.KANJI_ENTRY_KEY);
+		KanjiEntry entry = (KanjiEntry) getIntent().getSerializableExtra(
+				Constants.KANJI_ENTRY_KEY);
 
-        setTitle(String.format("Details for '%s'", entry.getKanji()));
+		setTitle(String.format("Details for '%s'", entry.getKanji()));
 
-        LinearLayout detailLayout = (LinearLayout) findViewById(R.id.kanjiDetailLayout);
+		LinearLayout detailLayout = (LinearLayout) findViewById(R.id.kanjiDetailLayout);
 
-        TextView entryView = (TextView) findViewById(R.id.kanjiText);
-        entryView.setText(entry.getKanji());
+		TextView entryView = (TextView) findViewById(R.id.kanjiText);
+		entryView.setText(entry.getKanji());
 
-        TextView radicalNumberView = (TextView) findViewById(R.id.radicalNumberText);
-        radicalNumberView.setText(Integer.toString(entry.getRadicalNumber()));
+		TextView radicalGlyphText = (TextView) findViewById(R.id.radicalGlyphText);
+		radicalGlyphText.setTextSize(24f);
+		Radicals radicals = Radicals.getInstance();
+		Radical radical = radicals.getRadicalByNumber(entry.getRadicalNumber());
+		radicalGlyphText.setText(radical.getGlyph().substring(0, 1));
 
-        TextView strokeCountView = (TextView) findViewById(R.id.strokeCountText);
-        strokeCountView.setText(Integer.toString(entry.getStrokeCount()));
+		TextView radicalNumberView = (TextView) findViewById(R.id.radicalNumberText);
+		radicalNumberView.setText(Integer.toString(entry.getRadicalNumber()));
 
-        LinearLayout readingLayout = (LinearLayout) findViewById(R.id.readingLayout);
+		TextView strokeCountView = (TextView) findViewById(R.id.strokeCountText);
+		strokeCountView.setText(Integer.toString(entry.getStrokeCount()));
 
-        if (entry.getReading() != null) {
-            TextView onyomiView = new TextView(this, null,
-                    R.style.dict_detail_reading);
-            onyomiView.setText(entry.getOnyomi());
-            readingLayout.addView(onyomiView);
+		LinearLayout readingLayout = (LinearLayout) findViewById(R.id.readingLayout);
 
-            TextView kunyomiView = new TextView(this, null,
-                    R.style.dict_detail_reading);
-            kunyomiView.setText(entry.getKunyomi());
-            readingLayout.addView(kunyomiView);
-        }
+		if (entry.getReading() != null) {
+			TextView onyomiView = new TextView(this, null,
+					R.style.dict_detail_reading);
+			onyomiView.setText(entry.getOnyomi());
+			readingLayout.addView(onyomiView);
 
-        for (String meaning : entry.getMeanings()) {
-            TextView text = new TextView(this, null,
-                    R.style.dict_detail_meaning);
-            text.setText(meaning);
-            detailLayout.addView(text);
-        }
-        TextView moreLabel = new TextView(this);
-        moreLabel.setText(R.string.codes_more);
-        moreLabel.setTextColor(Color.WHITE);
-        moreLabel.setBackgroundColor(Color.GRAY);
-        detailLayout.addView(moreLabel);
+			TextView kunyomiView = new TextView(this, null,
+					R.style.dict_detail_reading);
+			kunyomiView.setText(entry.getKunyomi());
+			readingLayout.addView(kunyomiView);
+		}
 
-        ExpandableListView expandableList = new ExpandableListView(this);
-        KanjiCodesAdapter kanjiCodesAdapter = new KanjiCodesAdapter(entry);
-        expandableList.setAdapter(kanjiCodesAdapter);
-        detailLayout.addView(expandableList);
+		for (String meaning : entry.getMeanings()) {
+			TextView text = new TextView(this, null,
+					R.style.dict_detail_meaning);
+			text.setText(meaning);
+			detailLayout.addView(text);
+		}
+		TextView moreLabel = new TextView(this);
+		moreLabel.setText(R.string.codes_more);
+		moreLabel.setTextColor(Color.WHITE);
+		moreLabel.setBackgroundColor(Color.GRAY);
+		detailLayout.addView(moreLabel);
 
-    }
+		ExpandableListView expandableList = new ExpandableListView(this);
+		KanjiCodesAdapter kanjiCodesAdapter = new KanjiCodesAdapter(entry);
+		expandableList.setAdapter(kanjiCodesAdapter);
+		detailLayout.addView(expandableList);
 
-    private class KanjiCodesAdapter extends BaseExpandableListAdapter {
+	}
 
-        private KanjiEntry entry;
-        private List<Pair<String, String>> data = null;
+	private class KanjiCodesAdapter extends BaseExpandableListAdapter {
 
-        public KanjiCodesAdapter(KanjiEntry entry) {
-            this.entry = entry;
-        }
+		private KanjiEntry entry;
+		private List<Pair<String, String>> data = null;
 
-        private List<Pair<String, String>> getData() {
-            if (data == null) {
-                data = new ArrayList<Pair<String, String>>();
-                if (entry.getJisCode() != null) {
-                    data.add(new Pair<String, String>(
-                            getStr(R.string.jis_code), entry.getJisCode()));
-                }
+		public KanjiCodesAdapter(KanjiEntry entry) {
+			this.entry = entry;
+		}
 
-                if (entry.getUnicodeNumber() != null) {
-                    data.add(new Pair<String, String>(
-                            getStr(R.string.unicode_number), entry
-                                    .getUnicodeNumber()));
-                }
+		private List<Pair<String, String>> getData() {
+			if (data == null) {
+				data = new ArrayList<Pair<String, String>>();
+				if (entry.getJisCode() != null) {
+					data.add(new Pair<String, String>(
+							getStr(R.string.jis_code), entry.getJisCode()));
+				}
 
-                if (entry.getClassicalRadicalNumber() != null) {
-                    data.add(new Pair<String, String>(
-                            getStr(R.string.unicode_number), entry
-                                    .getClassicalRadicalNumber().toString()));
-                }
+				if (entry.getUnicodeNumber() != null) {
+					data.add(new Pair<String, String>(
+							getStr(R.string.unicode_number), entry
+									.getUnicodeNumber()));
+				}
 
-                if (entry.getFrequncyeRank() != null) {
-                    data.add(new Pair<String, String>(
-                            getStr(R.string.freq_rank), entry
-                                    .getFrequncyeRank().toString()));
-                }
+				if (entry.getClassicalRadicalNumber() != null) {
+					data.add(new Pair<String, String>(
+							getStr(R.string.unicode_number), entry
+									.getClassicalRadicalNumber().toString()));
+				}
 
-                if (entry.getGrade() != null) {
-                    data.add(new Pair<String, String>(getStr(R.string.grade),
-                            entry.getGrade().toString()));
-                }
+				if (entry.getFrequncyeRank() != null) {
+					data.add(new Pair<String, String>(
+							getStr(R.string.freq_rank), entry
+									.getFrequncyeRank().toString()));
+				}
 
-                if (entry.getJlptLevel() != null) {
-                    data.add(new Pair<String, String>(
-                            getStr(R.string.jlpt_level), entry.getJlptLevel()
-                                    .toString()));
-                }
+				if (entry.getGrade() != null) {
+					data.add(new Pair<String, String>(getStr(R.string.grade),
+							entry.getGrade().toString()));
+				}
 
-                if (entry.getSkipCode() != null) {
-                    data.add(new Pair<String, String>(
-                            getStr(R.string.skip_code), entry.getSkipCode()));
-                }
+				if (entry.getJlptLevel() != null) {
+					data.add(new Pair<String, String>(
+							getStr(R.string.jlpt_level), entry.getJlptLevel()
+									.toString()));
+				}
 
-                if (entry.getKoreanReading() != null) {
-                    data.add(new Pair<String, String>(
-                            getStr(R.string.korean_reading), entry
-                                    .getKoreanReading()));
-                }
+				if (entry.getSkipCode() != null) {
+					data.add(new Pair<String, String>(
+							getStr(R.string.skip_code), entry.getSkipCode()));
+				}
 
-                if (entry.getPinyin() != null) {
-                    data.add(new Pair<String, String>(getStr(R.string.pinyn),
-                            entry.getPinyin()));
-                }
-            }
+				if (entry.getKoreanReading() != null) {
+					data.add(new Pair<String, String>(
+							getStr(R.string.korean_reading), entry
+									.getKoreanReading()));
+				}
 
-            return data;
-        }
+				if (entry.getPinyin() != null) {
+					data.add(new Pair<String, String>(getStr(R.string.pinyn),
+							entry.getPinyin()));
+				}
+			}
 
-        public Object getChild(int groupPosition, int childPosition) {
-            return getData().get(childPosition);
-        }
+			return data;
+		}
 
-        public long getChildId(int groupPosition, int childPosition) {
-            return childPosition;
-        }
+		public Object getChild(int groupPosition, int childPosition) {
+			return getData().get(childPosition);
+		}
 
-        public View getChildView(int groupPosition, int childPosition,
-                boolean isLastChild, View convertView, ViewGroup parent) {
-            Pair<String, String> childData = getData().get(childPosition);
+		public long getChildId(int groupPosition, int childPosition) {
+			return childPosition;
+		}
 
-            return createLabelTextView(childData);
-        }
+		public View getChildView(int groupPosition, int childPosition,
+				boolean isLastChild, View convertView, ViewGroup parent) {
+			Pair<String, String> childData = getData().get(childPosition);
 
-        private View createLabelTextView(Pair<String, String> data) {
-            LinearLayout layout = new LinearLayout(KanjiEntryDetail.this);
-            layout.setOrientation(LinearLayout.HORIZONTAL);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(5, 0, 5, 0);
+			return createLabelTextView(childData);
+		}
 
-            TextView labelView = new TextView(KanjiEntryDetail.this);
-            labelView.setText(data.getFirst());
-            labelView.setGravity(Gravity.LEFT);
-            layout.addView(labelView, lp);
+		private View createLabelTextView(Pair<String, String> data) {
+			LinearLayout layout = new LinearLayout(KanjiEntryDetail.this);
+			layout.setOrientation(LinearLayout.HORIZONTAL);
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+					ViewGroup.LayoutParams.WRAP_CONTENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT);
+			lp.setMargins(5, 0, 5, 0);
 
-            TextView textView = new TextView(KanjiEntryDetail.this);
-            textView.setText(data.getSecond());
-            textView.setGravity(Gravity.RIGHT);
-            layout.addView(textView, lp);
+			TextView labelView = new TextView(KanjiEntryDetail.this);
+			labelView.setText(data.getFirst());
+			labelView.setGravity(Gravity.LEFT);
+			layout.addView(labelView, lp);
 
-            return layout;
-        }
+			TextView textView = new TextView(KanjiEntryDetail.this);
+			textView.setText(data.getSecond());
+			textView.setGravity(Gravity.RIGHT);
+			layout.addView(textView, lp);
 
-        public int getChildrenCount(int groupPosition) {
-            return getData().size();
-        }
+			return layout;
+		}
 
-        public Object getGroup(int groupPosition) {
-            return getStr(R.string.more);
-        }
+		public int getChildrenCount(int groupPosition) {
+			return getData().size();
+		}
 
-        public int getGroupCount() {
-            return 1;
-        }
+		public Object getGroup(int groupPosition) {
+			return getStr(R.string.more);
+		}
 
-        public long getGroupId(int groupPosition) {
-            return groupPosition;
-        }
+		public int getGroupCount() {
+			return 1;
+		}
 
-        public View getGroupView(int groupPosition, boolean isExpanded,
-                View convertView, ViewGroup parent) {
-            AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-                    ViewGroup.LayoutParams.FILL_PARENT, 64);
+		public long getGroupId(int groupPosition) {
+			return groupPosition;
+		}
 
-            TextView textView = new TextView(KanjiEntryDetail.this);
-            textView.setLayoutParams(lp);
-            textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-            textView.setPadding(36, 0, 0, 0);
-            textView.setText(getStr(R.string.more));
+		public View getGroupView(int groupPosition, boolean isExpanded,
+				View convertView, ViewGroup parent) {
+			AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
+					ViewGroup.LayoutParams.FILL_PARENT, 64);
 
-            return textView;
-        }
+			TextView textView = new TextView(KanjiEntryDetail.this);
+			textView.setLayoutParams(lp);
+			textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
+			textView.setPadding(36, 0, 0, 0);
+			textView.setText(getStr(R.string.more));
 
-        public boolean hasStableIds() {
-            return true;
-        }
+			return textView;
+		}
 
-        public boolean isChildSelectable(int groupPosition, int childPosition) {
-            return false;
-        }
-    }
+		public boolean hasStableIds() {
+			return true;
+		}
 
-    private String getStr(int id) {
-        return getResources().getText(id).toString();
-    }
+		public boolean isChildSelectable(int groupPosition, int childPosition) {
+			return false;
+		}
+	}
+
+	private String getStr(int id) {
+		return getResources().getText(id).toString();
+	}
 }
