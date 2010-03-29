@@ -72,4 +72,10 @@
 	<string name="strokes">Strokes: </string>
 	<string name="select">Select...</string>
 	<string name="radical">Radical: </string>
+	<string name="timeout_error_message">Connection has timed out. Check your network
+		connection.</string>
+	<string name="socket_error_message">Failed to connect to WWWJDIC. Check your network
+		connection.</string>
+	<string name="generic_error_message">An unexpected error has occurred. Please report
+		this.</string>
 </resources>
