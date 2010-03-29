@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="wrap_content"
+	android:orientation="vertical" android:id="@+id/kanjiDetailLayout">
+	<LinearLayout android:id="@+id/kanjiReadingLayout"
+		android:orientation="horizontal" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_marginBottom="5px">
+		<TextView android:layout_height="fill_parent"
+			android:layout_width="fill_parent" android:id="@+id/kanjiText"
+			android:layout_marginRight="10px" style="@style/kanji_detail_heading"></TextView>
+		<LinearLayout android:id="@+id/readingLayout"
+			android:orientation="vertical" android:layout_width="wrap_content"
+			android:layout_height="wrap_content"></LinearLayout>
+	</LinearLayout>
+	<TextView android:layout_width="fill_parent"
+		android:textColor="#FFF" android:layout_height="wrap_content"
+		android:text="@string/radical_strokes" android:background="#888888"></TextView>
+	<LinearLayout android:id="@+id/radicalCountLayout"
+		android:orientation="horizontal" android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+		<TextView android:layout_height="wrap_content"
+			android:layout_width="wrap_content" android:id="@+id/radicalGlyphText"
+			android:layout_marginRight="5px"></TextView>
+		<LinearLayout android:id="@+id/radicalCountLayout"
+			android:orientation="vertical" android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+			<LinearLayout android:orientation="horizontal"
+				android:layout_width="wrap_content" android:layout_height="wrap_content">
+				<TextView android:layout_height="fill_parent"
+					android:layout_width="fill_parent" android:id="@+id/radicalNumberLabel"
+					android:text="@string/radical_number" android:layout_marginRight="5px"></TextView>
+				<TextView android:layout_height="fill_parent"
+					android:layout_width="fill_parent" android:id="@+id/radicalNumberText"></TextView>
+			</LinearLayout>
+			<LinearLayout android:orientation="horizontal"
+				android:layout_width="wrap_content" android:layout_height="wrap_content">
+				<TextView android:layout_height="fill_parent"
+					android:layout_width="fill_parent" android:id="@+id/strokeCountLabel"
+					android:text="@string/stroke_count" android:layout_marginRight="5px">
+				</TextView>
+				<TextView android:layout_height="fill_parent"
+					android:layout_width="fill_parent" android:id="@+id/strokeCountText">
+				</TextView>
+			</LinearLayout>
+		</LinearLayout>
+	</LinearLayout>
+	<TextView android:layout_width="fill_parent"
+		android:textColor="#FFF" android:layout_height="wrap_content"
+		android:text="@string/english_meanings" android:background="#888888"></TextView>
+	<ScrollView android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		<LinearLayout android:id="@+id/meaningsCodesLayout"
+			android:orientation="vertical" android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>
