@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -58,22 +59,26 @@ public class KanjiEntryDetail extends Activity {
 			readingLayout.addView(kunyomiView);
 		}
 
+		LinearLayout meaningsCodesLayout = (LinearLayout) findViewById(R.id.meaningsCodesLayout);
 		for (String meaning : entry.getMeanings()) {
 			TextView text = new TextView(this, null,
 					R.style.dict_detail_meaning);
 			text.setText(meaning);
-			detailLayout.addView(text);
+			meaningsCodesLayout.addView(text);
 		}
 		TextView moreLabel = new TextView(this);
 		moreLabel.setText(R.string.codes_more);
 		moreLabel.setTextColor(Color.WHITE);
 		moreLabel.setBackgroundColor(Color.GRAY);
-		detailLayout.addView(moreLabel);
+		meaningsCodesLayout.addView(moreLabel);
 
 		ExpandableListView expandableList = new ExpandableListView(this);
+		LayoutParams lp = new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.FILL_PARENT);
+		expandableList.setLayoutParams(lp);
 		KanjiCodesAdapter kanjiCodesAdapter = new KanjiCodesAdapter(entry);
 		expandableList.setAdapter(kanjiCodesAdapter);
-		detailLayout.addView(expandableList);
+		meaningsCodesLayout.addView(expandableList);
 
 	}
 
@@ -198,7 +203,7 @@ public class KanjiEntryDetail extends Activity {
 		public View getGroupView(int groupPosition, boolean isExpanded,
 				View convertView, ViewGroup parent) {
 			AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-					ViewGroup.LayoutParams.FILL_PARENT, 64);
+					ViewGroup.LayoutParams.FILL_PARENT, 50);
 
 			TextView textView = new TextView(KanjiEntryDetail.this);
 			textView.setLayoutParams(lp);
