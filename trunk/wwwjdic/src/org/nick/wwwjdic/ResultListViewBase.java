@@ -1,5 +1,7 @@
 package org.nick.wwwjdic;
 
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -53,7 +55,20 @@ public abstract class ResultListViewBase extends ListActivity implements
                         ResultListViewBase.this);
 
                 alert.setTitle(R.string.error);
-                alert.setMessage(ex.getMessage());
+
+                if (ex instanceof SocketTimeoutException
+                        || ex.getCause() instanceof SocketTimeoutException) {
+                    alert.setMessage(getResources().getString(
+                            R.string.timeout_error_message));
+                } else if (ex instanceof SocketException
+                        || ex.getCause() instanceof SocketException) {
+                    alert.setMessage(getResources().getString(
+                            R.string.socket_error_message));
+                } else {
+                    alert.setMessage(getResources().getString(
+                            R.string.generic_error_message)
+                            + "(" + ex.getMessage() + ")");
+                }
 
                 alert.setPositiveButton(getResources().getText(R.string.ok),
                         new DialogInterface.OnClickListener() {
