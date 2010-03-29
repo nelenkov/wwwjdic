@@ -49,9 +49,9 @@
 		android:text="@string/english_meanings" android:background="#888888"></TextView>
 	<ScrollView android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
-		<LinearLayout android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:orientation="vertical"
-			android:id="@+id/meaningsCodesLayout">
+		<LinearLayout android:id="@+id/meaningsCodesLayout"
+			android:orientation="vertical" android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
 		</LinearLayout>
 	</ScrollView>
 </LinearLayout>
