@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -61,6 +62,9 @@ public class RadicalChart extends Activity implements OnItemClickListener {
 
 			LinearLayout numberStrokesLayout = new LinearLayout(context);
 			numberStrokesLayout.setOrientation(LinearLayout.VERTICAL);
+			LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT,
+					LayoutParams.FILL_PARENT);
+			numberStrokesLayout.setLayoutParams(params);
 
 			TextView numberText = new TextView(context);
 			numberText.setText(Integer.toString(radical.getNumber()));
