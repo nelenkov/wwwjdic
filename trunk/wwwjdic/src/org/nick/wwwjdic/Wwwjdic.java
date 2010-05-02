@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
+import org.nick.wwwjdic.ocr.OcrActivity;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TabActivity;
@@ -109,6 +111,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
 	private TabHost tabHost;
 
+	private boolean inputTextFromBundle;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -126,6 +130,23 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 		toggleRadicalStrokeCountPanel(false);
 
 		initRadicals();
+
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			String searchKey = extras.getString(Constants.SEARCH_TEXT_KEY);
+			boolean isKanji = extras
+					.getBoolean(Constants.SEARCH_TEXT_KANJI_KEY);
+			if (searchKey != null) {
+				if (isKanji) {
+					kanjiInputText.setText(searchKey);
+					tabHost.setCurrentTab(1);
+				} else {
+					inputText.setText(searchKey);
+					tabHost.setCurrentTab(0);
+				}
+				inputTextFromBundle = true;
+			}
+		}
 	}
 
 	private void initRadicals() {
@@ -375,6 +396,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 		super.onCreateOptionsMenu(menu);
 		menu.add(0, 1, 0, R.string.about).setIcon(
 				android.R.drawable.ic_menu_info_details);
+		menu.add(0, 2, 1, "OCR").setIcon(android.R.drawable.ic_menu_camera);
+
 		return true;
 	}
 
@@ -384,6 +407,13 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 		case 1:
 			showDialog(0);
 			return true;
+		case 2:
+			Intent intent = new Intent(this, OcrActivity.class);
+
+			startActivity(intent);
+			return true;
+		default:
+			// do nothing
 		}
 
 		return super.onMenuItemSelected(featureId, item);
@@ -493,6 +523,12 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
+		if (inputTextFromBundle) {
+			inputTextFromBundle = false;
+
+			return;
+		}
+
 		kanjiInputText.setText("");
 		kanjiInputText.requestFocus();
 
