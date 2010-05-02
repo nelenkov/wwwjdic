@@ -28,6 +28,12 @@
 	<TextView android:text="@string/wwwjdic_link"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:id="@+id/wwwjdicLink" android:autoLink="web"></TextView>
+	<TextView android:text="@string/uses_weocr"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:id="@+id/usesWeocr"></TextView>
+	<TextView android:text="@string/weocr_link"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:id="@+id/weocrLink" android:autoLink="web"></TextView>
 
 
 </LinearLayout>

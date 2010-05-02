@@ -9,11 +9,10 @@
 		<FrameLayout android:id="@android:id/tabcontent"
 			android:layout_width="fill_parent" android:layout_height="fill_parent">
 
-			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-				android:id="@+id/wordLookupTab" android:orientation="vertical"
-				android:layout_width="fill_parent" android:layout_height="fill_parent"
-				android:padding="20dip" android:layout_gravity="top"
-				android:minHeight="200px">
+			<LinearLayout android:id="@+id/wordLookupTab"
+				android:orientation="vertical" android:layout_width="fill_parent"
+				android:layout_height="fill_parent" android:padding="15dip"
+				android:layout_gravity="top" android:minHeight="200px">
 				<EditText android:layout_height="wrap_content"
 					android:layout_width="fill_parent" android:id="@+id/inputText"
 					android:inputType="text" android:lines="1"></EditText>
@@ -47,11 +46,10 @@
 				<Button android:layout_height="wrap_content" android:id="@+id/translateButton"
 					android:layout_width="fill_parent" android:text="Translate"></Button>
 			</LinearLayout>
-			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-				android:id="@+id/kanjiLookupTab" android:orientation="vertical"
-				android:layout_width="fill_parent" android:layout_height="fill_parent"
-				android:padding="20dip" android:layout_gravity="top"
-				android:minHeight="200px">
+			<LinearLayout android:id="@+id/kanjiLookupTab"
+				android:orientation="vertical" android:layout_width="fill_parent"
+				android:layout_height="fill_parent" android:padding="15dip"
+				android:layout_gravity="top" android:minHeight="200px">
 				<EditText android:layout_height="wrap_content"
 					android:layout_width="fill_parent" android:id="@+id/kanjiInputText"
 					android:inputType="text" android:lines="1"></EditText>
@@ -74,8 +72,8 @@
 					android:layout_gravity="center_vertical|center_horizontal">
 					<TextView android:layout_width="wrap_content"
 						android:layout_height="wrap_content" android:id="@+id/radicalLabel"
-						android:text="@string/radical" android:textSize="12sp" android:textColor="#FFFF"
-						android:gravity="center_vertical"></TextView>
+						android:text="@string/radical" android:textSize="12sp"
+						android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
 					<EditText android:layout_height="wrap_content"
 						android:layout_width="wrap_content" android:id="@+id/radicalInputText"
 						android:lines="1" android:text="  " android:minWidth="40dp"
@@ -87,12 +85,13 @@
 						android:text="@string/select" />
 					<TextView android:layout_width="wrap_content"
 						android:layout_height="wrap_content" android:id="@+id/strokeCountLabel"
-						android:text="@string/strokes" android:textSize="12sp" android:textColor="#FFFF"
-						android:gravity="center_vertical"></TextView>
+						android:text="@string/strokes" android:textSize="12sp"
+						android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
 					<EditText android:layout_height="wrap_content"
 						android:layout_width="wrap_content" android:id="@+id/strokeCountMinInput"
 						android:lines="1" android:inputType="numberDecimal"
-						android:textSize="12sp" android:hint="@string/min" android:imeOptions="actionNext"></EditText>
+						android:textSize="12sp" android:hint="@string/min"
+						android:imeOptions="actionNext"></EditText>
 					<EditText android:layout_height="wrap_content"
 						android:layout_width="wrap_content" android:id="@+id/strokeCountMaxInput"
 						android:lines="1" android:inputType="numberDecimal"
