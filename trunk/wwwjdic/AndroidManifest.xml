@@ -22,6 +22,7 @@
 		<activity android:name="KanjiResultListView"></activity>
 		<activity android:name="KanjiEntryDetail"></activity>
 		<activity android:name="RadicalChart"></activity>
+		<activity android:name="WwwjdicPreferences"></activity>
 		<activity android:name=".ocr.OcrActivity"></activity>
 	</application>
 

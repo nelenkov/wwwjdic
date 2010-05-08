@@ -42,6 +42,9 @@ import android.widget.TextView.OnEditorActionListener;
 public class Wwwjdic extends TabActivity implements OnClickListener,
 		OnFocusChangeListener, OnCheckedChangeListener, OnItemSelectedListener {
 
+	private static final int ITEM_ID_SETTINGS = 3;
+	private static final int ITEM_ID_OCR = 2;
+	private static final int ITEM_ID_ABOUT = 1;
 	private static final String DICTIONARY_TAB = "dictionaryTab";
 	private static final String KANJI_TAB = "kanjiTab";
 
@@ -394,9 +397,12 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		menu.add(0, 1, 0, R.string.about).setIcon(
+		menu.add(0, ITEM_ID_OCR, 0, "OCR").setIcon(
+				android.R.drawable.ic_menu_camera);
+		menu.add(0, ITEM_ID_SETTINGS, 1, "Settings").setIcon(
+				android.R.drawable.ic_menu_preferences);
+		menu.add(0, ITEM_ID_ABOUT, 2, R.string.about).setIcon(
 				android.R.drawable.ic_menu_info_details);
-		menu.add(0, 2, 1, "OCR").setIcon(android.R.drawable.ic_menu_camera);
 
 		return true;
 	}
@@ -404,11 +410,16 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
-		case 1:
+		case ITEM_ID_ABOUT:
 			showDialog(0);
 			return true;
-		case 2:
+		case ITEM_ID_OCR:
 			Intent intent = new Intent(this, OcrActivity.class);
+
+			startActivity(intent);
+			return true;
+		case ITEM_ID_SETTINGS:
+			intent = new Intent(this, WwwjdicPreferences.class);
 
 			startActivity(intent);
 			return true;

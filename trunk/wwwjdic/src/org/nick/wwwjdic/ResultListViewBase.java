@@ -11,84 +11,107 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 
 public abstract class ResultListViewBase extends ListActivity implements
-        ResultListView {
+		ResultListView {
 
-    protected SearchCriteria criteria;
+	private static final String DEFAULT_WWWJDIC_URL = "http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi";
 
-    protected Handler guiThread;
-    protected ExecutorService transThread;
-    protected Future transPending;
+	private static final String PREF_WWWJDIC_URL_KEY = "pref_wwwjdic_mirror_url";
+	private static final String PREF_WWWJDIC_TIMEOUT_KEY = "wwwjdic_timeout";
 
-    protected ProgressDialog progressDialog;
+	protected SearchCriteria criteria;
 
-    protected ResultListViewBase() {
-        initThreading();
-    }
+	protected Handler guiThread;
+	protected ExecutorService transThread;
+	protected Future transPending;
 
-    @Override
-    protected void onDestroy() {
-        transThread.shutdownNow();
-        super.onDestroy();
-    }
+	protected ProgressDialog progressDialog;
 
-    private void initThreading() {
-        guiThread = new Handler();
-        transThread = Executors.newSingleThreadExecutor();
-    }
+	protected ResultListViewBase() {
+		initThreading();
+	}
 
-    protected void submitTranslateTask(TranslateTask translateTask) {
-        progressDialog = ProgressDialog.show(this, "", getResources().getText(
-                R.string.loading), true);
-        transPending = transThread.submit(translateTask);
-    }
+	@Override
+	protected void onDestroy() {
+		transThread.shutdownNow();
+		super.onDestroy();
+	}
 
-    public void setError(final Exception ex) {
-        guiThread.post(new Runnable() {
-            public void run() {
-                setTitle(getResources().getText(R.string.error));
-                progressDialog.dismiss();
+	private void initThreading() {
+		guiThread = new Handler();
+		transThread = Executors.newSingleThreadExecutor();
+	}
 
-                AlertDialog.Builder alert = new AlertDialog.Builder(
-                        ResultListViewBase.this);
+	protected void submitTranslateTask(TranslateTask translateTask) {
+		progressDialog = ProgressDialog.show(this, "", getResources().getText(
+				R.string.loading), true);
+		transPending = transThread.submit(translateTask);
+	}
 
-                alert.setTitle(R.string.error);
+	public void setError(final Exception ex) {
+		guiThread.post(new Runnable() {
+			public void run() {
+				setTitle(getResources().getText(R.string.error));
+				progressDialog.dismiss();
 
-                if (ex instanceof SocketTimeoutException
-                        || ex.getCause() instanceof SocketTimeoutException) {
-                    alert.setMessage(getResources().getString(
-                            R.string.timeout_error_message));
-                } else if (ex instanceof SocketException
-                        || ex.getCause() instanceof SocketException) {
-                    alert.setMessage(getResources().getString(
-                            R.string.socket_error_message));
-                } else {
-                    alert.setMessage(getResources().getString(
-                            R.string.generic_error_message)
-                            + "(" + ex.getMessage() + ")");
-                }
+				AlertDialog.Builder alert = new AlertDialog.Builder(
+						ResultListViewBase.this);
 
-                alert.setPositiveButton(getResources().getText(R.string.ok),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                    int whichButton) {
-                                dialog.dismiss();
-                                finish();
-                            }
-                        });
+				alert.setTitle(R.string.error);
 
-                alert.show();
-            }
-        });
-    }
+				if (ex instanceof SocketTimeoutException
+						|| ex.getCause() instanceof SocketTimeoutException) {
+					alert.setMessage(getResources().getString(
+							R.string.timeout_error_message));
+				} else if (ex instanceof SocketException
+						|| ex.getCause() instanceof SocketException) {
+					alert.setMessage(getResources().getString(
+							R.string.socket_error_message));
+				} else {
+					alert.setMessage(getResources().getString(
+							R.string.generic_error_message)
+							+ "(" + ex.getMessage() + ")");
+				}
 
-    public abstract void setResult(List<?> result);
+				alert.setPositiveButton(getResources().getText(R.string.ok),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+								dialog.dismiss();
+								finish();
+							}
+						});
 
-    protected void extractSearchCriteria() {
-        criteria = (SearchCriteria) getIntent().getSerializableExtra(
-                Constants.CRITERIA_KEY);
-    }
+				alert.show();
+			}
+		});
+	}
 
+	public abstract void setResult(List<?> result);
+
+	protected void extractSearchCriteria() {
+		criteria = (SearchCriteria) getIntent().getSerializableExtra(
+				Constants.CRITERIA_KEY);
+	}
+
+	protected String getWwwjdicUrl() {
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+
+		return preferences.getString(PREF_WWWJDIC_URL_KEY, DEFAULT_WWWJDIC_URL);
+	}
+
+	protected int getHttpTimeoutSeconds() {
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+
+		String timeoutStr = preferences.getString(PREF_WWWJDIC_TIMEOUT_KEY,
+				"10");
+
+		return Integer.parseInt(timeoutStr);
+	}
 }

@@ -19,68 +19,75 @@ import android.util.Log;
 
 public abstract class TranslateTask implements Runnable {
 
-    private static class StringResponseHandler implements
-            ResponseHandler<String> {
-        public String handleResponse(HttpResponse response)
-                throws ClientProtocolException, IOException {
-            HttpEntity entity = response.getEntity();
+	private static final String TAG = TranslateTask.class.getSimpleName();
 
-            String responseStr = null;
-            if (entity != null) {
-                responseStr = EntityUtils.toString(entity);
-            }
+	private static class StringResponseHandler implements
+			ResponseHandler<String> {
+		public String handleResponse(HttpResponse response)
+				throws ClientProtocolException, IOException {
+			HttpEntity entity = response.getEntity();
 
-            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                return responseStr;
-            }
+			String responseStr = null;
+			if (entity != null) {
+				responseStr = EntityUtils.toString(entity);
+			}
 
-            throw new RuntimeException("Server error: " + responseStr);
-        }
-    };
+			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+				return responseStr;
+			}
 
-    protected ResultListView resultListView;
-    protected SearchCriteria searchCriteria;
+			throw new RuntimeException("Server error: " + responseStr);
+		}
+	};
 
-    protected HttpContext localContext;
-    protected HttpClient httpclient;
-    protected StringResponseHandler responseHandler = new StringResponseHandler();
+	protected ResultListView resultListView;
+	protected SearchCriteria searchCriteria;
 
-    private static final int TIMEOUT_MILLIS = 15 * 1000;
+	protected String url;
+	protected int timeoutMillis;
 
-    public TranslateTask(ResultListView resultView,
-            SearchCriteria searchCriteria) {
-        this.resultListView = resultView;
-        this.searchCriteria = searchCriteria;
+	protected HttpContext localContext;
+	protected HttpClient httpclient;
+	protected StringResponseHandler responseHandler = new StringResponseHandler();
 
-        createHttpClient();
-    }
+	public TranslateTask(String url, int timeoutSeconds,
+			ResultListView resultView, SearchCriteria searchCriteria) {
+		this.url = url;
+		this.timeoutMillis = timeoutSeconds * 1000;
+		this.resultListView = resultView;
+		this.searchCriteria = searchCriteria;
 
-    private void createHttpClient() {
-        httpclient = new DefaultHttpClient();
-        HttpParams httpParams = httpclient.getParams();
-        HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLIS);
-        HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLIS);
-    }
+		createHttpClient();
+	}
 
-    public void run() {
-        try {
-            List<DictionaryEntry> result = fetchResult(searchCriteria);
-            resultListView.setResult(result);
-        } catch (Exception e) {
-            Log.e("WWWJDIC", e.getMessage(), e);
-            resultListView.setError(e);
-        }
-    }
+	private void createHttpClient() {
+		Log.d(TAG, "WWWJDIC URL: " + url);
+		Log.d(TAG, "HTTP timeout: " + timeoutMillis);
+		httpclient = new DefaultHttpClient();
+		HttpParams httpParams = httpclient.getParams();
+		HttpConnectionParams.setConnectionTimeout(httpParams, timeoutMillis);
+		HttpConnectionParams.setSoTimeout(httpParams, timeoutMillis);
+	}
 
-    @SuppressWarnings("unchecked")
-    private List<DictionaryEntry> fetchResult(SearchCriteria criteria) {
-        String payload = query(criteria);
+	public void run() {
+		try {
+			List<DictionaryEntry> result = fetchResult(searchCriteria);
+			resultListView.setResult(result);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage(), e);
+			resultListView.setError(e);
+		}
+	}
 
-        return (List<DictionaryEntry>) parseResult(payload);
-    }
+	@SuppressWarnings("unchecked")
+	private List<DictionaryEntry> fetchResult(SearchCriteria criteria) {
+		String payload = query(criteria);
 
-    protected abstract String query(SearchCriteria criteria);
+		return (List<DictionaryEntry>) parseResult(payload);
+	}
 
-    protected abstract List<?> parseResult(String html);
+	protected abstract String query(SearchCriteria criteria);
+
+	protected abstract List<?> parseResult(String html);
 
 }

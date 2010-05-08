@@ -87,4 +87,39 @@
 		screen and press 'Save' to OCR.</string>
 	<string name="ocr_hint3">* Press あ/漢 to send text to dictionary/kanji lookup
 		screen.</string>
+	<string name="pref_ocr">OCR Settings</string>
+	<string name="pref_weocr_server">WeOCR Server</string>
+	<string name="pref_weocr_server_summary">Don\'t use the backup server if the default one is online</string>
+	<string-array name="weocr_mirror_names">
+        <item>maggie (default)</item>
+        <item>jimbocho (backup)</item>
+    </string-array>
+    <string-array name="weocr_mirror_urls">
+        <item>http://maggie.ocrgrid.org/cgi-bin/weocr/nhocr.cgi</item>
+        <item>http://jimbocho.ocrgrid.org/cgi-bin/weocr/nhocr.cgi</item>
+    </string-array>
+	<string name="pref_weocr_timeout">WeOCR Timeout</string>
+	<string name="pref_weocr_timeout_summary">[seconds]</string>
+	<string name="pref_wwwjdic">WWWJDIC Settings</string>
+	<string name="pref_wwwjdic_mirror">WWWJDIC Mirror</string>
+	<string-array name="wwwjdic_mirror_names">
+		<item>Australia</item>
+		<item>Canada</item>
+		<item>EU</item>
+		<item>Japan</item>
+		<item>Sweden</item>
+		<item>USA</item>
+	</string-array>
+	<string-array name="wwwjdic_mirror_urls">
+        <item>http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi</item>
+        <item>http://ryouko.imsb.nrc.ca/cgi-bin/wwwjdic</item>
+        <item>http://jp.msmobiles.com/cgi-bin/wwwjdic</item>
+        <item>http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi</item>
+        <item>http://wwwjdic.sys5.se/cgi-bin/wwwjdic.cgi</item>
+        <item>http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic</item>
+    </string-array>
+	<string name="pref_wwwjdic_timeout">WWWJDIC Timeout</string>
+	<string name="pref_wwwjdic_timeout_summary">[seconds]</string>
+	<string name="pref_ocr_dump_cropped_images">Dump cropped images</string>
+	<string name="pref_ocr_dump_cropped_images_summary">Dump to /sdcard/wwwjdic (for debugging)</string>
 </resources>

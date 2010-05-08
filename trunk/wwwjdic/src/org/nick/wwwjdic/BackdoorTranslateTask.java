@@ -13,72 +13,70 @@ import android.util.Log;
 
 public abstract class BackdoorTranslateTask<T> extends TranslateTask {
 
-    private static final String BACKDOOR_URL = "http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi";
+	protected static final Pattern PRE_START_PATTERN = Pattern
+			.compile("^<pre>.*$");
 
-    protected static final Pattern PRE_START_PATTERN = Pattern
-            .compile("^<pre>.*$");
+	protected static final Pattern PRE_END_PATTERN = Pattern
+			.compile("^</pre>.*$");
 
-    protected static final Pattern PRE_END_PATTERN = Pattern
-            .compile("^</pre>.*$");
+	public BackdoorTranslateTask(String url, int timeoutSeconds,
+			ResultListView resultListView, SearchCriteria criteria) {
+		super(url, timeoutSeconds, resultListView, criteria);
+	}
 
-    public BackdoorTranslateTask(ResultListView resultListView,
-            SearchCriteria criteria) {
-        super(resultListView, criteria);
-    }
+	@Override
+	protected List<T> parseResult(String html) {
+		List<T> result = new ArrayList<T>();
 
-    @Override
-    protected List<T> parseResult(String html) {
-        List<T> result = new ArrayList<T>();
+		boolean isInPre = false;
+		String[] lines = html.split("\n");
+		for (String line : lines) {
+			if (StringUtils.isEmpty(line)) {
+				continue;
+			}
 
-        boolean isInPre = false;
-        String[] lines = html.split("\n");
-        for (String line : lines) {
-            if (StringUtils.isEmpty(line)) {
-                continue;
-            }
+			Matcher m = PRE_START_PATTERN.matcher(line);
+			if (m.matches()) {
+				isInPre = true;
+				continue;
+			}
 
-            Matcher m = PRE_START_PATTERN.matcher(line);
-            if (m.matches()) {
-                isInPre = true;
-                continue;
-            }
+			m = PRE_END_PATTERN.matcher(line);
+			if (m.matches()) {
+				break;
+			}
 
-            m = PRE_END_PATTERN.matcher(line);
-            if (m.matches()) {
-                break;
-            }
+			if (isInPre) {
+				T entry = parseEntry(line);
+				result.add(entry);
+			}
+		}
 
-            if (isInPre) {
-                T entry = parseEntry(line);
-                result.add(entry);
-            }
-        }
+		return result;
+	}
 
-        return result;
-    }
+	protected abstract T parseEntry(String entryStr);
 
-    protected abstract T parseEntry(String entryStr);
+	@Override
+	protected String query(SearchCriteria criteria) {
+		try {
+			String lookupUrl = String.format("%s?%s", url,
+					generateBackdoorCode(criteria));
+			HttpGet get = new HttpGet(lookupUrl);
 
-    @Override
-    protected String query(SearchCriteria criteria) {
-        try {
-            String lookupUrl = String.format("%s?%s", BACKDOOR_URL,
-                    generateBackdoorCode(criteria));
-            HttpGet get = new HttpGet(lookupUrl);
+			String responseStr = httpclient.execute(get, responseHandler,
+					localContext);
 
-            String responseStr = httpclient.execute(get, responseHandler,
-                    localContext);
+			return responseStr;
+		} catch (ClientProtocolException cpe) {
+			Log.e("WWWJDIC", "ClientProtocolException", cpe);
+			throw new RuntimeException(cpe);
+		} catch (IOException e) {
+			Log.e("WWWJDIC", "IOException", e);
+			throw new RuntimeException(e);
+		}
+	}
 
-            return responseStr;
-        } catch (ClientProtocolException cpe) {
-            Log.e("WWWJDIC", "ClientProtocolException", cpe);
-            throw new RuntimeException(cpe);
-        } catch (IOException e) {
-            Log.e("WWWJDIC", "IOException", e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    protected abstract String generateBackdoorCode(SearchCriteria criteria);
+	protected abstract String generateBackdoorCode(SearchCriteria criteria);
 
 }

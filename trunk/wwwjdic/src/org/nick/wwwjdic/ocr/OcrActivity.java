@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -32,6 +33,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -51,7 +53,11 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
 
 	private static final String TAG = OcrActivity.class.getSimpleName();
 
-	private static final String WEOCR_URL = "http://maggie.ocrgrid.org/cgi-bin/weocr/nhocr.cgi";
+	private static final String WEOCR_DEFAULT_URL = "http://maggie.ocrgrid.org/cgi-bin/weocr/nhocr.cgi";
+
+	private static final String PREF_DUMP_CROPPED_IMAGES_KEY = "pref_ocr_dump_cropped_images";
+	private static final String PREF_WEOCR_URL_KEY = "pref_weocr_url";
+	private static final String PREF_WEOCR_TIMEOUT_KEY = "weocr_timeout";
 
 	private Camera camera;
 	private Size previewSize;
@@ -187,7 +193,8 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
 		@Override
 		public void run() {
 			try {
-				WeOcrClient client = new WeOcrClient(WEOCR_URL);
+				WeOcrClient client = new WeOcrClient(getWeocrUrl(),
+						getWeocrTimeout());
 				String ocredText = client.sendOcrRequest(bitmap);
 				Log.d(TAG, "OCR result: " + ocredText);
 
@@ -273,23 +280,25 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == Constants.CROP_RETURN_RESULT) {
+			File f = new File(imageCaptureUri.getPath());
+			if (f.exists()) {
+				boolean deleted = f.delete();
+				Log.d(TAG, "deleted: " + deleted);
+			}
+
 			if (resultCode == RESULT_OK) {
 				Bitmap cropped = (Bitmap) data.getExtras()
 						.getParcelable("data");
 				try {
-					// dumpBitmap(cropped,
-					// "/sdcard/dcim/Camera/cropped-color.jpg");
-
-					File f = new File(imageCaptureUri.getPath());
-					if (f.exists()) {
-						boolean deleted = f.delete();
-						Log.d(TAG, "deleted: " + deleted);
+					if (isDumpCroppedImages()) {
+						dumpBitmap(cropped, "cropped-color.jpg");
 					}
 
 					Bitmap blackAndWhiteBitmap = convertToGrayscale(cropped);
 
-					// dumpBitmap(blackAndWhiteBitmap,
-					// "/sdcard/dcim/Camera/cropped.jpg");
+					if (isDumpCroppedImages()) {
+						dumpBitmap(blackAndWhiteBitmap, "cropped.jpg");
+					}
 
 					OcrTask task = new OcrTask(blackAndWhiteBitmap, handler);
 					submitOcrTask(task);
@@ -301,6 +310,29 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
 				t.show();
 			}
 		}
+	}
+
+	private boolean isDumpCroppedImages() {
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+
+		return preferences.getBoolean(PREF_DUMP_CROPPED_IMAGES_KEY, false);
+	}
+
+	private int getWeocrTimeout() {
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+
+		String timeoutStr = preferences.getString(PREF_WEOCR_TIMEOUT_KEY, "10");
+
+		return Integer.parseInt(timeoutStr) * 1000;
+	}
+
+	private String getWeocrUrl() {
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+
+		return preferences.getString(PREF_WEOCR_URL_KEY, WEOCR_DEFAULT_URL);
 	}
 
 	private Bitmap convertToGrayscale(Bitmap bitmap) {
@@ -323,7 +355,20 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
 
 	private void dumpBitmap(Bitmap bitmap, String filename) {
 		try {
-			FileOutputStream out = new FileOutputStream(filename);
+			File sdDir = Environment.getExternalStorageDirectory();
+			File wwwjdicDir = new File(sdDir.getAbsolutePath() + "/wwwjdic");
+			if (!wwwjdicDir.exists()) {
+				wwwjdicDir.mkdir();
+			}
+
+			if (!wwwjdicDir.canWrite()) {
+				return;
+			}
+
+			File imageFile = new File(wwwjdicDir, filename);
+
+			FileOutputStream out = new FileOutputStream(imageFile
+					.getAbsolutePath());
 			bitmap.compress(CompressFormat.JPEG, 90, out);
 			out.flush();
 			out.close();
