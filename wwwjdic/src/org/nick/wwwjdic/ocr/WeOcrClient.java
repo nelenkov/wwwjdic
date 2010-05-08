@@ -19,57 +19,57 @@ import android.util.Log;
 
 public class WeOcrClient {
 
-	private static final String TAG = WeOcrClient.class.getSimpleName();
+    private static final String TAG = WeOcrClient.class.getSimpleName();
 
-	private String url;
-	private DefaultHttpClient httpClient;
+    private String url;
+    private DefaultHttpClient httpClient;
 
-	public WeOcrClient(String endpoint, int timeout) {
-		this.url = endpoint;
-		HttpParams params = new BasicHttpParams();
-		HttpProtocolParams.setContentCharset(params,
-				HTTP.DEFAULT_CONTENT_CHARSET);
-		HttpProtocolParams.setUseExpectContinue(params, true);
-		HttpConnectionParams.setConnectionTimeout(params, timeout);
-		httpClient = new DefaultHttpClient(params);
-	}
+    public WeOcrClient(String endpoint, int timeout) {
+        this.url = endpoint;
+        HttpParams params = new BasicHttpParams();
+        HttpProtocolParams.setContentCharset(params,
+                HTTP.DEFAULT_CONTENT_CHARSET);
+        HttpProtocolParams.setUseExpectContinue(params, true);
+        HttpConnectionParams.setConnectionTimeout(params, timeout);
+        httpClient = new DefaultHttpClient(params);
+    }
 
-	public String sendOcrRequest(Bitmap img) throws IOException {
-		Log.i(TAG, "Sending OCR request to " + url);
-		HttpPost post = new HttpPost(url);
-		post.setEntity(new OcrFormEntity(img));
+    public String sendOcrRequest(Bitmap img) throws IOException {
+        Log.i(TAG, "Sending OCR request to " + url);
+        HttpPost post = new HttpPost(url);
+        post.setEntity(new OcrFormEntity(img));
 
-		BufferedReader reader = null;
-		try {
-			HttpResponse resp = httpClient.execute(post);
-			reader = new BufferedReader(new InputStreamReader(resp.getEntity()
-					.getContent(), "utf-8"));
+        BufferedReader reader = null;
+        try {
+            HttpResponse resp = httpClient.execute(post);
+            reader = new BufferedReader(new InputStreamReader(resp.getEntity()
+                    .getContent(), "utf-8"));
 
-			String status = reader.readLine();
-			if (status.length() != 0) {
-				status += readAllLines(reader);
-				throw new RuntimeException("WeOCR failed. Status: " + status);
-			}
+            String status = reader.readLine();
+            if (status.length() != 0) {
+                status += readAllLines(reader);
+                throw new RuntimeException("WeOCR failed. Status: " + status);
+            }
 
-			return readAllLines(reader);
-		} catch (HttpResponseException re) {
-			Log.e(TAG, "HTTP response exception", re);
-			throw new RuntimeException("HTTP request failed. Status: "
-					+ re.getStatusCode());
-		} finally {
-			reader.close();
-		}
-	}
+            return readAllLines(reader);
+        } catch (HttpResponseException re) {
+            Log.e(TAG, "HTTP response exception", re);
+            throw new RuntimeException("HTTP request failed. Status: "
+                    + re.getStatusCode());
+        } finally {
+            reader.close();
+        }
+    }
 
-	private String readAllLines(BufferedReader reader) throws IOException {
-		StringBuffer buff = new StringBuffer();
-		String line = null;
+    private String readAllLines(BufferedReader reader) throws IOException {
+        StringBuffer buff = new StringBuffer();
+        String line = null;
 
-		while ((line = reader.readLine()) != null) {
-			buff.append(line);
-			buff.append('\n');
-		}
+        while ((line = reader.readLine()) != null) {
+            buff.append(line);
+            buff.append('\n');
+        }
 
-		return buff.toString().trim();
-	}
+        return buff.toString().trim();
+    }
 }

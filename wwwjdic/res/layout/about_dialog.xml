@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/layout_root" android:orientation="vertical"
-	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:padding="10dp">
+    android:id="@+id/layout_root" android:orientation="vertical"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:padding="10dp">
 
-	<TextView android:layout_width="wrap_content"
-		android:layout_height="fill_parent" android:id="@+id/aboutText"
-		android:text="@string/about_text" android:textColor="#FFF"
-		android:layout_gravity="center_horizontal"></TextView>
-	<TextView android:layout_width="wrap_content"
-		android:layout_height="fill_parent" android:id="@+id/versionText"
-		android:textColor="#FFF" android:layout_gravity="center_horizontal"></TextView>
-	<TextView android:layout_width="wrap_content" android:id="@+id/aboutByText"
-		android:layout_height="fill_parent" android:text="@string/about_by"
-		android:textColor="#FFF" android:layout_marginBottom="10px"
-		android:gravity="center_horizontal" android:layout_gravity="center_horizontal"></TextView>
-	<TextView android:layout_width="wrap_content" android:id="@+id/bugtrackingText"
-		android:layout_height="fill_parent" android:text="@string/about_bugtracking"
-		android:textColor="#FFF"></TextView>
-	<TextView android:layout_width="wrap_content"
-		android:layout_height="fill_parent" android:id="@+id/bugtrackerUrlText"
-		android:text="@string/bugtracker_url" android:autoLink="web"
-		android:layout_marginBottom="10px"></TextView>
-	<TextView android:text="@string/uses_wwwjdic"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:id="@+id/usesWwwjdic"></TextView>
-	<TextView android:text="@string/wwwjdic_link"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:id="@+id/wwwjdicLink" android:autoLink="web"></TextView>
-	<TextView android:text="@string/uses_weocr"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:id="@+id/usesWeocr"></TextView>
-	<TextView android:text="@string/weocr_link"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:id="@+id/weocrLink" android:autoLink="web"></TextView>
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="fill_parent" android:id="@+id/aboutText"
+        android:text="@string/about_text" android:textColor="#FFF"
+        android:layout_gravity="center_horizontal"></TextView>
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="fill_parent" android:id="@+id/versionText"
+        android:textColor="#FFF" android:layout_gravity="center_horizontal"></TextView>
+    <TextView android:layout_width="wrap_content" android:id="@+id/aboutByText"
+        android:layout_height="fill_parent" android:text="@string/about_by"
+        android:textColor="#FFF" android:layout_marginBottom="10px"
+        android:gravity="center_horizontal" android:layout_gravity="center_horizontal"></TextView>
+    <TextView android:layout_width="wrap_content" android:id="@+id/bugtrackingText"
+        android:layout_height="fill_parent" android:text="@string/about_bugtracking"
+        android:textColor="#FFF"></TextView>
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="fill_parent" android:id="@+id/bugtrackerUrlText"
+        android:text="@string/bugtracker_url" android:autoLink="web"
+        android:layout_marginBottom="10px"></TextView>
+    <TextView android:text="@string/uses_wwwjdic"
+        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:id="@+id/usesWwwjdic"></TextView>
+    <TextView android:text="@string/wwwjdic_link"
+        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:id="@+id/wwwjdicLink" android:autoLink="web"></TextView>
+    <TextView android:text="@string/uses_weocr"
+        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:id="@+id/usesWeocr"></TextView>
+    <TextView android:text="@string/weocr_link"
+        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:id="@+id/weocrLink" android:autoLink="web"></TextView>
 
 
 </LinearLayout>

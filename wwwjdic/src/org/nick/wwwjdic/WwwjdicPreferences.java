@@ -5,10 +5,10 @@ import android.preference.PreferenceActivity;
 
 public class WwwjdicPreferences extends PreferenceActivity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		addPreferencesFromResource(R.xml.preferences);
-	}
+        addPreferencesFromResource(R.xml.preferences);
+    }
 }
