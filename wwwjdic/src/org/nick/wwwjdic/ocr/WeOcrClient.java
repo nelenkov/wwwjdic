@@ -21,18 +21,16 @@ public class WeOcrClient {
 
 	private static final String TAG = WeOcrClient.class.getSimpleName();
 
-	private static final int HTTP_TIMEOUT = 10 * 1000;
-
 	private String url;
 	private DefaultHttpClient httpClient;
 
-	public WeOcrClient(String endpoint) {
+	public WeOcrClient(String endpoint, int timeout) {
 		this.url = endpoint;
 		HttpParams params = new BasicHttpParams();
 		HttpProtocolParams.setContentCharset(params,
 				HTTP.DEFAULT_CONTENT_CHARSET);
 		HttpProtocolParams.setUseExpectContinue(params, true);
-		HttpConnectionParams.setConnectionTimeout(params, HTTP_TIMEOUT);
+		HttpConnectionParams.setConnectionTimeout(params, timeout);
 		httpClient = new DefaultHttpClient(params);
 	}
 
