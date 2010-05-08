@@ -6,7 +6,7 @@
             android:defaultValue="http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi"
             android:entries="@array/wwwjdic_mirror_names"
             android:entryValues="@array/wwwjdic_mirror_urls" />
-        <EditTextPreference android:key="wwwjdic_timeout"
+        <EditTextPreference android:key="pref_wwwjdic_timeout"
             android:title="@string/pref_wwwjdic_timeout"
             android:summary="@string/pref_wwwjdic_timeout_summary"
             android:lines="1" android:inputType="numberDecimal"
@@ -19,7 +19,7 @@
             android:defaultValue="http://maggie.ocrgrid.org/cgi-bin/weocr/nhocr.cgi"
             android:entries="@array/weocr_mirror_names"
             android:entryValues="@array/weocr_mirror_urls" />
-        <EditTextPreference android:key="weocr_timeout"
+        <EditTextPreference android:key="pref_weocr_timeout"
             android:title="@string/pref_weocr_timeout" android:summary="@string/pref_weocr_timeout_summary"
             android:lines="1" android:inputType="numberDecimal"
             android:defaultValue="10" />

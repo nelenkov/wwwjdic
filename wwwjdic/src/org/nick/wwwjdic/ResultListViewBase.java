@@ -21,7 +21,7 @@ public abstract class ResultListViewBase extends ListActivity implements
     private static final String DEFAULT_WWWJDIC_URL = "http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi";
 
     private static final String PREF_WWWJDIC_URL_KEY = "pref_wwwjdic_mirror_url";
-    private static final String PREF_WWWJDIC_TIMEOUT_KEY = "wwwjdic_timeout";
+    private static final String PREF_WWWJDIC_TIMEOUT_KEY = "pref_wwwjdic_timeout";
 
     protected SearchCriteria criteria;
 

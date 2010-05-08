@@ -57,7 +57,7 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
 
     private static final String PREF_DUMP_CROPPED_IMAGES_KEY = "pref_ocr_dump_cropped_images";
     private static final String PREF_WEOCR_URL_KEY = "pref_weocr_url";
-    private static final String PREF_WEOCR_TIMEOUT_KEY = "weocr_timeout";
+    private static final String PREF_WEOCR_TIMEOUT_KEY = "pref_weocr_timeout";
 
     private Camera camera;
     private Size previewSize;
