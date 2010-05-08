@@ -19,75 +19,75 @@ import android.util.Log;
 
 public abstract class TranslateTask implements Runnable {
 
-	private static final String TAG = TranslateTask.class.getSimpleName();
+    private static final String TAG = TranslateTask.class.getSimpleName();
 
-	private static class StringResponseHandler implements
-			ResponseHandler<String> {
-		public String handleResponse(HttpResponse response)
-				throws ClientProtocolException, IOException {
-			HttpEntity entity = response.getEntity();
+    private static class StringResponseHandler implements
+            ResponseHandler<String> {
+        public String handleResponse(HttpResponse response)
+                throws ClientProtocolException, IOException {
+            HttpEntity entity = response.getEntity();
 
-			String responseStr = null;
-			if (entity != null) {
-				responseStr = EntityUtils.toString(entity);
-			}
+            String responseStr = null;
+            if (entity != null) {
+                responseStr = EntityUtils.toString(entity);
+            }
 
-			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				return responseStr;
-			}
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                return responseStr;
+            }
 
-			throw new RuntimeException("Server error: " + responseStr);
-		}
-	};
+            throw new RuntimeException("Server error: " + responseStr);
+        }
+    };
 
-	protected ResultListView resultListView;
-	protected SearchCriteria searchCriteria;
+    protected ResultListView resultListView;
+    protected SearchCriteria searchCriteria;
 
-	protected String url;
-	protected int timeoutMillis;
+    protected String url;
+    protected int timeoutMillis;
 
-	protected HttpContext localContext;
-	protected HttpClient httpclient;
-	protected StringResponseHandler responseHandler = new StringResponseHandler();
+    protected HttpContext localContext;
+    protected HttpClient httpclient;
+    protected StringResponseHandler responseHandler = new StringResponseHandler();
 
-	public TranslateTask(String url, int timeoutSeconds,
-			ResultListView resultView, SearchCriteria searchCriteria) {
-		this.url = url;
-		this.timeoutMillis = timeoutSeconds * 1000;
-		this.resultListView = resultView;
-		this.searchCriteria = searchCriteria;
+    public TranslateTask(String url, int timeoutSeconds,
+            ResultListView resultView, SearchCriteria searchCriteria) {
+        this.url = url;
+        this.timeoutMillis = timeoutSeconds * 1000;
+        this.resultListView = resultView;
+        this.searchCriteria = searchCriteria;
 
-		createHttpClient();
-	}
+        createHttpClient();
+    }
 
-	private void createHttpClient() {
-		Log.d(TAG, "WWWJDIC URL: " + url);
-		Log.d(TAG, "HTTP timeout: " + timeoutMillis);
-		httpclient = new DefaultHttpClient();
-		HttpParams httpParams = httpclient.getParams();
-		HttpConnectionParams.setConnectionTimeout(httpParams, timeoutMillis);
-		HttpConnectionParams.setSoTimeout(httpParams, timeoutMillis);
-	}
+    private void createHttpClient() {
+        Log.d(TAG, "WWWJDIC URL: " + url);
+        Log.d(TAG, "HTTP timeout: " + timeoutMillis);
+        httpclient = new DefaultHttpClient();
+        HttpParams httpParams = httpclient.getParams();
+        HttpConnectionParams.setConnectionTimeout(httpParams, timeoutMillis);
+        HttpConnectionParams.setSoTimeout(httpParams, timeoutMillis);
+    }
 
-	public void run() {
-		try {
-			List<DictionaryEntry> result = fetchResult(searchCriteria);
-			resultListView.setResult(result);
-		} catch (Exception e) {
-			Log.e(TAG, e.getMessage(), e);
-			resultListView.setError(e);
-		}
-	}
+    public void run() {
+        try {
+            List<DictionaryEntry> result = fetchResult(searchCriteria);
+            resultListView.setResult(result);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            resultListView.setError(e);
+        }
+    }
 
-	@SuppressWarnings("unchecked")
-	private List<DictionaryEntry> fetchResult(SearchCriteria criteria) {
-		String payload = query(criteria);
+    @SuppressWarnings("unchecked")
+    private List<DictionaryEntry> fetchResult(SearchCriteria criteria) {
+        String payload = query(criteria);
 
-		return (List<DictionaryEntry>) parseResult(payload);
-	}
+        return (List<DictionaryEntry>) parseResult(payload);
+    }
 
-	protected abstract String query(SearchCriteria criteria);
+    protected abstract String query(SearchCriteria criteria);
 
-	protected abstract List<?> parseResult(String html);
+    protected abstract List<?> parseResult(String html);
 
 }

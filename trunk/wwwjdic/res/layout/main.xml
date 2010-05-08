@@ -1,105 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@android:id/tabhost" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
-	<LinearLayout android:orientation="vertical"
-		android:layout_width="fill_parent" android:layout_height="fill_parent">
-		<TabWidget android:id="@android:id/tabs"
-			android:layout_width="fill_parent" android:layout_height="wrap_content" />
-		<FrameLayout android:id="@android:id/tabcontent"
-			android:layout_width="fill_parent" android:layout_height="fill_parent">
+    android:id="@android:id/tabhost" android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <TabWidget android:id="@android:id/tabs"
+            android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <FrameLayout android:id="@android:id/tabcontent"
+            android:layout_width="fill_parent" android:layout_height="fill_parent">
 
-			<LinearLayout android:id="@+id/wordLookupTab"
-				android:orientation="vertical" android:layout_width="fill_parent"
-				android:layout_height="fill_parent" android:padding="15dip"
-				android:layout_gravity="top" android:minHeight="200px">
-				<EditText android:layout_height="wrap_content"
-					android:layout_width="fill_parent" android:id="@+id/inputText"
-					android:inputType="text" android:lines="1"></EditText>
-				<LinearLayout android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:orientation="horizontal"
-					android:id="@+id/dictSelectionLayout" android:gravity="center_vertical|center_horizontal"
-					android:layout_gravity="center_vertical|center_horizontal">
-					<TextView android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:id="@+id/dictLabel"
-						android:text="Dictionary:" android:textSize="16sp"
-						android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
-					<Spinner android:layout_height="wrap_content" android:id="@+id/dictionarySpinner"
-						android:layout_width="wrap_content" android:layout_marginLeft="5px"
-						android:minWidth="320px" android:prompt="@string/select_dictionary"></Spinner>
-				</LinearLayout>
-				<LinearLayout android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:orientation="horizontal"
-					android:id="@+id/optionsLayout" android:layout_gravity="center_horizontal">
-					<CheckBox android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:id="@+id/commonWordsCb"
-						android:text="Common\nwords" android:textSize="12sp"></CheckBox>
+            <LinearLayout android:id="@+id/wordLookupTab"
+                android:orientation="vertical" android:layout_width="fill_parent"
+                android:layout_height="fill_parent" android:padding="15dip"
+                android:layout_gravity="top" android:minHeight="200px">
+                <EditText android:layout_height="wrap_content"
+                    android:layout_width="fill_parent" android:id="@+id/inputText"
+                    android:inputType="text" android:lines="1"></EditText>
+                <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:id="@+id/dictSelectionLayout"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_gravity="center_vertical|center_horizontal">
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/dictLabel"
+                        android:text="Dictionary:" android:textSize="16sp"
+                        android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
+                    <Spinner android:layout_height="wrap_content"
+                        android:id="@+id/dictionarySpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="5px"
+                        android:minWidth="320px" android:prompt="@string/select_dictionary"></Spinner>
+                </LinearLayout>
+                <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:id="@+id/optionsLayout"
+                    android:layout_gravity="center_horizontal">
+                    <CheckBox android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/commonWordsCb"
+                        android:text="Common\nwords" android:textSize="12sp"></CheckBox>
 
-					<CheckBox android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:id="@+id/exactMatchCb"
-						android:text="Exact\nmatch" android:textSize="12sp"></CheckBox>
+                    <CheckBox android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/exactMatchCb"
+                        android:text="Exact\nmatch" android:textSize="12sp"></CheckBox>
 
-					<CheckBox android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:id="@+id/romanizedCb"
-						android:text="Romanized\nJapanese" android:textSize="12sp"></CheckBox>
-				</LinearLayout>
-				<Button android:layout_height="wrap_content" android:id="@+id/translateButton"
-					android:layout_width="fill_parent" android:text="Translate"></Button>
-			</LinearLayout>
-			<LinearLayout android:id="@+id/kanjiLookupTab"
-				android:orientation="vertical" android:layout_width="fill_parent"
-				android:layout_height="fill_parent" android:padding="15dip"
-				android:layout_gravity="top" android:minHeight="200px">
-				<EditText android:layout_height="wrap_content"
-					android:layout_width="fill_parent" android:id="@+id/kanjiInputText"
-					android:inputType="text" android:lines="1"></EditText>
-				<LinearLayout android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:orientation="horizontal"
-					android:id="@+id/searchTypeSelectionLayout" android:gravity="center_vertical|center_horizontal"
-					android:layout_gravity="center_vertical|center_horizontal">
-					<TextView android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:id="@+id/dictLabel"
-						android:text="Search type:" android:textSize="16sp"
-						android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
-					<Spinner android:layout_height="wrap_content"
-						android:id="@+id/kanjiSearchTypeSpinner" android:layout_width="wrap_content"
-						android:layout_marginLeft="5px" android:minWidth="320px"
-						android:prompt="@string/select_search_type"></Spinner>
-				</LinearLayout>
-				<LinearLayout android:layout_width="fill_parent"
-					android:layout_height="wrap_content" android:orientation="horizontal"
-					android:id="@+id/strokeCountLayout" android:gravity="center_vertical|center_horizontal"
-					android:layout_gravity="center_vertical|center_horizontal">
-					<TextView android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:id="@+id/radicalLabel"
-						android:text="@string/radical" android:textSize="12sp"
-						android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
-					<EditText android:layout_height="wrap_content"
-						android:layout_width="wrap_content" android:id="@+id/radicalInputText"
-						android:lines="1" android:text="  " android:minWidth="40dp"
-						android:cursorVisible="false" android:focusable="false"
-						android:textSize="18sp" android:inputType="none"></EditText>
-					<Button xmlns:android="http://schemas.android.com/apk/res/android"
-						android:id="@+id/selectRadicalButton" android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:textSize="12sp"
-						android:text="@string/select" />
-					<TextView android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:id="@+id/strokeCountLabel"
-						android:text="@string/strokes" android:textSize="12sp"
-						android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
-					<EditText android:layout_height="wrap_content"
-						android:layout_width="wrap_content" android:id="@+id/strokeCountMinInput"
-						android:lines="1" android:inputType="numberDecimal"
-						android:textSize="12sp" android:hint="@string/min"
-						android:imeOptions="actionNext"></EditText>
-					<EditText android:layout_height="wrap_content"
-						android:layout_width="wrap_content" android:id="@+id/strokeCountMaxInput"
-						android:lines="1" android:inputType="numberDecimal"
-						android:textSize="12sp" android:hint="@string/max"></EditText>
-				</LinearLayout>
-				<Button android:layout_height="wrap_content" android:id="@+id/kanjiSearchButton"
-					android:layout_width="fill_parent" android:text="@string/search"></Button>
-			</LinearLayout>
-		</FrameLayout>
-	</LinearLayout>
+                    <CheckBox android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/romanizedCb"
+                        android:text="Romanized\nJapanese"
+                        android:textSize="12sp"></CheckBox>
+                </LinearLayout>
+                <Button android:layout_height="wrap_content"
+                    android:id="@+id/translateButton"
+                    android:layout_width="fill_parent" android:text="Translate"></Button>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/kanjiLookupTab"
+                android:orientation="vertical" android:layout_width="fill_parent"
+                android:layout_height="fill_parent" android:padding="15dip"
+                android:layout_gravity="top" android:minHeight="200px">
+                <EditText android:layout_height="wrap_content"
+                    android:layout_width="fill_parent" android:id="@+id/kanjiInputText"
+                    android:inputType="text" android:lines="1"></EditText>
+                <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:id="@+id/searchTypeSelectionLayout"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_gravity="center_vertical|center_horizontal">
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/dictLabel"
+                        android:text="Search type:" android:textSize="16sp"
+                        android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
+                    <Spinner android:layout_height="wrap_content"
+                        android:id="@+id/kanjiSearchTypeSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="5px"
+                        android:minWidth="320px" android:prompt="@string/select_search_type"></Spinner>
+                </LinearLayout>
+                <LinearLayout android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:id="@+id/strokeCountLayout"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_gravity="center_vertical|center_horizontal">
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/radicalLabel"
+                        android:text="@string/radical" android:textSize="12sp"
+                        android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
+                    <EditText android:layout_height="wrap_content"
+                        android:layout_width="wrap_content" android:id="@+id/radicalInputText"
+                        android:lines="1" android:text="  "
+                        android:minWidth="40dp" android:cursorVisible="false"
+                        android:focusable="false" android:textSize="18sp"
+                        android:inputType="none"></EditText>
+                    <Button xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/selectRadicalButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp" android:text="@string/select" />
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/strokeCountLabel"
+                        android:text="@string/strokes" android:textSize="12sp"
+                        android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
+                    <EditText android:layout_height="wrap_content"
+                        android:layout_width="wrap_content" android:id="@+id/strokeCountMinInput"
+                        android:lines="1" android:inputType="numberDecimal"
+                        android:textSize="12sp" android:hint="@string/min"
+                        android:imeOptions="actionNext"></EditText>
+                    <EditText android:layout_height="wrap_content"
+                        android:layout_width="wrap_content" android:id="@+id/strokeCountMaxInput"
+                        android:lines="1" android:inputType="numberDecimal"
+                        android:textSize="12sp" android:hint="@string/max"></EditText>
+                </LinearLayout>
+                <Button android:layout_height="wrap_content"
+                    android:id="@+id/kanjiSearchButton"
+                    android:layout_width="fill_parent" android:text="@string/search"></Button>
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
 </TabHost>
