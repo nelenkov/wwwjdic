@@ -45,11 +45,14 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class OcrActivity extends Activity implements SurfaceHolder.Callback,
-        OnClickListener, OnTouchListener {
+        OnClickListener, OnTouchListener, OnCheckedChangeListener {
 
     private static final String TAG = OcrActivity.class.getSimpleName();
 
@@ -83,6 +86,9 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
     private Button dictSearchButton;
     private Button kanjidictSearchButton;
 
+    private ToggleButton flashToggle;
+    private boolean supportsFlash = false;
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -110,6 +116,9 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
         kanjidictSearchButton = (Button) findViewById(R.id.send_to_kanjidict);
         kanjidictSearchButton.setOnClickListener(this);
         toggleSearchButtons(false);
+
+        flashToggle = (ToggleButton) findViewById(R.id.auto_flash_toggle);
+        flashToggle.setOnCheckedChangeListener(this);
 
         initThreading();
     }
@@ -404,6 +413,10 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
                 }
             }
 
+            if (supportsFlash) {
+                toggleFlash(flashToggle.isChecked(), p);
+            }
+
             camera.setParameters(p);
             camera.setPreviewDisplay(holder);
             camera.startPreview();
@@ -421,6 +434,7 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
                 .getSupportedPreviewSizes(params);
         List<Size> supportedPictueSizes = ReflectionUtils
                 .getSupportedPictureSizes(params);
+        supportsFlash = ReflectionUtils.getFlashMode(params) != null;
 
         try {
             if (supportedPreviewSizes != null) {
@@ -437,6 +451,8 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
                 Log.d(TAG, String.format("picture width: %d; height: %d",
                         pictureSize.width, pictureSize.height));
             }
+
+            flashToggle.setEnabled(supportsFlash);
             camera.setPreviewDisplay(holder);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -509,5 +525,27 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
         }
 
         return null;
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (!supportsFlash) {
+            return;
+        }
+
+        Camera.Parameters params = camera.getParameters();
+        toggleFlash(isChecked, params);
+    }
+
+    private void toggleFlash(boolean useFlash, Camera.Parameters params) {
+        String flashMode = "off";
+        if (useFlash) {
+            flashMode = "on";
+        } else {
+            flashMode = "off";
+        }
+
+        ReflectionUtils.setFlashMode(params, flashMode);
+        camera.setParameters(params);
     }
 }

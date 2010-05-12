@@ -12,6 +12,9 @@ public class ReflectionUtils {
     private static Method Parameters_getSupportedPreviewSizes;
     private static Method Parameters_getSupportedPictureSizes;
 
+    private static Method Parameters_getFlashMode;
+    private static Method Parameters_setFlashMode;
+
     static {
         initCompatibility();
     };
@@ -25,6 +28,11 @@ public class ReflectionUtils {
                     .getMethod("getSupportedPreviewSizes", new Class[] {});
             Parameters_getSupportedPictureSizes = Camera.Parameters.class
                     .getMethod("getSupportedPictureSizes", new Class[] {});
+
+            Parameters_getFlashMode = Camera.Parameters.class.getMethod(
+                    "getFlashMode", new Class[] {});
+            Parameters_setFlashMode = Camera.Parameters.class.getMethod(
+                    "setFlashMode", String.class);
         } catch (NoSuchMethodException nsme) {
         }
     }
@@ -72,6 +80,45 @@ public class ReflectionUtils {
             }
         } catch (IllegalAccessException ie) {
             return null;
+        }
+    }
+
+    public static String getFlashMode(Camera.Parameters p) {
+        try {
+            if (Parameters_getFlashMode != null) {
+                return (String) Parameters_getFlashMode.invoke(p);
+            } else {
+                return null;
+            }
+        } catch (InvocationTargetException ite) {
+            Throwable cause = ite.getCause();
+            if (cause instanceof RuntimeException) {
+                throw (RuntimeException) cause;
+            } else if (cause instanceof Error) {
+                throw (Error) cause;
+            } else {
+                throw new RuntimeException(ite);
+            }
+        } catch (IllegalAccessException ie) {
+            return null;
+        }
+    }
+
+    public static void setFlashMode(Camera.Parameters p, String flashMode) {
+        try {
+            if (Parameters_setFlashMode != null) {
+                Parameters_setFlashMode.invoke(p, flashMode);
+            }
+        } catch (InvocationTargetException ite) {
+            Throwable cause = ite.getCause();
+            if (cause instanceof RuntimeException) {
+                throw (RuntimeException) cause;
+            } else if (cause instanceof Error) {
+                throw (Error) cause;
+            } else {
+                throw new RuntimeException(ite);
+            }
+        } catch (IllegalAccessException ie) {
         }
     }
 }
