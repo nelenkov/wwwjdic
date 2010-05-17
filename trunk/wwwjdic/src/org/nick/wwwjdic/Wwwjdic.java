@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
+import org.nick.wwwjdic.hkr.KanjiDrawActivity;
 import org.nick.wwwjdic.ocr.OcrActivity;
 
 import android.app.AlertDialog;
@@ -42,9 +43,11 @@ import android.widget.TextView.OnEditorActionListener;
 public class Wwwjdic extends TabActivity implements OnClickListener,
         OnFocusChangeListener, OnCheckedChangeListener, OnItemSelectedListener {
 
-    private static final int ITEM_ID_SETTINGS = 3;
-    private static final int ITEM_ID_OCR = 2;
     private static final int ITEM_ID_ABOUT = 1;
+    private static final int ITEM_ID_OCR = 2;
+    private static final int ITEM_ID_SETTINGS = 3;
+    private static final int ITEM_ID_DRAW = 4;
+
     private static final String DICTIONARY_TAB = "dictionaryTab";
     private static final String KANJI_TAB = "kanjiTab";
 
@@ -399,9 +402,11 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         super.onCreateOptionsMenu(menu);
         menu.add(0, ITEM_ID_OCR, 0, "OCR").setIcon(
                 android.R.drawable.ic_menu_camera);
-        menu.add(0, ITEM_ID_SETTINGS, 1, "Settings").setIcon(
+        menu.add(0, ITEM_ID_DRAW, 2, "Write kanji").setIcon(
+                R.drawable.ic_kanji_tab_selected);
+        menu.add(0, ITEM_ID_SETTINGS, 2, "Settings").setIcon(
                 android.R.drawable.ic_menu_preferences);
-        menu.add(0, ITEM_ID_ABOUT, 2, R.string.about).setIcon(
+        menu.add(0, ITEM_ID_ABOUT, 3, R.string.about).setIcon(
                 android.R.drawable.ic_menu_info_details);
 
         return true;
@@ -420,6 +425,11 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
             return true;
         case ITEM_ID_SETTINGS:
             intent = new Intent(this, WwwjdicPreferences.class);
+
+            startActivity(intent);
+            return true;
+        case ITEM_ID_DRAW:
+            intent = new Intent(this, KanjiDrawActivity.class);
 
             startActivity(intent);
             return true;
