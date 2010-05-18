@@ -18,7 +18,8 @@
             android:layout_height="wrap_content" android:id="@+id/lookAheadCb"
             android:text="@string/look_ahead"
             android:layout_gravity="center_vertical" 
-            android:textSize="12sp"></CheckBox>
+            android:textSize="12sp" 
+            android:checked="false"></CheckBox>
     </LinearLayout>
     <org.nick.wwwjdic.hkr.KanjiDrawView
         android:id="@+id/kanji_draw_view" android:layout_width="fill_parent"

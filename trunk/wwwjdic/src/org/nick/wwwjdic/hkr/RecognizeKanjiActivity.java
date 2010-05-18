@@ -43,6 +43,8 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     protected void activityOnCreate(Bundle savedInstanceState) {
         setContentView(R.layout.kanji_draw);
 
+        setTitle(R.string.hkr);
+
         findViews();
 
         clearButton.setOnClickListener(this);

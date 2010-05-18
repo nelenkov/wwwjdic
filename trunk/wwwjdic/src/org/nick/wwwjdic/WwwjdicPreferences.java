@@ -9,6 +9,7 @@ public class WwwjdicPreferences extends PreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setTitle(R.string.settings);
         addPreferencesFromResource(R.xml.preferences);
     }
 }

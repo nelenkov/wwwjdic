@@ -107,6 +107,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
         flashToggle = (ToggleButton) findViewById(R.id.auto_flash_toggle);
         flashToggle.setOnCheckedChangeListener(this);
+
+        surfaceView.requestFocus();
     }
 
     private void toggleSearchButtons(boolean enabled) {
