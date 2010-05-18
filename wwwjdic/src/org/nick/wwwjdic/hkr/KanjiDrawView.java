@@ -16,6 +16,9 @@ import android.view.View.OnTouchListener;
 
 public class KanjiDrawView extends View implements OnTouchListener {
 
+    private static final float STROKE_WIDTH = 4f;
+    private static final float OUTLINE_WIDTH = 2f;
+
     public static interface OnStrokesChangedListener {
         void strokesUpdated(int numStrokes);
     }
@@ -47,13 +50,13 @@ public class KanjiDrawView extends View implements OnTouchListener {
         strokePaint.setColor(Color.WHITE);
         strokePaint.setStyle(Style.FILL);
         strokePaint.setAntiAlias(true);
-        strokePaint.setStrokeWidth(4f);
+        strokePaint.setStrokeWidth(STROKE_WIDTH);
 
         outlinePaint = new Paint();
         outlinePaint.setColor(Color.GRAY);
         outlinePaint.setStyle(Style.STROKE);
         outlinePaint.setAntiAlias(true);
-        outlinePaint.setStrokeWidth(2f);
+        outlinePaint.setStrokeWidth(OUTLINE_WIDTH);
     }
 
     @Override
@@ -73,8 +76,6 @@ public class KanjiDrawView extends View implements OnTouchListener {
 
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
-            // strokes.clear();
-
             currentStroke = new Stroke();
             currentStroke.addPoint(x, y);
             break;

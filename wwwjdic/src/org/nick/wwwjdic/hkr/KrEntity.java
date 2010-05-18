@@ -9,11 +9,9 @@ import org.apache.http.entity.AbstractHttpEntity;
 
 public class KrEntity extends AbstractHttpEntity {
 
-    private String content;
     private byte[] contentBytes;
 
     public KrEntity(String content) {
-        this.content = content;
         try {
             contentBytes = content.getBytes("ASCII");
         } catch (UnsupportedEncodingException e) {

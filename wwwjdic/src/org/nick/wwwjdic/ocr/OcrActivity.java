@@ -4,16 +4,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.Wwwjdic;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -51,8 +47,9 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-public class OcrActivity extends Activity implements SurfaceHolder.Callback,
-        OnClickListener, OnTouchListener, OnCheckedChangeListener {
+public class OcrActivity extends WebServiceBackedActivity implements
+        SurfaceHolder.Callback, OnClickListener, OnTouchListener,
+        OnCheckedChangeListener {
 
     private static final String TAG = OcrActivity.class.getSimpleName();
 
@@ -76,12 +73,6 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
     protected static final int OCRRED_TEXT = 2;
     public static final int PICTURE_TAKEN = 3;
 
-    protected ExecutorService ocrThread;
-    protected Future transPending;
-    private Handler handler;
-
-    private ProgressDialog progressDialog;
-
     private TextView ocrredTextView;
     private Button dictSearchButton;
     private Button kanjidictSearchButton;
@@ -90,10 +81,7 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
     private boolean supportsFlash = false;
 
     @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-        Log.e(TAG, "onCreate");
-
+    protected void activityOnCreate(Bundle icicle) {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -119,8 +107,6 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
 
         flashToggle = (ToggleButton) findViewById(R.id.auto_flash_toggle);
         flashToggle.setOnCheckedChangeListener(this);
-
-        initThreading();
     }
 
     private void toggleSearchButtons(boolean enabled) {
@@ -128,8 +114,8 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
         kanjidictSearchButton.setEnabled(enabled);
     }
 
-    private void initThreading() {
-        handler = new Handler() {
+    protected Handler createHandler() {
+        return handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
@@ -186,7 +172,6 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
                 }
             }
         };
-        ocrThread = Executors.newSingleThreadExecutor();
     }
 
     class OcrTask implements Runnable {
@@ -222,11 +207,6 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
                 handler.sendMessage(msg);
             }
         }
-    }
-
-    private void submitOcrTask(OcrTask ocrTask) {
-        progressDialog = ProgressDialog.show(this, "", "Doing OCR...", true);
-        transPending = ocrThread.submit(ocrTask);
     }
 
     Camera.PictureCallback pictureCallbackRaw = new Camera.PictureCallback() {
@@ -310,7 +290,7 @@ public class OcrActivity extends Activity implements SurfaceHolder.Callback,
                     }
 
                     OcrTask task = new OcrTask(blackAndWhiteBitmap, handler);
-                    submitOcrTask(task);
+                    submitWsTask(task, "Doing OCR...");
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
