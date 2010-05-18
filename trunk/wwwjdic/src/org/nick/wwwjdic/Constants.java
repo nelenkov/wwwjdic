@@ -14,6 +14,8 @@ public class Constants {
 
     public static final String SEARCH_TEXT_KANJI_KEY = "org.nick.wwwjdic.isKanji";
 
+    public static final String HKR_CANDIDATES_KEY = "org.nick.wwwjdic.hkrCandidates";
+
     public static final int RADICAL_RETURN_RESULT = 0;
 
     public static final int CROP_RETURN_RESULT = 1;

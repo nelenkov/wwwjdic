@@ -125,11 +125,9 @@ public class OcrActivity extends WebServiceBackedActivity implements
                             autoFocusInProgress = false;
                             imageCaptureUri = createTempFile();
                             if (imageCaptureUri == null) {
-                                Toast t = Toast
-                                        .makeText(
-                                                OcrActivity.this,
-                                                "Could not create temp file on SD card.",
-                                                Toast.LENGTH_SHORT);
+                                Toast t = Toast.makeText(OcrActivity.this,
+                                        R.string.sd_file_create_failed,
+                                        Toast.LENGTH_SHORT);
                                 t.show();
 
                                 return;
@@ -146,7 +144,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
                     } else {
                         autoFocusInProgress = false;
                         Toast t = Toast.makeText(OcrActivity.this,
-                                "A/F failed", Toast.LENGTH_SHORT);
+                                R.string.af_failed, Toast.LENGTH_SHORT);
                         t.show();
                     }
                     break;
@@ -160,7 +158,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
                         toggleSearchButtons(true);
                     } else {
                         Toast t = Toast.makeText(OcrActivity.this,
-                                "OCR failed", Toast.LENGTH_SHORT);
+                                R.string.ocr_failed, Toast.LENGTH_SHORT);
                         t.show();
                     }
                     break;
@@ -242,7 +240,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             Toast t = Toast.makeText(OcrActivity.this,
-                    "Could not start crop activity.", Toast.LENGTH_SHORT);
+                    R.string.cant_start_cropper, Toast.LENGTH_SHORT);
             t.show();
         }
     }
@@ -295,7 +293,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
                     throw new RuntimeException(e);
                 }
             } else if (resultCode == RESULT_CANCELED) {
-                Toast t = Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(this, R.string.cancelled,
+                        Toast.LENGTH_SHORT);
                 t.show();
             }
         }

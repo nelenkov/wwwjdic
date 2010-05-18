@@ -36,9 +36,5 @@
             android:title="@string/pref_kr_timeout" android:summary="@string/pref_timeout_summary"
             android:singleLine="true" android:inputType="numberDecimal"
             android:defaultValue="10" />
-        <CheckBoxPreference android:key="pref_kr_use_lookahead"
-            android:title="@string/pref_kr_use_lookahead"
-            android:summary="@string/pref_kr_use_lookahead_summary"
-            android:defaultValue="true" />
     </PreferenceCategory>
 </PreferenceScreen>

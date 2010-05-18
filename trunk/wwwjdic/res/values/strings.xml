@@ -137,4 +137,18 @@
     <string name="pref_kr_use_lookahead_summary">Matches kanji with more strokes than drawn
         (better
         matching)</string>
+    <string name="settings">Settings</string>
+    <string name="ocr">OCR</string>
+    <string name="write_kanji">Write kanji</string>
+    <string name="hkr_failed">Character recognition failed</string>
+    <string name="sd_file_create_failed">Could not create temp file on SD card.</string>
+    <string name="af_failed">A/F failed</string>
+    <string name="ocr_failed">OCR failed</string>
+    <string name="cant_start_cropper">Could not start crop activity.</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="recognize">Recognize</string>
+    <string name="clear">Clear</string>
+    <string name="hiragana_a">あ</string>
+    <string name="kanji_kan">漢</string>
+    <string name="look_ahead">Look\nahead</string>
 </resources>

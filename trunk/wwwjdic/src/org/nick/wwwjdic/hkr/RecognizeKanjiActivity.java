@@ -3,9 +3,9 @@ package org.nick.wwwjdic.hkr;
 import java.util.Arrays;
 import java.util.List;
 
+import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
-import org.nick.wwwjdic.hkr.KanjiDrawView.OnStrokesChangedListener;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,11 +17,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
-        OnClickListener, OnStrokesChangedListener {
+        OnClickListener {
 
     private static final String TAG = RecognizeKanjiActivity.class
             .getSimpleName();
@@ -30,13 +30,12 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
     private static final String PREF_KR_URL_KEY = "pref_kr_url";
     private static final String PREF_KR_TIMEOUT_KEY = "pref_kr_timeout";
-    private static final String PREF_KR_USE_LOOKAHEAD_KEY = "pref_kr_use_lookahead";
 
     private static final int HKR_RESULT = 1;
 
     private Button clearButton;
     private Button recognizeButton;
-    private TextView numStrokesText;
+    private CheckBox lookAheadCb;
 
     private KanjiDrawView drawView;
 
@@ -54,11 +53,10 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
     private void findViews() {
         drawView = (KanjiDrawView) this.findViewById(R.id.kanji_draw_view);
-        drawView.setOnStrokesChangedListener(this);
 
         clearButton = (Button) findViewById(R.id.clear_canvas_button);
         recognizeButton = (Button) findViewById(R.id.recognize_button);
-        numStrokesText = (TextView) findViewById(R.id.num_strokes);
+        lookAheadCb = (CheckBox) findViewById(R.id.lookAheadCb);
     }
 
     @Override
@@ -75,8 +73,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                         sendToDictionary(results);
                     } else {
                         Toast t = Toast.makeText(RecognizeKanjiActivity.this,
-                                "Character recognition failed",
-                                Toast.LENGTH_SHORT);
+                                R.string.hkr_failed, Toast.LENGTH_SHORT);
                         t.show();
                     }
                     break;
@@ -134,10 +131,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     }
 
     private boolean isUseLookahead() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return preferences.getBoolean(PREF_KR_USE_LOOKAHEAD_KEY, true);
+        return lookAheadCb.isChecked();
     }
 
     @Override
@@ -158,7 +152,6 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
     private void clear() {
         drawView.clear();
-        numStrokesText.setText("0");
     }
 
     private void recognizeKanji() {
@@ -170,14 +163,10 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     private void sendToDictionary(String[] results) {
         Intent intent = new Intent(this, HkrCandidates.class);
         Bundle extras = new Bundle();
-        extras.putStringArray("hkrCandidates", results);
+        extras.putStringArray(Constants.HKR_CANDIDATES_KEY, results);
         intent.putExtras(extras);
 
         startActivity(intent);
     }
 
-    @Override
-    public void strokesUpdated(int numStrokes) {
-        numStrokesText.setText(Integer.toString(numStrokes));
-    }
 }
