@@ -27,12 +27,12 @@
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:paddingBottom="14dip" android:paddingTop="14dip"
             android:paddingLeft="8dip" android:paddingRight="8dip"
-            android:text="あ" android:textSize="32sp" />
+            android:text="@string/hiragana_a" android:textSize="32sp" />
         <Button android:id="@+id/send_to_kanjidict"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:paddingBottom="14dip" android:paddingTop="14dip"
             android:paddingLeft="8dip" android:paddingRight="8dip"
-            android:text="漢" android:textSize="32sp" />
+            android:text="@string/kanji_kan" android:textSize="32sp" />
     </LinearLayout>
     <LinearLayout android:id="@+id/hint_group"
         android:layout_height="wrap_content" android:layout_width="fill_parent"

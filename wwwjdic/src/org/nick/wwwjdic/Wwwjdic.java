@@ -400,11 +400,11 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        menu.add(0, ITEM_ID_OCR, 0, "OCR").setIcon(
+        menu.add(0, ITEM_ID_OCR, 0, R.string.ocr).setIcon(
                 android.R.drawable.ic_menu_camera);
-        menu.add(0, ITEM_ID_DRAW, 2, "Write kanji").setIcon(
-                R.drawable.ic_kanji_tab_selected);
-        menu.add(0, ITEM_ID_SETTINGS, 2, "Settings").setIcon(
+        menu.add(0, ITEM_ID_DRAW, 2, R.string.write_kanji).setIcon(
+                android.R.drawable.ic_menu_edit);
+        menu.add(0, ITEM_ID_SETTINGS, 2, R.string.settings).setIcon(
                 android.R.drawable.ic_menu_preferences);
         menu.add(0, ITEM_ID_ABOUT, 3, R.string.about).setIcon(
                 android.R.drawable.ic_menu_info_details);

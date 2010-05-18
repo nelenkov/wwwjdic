@@ -5,26 +5,20 @@
     <LinearLayout android:id="@+id/hwr_button_group"
         android:layout_height="wrap_content" android:layout_width="fill_parent"
         android:visibility="visible" android:orientation="horizontal"
-        android:layout_gravity="bottom|center_vertical"
-        android:layout_marginBottom="4dip" android:layout_marginTop="4dip">
-        <TableLayout android:layout_height="wrap_content"
-            android:layout_width="wrap_content">
-            <TableRow>
-                <Button android:id="@+id/recognize_button"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" android:text="Recognize" />
-                <Button android:id="@+id/clear_canvas_button"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" android:text="Clear" />
-            </TableRow>
-        </TableLayout>
-        <TextView android:id="@+id/num_strokes_label"
-            android:text="Strokes: " android:textSize="16sp"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical" />
-        <TextView android:id="@+id/num_strokes" android:text="0"
-            android:textSize="16sp" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_gravity="right|center_vertical" />
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginBottom="4dip" android:layout_marginTop="4dip"
+        android:layout_marginLeft="2dip" android:layout_marginRight="2dip">
+        <Button android:id="@+id/recognize_button"
+            android:layout_height="fill_parent" android:layout_width="0px"
+            android:layout_weight="1" android:text="@string/recognize" />
+        <Button android:id="@+id/clear_canvas_button"
+            android:layout_height="fill_parent" android:layout_width="0px"
+            android:layout_weight="1" android:text="@string/clear" />
+        <CheckBox android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/lookAheadCb"
+            android:text="@string/look_ahead"
+            android:layout_gravity="center_vertical" 
+            android:textSize="12sp"></CheckBox>
     </LinearLayout>
     <org.nick.wwwjdic.hkr.KanjiDrawView
         android:id="@+id/kanji_draw_view" android:layout_width="fill_parent"

@@ -22,7 +22,7 @@ public class HkrCandidates extends ListActivity {
         super.onCreate(savedInstanceState);
 
         Bundle extras = getIntent().getExtras();
-        candidates = extras.getStringArray("hkrCandidates");
+        candidates = extras.getStringArray(Constants.HKR_CANDIDATES_KEY);
         setListAdapter(new ArrayAdapter<String>(this,
                 org.nick.wwwjdic.R.layout.text_list_item, candidates));
 
