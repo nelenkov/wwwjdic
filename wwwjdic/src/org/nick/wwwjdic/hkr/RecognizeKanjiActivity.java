@@ -8,9 +8,11 @@ import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.hkr.KanjiDrawView.OnStrokesChangedListener;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,6 +25,12 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
     private static final String TAG = RecognizeKanjiActivity.class
             .getSimpleName();
+
+    private static final String KR_DEFAULT_URL = "http://kanji.sljfaq.org/kanji16/kanji-0.016.cgi";
+
+    private static final String PREF_KR_URL_KEY = "pref_kr_url";
+    private static final String PREF_KR_TIMEOUT_KEY = "pref_kr_timeout";
+    private static final String PREF_KR_USE_LOOKAHEAD_KEY = "pref_kr_use_lookahead";
 
     private static final int HKR_RESULT = 1;
 
@@ -79,7 +87,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         };
     }
 
-    static class HkrTask implements Runnable {
+    class HkrTask implements Runnable {
 
         private List<Stroke> strokes;
         private Handler handler;
@@ -92,10 +100,10 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         @Override
         public void run() {
             try {
-                String url = "http://kanji.sljfaq.org/kanji16/kanji-0.016.cgi";
-                KanjiRecognizerClient krClient = new KanjiRecognizerClient(url,
-                        10 * 1000);
-                String[] results = krClient.recognize(strokes, true);
+                KanjiRecognizerClient krClient = new KanjiRecognizerClient(
+                        getKrUrl(), getKrTimeout());
+                String[] results = krClient
+                        .recognize(strokes, isUseLookahead());
                 Log.i(TAG, "go KR result " + Arrays.asList(results));
 
                 Message msg = handler.obtainMessage(HKR_RESULT, 1, 0);
@@ -107,6 +115,29 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                 handler.sendMessage(msg);
             }
         }
+    }
+
+    private int getKrTimeout() {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        String timeoutStr = preferences.getString(PREF_KR_TIMEOUT_KEY, "10");
+
+        return Integer.parseInt(timeoutStr) * 1000;
+    }
+
+    private String getKrUrl() {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        return preferences.getString(PREF_KR_URL_KEY, KR_DEFAULT_URL);
+    }
+
+    private boolean isUseLookahead() {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        return preferences.getBoolean(PREF_KR_USE_LOOKAHEAD_KEY, true);
     }
 
     @Override
