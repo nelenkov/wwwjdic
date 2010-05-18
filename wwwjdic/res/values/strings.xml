@@ -151,4 +151,5 @@
     <string name="hiragana_a">あ</string>
     <string name="kanji_kan">漢</string>
     <string name="look_ahead">Look\nahead</string>
+    <string name="hkr">Hand written kanji recognition</string>
 </resources>
