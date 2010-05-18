@@ -24,9 +24,9 @@
 		<activity android:name="RadicalChart"></activity>
 		<activity android:name="WwwjdicPreferences"></activity>
 		<activity android:name=".ocr.OcrActivity"></activity>
-		<activity android:name=".hkr.KanjiDrawActivity"></activity>
-	<activity android:name=".hkr.HkrCandidates"></activity>
-</application>
+		<activity android:name=".hkr.RecognizeKanjiActivity"></activity>
+		<activity android:name=".hkr.HkrCandidates"></activity>
+	</application>
 
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
 	<uses-permission android:name="android.permission.CAMERA" />

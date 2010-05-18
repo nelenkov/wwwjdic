@@ -7,37 +7,23 @@ import java.io.InputStreamReader;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.protocol.HTTP;
+import org.apache.http.entity.AbstractHttpEntity;
+import org.nick.wwwjdic.EntityBasedHttpClient;
 
 import android.graphics.Bitmap;
 import android.util.Log;
 
-public class WeOcrClient {
+public class WeOcrClient extends EntityBasedHttpClient {
 
     private static final String TAG = WeOcrClient.class.getSimpleName();
 
-    private String url;
-    private DefaultHttpClient httpClient;
-
     public WeOcrClient(String endpoint, int timeout) {
-        this.url = endpoint;
-        HttpParams params = new BasicHttpParams();
-        HttpProtocolParams.setContentCharset(params,
-                HTTP.DEFAULT_CONTENT_CHARSET);
-        HttpProtocolParams.setUseExpectContinue(params, true);
-        HttpConnectionParams.setConnectionTimeout(params, timeout);
-        httpClient = new DefaultHttpClient(params);
+        super(endpoint, timeout);
     }
 
     public String sendOcrRequest(Bitmap img) throws IOException {
         Log.i(TAG, "Sending OCR request to " + url);
-        HttpPost post = new HttpPost(url);
-        post.setEntity(new OcrFormEntity(img));
+        HttpPost post = createPost(img);
 
         BufferedReader reader = null;
         try {
@@ -57,19 +43,14 @@ public class WeOcrClient {
             throw new RuntimeException("HTTP request failed. Status: "
                     + re.getStatusCode());
         } finally {
-            reader.close();
+            if (reader != null) {
+                reader.close();
+            }
         }
     }
 
-    private String readAllLines(BufferedReader reader) throws IOException {
-        StringBuffer buff = new StringBuffer();
-        String line = null;
-
-        while ((line = reader.readLine()) != null) {
-            buff.append(line);
-            buff.append('\n');
-        }
-
-        return buff.toString().trim();
+    @Override
+    protected AbstractHttpEntity createEntity(Object param) throws IOException {
+        return new OcrFormEntity((Bitmap) param);
     }
 }

@@ -8,42 +8,31 @@ import java.util.List;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.protocol.HTTP;
+import org.apache.http.entity.AbstractHttpEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.nick.wwwjdic.EntityBasedHttpClient;
 
 import android.util.Log;
 
-public class KanjiRecognizerClient {
+public class KanjiRecognizerClient extends EntityBasedHttpClient {
 
     private static final String TAG = KanjiRecognizerClient.class
             .getSimpleName();
 
-    private static final String USER_AGENT_STRING = "Android-WWWJDIC/0.8";
-
-    private String url;
-    private DefaultHttpClient httpClient;
-
     public KanjiRecognizerClient(String endpoint, int timeout) {
-        this.url = endpoint;
-        HttpParams params = new BasicHttpParams();
-        HttpProtocolParams.setContentCharset(params,
-                HTTP.DEFAULT_CONTENT_CHARSET);
-        HttpProtocolParams.setUseExpectContinue(params, true);
-        HttpConnectionParams.setConnectionTimeout(params, timeout);
-        HttpProtocolParams.setUserAgent(params, USER_AGENT_STRING);
-        httpClient = new DefaultHttpClient(params);
+        super(endpoint, timeout);
     }
 
-    private String createRecognizerRequest(List<Stroke> strokes) {
+    private String createRecognizerRequest(List<Stroke> strokes,
+            boolean useLookAhead) {
         StringBuffer buff = new StringBuffer();
-        buff.append("H ");
+        if (useLookAhead) {
+            buff.append("HL ");
+        } else {
+            buff.append("H ");
+        }
 
         for (Stroke s : strokes) {
             buff.append(s.toBase36Points());
@@ -54,12 +43,14 @@ public class KanjiRecognizerClient {
         return buff.toString();
     }
 
-    public String[] recognize(List<Stroke> strokes) throws IOException {
+    public String[] recognize(List<Stroke> strokes, boolean useLookAhead)
+            throws IOException {
         Log.i(TAG, "Sending handwritten kanji recognition request to " + url);
-        HttpPost post = new HttpPost(url);
-        String krRequest = createRecognizerRequest(strokes);
-        System.out.println(krRequest);
-        post.setEntity(new KrEntity(krRequest));
+
+        String krRequest = createRecognizerRequest(strokes, useLookAhead);
+        Log.d(TAG, String.format("kanji recognizer request (%d strokes): %s",
+                strokes.size(), krRequest));
+        HttpPost post = createPost(krRequest);
 
         BufferedReader reader = null;
         try {
@@ -68,19 +59,9 @@ public class KanjiRecognizerClient {
                     .getContent(), "utf-8"));
 
             String response = readAllLines(reader);
-            JSONObject jsonObj = new JSONObject(response);
-            String status = jsonObj.getString("status");
-            if (!"OK".equals(status)) {
-                throw new RuntimeException("Error calling kanji recognizer: "
-                        + status);
-            }
+            Log.d(TAG, "kanji recognizer response: " + response);
 
-            int numResults = jsonObj.getInt("total_results");
-            JSONArray jsonArr = jsonObj.getJSONArray("results");
-            String[] result = new String[jsonArr.length()];
-            for (int i = 0; i < result.length; i++) {
-                result[i] = (String) jsonArr.get(i);
-            }
+            String[] result = parseResponse(response);
 
             return result;
         } catch (HttpResponseException re) {
@@ -91,19 +72,31 @@ public class KanjiRecognizerClient {
             Log.e(TAG, "Error parsing JSON: " + je.getMessage(), je);
             throw new RuntimeException(je.getMessage());
         } finally {
-            reader.close();
+            if (reader != null) {
+                reader.close();
+            }
         }
     }
 
-    private String readAllLines(BufferedReader reader) throws IOException {
-        StringBuffer buff = new StringBuffer();
-        String line = null;
-
-        while ((line = reader.readLine()) != null) {
-            buff.append(line);
-            buff.append('\n');
+    private String[] parseResponse(String response) throws JSONException {
+        JSONObject jsonObj = new JSONObject(response);
+        String status = jsonObj.getString("status");
+        if (!"OK".equals(status)) {
+            throw new RuntimeException("Error calling kanji recognizer: "
+                    + status);
         }
 
-        return buff.toString().trim();
+        JSONArray jsonArr = jsonObj.getJSONArray("results");
+        String[] result = new String[jsonArr.length()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = (String) jsonArr.get(i);
+        }
+
+        return result;
+    }
+
+    @Override
+    protected AbstractHttpEntity createEntity(Object param) throws IOException {
+        return new KrEntity((String) param);
     }
 }

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
-import org.nick.wwwjdic.hkr.KanjiDrawActivity;
+import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
 import org.nick.wwwjdic.ocr.OcrActivity;
 
 import android.app.AlertDialog;
@@ -429,7 +429,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
             startActivity(intent);
             return true;
         case ITEM_ID_DRAW:
-            intent = new Intent(this, KanjiDrawActivity.class);
+            intent = new Intent(this, RecognizeKanjiActivity.class);
 
             startActivity(intent);
             return true;

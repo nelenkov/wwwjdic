@@ -45,14 +45,6 @@ public class Stroke {
         }
     }
 
-    public Iterator<Float> getXs() {
-        return xs.iterator();
-    }
-
-    public Iterator<Float> getYs() {
-        return ys.iterator();
-    }
-
     public String toBase36Points() {
         StringBuffer buff = new StringBuffer();
 
