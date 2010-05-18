@@ -24,7 +24,7 @@ public class HkrCandidates extends ListActivity {
         Bundle extras = getIntent().getExtras();
         candidates = extras.getStringArray("hkrCandidates");
         setListAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, candidates));
+                org.nick.wwwjdic.R.layout.text_list_item, candidates));
 
         getListView().setTextFilterEnabled(true);
 

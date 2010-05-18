@@ -1,130 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">WWWJDIC for Android</string>
-    <string name="translationError">Error</string>
-    <string-array name="dictinaries_array">
-        <item>General</item>
-        <item>Japanese Names</item>
-        <item>Computing/Telecomm</item>
-        <item>Life Sciences/Bio-Med</item>
-        <item>Legal Terms</item>
-        <item>Finance/Marketing</item>
-        <item>Buddhism</item>
-        <item>Miscellaneous</item>
-        <item>Engineering/Science</item>
-        <item>Linguistics</item>
-        <item>River &amp; Water Systems</item>
-        <item>Automobile Industry</item>
-        <item>Japanese-German</item>
-        <item>Japanese-French</item>
-        <item>Japanese-Russian</item>
-        <item>Japanese-Swedish</item>
-        <item>Japanese-Hungarian</item>
-        <item>Japanese-Spanish</item>
-        <item>Japanese-Dutch</item>
-        <item>Japanese-Slovenian</item>
-    </string-array>
-    <string-array name="kanji_search_types_array">
-        <item>Kanji or reading</item>
-        <item>Stroke count</item>
-        <item>Radical number</item>
-        <item>English meaning</item>
-        <item>Unicode code (hex)</item>
-        <item>JIS code (hex)</item>
-        <item>SKIP code</item>
-        <item>Pinyin reading</item>
-        <item>Korean reading</item>
-    </string-array>
-    <string name="about_text">WWWJDIC for Android, 2010</string>
-    <string name="about_by">by Nikolay Elenkov</string>
-    <string name="about_bugtracking">More info/issue reporting</string>
-    <string name="bugtracker_url">http://code.google.com/p/wwwjdic</string>
-    <string name="uses_wwwjdic">Uses Jim Breen\'s WWWJDIC</string>
-    <string name="wwwjdic_link">http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi?1C
-    </string>
-    <string name="uses_weocr">Uses WeOCR </string>
-    <string name="weocr_link">http://weocr.ocrgrid.org/
+	<string name="app_name">WWWJDIC for Android</string>
+	<string name="translationError">Error</string>
+	<string-array name="dictinaries_array">
+		<item>General</item>
+		<item>Japanese Names</item>
+		<item>Computing/Telecomm</item>
+		<item>Life Sciences/Bio-Med</item>
+		<item>Legal Terms</item>
+		<item>Finance/Marketing</item>
+		<item>Buddhism</item>
+		<item>Miscellaneous</item>
+		<item>Engineering/Science</item>
+		<item>Linguistics</item>
+		<item>River &amp; Water Systems</item>
+		<item>Automobile Industry</item>
+		<item>Japanese-German</item>
+		<item>Japanese-French</item>
+		<item>Japanese-Russian</item>
+		<item>Japanese-Swedish</item>
+		<item>Japanese-Hungarian</item>
+		<item>Japanese-Spanish</item>
+		<item>Japanese-Dutch</item>
+		<item>Japanese-Slovenian</item>
+	</string-array>
+	<string-array name="kanji_search_types_array">
+		<item>Kanji or reading</item>
+		<item>Stroke count</item>
+		<item>Radical number</item>
+		<item>English meaning</item>
+		<item>Unicode code (hex)</item>
+		<item>JIS code (hex)</item>
+		<item>SKIP code</item>
+		<item>Pinyin reading</item>
+		<item>Korean reading</item>
+	</string-array>
+	<string name="about_text">WWWJDIC for Android, 2010</string>
+	<string name="about_by">by Nikolay Elenkov</string>
+	<string name="about_bugtracking">More info/issue reporting</string>
+	<string name="bugtracker_url">http://code.google.com/p/wwwjdic</string>
+	<string name="uses_wwwjdic">Uses Jim Breen\'s WWWJDIC</string>
+	<string name="wwwjdic_link">http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi?1C
 	</string>
-    <string name="select_dictionary">Select dictionary:</string>
-    <string name="stroke_count">Stroke count:  </string>
-    <string name="radical_number">Radical number: </string>
-    <string name="english_meanings">English meanings</string>
-    <string name="radical_strokes">Radical/strokes</string>
-    <string name="codes_more">Codes and more</string>
-    <string name="translation">Translation(s)</string>
-    <string name="select_search_type">Select search type:</string>
-    <string name="search">Search</string>
-    <string name="error">Error</string>
-    <string name="ok">OK</string>
-    <string name="loading">Loading. Please wait...</string>
-    <string name="jis_code">JIS code: </string>
-    <string name="unicode_number">Unicode number: </string>
-    <string name="classical_radical">Classical radical number: </string>
-    <string name="freq_rank">Frequency rank: </string>
-    <string name="grade">Grade: </string>
-    <string name="jlpt_level">JLPT level: </string>
-    <string name="skip_code">SKIP code: </string>
-    <string name="korean_reading">Korean reading: </string>
-    <string name="pinyn">Pinyin: </string>
-    <string name="more">More...</string>
-    <string name="dictionary">Dictionary</string>
-    <string name="kanji_lookup">Kanji Lookup</string>
-    <string name="about">About</string>
-    <string name="min">min</string>
-    <string name="max">max</string>
-    <string name="strokes">Strokes: </string>
-    <string name="select">Select...</string>
-    <string name="radical">Radical: </string>
-    <string name="timeout_error_message">Connection has timed out. Check your network
-        connection.</string>
-    <string name="socket_error_message">Failed to connect to WWWJDIC. Check your network
-        connection.</string>
-    <string name="generic_error_message">An unexpected error has occurred. Please report
-        this.</string>
-    <string name="ocr_hint1">* Align text to guide lines (approx. is OK),
-        then
-        press center button/tap screen to capture.</string>
-    <string name="ocr_hint2">* Crop a rectangular area (single line) on the
-        next
-        screen and press 'Save' to OCR.</string>
-    <string name="ocr_hint3">* Press あ/漢 to send text to dictionary/kanji
-        lookup
-        screen.</string>
-    <string name="pref_ocr">OCR Settings</string>
-    <string name="pref_weocr_server">WeOCR Server</string>
-    <string name="pref_weocr_server_summary">Don\'t use the backup server if the default one
-        is online</string>
-    <string-array name="weocr_mirror_names">
-        <item>maggie (default)</item>
-        <item>jimbocho (backup)</item>
-    </string-array>
-    <string-array name="weocr_mirror_urls">
-        <item>http://maggie.ocrgrid.org/cgi-bin/weocr/nhocr.cgi</item>
-        <item>http://jimbocho.ocrgrid.org/cgi-bin/weocr/nhocr.cgi</item>
-    </string-array>
-    <string name="pref_weocr_timeout">WeOCR Timeout</string>
-    <string name="pref_weocr_timeout_summary">[seconds]</string>
-    <string name="pref_wwwjdic">WWWJDIC Settings</string>
-    <string name="pref_wwwjdic_mirror">WWWJDIC Mirror</string>
-    <string-array name="wwwjdic_mirror_names">
-        <item>Australia</item>
-        <item>Canada</item>
-        <item>EU</item>
-        <item>Japan</item>
-        <item>Sweden</item>
-        <item>USA</item>
-    </string-array>
-    <string-array name="wwwjdic_mirror_urls">
-        <item>http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi
+	<string name="uses_weocr">Uses WeOCR </string>
+	<string name="weocr_link">http://weocr.ocrgrid.org/
+	</string>
+	<string name="uses_kr">Uses kanji recognizer at </string>
+	<string name="kr_link">http://kanji.sljfaq.org"
+    </string>
+	<string name="select_dictionary">Select dictionary:</string>
+	<string name="stroke_count">Stroke count:  </string>
+	<string name="radical_number">Radical number: </string>
+	<string name="english_meanings">English meanings</string>
+	<string name="radical_strokes">Radical/strokes</string>
+	<string name="codes_more">Codes and more</string>
+	<string name="translation">Translation(s)</string>
+	<string name="select_search_type">Select search type:</string>
+	<string name="search">Search</string>
+	<string name="error">Error</string>
+	<string name="ok">OK</string>
+	<string name="loading">Loading. Please wait...</string>
+	<string name="jis_code">JIS code: </string>
+	<string name="unicode_number">Unicode number: </string>
+	<string name="classical_radical">Classical radical number: </string>
+	<string name="freq_rank">Frequency rank: </string>
+	<string name="grade">Grade: </string>
+	<string name="jlpt_level">JLPT level: </string>
+	<string name="skip_code">SKIP code: </string>
+	<string name="korean_reading">Korean reading: </string>
+	<string name="pinyn">Pinyin: </string>
+	<string name="more">More...</string>
+	<string name="dictionary">Dictionary</string>
+	<string name="kanji_lookup">Kanji Lookup</string>
+	<string name="about">About</string>
+	<string name="min">min</string>
+	<string name="max">max</string>
+	<string name="strokes">Strokes: </string>
+	<string name="select">Select...</string>
+	<string name="radical">Radical: </string>
+	<string name="timeout_error_message">Connection has timed out. Check your network
+		connection.</string>
+	<string name="socket_error_message">Failed to connect to WWWJDIC. Check your network
+		connection.</string>
+	<string name="generic_error_message">An unexpected error has occurred. Please report
+		this.</string>
+	<string name="ocr_hint1">* Align text to guide lines (approx. is OK),
+		then
+		press center button/tap screen to capture.</string>
+	<string name="ocr_hint2">* Crop a rectangular area (single line) on the
+		next
+		screen and press 'Save' to OCR.</string>
+	<string name="ocr_hint3">* Press あ/漢 to send text to dictionary/kanji
+		lookup
+		screen.</string>
+	<string name="pref_ocr">OCR settings</string>
+	<string name="pref_weocr_server">WeOCR server</string>
+	<string name="pref_weocr_server_summary">Don\'t use the backup server if the main one
+		is
+		online</string>
+	<string-array name="weocr_mirror_names">
+		<item>maggie (main)</item>
+		<item>jimbocho (backup)</item>
+	</string-array>
+	<string-array name="weocr_mirror_urls">
+		<item>http://maggie.ocrgrid.org/cgi-bin/weocr/nhocr.cgi</item>
+		<item>http://jimbocho.ocrgrid.org/cgi-bin/weocr/nhocr.cgi</item>
+	</string-array>
+	<string name="pref_weocr_timeout">WeOCR timeout</string>
+	<string name="pref_timeout_summary">[seconds]</string>
+	<string name="pref_wwwjdic">WWWJDIC settings</string>
+	<string name="pref_wwwjdic_mirror">WWWJDIC mirror</string>
+	<string-array name="wwwjdic_mirror_names">
+		<item>Australia</item>
+		<item>Canada</item>
+		<item>EU</item>
+		<item>Japan</item>
+		<item>Sweden</item>
+		<item>USA</item>
+	</string-array>
+	<string-array name="wwwjdic_mirror_urls">
+		<item>http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi
         </item>
-        <item>http://ryouko.imsb.nrc.ca/cgi-bin/wwwjdic</item>
-        <item>http://jp.msmobiles.com/cgi-bin/wwwjdic</item>
-        <item>http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi</item>
-        <item>http://wwwjdic.sys5.se/cgi-bin/wwwjdic.cgi</item>
-        <item>http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic</item>
-    </string-array>
-    <string name="pref_wwwjdic_timeout">WWWJDIC Timeout</string>
-    <string name="pref_wwwjdic_timeout_summary">[seconds]</string>
-    <string name="pref_ocr_dump_cropped_images">Dump cropped images</string>
-    <string name="pref_ocr_dump_cropped_images_summary">Dump to /sdcard/wwwjdic (for debugging)</string>
+		<item>http://ryouko.imsb.nrc.ca/cgi-bin/wwwjdic</item>
+		<item>http://jp.msmobiles.com/cgi-bin/wwwjdic</item>
+		<item>http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi</item>
+		<item>http://wwwjdic.sys5.se/cgi-bin/wwwjdic.cgi</item>
+		<item>http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic</item>
+	</string-array>
+	<string name="pref_wwwjdic_timeout">WWWJDIC timeout</string>
+	<string name="pref_ocr_dump_cropped_images">Dump cropped images</string>
+	<string name="pref_ocr_dump_cropped_images_summary">Dump to /sdcard/wwwjdic (for debugging)</string>
+	<string name="pref_kr">Kanji recognizer settings</string>
+	<string name="pref_kr_url">Kanji recognizer URL</string>
+	<string name="pref_kr_timeout">Kanji recognizer timeout</string>
+	<string name="pref_kr_use_lookahead">Use look ahead</string>
+	<string name="pref_kr_use_lookahead_summary">Matches kanji with more strokes than drawn (better
+		matching)</string>
 </resources>
