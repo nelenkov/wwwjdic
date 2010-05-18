@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.Paint.Style;
 import android.util.AttributeSet;
@@ -24,6 +25,7 @@ public class KanjiDrawView extends View implements OnTouchListener {
     }
 
     private Paint strokePaint;
+    private Paint strokeAnnotationPaint;
     private Paint outlinePaint;
 
     private List<Stroke> strokes = new ArrayList<Stroke>();
@@ -52,6 +54,12 @@ public class KanjiDrawView extends View implements OnTouchListener {
         strokePaint.setAntiAlias(true);
         strokePaint.setStrokeWidth(STROKE_WIDTH);
 
+        strokeAnnotationPaint = new Paint();
+        strokeAnnotationPaint.setColor(Color.GREEN);
+        strokeAnnotationPaint.setStyle(Style.FILL);
+        strokeAnnotationPaint.setAntiAlias(true);
+        strokeAnnotationPaint.setStrokeWidth(STROKE_WIDTH);
+
         outlinePaint = new Paint();
         outlinePaint.setColor(Color.GRAY);
         outlinePaint.setStyle(Style.STROKE);
@@ -77,13 +85,13 @@ public class KanjiDrawView extends View implements OnTouchListener {
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
             currentStroke = new Stroke();
-            currentStroke.addPoint(x, y);
+            currentStroke.addPoint(new PointF(x, y));
             break;
         case MotionEvent.ACTION_MOVE:
-            currentStroke.addPoint(x, y);
+            currentStroke.addPoint(new PointF(x, y));
             break;
         case MotionEvent.ACTION_UP:
-            currentStroke.addPoint(x, y);
+            currentStroke.addPoint(new PointF(x, y));
             strokes.add(currentStroke);
             if (onStrokesChangedListener != null) {
                 onStrokesChangedListener.strokesUpdated(strokes.size());
@@ -96,8 +104,11 @@ public class KanjiDrawView extends View implements OnTouchListener {
     }
 
     private void drawStrokes(Canvas canvas) {
+        int strokeNum = 1;
         for (Stroke stroke : strokes) {
             stroke.draw(canvas, strokePaint);
+            stroke.annotate(canvas, strokeAnnotationPaint, strokeNum);
+            strokeNum++;
         }
     }
 

@@ -1,58 +1,77 @@
 package org.nick.wwwjdic.hkr;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PointF;
 
 public class Stroke {
 
-    private List<Float> xs = new ArrayList<Float>();
-    private List<Float> ys = new ArrayList<Float>();
+    private static final int ANNOTATION_OFFSET = 15;
+
+    private List<PointF> points = new ArrayList<PointF>();
 
     public Stroke() {
     }
 
-    public void addPoint(float x, float y) {
-        xs.add(x);
-        ys.add(y);
+    public void addPoint(PointF p) {
+        points.add(p);
     }
 
     public void clear() {
-        xs.clear();
-        ys.clear();
+        points.clear();
     }
 
     public void draw(final Canvas canvas, final Paint paint) {
-        Iterator<Float> xi = xs.iterator();
-        Iterator<Float> yi = ys.iterator();
+        PointF lastPoint = null;
 
-        float lastX = -1;
-        float lastY = -1;
-
-        while (xi.hasNext()) {
-            float x = xi.next();
-            float y = yi.next();
-
-            if (lastX != -1 && lastY != -1) {
-                canvas.drawLine(lastX, lastY, x, y, paint);
+        for (PointF p : points) {
+            if (lastPoint != null) {
+                canvas.drawLine(lastPoint.x, lastPoint.y, p.x, p.y, paint);
             }
 
-            lastX = x;
-            lastY = y;
+            lastPoint = p;
         }
+    }
+
+    public void annotate(final Canvas canvas, final Paint paint, int strokeNum) {
+        if (points.isEmpty() || points.size() == 1) {
+            return;
+        }
+
+        float xOffset = ANNOTATION_OFFSET;
+        float yOffset = ANNOTATION_OFFSET;
+        int annotationGap = 1;
+
+        PointF firstPoint = points.get(0);
+        if (points.size() > 5) {
+            annotationGap = 5;
+        }
+
+        float dx = points.get(annotationGap).x - firstPoint.x;
+        float dy = points.get(annotationGap).y - firstPoint.y;
+        double length = Math.sqrt(dx * dx + dy * dy);
+        if (length > 0) {
+            dx /= length;
+            dy /= length;
+            xOffset = -ANNOTATION_OFFSET * dx;
+            yOffset = -ANNOTATION_OFFSET * dy;
+        }
+        String strokeNumStr = Integer.toString(strokeNum);
+        canvas.drawText(strokeNumStr, firstPoint.x + xOffset, firstPoint.y
+                + yOffset, paint);
     }
 
     public String toBase36Points() {
         StringBuffer buff = new StringBuffer();
 
-        for (int i = 0; i < xs.size(); i++) {
+        for (int i = 0; i < points.size(); i++) {
             String pointStr = "";
-            int x = xs.get(i).intValue();
+            int x = (int) points.get(i).x;
             pointStr += toBase36(x);
-            int y = ys.get(i).intValue();
+            int y = (int) points.get(i).y;
             pointStr += toBase36(y);
 
             buff.append(pointStr);
