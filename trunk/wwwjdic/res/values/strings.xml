@@ -46,7 +46,7 @@
     <string name="weocr_link">http://weocr.ocrgrid.org/
 	</string>
     <string name="uses_kr">Uses kanji recognizer at </string>
-    <string name="kr_link">http://kanji.sljfaq.org"
+    <string name="kr_link">http://kanji.sljfaq.org/kanji16/draw-canvas.html
     </string>
     <string name="select_dictionary">Select dictionary:</string>
     <string name="stroke_count">Stroke count:  </string>
