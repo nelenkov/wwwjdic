@@ -43,8 +43,6 @@ public class HkrCandidates extends ListActivity {
         intent.putExtras(extras);
 
         startActivity(intent);
-
-        finish();
     }
 
 }

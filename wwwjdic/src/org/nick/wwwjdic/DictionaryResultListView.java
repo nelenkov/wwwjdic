@@ -43,7 +43,7 @@ public class DictionaryResultListView extends ResultListViewBase {
                 getListView().setTextFilterEnabled(true);
                 setTitle(String.format("%d result(s) for '%s'", entries.size(),
                         criteria.getQueryString()));
-                progressDialog.dismiss();
+                dismissProgressDialog();
             }
         });
     }

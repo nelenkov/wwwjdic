@@ -72,7 +72,9 @@ public abstract class TranslateTask implements Runnable {
     public void run() {
         try {
             List<DictionaryEntry> result = fetchResult(searchCriteria);
-            resultListView.setResult(result);
+            if (resultListView != null) {
+                resultListView.setResult(result);
+            }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             resultListView.setError(e);
@@ -84,6 +86,14 @@ public abstract class TranslateTask implements Runnable {
         String payload = query(criteria);
 
         return (List<DictionaryEntry>) parseResult(payload);
+    }
+
+    public ResultListView getResultListView() {
+        return resultListView;
+    }
+
+    public void setResultListView(ResultListView resultListView) {
+        this.resultListView = resultListView;
     }
 
     protected abstract String query(SearchCriteria criteria);
