@@ -16,6 +16,8 @@ public abstract class WebServiceBackedActivity extends Activity {
     protected Handler handler;
     protected ProgressDialog progressDialog;
 
+    private String progressDialogMessage;
+
     public WebServiceBackedActivity() {
     }
 
@@ -24,6 +26,30 @@ public abstract class WebServiceBackedActivity extends Activity {
         super.onCreate(savedInstanceState);
         initThreading();
         activityOnCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onPause() {
+        WwwjdicApplication app = (WwwjdicApplication) getApplication();
+        if (progressDialog != null) {
+            app.setProgressDialogMessage(progressDialogMessage);
+            progressDialog = null;
+        }
+
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        WwwjdicApplication app = (WwwjdicApplication) getApplication();
+        progressDialogMessage = app.getProgressDialogMessage();
+        if (progressDialogMessage != null) {
+            app.setProgressDialogMessage(null);
+            progressDialog = ProgressDialog.show(this, "",
+                    progressDialogMessage, true);
+        }
+
+        super.onResume();
     }
 
     protected abstract void activityOnCreate(Bundle savedInstanceState);
@@ -36,6 +62,8 @@ public abstract class WebServiceBackedActivity extends Activity {
     protected abstract Handler createHandler();
 
     protected void submitWsTask(Runnable task, String message) {
+        progressDialogMessage = message;
+
         progressDialog = ProgressDialog.show(this, "", message, true);
         activeWsRequest = executorService.submit(task);
     }
