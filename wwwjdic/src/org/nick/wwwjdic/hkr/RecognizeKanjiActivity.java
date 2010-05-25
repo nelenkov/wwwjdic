@@ -68,7 +68,10 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                 case HKR_RESULT:
-                    progressDialog.dismiss();
+                    if (progressDialog != null && progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                        progressDialog = null;
+                    }
 
                     if (msg.arg1 == 1) {
                         String[] results = (String[]) msg.obj;
