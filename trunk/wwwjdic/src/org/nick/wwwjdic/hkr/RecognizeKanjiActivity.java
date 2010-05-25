@@ -6,6 +6,7 @@ import java.util.List;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
+import org.nick.wwwjdic.WwwjdicApplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -61,32 +62,55 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         lookAheadCb = (CheckBox) findViewById(R.id.lookAheadCb);
     }
 
-    @Override
-    protected Handler createHandler() {
-        return new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                case HKR_RESULT:
-                    if (progressDialog != null && progressDialog.isShowing()) {
-                        progressDialog.dismiss();
-                        progressDialog = null;
-                    }
+    public static class RecognizeKanjiHandler extends WsResultHandler {
 
-                    if (msg.arg1 == 1) {
-                        String[] results = (String[]) msg.obj;
-                        sendToDictionary(results);
-                    } else {
-                        Toast t = Toast.makeText(RecognizeKanjiActivity.this,
-                                R.string.hkr_failed, Toast.LENGTH_SHORT);
-                        t.show();
-                    }
-                    break;
-                default:
-                    super.handleMessage(msg);
-                }
+        public RecognizeKanjiHandler(RecognizeKanjiActivity krActivity) {
+            super(krActivity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            if (activity == null) {
+                // we are in the process of rotating the screen, defer handling
+                Message newMsg = obtainMessage(msg.what, msg.arg1, msg.arg2);
+                newMsg.obj = msg.obj;
+                sendMessageDelayed(newMsg, 500);
+
+                return;
             }
-        };
+
+            RecognizeKanjiActivity krActivity = (RecognizeKanjiActivity) activity;
+
+            switch (msg.what) {
+            case HKR_RESULT:
+                krActivity.dismissProgressDialog();
+
+                if (msg.arg1 == 1) {
+                    String[] results = (String[]) msg.obj;
+                    krActivity.sendToDictionary(results);
+                } else {
+                    Toast t = Toast.makeText(krActivity, R.string.hkr_failed,
+                            Toast.LENGTH_SHORT);
+                    t.show();
+                }
+                break;
+            default:
+                super.handleMessage(msg);
+            }
+        }
+
+    }
+
+    @Override
+    protected WsResultHandler createHandler() {
+        WwwjdicApplication app = (WwwjdicApplication) getApplication();
+        WsResultHandler result = app.getWsResultHandler();
+        if (result == null) {
+            result = new RecognizeKanjiHandler(this);
+            app.setWsResultHandler(result);
+        }
+
+        return result;
     }
 
     class HkrTask implements Runnable {
@@ -165,7 +189,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         submitWsTask(task, "Doing character recognition...");
     }
 
-    private void sendToDictionary(String[] results) {
+    public void sendToDictionary(String[] results) {
         Intent intent = new Intent(this, HkrCandidates.class);
         Bundle extras = new Bundle();
         extras.putStringArray(Constants.HKR_CANDIDATES_KEY, results);

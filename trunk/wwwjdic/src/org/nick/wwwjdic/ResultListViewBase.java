@@ -4,7 +4,6 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import android.app.AlertDialog;
@@ -26,37 +25,73 @@ public abstract class ResultListViewBase extends ListActivity implements
     protected SearchCriteria criteria;
 
     protected Handler guiThread;
-    protected ExecutorService transThread;
     protected Future transPending;
 
     protected ProgressDialog progressDialog;
+    protected String progressDialogMessage;
 
     protected ResultListViewBase() {
         initThreading();
     }
 
     @Override
-    protected void onDestroy() {
-        transThread.shutdownNow();
-        super.onDestroy();
+    protected void onPause() {
+        WwwjdicApplication app = getApp();
+        if (progressDialog != null && progressDialog.isShowing()) {
+            app.setProgressDialogMessage(progressDialogMessage);
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+
+        app.getTranslateTask().setResultListView(null);
+
+        // transThread.shutdownNow();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        WwwjdicApplication app = getApp();
+        progressDialogMessage = app.getProgressDialogMessage();
+        if (progressDialogMessage != null) {
+            app.setProgressDialogMessage(null);
+            progressDialog = ProgressDialog.show(this, "",
+                    progressDialogMessage, true);
+        }
+
+        if (app.getTranslateTask() != null) {
+            app.getTranslateTask().setResultListView(this);
+        }
+
+        super.onResume();
     }
 
     private void initThreading() {
         guiThread = new Handler();
-        transThread = Executors.newSingleThreadExecutor();
     }
 
     protected void submitTranslateTask(TranslateTask translateTask) {
-        progressDialog = ProgressDialog.show(this, "", getResources().getText(
-                R.string.loading), true);
-        transPending = transThread.submit(translateTask);
+        progressDialogMessage = getResources().getText(R.string.loading)
+                .toString();
+        progressDialog = ProgressDialog.show(this, "", progressDialogMessage,
+                true);
+
+        ExecutorService executorService = getApp().getExecutorService();
+        transPending = executorService.submit(translateTask);
+        WwwjdicApplication app = getApp();
+        app.setTranslateTask(translateTask);
+    }
+
+    private WwwjdicApplication getApp() {
+        WwwjdicApplication app = (WwwjdicApplication) getApplication();
+        return app;
     }
 
     public void setError(final Exception ex) {
         guiThread.post(new Runnable() {
             public void run() {
                 setTitle(getResources().getText(R.string.error));
-                progressDialog.dismiss();
+                dismissProgressDialog();
 
                 AlertDialog.Builder alert = new AlertDialog.Builder(
                         ResultListViewBase.this);
@@ -113,5 +148,13 @@ public abstract class ResultListViewBase extends ListActivity implements
                 "10");
 
         return Integer.parseInt(timeoutStr);
+    }
+
+    protected void dismissProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+            progressDialog = null;
+            progressDialogMessage = null;
+        }
     }
 }

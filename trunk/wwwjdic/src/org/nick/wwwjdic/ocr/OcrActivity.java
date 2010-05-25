@@ -9,6 +9,7 @@ import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.Wwwjdic;
+import org.nick.wwwjdic.WwwjdicApplication;
 
 import android.content.Context;
 import android.content.Intent;
@@ -116,62 +117,92 @@ public class OcrActivity extends WebServiceBackedActivity implements
         kanjidictSearchButton.setEnabled(enabled);
     }
 
-    protected Handler createHandler() {
-        return handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                case AUTO_FOCUS:
-                    if (msg.arg1 == 1) {
-                        try {
-                            autoFocusInProgress = false;
-                            imageCaptureUri = createTempFile();
-                            if (imageCaptureUri == null) {
-                                Toast t = Toast.makeText(OcrActivity.this,
-                                        R.string.sd_file_create_failed,
-                                        Toast.LENGTH_SHORT);
-                                t.show();
+    void autoFocus() {
+        try {
+            autoFocusInProgress = false;
+            imageCaptureUri = createTempFile();
+            if (imageCaptureUri == null) {
+                Toast t = Toast.makeText(OcrActivity.this,
+                        R.string.sd_file_create_failed, Toast.LENGTH_SHORT);
+                t.show();
 
-                                return;
-                            }
-
-                            final ImageCaptureCallback captureCb = new ImageCaptureCallback(
-                                    getContentResolver().openOutputStream(
-                                            imageCaptureUri), this);
-                            camera.takePicture(null, null, captureCb);
-                        } catch (IOException e) {
-                            Log.e(TAG, e.getMessage(), e);
-                            throw new RuntimeException(e);
-                        }
-                    } else {
-                        autoFocusInProgress = false;
-                        Toast t = Toast.makeText(OcrActivity.this,
-                                R.string.af_failed, Toast.LENGTH_SHORT);
-                        t.show();
-                    }
-                    break;
-                case OCRRED_TEXT:
-                    progressDialog.dismiss();
-                    int success = msg.arg1;
-                    if (success == 1) {
-                        String ocrredText = (String) msg.obj;
-                        ocrredTextView.setTextSize(30f);
-                        ocrredTextView.setText(ocrredText);
-                        toggleSearchButtons(true);
-                    } else {
-                        Toast t = Toast.makeText(OcrActivity.this,
-                                R.string.ocr_failed, Toast.LENGTH_SHORT);
-                        t.show();
-                    }
-                    break;
-                case PICTURE_TAKEN:
-                    crop();
-                    break;
-                default:
-                    super.handleMessage(msg);
-                }
+                return;
             }
-        };
+
+            final ImageCaptureCallback captureCb = new ImageCaptureCallback(
+                    getContentResolver().openOutputStream(imageCaptureUri),
+                    handler);
+            camera.takePicture(null, null, captureCb);
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    void autoFocusFailed() {
+        autoFocusInProgress = false;
+        Toast t = Toast.makeText(OcrActivity.this, R.string.af_failed,
+                Toast.LENGTH_SHORT);
+        t.show();
+    }
+
+    void ocrSuccess(String ocrredText) {
+        ocrredTextView.setTextSize(30f);
+        ocrredTextView.setText(ocrredText);
+        toggleSearchButtons(true);
+    }
+
+    void ocrFailed() {
+        Toast t = Toast.makeText(this, R.string.ocr_failed, Toast.LENGTH_SHORT);
+        t.show();
+    }
+
+    public static class OcrHandler extends WsResultHandler {
+
+        public OcrHandler(OcrActivity ocrActivity) {
+            super(ocrActivity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            OcrActivity ocrActivity = (OcrActivity) activity;
+
+            switch (msg.what) {
+            case AUTO_FOCUS:
+                if (msg.arg1 == 1) {
+                    ocrActivity.autoFocus();
+                } else {
+                    ocrActivity.autoFocusFailed();
+                }
+                break;
+            case OCRRED_TEXT:
+                ocrActivity.dismissProgressDialog();
+                int success = msg.arg1;
+                if (success == 1) {
+                    String ocrredText = (String) msg.obj;
+                    ocrActivity.ocrSuccess(ocrredText);
+                } else {
+                    ocrActivity.ocrFailed();
+                }
+                break;
+            case PICTURE_TAKEN:
+                ocrActivity.crop();
+                break;
+            default:
+                super.handleMessage(msg);
+            }
+        }
+    }
+
+    protected WsResultHandler createHandler() {
+        WwwjdicApplication app = (WwwjdicApplication) getApplication();
+        WsResultHandler result = app.getWsResultHandler();
+        if (result == null) {
+            result = new OcrHandler(this);
+            app.setWsResultHandler(result);
+        }
+
+        return result;
     }
 
     class OcrTask implements Runnable {

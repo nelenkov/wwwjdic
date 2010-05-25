@@ -89,7 +89,7 @@
         press center button/tap screen to capture.</string>
     <string name="ocr_hint2">* Crop a rectangular area (single line) on the
         next
-        screen and press 'Save' to OCR.</string>
+        screen and press \'Save\' to OCR.</string>
     <string name="ocr_hint3">* Press あ/漢 to send text to dictionary/kanji
         lookup
         screen.</string>
