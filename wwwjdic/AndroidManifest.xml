@@ -13,19 +13,18 @@
             </intent-filter>
         </activity>
         <activity android:name="DictionaryResultListView"
-            android:label="Search result">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
+            android:configChanges="orientation|keyboardHidden|keyboard">
         </activity>
-
         <activity android:name="DictionaryEntryDetail"></activity>
-        <activity android:name="KanjiResultListView"></activity>
+        <activity android:name="KanjiResultListView"
+            android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name="KanjiEntryDetail"></activity>
         <activity android:name="RadicalChart"></activity>
         <activity android:name="WwwjdicPreferences"></activity>
-        <activity android:name=".ocr.OcrActivity"></activity>
-        <activity android:name=".hkr.RecognizeKanjiActivity"></activity>
+        <activity android:name=".ocr.OcrActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard"></activity>
+        <activity android:name=".hkr.RecognizeKanjiActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name=".hkr.HkrCandidates"></activity>
     </application>
 

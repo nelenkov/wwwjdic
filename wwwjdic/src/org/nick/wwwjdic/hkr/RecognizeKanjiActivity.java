@@ -6,7 +6,6 @@ import java.util.List;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
-import org.nick.wwwjdic.WwwjdicApplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -103,14 +102,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
     @Override
     protected WsResultHandler createHandler() {
-        WwwjdicApplication app = (WwwjdicApplication) getApplication();
-        WsResultHandler result = app.getWsResultHandler();
-        if (result == null) {
-            result = new RecognizeKanjiHandler(this);
-            app.setWsResultHandler(result);
-        }
-
-        return result;
+        return new RecognizeKanjiHandler(this);
     }
 
     class HkrTask implements Runnable {

@@ -9,7 +9,6 @@ import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.Wwwjdic;
-import org.nick.wwwjdic.WwwjdicApplication;
 
 import android.content.Context;
 import android.content.Intent;
@@ -195,14 +194,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
     }
 
     protected WsResultHandler createHandler() {
-        WwwjdicApplication app = (WwwjdicApplication) getApplication();
-        WsResultHandler result = app.getWsResultHandler();
-        if (result == null) {
-            result = new OcrHandler(this);
-            app.setWsResultHandler(result);
-        }
-
-        return result;
+        return new OcrHandler(this);
     }
 
     class OcrTask implements Runnable {
