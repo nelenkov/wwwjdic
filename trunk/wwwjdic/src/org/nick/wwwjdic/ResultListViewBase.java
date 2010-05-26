@@ -25,61 +25,29 @@ public abstract class ResultListViewBase extends ListActivity implements
     protected SearchCriteria criteria;
 
     protected Handler guiThread;
-    protected Future transPending;
+    protected Future<?> transPending;
 
     protected ProgressDialog progressDialog;
-    protected String progressDialogMessage;
 
     protected ResultListViewBase() {
-        initThreading();
-    }
-
-    @Override
-    protected void onPause() {
-        WwwjdicApplication app = getApp();
-        if (progressDialog != null && progressDialog.isShowing()) {
-            app.setProgressDialogMessage(progressDialogMessage);
-            progressDialog.dismiss();
-            progressDialog = null;
-        }
-
-        app.getTranslateTask().setResultListView(null);
-
-        // transThread.shutdownNow();
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        WwwjdicApplication app = getApp();
-        progressDialogMessage = app.getProgressDialogMessage();
-        if (progressDialogMessage != null) {
-            app.setProgressDialogMessage(null);
-            progressDialog = ProgressDialog.show(this, "",
-                    progressDialogMessage, true);
-        }
-
-        if (app.getTranslateTask() != null) {
-            app.getTranslateTask().setResultListView(this);
-        }
-
-        super.onResume();
-    }
-
-    private void initThreading() {
         guiThread = new Handler();
     }
 
+    @Override
+    protected void onDestroy() {
+        if (transPending != null) {
+            transPending.cancel(true);
+        }
+
+        super.onDestroy();
+    }
+
     protected void submitTranslateTask(TranslateTask translateTask) {
-        progressDialogMessage = getResources().getText(R.string.loading)
-                .toString();
-        progressDialog = ProgressDialog.show(this, "", progressDialogMessage,
-                true);
+        progressDialog = ProgressDialog.show(this, "", getResources().getText(
+                R.string.loading).toString(), true);
 
         ExecutorService executorService = getApp().getExecutorService();
         transPending = executorService.submit(translateTask);
-        WwwjdicApplication app = getApp();
-        app.setTranslateTask(translateTask);
     }
 
     private WwwjdicApplication getApp() {
@@ -154,7 +122,6 @@ public abstract class ResultListViewBase extends ListActivity implements
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
             progressDialog = null;
-            progressDialogMessage = null;
         }
     }
 }

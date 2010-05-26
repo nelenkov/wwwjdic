@@ -28,11 +28,9 @@ public abstract class WebServiceBackedActivity extends Activity {
 
     }
 
-    protected Future activeWsRequest;
+    protected Future<?> activeWsRequest;
     protected WsResultHandler handler;
     protected ProgressDialog progressDialog;
-
-    private String progressDialogMessage;
 
     public WebServiceBackedActivity() {
     }
@@ -40,52 +38,24 @@ public abstract class WebServiceBackedActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initThreading();
+        handler = createHandler();
         activityOnCreate(savedInstanceState);
     }
 
     @Override
-    protected void onPause() {
-        WwwjdicApplication app = getApp();
-        if (progressDialog != null && progressDialog.isShowing()) {
-            app.setProgressDialogMessage(progressDialogMessage);
-            progressDialog.dismiss();
-            progressDialog = null;
+    protected void onDestroy() {
+        if (activeWsRequest != null) {
+            activeWsRequest.cancel(true);
         }
 
-        handler.setActivity(null);
-        app.setWsResultHandler(handler);
-
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        WwwjdicApplication app = getApp();
-        progressDialogMessage = app.getProgressDialogMessage();
-        if (progressDialogMessage != null) {
-            app.setProgressDialogMessage(null);
-            progressDialog = ProgressDialog.show(this, "",
-                    progressDialogMessage, true);
-        }
-
-        handler = app.getWsResultHandler();
-        handler.setActivity(this);
-
-        super.onResume();
+        super.onDestroy();
     }
 
     protected abstract void activityOnCreate(Bundle savedInstanceState);
 
-    private void initThreading() {
-        handler = createHandler();
-    }
-
     protected abstract WsResultHandler createHandler();
 
     protected void submitWsTask(Runnable task, String message) {
-        progressDialogMessage = message;
-
         progressDialog = ProgressDialog.show(this, "", message, true);
         ExecutorService executorService = getApp().getExecutorService();
         activeWsRequest = executorService.submit(task);
@@ -95,14 +65,11 @@ public abstract class WebServiceBackedActivity extends Activity {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
             progressDialog = null;
-            WwwjdicApplication app = getApp();
-            app.setProgressDialogMessage(null);
         }
     }
 
     private WwwjdicApplication getApp() {
-        WwwjdicApplication app = (WwwjdicApplication) getApplication();
-        return app;
+        return (WwwjdicApplication) getApplication();
     }
 
 }
