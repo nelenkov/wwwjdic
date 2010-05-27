@@ -33,6 +33,9 @@ public class KanjiDrawView extends View implements OnTouchListener {
 
     private OnStrokesChangedListener onStrokesChangedListener;
 
+    private boolean annotateStrokes = true;
+    private boolean annotateStrokesMidway = false;
+
     public KanjiDrawView(Context context) {
         super(context);
         init();
@@ -107,8 +110,16 @@ public class KanjiDrawView extends View implements OnTouchListener {
         int strokeNum = 1;
         for (Stroke stroke : strokes) {
             stroke.draw(canvas, strokePaint);
-            stroke.annotate(canvas, strokeAnnotationPaint, strokeNum);
-            strokeNum++;
+
+            if (annotateStrokes) {
+                if (annotateStrokesMidway) {
+                    stroke.annotateMidway(canvas, strokeAnnotationPaint,
+                            strokeNum);
+                } else {
+                    stroke.annotate(canvas, strokeAnnotationPaint, strokeNum);
+                }
+                strokeNum++;
+            }
         }
     }
 
@@ -129,4 +140,21 @@ public class KanjiDrawView extends View implements OnTouchListener {
             OnStrokesChangedListener onStrokesChangedListener) {
         this.onStrokesChangedListener = onStrokesChangedListener;
     }
+
+    public boolean isAnnotateStrokes() {
+        return annotateStrokes;
+    }
+
+    public void setAnnotateStrokes(boolean annotateStrokes) {
+        this.annotateStrokes = annotateStrokes;
+    }
+
+    public boolean isAnnotateStrokesMidway() {
+        return annotateStrokesMidway;
+    }
+
+    public void setAnnotateStrokesMidway(boolean annotateStrokesMidway) {
+        this.annotateStrokesMidway = annotateStrokesMidway;
+    }
+
 }
