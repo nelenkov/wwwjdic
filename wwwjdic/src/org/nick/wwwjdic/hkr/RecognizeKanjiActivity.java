@@ -30,6 +30,8 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
     private static final String PREF_KR_URL_KEY = "pref_kr_url";
     private static final String PREF_KR_TIMEOUT_KEY = "pref_kr_timeout";
+    private static final String PREF_KR_ANNOTATE = "pref_kr_annotate";
+    private static final String PREF_KR_ANNOTATE_MIDWAY = "pref_kr_annotate_midway";
 
     private static final int HKR_RESULT = 1;
 
@@ -49,6 +51,9 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
         clearButton.setOnClickListener(this);
         recognizeButton.setOnClickListener(this);
+
+        drawView.setAnnotateStrokes(isAnnoateStrokes());
+        drawView.setAnnotateStrokesMidway(isAnnotateStrokesMidway());
 
         drawView.requestFocus();
     }
@@ -149,6 +154,20 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                 .getDefaultSharedPreferences(this);
 
         return preferences.getString(PREF_KR_URL_KEY, KR_DEFAULT_URL);
+    }
+
+    private boolean isAnnotateStrokesMidway() {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        return preferences.getBoolean(PREF_KR_ANNOTATE_MIDWAY, false);
+    }
+
+    private boolean isAnnoateStrokes() {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        return preferences.getBoolean(PREF_KR_ANNOTATE, true);
     }
 
     private boolean isUseLookahead() {

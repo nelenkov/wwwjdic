@@ -152,4 +152,8 @@
     <string name="kanji_kan">漢</string>
     <string name="look_ahead">Look\nahead</string>
     <string name="hkr">Hand written kanji recognition</string>
+    <string name="pref_kr_annotate">Annotate strokes</string>
+    <string name="pref_kr_annotate_midway">Annotate midway</string>
+    <string name="pref_kr_annotate_midway_summary">When checked, stroke numbers are shown near the
+        middle of strokes. Otherwise, near the start.</string>
 </resources>

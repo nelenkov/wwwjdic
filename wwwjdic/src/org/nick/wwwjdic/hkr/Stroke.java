@@ -59,9 +59,59 @@ public class Stroke {
             xOffset = -ANNOTATION_OFFSET * dx;
             yOffset = -ANNOTATION_OFFSET * dy;
         }
+
+        int height = canvas.getClipBounds().height();
+        int width = canvas.getClipBounds().width();
+
+        float x = firstPoint.x + xOffset;
+        float y = firstPoint.y + yOffset;
+
+        if (x < 0) {
+            x = ANNOTATION_OFFSET;
+        }
+
+        if (y < 0) {
+            y = ANNOTATION_OFFSET;
+        }
+
+        if (x > width) {
+            x = width - ANNOTATION_OFFSET;
+        }
+        if (y > height) {
+            y = height - ANNOTATION_OFFSET;
+        }
+
         String strokeNumStr = Integer.toString(strokeNum);
-        canvas.drawText(strokeNumStr, firstPoint.x + xOffset, firstPoint.y
-                + yOffset, paint);
+        canvas.drawText(strokeNumStr, x, y, paint);
+    }
+
+    public void annotateMidway(final Canvas canvas, final Paint paint,
+            int strokeNum) {
+        if (points.isEmpty() || points.size() == 1) {
+            return;
+        }
+
+        float xOffset = ANNOTATION_OFFSET;
+        float yOffset = ANNOTATION_OFFSET;
+
+        int midwayPointIdx = points.size() / 2 - 1;
+        float x = points.get(midwayPointIdx).x;
+        float y = points.get(midwayPointIdx).y;
+
+        float x2 = points.get(midwayPointIdx + 2).x;
+        float y2 = points.get(midwayPointIdx + 2).y;
+
+        float dx = x2 - x;
+        float dy = y2 - y;
+
+        float length = (float) Math.sqrt(dx * dx + dy * dy);
+        if (length >= 1.0) {
+            xOffset = -dx * ANNOTATION_OFFSET / length;
+            yOffset = (float) (dy * ANNOTATION_OFFSET / length - 0.5 * ANNOTATION_OFFSET);
+        }
+
+        String strokeNumStr = Integer.toString(strokeNum);
+        canvas.drawText(strokeNumStr, x + xOffset, y + yOffset, paint);
     }
 
     public String toBase36Points() {
