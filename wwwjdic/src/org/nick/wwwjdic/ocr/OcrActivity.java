@@ -165,6 +165,9 @@ public class OcrActivity extends WebServiceBackedActivity implements
         @Override
         public void handleMessage(Message msg) {
             OcrActivity ocrActivity = (OcrActivity) activity;
+            if (activity == null) {
+                return;
+            }
 
             switch (msg.what) {
             case AUTO_FOCUS:
