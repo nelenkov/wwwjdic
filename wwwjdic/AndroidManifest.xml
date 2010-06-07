@@ -26,6 +26,8 @@
         <activity android:name=".hkr.RecognizeKanjiActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name=".hkr.HkrCandidates"></activity>
+        <activity android:name="SearchHistory"></activity>
+        <activity android:name="FavoritesAndHistory"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
