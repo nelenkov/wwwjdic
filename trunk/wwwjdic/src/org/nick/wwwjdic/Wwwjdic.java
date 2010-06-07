@@ -47,6 +47,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
     private static final int ITEM_ID_OCR = 2;
     private static final int ITEM_ID_SETTINGS = 3;
     private static final int ITEM_ID_DRAW = 4;
+    private static final int ITEM_ID_HISTORY = 5;
 
     private static final String DICTIONARY_TAB = "dictionaryTab";
     private static final String KANJI_TAB = "kanjiTab";
@@ -119,6 +120,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
     private boolean inputTextFromBundle;
 
+    private HistoryDbHelper dbHelper;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -153,6 +156,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                 inputTextFromBundle = true;
             }
         }
+
+        dbHelper = new HistoryDbHelper(this);
     }
 
     private void initRadicals() {
@@ -316,6 +321,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                 Intent intent = new Intent(this, DictionaryResultListView.class);
                 intent.putExtra(Constants.CRITERIA_KEY, criteria);
 
+                dbHelper.addSearchCriteria(criteria);
+
                 startActivity(intent);
             } catch (RejectedExecutionException e) {
                 Log.e(TAG, e.getMessage(), e);
@@ -346,6 +353,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
                 Intent intent = new Intent(this, KanjiResultListView.class);
                 intent.putExtra(Constants.CRITERIA_KEY, criteria);
+
+                dbHelper.addSearchCriteria(criteria);
 
                 startActivity(intent);
             } catch (RejectedExecutionException e) {
@@ -408,6 +417,10 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                 android.R.drawable.ic_menu_preferences);
         menu.add(0, ITEM_ID_ABOUT, 3, R.string.about).setIcon(
                 android.R.drawable.ic_menu_info_details);
+        menu.add(0, ITEM_ID_HISTORY, 4, "Bookmarks and History").setIcon(
+                android.R.drawable.ic_menu_recent_history);
+        menu.add(0, ITEM_ID_HISTORY, 5, "Dummy").setIcon(
+                android.R.drawable.ic_menu_recent_history);
 
         return true;
     }
@@ -430,6 +443,12 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
             return true;
         case ITEM_ID_DRAW:
             intent = new Intent(this, RecognizeKanjiActivity.class);
+
+            startActivity(intent);
+            return true;
+
+        case ITEM_ID_HISTORY:
+            intent = new Intent(this, FavoritesAndHistory.class);
 
             startActivity(intent);
             return true;
