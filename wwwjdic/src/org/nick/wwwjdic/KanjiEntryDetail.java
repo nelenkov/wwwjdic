@@ -3,10 +3,15 @@ package org.nick.wwwjdic;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nick.wwwjdic.sod.SodActivity;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -14,12 +19,16 @@ import android.widget.TextView;
 
 public class KanjiEntryDetail extends Activity {
 
+    private static final int ITEM_ID_SOD = 1;
+
+    private KanjiEntry entry;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.kanji_entry_details);
 
-        KanjiEntry entry = (KanjiEntry) getIntent().getSerializableExtra(
+        entry = (KanjiEntry) getIntent().getSerializableExtra(
                 Constants.KANJI_ENTRY_KEY);
 
         setTitle(String.format("Details for '%s'", entry.getKanji()));
@@ -86,6 +95,31 @@ public class KanjiEntryDetail extends Activity {
         // params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         // meaningsCodesLayout.addView(expandableList, params);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        menu.add(0, ITEM_ID_SOD, 1, "Stroke order diagram");
+
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        switch (item.getItemId()) {
+        case ITEM_ID_SOD:
+            Intent intent = new Intent(this, SodActivity.class);
+            intent.putExtra("unicodeNumber", entry.getUnicodeNumber());
+            intent.putExtra("kanji", entry.getKanji());
+
+            startActivity(intent);
+            return true;
+        default:
+            // do nothing
+        }
+
+        return super.onMenuItemSelected(featureId, item);
     }
 
     private List<Pair<String, String>> crieateCodesData(KanjiEntry entry) {

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
+import org.nick.wwwjdic.history.FavoritesAndHistory;
+import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
 import org.nick.wwwjdic.ocr.OcrActivity;
 
@@ -244,7 +246,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
     private void setupSpinners() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.dictinaries_array, R.layout.spinner_text);
+                this, R.array.dictionaries_array, R.layout.spinner_text);
         adapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dictSpinner.setAdapter(adapter);
@@ -411,16 +413,14 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         super.onCreateOptionsMenu(menu);
         menu.add(0, ITEM_ID_OCR, 0, R.string.ocr).setIcon(
                 android.R.drawable.ic_menu_camera);
-        menu.add(0, ITEM_ID_DRAW, 2, R.string.write_kanji).setIcon(
+        menu.add(0, ITEM_ID_DRAW, 1, R.string.write_kanji).setIcon(
                 android.R.drawable.ic_menu_edit);
-        menu.add(0, ITEM_ID_SETTINGS, 2, R.string.settings).setIcon(
+        menu.add(0, ITEM_ID_HISTORY, 2, "Search history").setIcon(
+                android.R.drawable.ic_menu_recent_history);
+        menu.add(0, ITEM_ID_SETTINGS, 3, R.string.settings).setIcon(
                 android.R.drawable.ic_menu_preferences);
-        menu.add(0, ITEM_ID_ABOUT, 3, R.string.about).setIcon(
+        menu.add(0, ITEM_ID_ABOUT, 4, R.string.about).setIcon(
                 android.R.drawable.ic_menu_info_details);
-        menu.add(0, ITEM_ID_HISTORY, 4, "Bookmarks and History").setIcon(
-                android.R.drawable.ic_menu_recent_history);
-        menu.add(0, ITEM_ID_HISTORY, 5, "Dummy").setIcon(
-                android.R.drawable.ic_menu_recent_history);
 
         return true;
     }
@@ -446,7 +446,6 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
             startActivity(intent);
             return true;
-
         case ITEM_ID_HISTORY:
             intent = new Intent(this, FavoritesAndHistory.class);
 

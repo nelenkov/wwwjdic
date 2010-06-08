@@ -1,4 +1,6 @@
-package org.nick.wwwjdic;
+package org.nick.wwwjdic.history;
+
+import org.nick.wwwjdic.SearchCriteria;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,14 +10,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class HistoryDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "wwwjdic_history.db";
     private static final String HISTORY_TABLE_NAME = "search_history";
 
     private static final String[] ALL_COLUMNS = { "_id", "time",
             "query_string", "is_exact_match", "is_kanji_lookup",
             "is_romanized_japanese", "is_common_words_only", "dictionary",
-            "kanji_search_type", "min_stroke_count", "max_stroke_count" };
+            "kanji_search_type", "min_stroke_count", "max_stroke_count",
+            "is_favorite" };
 
     private static final String HISTORY_TABLE_CREATE = "create table "
             + HISTORY_TABLE_NAME
@@ -23,9 +26,10 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
             + "query_string text not null, is_exact_match integer, "
             + "is_kanji_lookup integer not null, is_romanized_japanese integer, "
             + "is_common_words_only integer, dictionary text, kanji_search_type text, "
-            + "min_stroke_count integer, max_stroke_count integer);";
+            + "min_stroke_count integer, max_stroke_count integer, "
+            + "is_favorite integer not null);";
 
-    HistoryDbHelper(Context context) {
+    public HistoryDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -53,14 +57,23 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         values.put("kanji_search_type", criteria.getKanjiSearchType());
         values.put("min_stroke_count", criteria.getMinStrokeCount());
         values.put("max_stroke_count", criteria.getMaxStrokeCount());
+        values.put("is_favorite", 0);
 
         db.insertOrThrow(HISTORY_TABLE_NAME, null, values);
     }
 
-    public Cursor getAllHistory() {
+    public Cursor getHistory() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor result = db.query(HISTORY_TABLE_NAME, ALL_COLUMNS, null, null,
-                null, null, "time desc");
+        Cursor result = db.query(HISTORY_TABLE_NAME, ALL_COLUMNS,
+                "is_favorite = 0", null, null, null, "time desc");
+
+        return result;
+    }
+
+    public Cursor getFavorites() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor result = db.query(HISTORY_TABLE_NAME, ALL_COLUMNS,
+                "is_favorite = 1", null, null, null, "time desc");
 
         return result;
     }
@@ -86,13 +99,22 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         boolean isKanji = cursor.getInt(idx) == 1;
         idx = cursor.getColumnIndex("query_string");
         String queryString = cursor.getString(idx);
+        idx = cursor.getColumnIndex("_id");
+        int id = cursor.getInt(idx);
+        idx = cursor.getColumnIndex("is_favorite");
+        boolean isFavorite = cursor.getInt(idx) == 1;
 
         if (isKanji) {
             idx = cursor.getColumnIndex("kanji_search_type");
             String searchType = cursor.getString(idx);
             idx = cursor.getColumnIndex("min_stroke_count");
             if (cursor.isNull(idx)) {
-                return SearchCriteria.createForKanji(queryString, searchType);
+                SearchCriteria result = SearchCriteria.createForKanji(
+                        queryString, searchType);
+                result.setId(id);
+                result.setFavorite(isFavorite);
+
+                return result;
             }
 
             int minStrokeCount = cursor.getInt(idx);
@@ -102,8 +124,12 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
                 maxStrokeCount = cursor.getInt(idx);
             }
 
-            return SearchCriteria.createWithStrokeCount(queryString,
-                    searchType, minStrokeCount, maxStrokeCount);
+            SearchCriteria result = SearchCriteria.createWithStrokeCount(
+                    queryString, searchType, minStrokeCount, maxStrokeCount);
+            result.setId(id);
+            result.setFavorite(isFavorite);
+
+            return result;
         }
 
         boolean isExactMatch = cursor.getInt(cursor
@@ -115,8 +141,34 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         String dictionary = cursor.getString(cursor
                 .getColumnIndex("dictionary"));
 
-        return SearchCriteria.createForDictionary(queryString, isExactMatch,
-                isRomanized, isCommonWordsOnly, dictionary);
+        SearchCriteria result = SearchCriteria.createForDictionary(queryString,
+                isExactMatch, isRomanized, isCommonWordsOnly, dictionary);
+        result.setId(id);
+        result.setFavorite(isFavorite);
 
+        return result;
+
+    }
+
+    public void toggleFavorite(int id, boolean isFavorite) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("is_favorite", isFavorite ? 1 : 0);
+        db.update(HISTORY_TABLE_NAME, values, "_id = " + id, null);
+    }
+
+    public void deleteHistoryItem(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(HISTORY_TABLE_NAME, "_id = " + id, null);
+    }
+
+    public void deleteAllHistory() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(HISTORY_TABLE_NAME, "is_favorite = 0", null);
+    }
+
+    public void deleteAllFavorites() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(HISTORY_TABLE_NAME, "is_favorite = 1", null);
     }
 }

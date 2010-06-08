@@ -3,6 +3,8 @@ package org.nick.wwwjdic.hkr;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nick.wwwjdic.sod.StrokePath;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -35,6 +37,8 @@ public class KanjiDrawView extends View implements OnTouchListener {
 
     private boolean annotateStrokes = true;
     private boolean annotateStrokesMidway = false;
+
+    private List<StrokePath> strokePaths;
 
     public KanjiDrawView(Context context) {
         super(context);
@@ -78,6 +82,17 @@ public class KanjiDrawView extends View implements OnTouchListener {
         canvas.drawRect(r, outlinePaint);
 
         drawStrokes(canvas);
+        if (strokePaths != null) {
+            drawStrokePaths(canvas);
+        }
+    }
+
+    private void drawStrokePaths(Canvas canvas) {
+        int strokeNum = 1;
+        for (StrokePath sp : strokePaths) {
+            sp.draw(canvas, strokePaint, strokeNum);
+            strokeNum++;
+        }
     }
 
     @Override
@@ -155,6 +170,14 @@ public class KanjiDrawView extends View implements OnTouchListener {
 
     public void setAnnotateStrokesMidway(boolean annotateStrokesMidway) {
         this.annotateStrokesMidway = annotateStrokesMidway;
+    }
+
+    public List<StrokePath> getStrokePaths() {
+        return strokePaths;
+    }
+
+    public void setStrokePaths(List<StrokePath> strokePaths) {
+        this.strokePaths = strokePaths;
     }
 
 }
