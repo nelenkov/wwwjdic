@@ -1,44 +1,19 @@
 package org.nick.wwwjdic;
 
-import java.io.IOException;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
-import org.apache.http.util.EntityUtils;
 
 import android.util.Log;
 
 public abstract class TranslateTask implements Runnable {
 
     private static final String TAG = TranslateTask.class.getSimpleName();
-
-    private static class StringResponseHandler implements
-            ResponseHandler<String> {
-        public String handleResponse(HttpResponse response)
-                throws ClientProtocolException, IOException {
-            HttpEntity entity = response.getEntity();
-
-            String responseStr = null;
-            if (entity != null) {
-                responseStr = EntityUtils.toString(entity);
-            }
-
-            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                return responseStr;
-            }
-
-            throw new RuntimeException("Server error: " + responseStr);
-        }
-    };
 
     protected ResultListView resultListView;
     protected SearchCriteria searchCriteria;
@@ -48,7 +23,7 @@ public abstract class TranslateTask implements Runnable {
 
     protected HttpContext localContext;
     protected HttpClient httpclient;
-    protected StringResponseHandler responseHandler = new StringResponseHandler();
+    protected ResponseHandler<String> responseHandler = new GzipStringResponseHandler();
 
     public TranslateTask(String url, int timeoutSeconds,
             ResultListView resultView, SearchCriteria searchCriteria) {

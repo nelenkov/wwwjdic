@@ -10,6 +10,10 @@ public class SearchCriteria implements Serializable {
     private static final long serialVersionUID = -6703864987202245997L;
 
     private static final String KANJI_TEXT_LOOKUP_CODE = "J";
+    private static final String KANJI_RADICAL_LOOKUP_CODE = "B";
+
+    private Integer id;
+    private boolean favorite;
 
     private String queryString;
     private boolean isExactMatch;
@@ -88,6 +92,10 @@ public class SearchCriteria implements Serializable {
         return !KANJI_TEXT_LOOKUP_CODE.equals(kanjiSearchType);
     }
 
+    public boolean isKanjiRadicalLookup() {
+        return KANJI_RADICAL_LOOKUP_CODE.equals(kanjiSearchType);
+    }
+
     public Integer getMinStrokeCount() {
         return minStrokeCount;
     }
@@ -106,6 +114,26 @@ public class SearchCriteria implements Serializable {
 
     public boolean hasMaxStrokes() {
         return maxStrokeCount != null;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public boolean isNarrowedDown() {
+        return isExactMatch || isCommonWordsOnly;
     }
 
 }
