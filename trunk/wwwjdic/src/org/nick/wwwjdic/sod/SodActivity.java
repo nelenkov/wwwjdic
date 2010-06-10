@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -40,16 +42,32 @@ public class SodActivity extends WebServiceBackedActivity implements
         @SuppressWarnings("unchecked")
         @Override
         public void handleMessage(Message msg) {
-            SodActivity sodActivity = (SodActivity) activity;
+            final SodActivity sodActivity = (SodActivity) activity;
 
             switch (msg.what) {
             case STROKE_PATH_MSG:
                 sodActivity.dismissProgressDialog();
 
                 if (msg.arg1 == 1) {
-                    List<StrokePath> strokes = (List<StrokePath>) msg.obj;
+                    final List<StrokePath> strokes = (List<StrokePath>) msg.obj;
                     if (strokes != null) {
-                        sodActivity.drawSod(strokes);
+                        Runnable r = new Runnable() {
+                            public void run() {
+                                List<StrokePath> toDraw = new ArrayList<StrokePath>();
+                                for (StrokePath s : strokes) {
+                                    toDraw.add(s);
+                                    sodActivity.drawSod(toDraw);
+                                    try {
+                                        Thread.sleep(100);
+                                    } catch (InterruptedException e) {
+                                        Log.e(TAG, e.getMessage(), e);
+                                    }
+                                }
+                            }
+                        };
+                        ExecutorService e = Executors.newSingleThreadExecutor();
+                        e.submit(r);
+                        // sodActivity.drawSod(strokes);
                     } else {
                         Toast t = Toast.makeText(sodActivity,
                                 String.format("No SOD data for '%s'",
