@@ -83,14 +83,14 @@ public class KanjiDrawView extends View implements OnTouchListener {
 
         drawStrokes(canvas);
         if (strokePaths != null) {
-            drawStrokePaths(canvas);
+            drawStrokePaths(canvas, annotateStrokes);
         }
     }
 
-    private void drawStrokePaths(Canvas canvas) {
+    private void drawStrokePaths(Canvas canvas, boolean annotate) {
         int strokeNum = 1;
         for (StrokePath sp : strokePaths) {
-            sp.draw(canvas, strokePaint, strokeNum);
+            sp.draw(canvas, strokePaint, strokeNum, annotate);
             strokeNum++;
         }
     }

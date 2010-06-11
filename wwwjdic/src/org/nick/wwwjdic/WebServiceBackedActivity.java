@@ -68,7 +68,7 @@ public abstract class WebServiceBackedActivity extends Activity {
         }
     }
 
-    private WwwjdicApplication getApp() {
+    protected WwwjdicApplication getApp() {
         return (WwwjdicApplication) getApplication();
     }
 

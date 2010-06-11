@@ -16,6 +16,10 @@ public class Constants {
 
     public static final String HKR_CANDIDATES_KEY = "org.nick.wwwjdic.hkrCandidates";
 
+    public static final String KANJI_UNICODE_NUMBER = "unicodeNumber";
+
+    public static final String KANJI_GLYPH = "org.nick.wwwjdic.kanjiGlyph";
+
     public static final int RADICAL_RETURN_RESULT = 0;
 
     public static final int CROP_RETURN_RESULT = 1;

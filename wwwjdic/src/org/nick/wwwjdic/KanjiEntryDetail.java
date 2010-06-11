@@ -10,16 +10,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class KanjiEntryDetail extends Activity {
-
-    private static final int ITEM_ID_SOD = 1;
+public class KanjiEntryDetail extends Activity implements OnClickListener {
 
     private KanjiEntry entry;
 
@@ -37,7 +35,7 @@ public class KanjiEntryDetail extends Activity {
         entryView.setText(entry.getKanji());
 
         TextView radicalGlyphText = (TextView) findViewById(R.id.radicalGlyphText);
-        radicalGlyphText.setTextSize(24f);
+        // radicalGlyphText.setTextSize(30f);
         Radicals radicals = Radicals.getInstance();
         Radical radical = radicals.getRadicalByNumber(entry.getRadicalNumber());
         radicalGlyphText.setText(radical.getGlyph().substring(0, 1));
@@ -47,6 +45,9 @@ public class KanjiEntryDetail extends Activity {
 
         TextView strokeCountView = (TextView) findViewById(R.id.strokeCountText);
         strokeCountView.setText(Integer.toString(entry.getStrokeCount()));
+
+        Button sodButton = (Button) findViewById(R.id.sod_button);
+        sodButton.setOnClickListener(this);
 
         LinearLayout readingLayout = (LinearLayout) findViewById(R.id.readingLayout);
 
@@ -64,11 +65,17 @@ public class KanjiEntryDetail extends Activity {
 
         LinearLayout meaningsCodesLayout = (LinearLayout) findViewById(R.id.meaningsCodesLayout);
 
-        for (String meaning : entry.getMeanings()) {
+        if (entry.getMeanings().isEmpty()) {
             TextView text = new TextView(this, null,
                     R.style.dict_detail_meaning);
-            text.setText(meaning);
             meaningsCodesLayout.addView(text);
+        } else {
+            for (String meaning : entry.getMeanings()) {
+                TextView text = new TextView(this, null,
+                        R.style.dict_detail_meaning);
+                text.setText(meaning);
+                meaningsCodesLayout.addView(text);
+            }
         }
 
         TextView moreLabel = new TextView(this);
@@ -95,31 +102,6 @@ public class KanjiEntryDetail extends Activity {
         // params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         // meaningsCodesLayout.addView(expandableList, params);
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        menu.add(0, ITEM_ID_SOD, 1, "Stroke order diagram");
-
-        return true;
-    }
-
-    @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        switch (item.getItemId()) {
-        case ITEM_ID_SOD:
-            Intent intent = new Intent(this, SodActivity.class);
-            intent.putExtra("unicodeNumber", entry.getUnicodeNumber());
-            intent.putExtra("kanji", entry.getKanji());
-
-            startActivity(intent);
-            return true;
-        default:
-            // do nothing
-        }
-
-        return super.onMenuItemSelected(featureId, item);
     }
 
     private List<Pair<String, String>> crieateCodesData(KanjiEntry entry) {
@@ -195,5 +177,21 @@ public class KanjiEntryDetail extends Activity {
 
     private String getStr(int id) {
         return getResources().getText(id).toString();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+        case R.id.sod_button:
+            Intent intent = new Intent(this, SodActivity.class);
+            intent.putExtra(Constants.KANJI_UNICODE_NUMBER, entry
+                    .getUnicodeNumber());
+            intent.putExtra(Constants.KANJI_GLYPH, entry.getKanji());
+
+            startActivity(intent);
+            break;
+        default:
+            // do nothing
+        }
     }
 }
