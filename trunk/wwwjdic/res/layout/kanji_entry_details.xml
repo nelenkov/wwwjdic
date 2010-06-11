@@ -18,14 +18,17 @@
         android:textColor="#FFF" android:layout_height="wrap_content"
         android:text="@string/radical_strokes" android:background="#888888"></TextView>
     <LinearLayout android:id="@+id/radicalCountLayout"
-        android:orientation="horizontal" android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView android:layout_height="wrap_content"
+        android:orientation="horizontal" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:padding="4dip"
+        android:layout_gravity="center" android:gravity="center">
+        <TextView android:layout_height="fill_parent"
             android:layout_width="wrap_content" android:id="@+id/radicalGlyphText"
-            android:layout_marginRight="5px"></TextView>
+            android:layout_marginRight="5dp" android:gravity="center"
+            android:layout_gravity="center" android:text="A"
+            android:textSize="28sp"></TextView>
         <LinearLayout android:id="@+id/radicalCountLayout"
-            android:orientation="vertical" android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:orientation="vertical" android:layout_width="0dip"
+            android:layout_weight="1" android:layout_height="wrap_content">
             <LinearLayout android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -49,6 +52,10 @@
                 </TextView>
             </LinearLayout>
         </LinearLayout>
+        <Button android:id="@+id/sod_button"
+            android:layout_height="wrap_content" android:layout_width="wrap_content"
+            android:text="Stroke order" android:background="@android:drawable/btn_default_small"
+            android:gravity="center" android:layout_gravity="center" />
     </LinearLayout>
     <TextView android:layout_width="fill_parent"
         android:textColor="#FFF" android:layout_height="wrap_content"

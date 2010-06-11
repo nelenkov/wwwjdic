@@ -89,8 +89,7 @@
                         android:minWidth="40dp" android:cursorVisible="false"
                         android:focusable="false" android:textSize="18sp"
                         android:inputType="none"></EditText>
-                    <Button xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:id="@+id/selectRadicalButton"
+                    <Button android:id="@+id/selectRadicalButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="12sp" android:text="@string/select" />
