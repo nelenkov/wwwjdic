@@ -38,4 +38,14 @@ public class Favorites extends HistoryBase {
         return R.layout.favorites;
     }
 
+    @Override
+    protected void deleteCurrentItem() {
+        Cursor c = getCursor();
+        int idx = c.getColumnIndex("_id");
+        int id = c.getInt(idx);
+        db.deleteFavorite(id);
+
+        refresh();
+    }
+
 }
