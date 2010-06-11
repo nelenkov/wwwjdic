@@ -38,4 +38,14 @@ public class SearchHistory extends HistoryBase {
         return R.layout.search_history;
     }
 
+    @Override
+    protected void deleteCurrentItem() {
+        Cursor c = getCursor();
+        int idx = c.getColumnIndex("_id");
+        int id = c.getInt(idx);
+        db.deleteHistoryItem(id);
+
+        refresh();
+    }
+
 }

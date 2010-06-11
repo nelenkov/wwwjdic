@@ -141,16 +141,9 @@ public abstract class HistoryBase extends ListActivity implements
         return false;
     }
 
-    protected void deleteCurrentItem() {
-        Cursor c = getCursor();
-        int idx = c.getColumnIndex("_id");
-        int id = c.getInt(idx);
-        db.deleteHistoryItem(id);
+    protected abstract void deleteCurrentItem();
 
-        refresh();
-    }
-
-    private Cursor getCursor() {
+    protected Cursor getCursor() {
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         Cursor c = adapter.getCursor();
         return c;

@@ -60,7 +60,9 @@ public class HistoryItem extends LinearLayout implements
             criteriaDetailsText.setText(detailStr);
         }
 
+        starCb.setOnCheckedChangeListener(null);
         starCb.setChecked(criteria.isFavorite());
+        starCb.setOnCheckedChangeListener(this);
     }
 
     private String buildDetailString(SearchCriteria criteria) {
