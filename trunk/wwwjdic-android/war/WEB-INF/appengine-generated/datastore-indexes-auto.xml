@@ -1,4 +1,10 @@
-<!-- Indices written at Tue, 8 Jun 2010 02:56:01 UTC -->
+<!-- Indices written at Thu, 10 Jun 2010 04:21:01 UTC -->
 
-<datastore-indexes/>
+<datastore-indexes>
 
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="Stroke" ancestor="true" source="auto">
+        <property name="number" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>
