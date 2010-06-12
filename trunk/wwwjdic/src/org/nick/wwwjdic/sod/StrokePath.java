@@ -12,23 +12,20 @@ import org.xmlpull.v1.XmlPullParser;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.graphics.Paint.Style;
 import android.graphics.Path.FillType;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.Xml;
 
-public class StrokePath extends Drawable {
+public class StrokePath {
 
     private static final String TAG = StrokePath.class.getSimpleName();
 
-    private static final float STROKE_WIDTH = 4f;
+    private static final float STROKE_WIDTH = 6f;
 
     private PointF moveTo;
     private List<Curve> curves = new ArrayList<Curve>();
@@ -36,15 +33,12 @@ public class StrokePath extends Drawable {
     private Paint strokePaint;
     private Paint strokeAnnotationPaint;
 
-    private int alpha;
-    private ColorFilter colorFilter;
-
     public StrokePath(PointF moveTo) {
         this.moveTo = moveTo;
 
         strokePaint = new Paint();
         strokePaint.setColor(Color.WHITE);
-        strokePaint.setStyle(Style.FILL);
+        strokePaint.setStyle(Style.STROKE);
         strokePaint.setAntiAlias(true);
         strokePaint.setStrokeWidth(STROKE_WIDTH);
 
@@ -67,20 +61,18 @@ public class StrokePath extends Drawable {
         return curves;
     }
 
-    public void draw(final Canvas canvas, final Paint paint, int strokeNum,
+    public void draw(final Canvas canvas, final float scale, int strokeNum,
             boolean annotate) {
         Path path = new Path();
         path.moveTo(moveTo.x, moveTo.y);
         path.setFillType(FillType.WINDING);
-
-        paint.setStyle(Style.STROKE);
 
         PointF firstPoint = moveTo;
         PointF lastPoint = moveTo;
         PointF lastP2 = null;
 
         Matrix matrix = new Matrix();
-        matrix.postScale(3.0f, 3.0f);
+        matrix.postScale(scale, scale);
 
         float[] cs = new float[2];
         cs[0] = firstPoint.x;
@@ -91,7 +83,7 @@ public class StrokePath extends Drawable {
 
         if (annotate) {
             String strokeNumStr = Integer.toString(strokeNum);
-            canvas.drawText(strokeNumStr, cs[0] + 7, cs[1] - 7,
+            canvas.drawText(strokeNumStr, cs[0] + 7, cs[1] - 9,
                     strokeAnnotationPaint);
         }
 
@@ -130,7 +122,7 @@ public class StrokePath extends Drawable {
         }
 
         path.transform(matrix);
-        canvas.drawPath(path, paint);
+        canvas.drawPath(path, strokePaint);
     }
 
     private PointF calcAbsolute(PointF currentPoint, PointF p) {
@@ -281,24 +273,4 @@ public class StrokePath extends Drawable {
         return strokes;
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-        // XXX
-        draw(canvas, strokePaint, 1, true);
-    }
-
-    @Override
-    public int getOpacity() {
-        return PixelFormat.OPAQUE;
-    }
-
-    @Override
-    public void setAlpha(int alpha) {
-        this.alpha = alpha;
-    }
-
-    @Override
-    public void setColorFilter(ColorFilter cf) {
-        colorFilter = cf;
-    }
 }

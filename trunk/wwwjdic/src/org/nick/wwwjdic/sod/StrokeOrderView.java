@@ -13,11 +13,10 @@ import android.view.View;
 
 public class StrokeOrderView extends View {
 
-    private static final float STROKE_WIDTH = 4f;
     private static final float OUTLINE_WIDTH = 2f;
 
-    private Paint strokePaint;
-    private Paint strokeAnnotationPaint;
+    private static final float KANJIVG_SIZE = 109f;
+
     private Paint outlinePaint;
 
     private boolean annotateStrokes = true;
@@ -35,18 +34,6 @@ public class StrokeOrderView extends View {
     }
 
     private void init() {
-        strokePaint = new Paint();
-        strokePaint.setColor(Color.WHITE);
-        strokePaint.setStyle(Style.FILL);
-        strokePaint.setAntiAlias(true);
-        strokePaint.setStrokeWidth(STROKE_WIDTH);
-
-        strokeAnnotationPaint = new Paint();
-        strokeAnnotationPaint.setColor(Color.GREEN);
-        strokeAnnotationPaint.setStyle(Style.FILL);
-        strokeAnnotationPaint.setAntiAlias(true);
-        strokeAnnotationPaint.setStrokeWidth(STROKE_WIDTH);
-
         outlinePaint = new Paint();
         outlinePaint.setColor(Color.GRAY);
         outlinePaint.setStyle(Style.STROKE);
@@ -68,14 +55,28 @@ public class StrokeOrderView extends View {
 
     private void drawStrokePaths(Canvas canvas, boolean annotate) {
         int strokeNum = 1;
+
+        int width = getWidth();
+        int height = getHeight();
+        int dimension = Math.min(width, height);
+
+        float scale = dimension / KANJIVG_SIZE;
+        float kanjiSize = scale * KANJIVG_SIZE;
+
+        float dx = (width - kanjiSize) / 2;
+        float dy = (height - kanjiSize) / 2;
+        canvas.translate(dx, dy);
+
         for (StrokePath sp : strokePaths) {
-            sp.draw(canvas, strokePaint, strokeNum, annotate);
+            sp.draw(canvas, scale, strokeNum, annotate);
             strokeNum++;
         }
     }
 
     public void clear() {
-        strokePaths.clear();
+        if (strokePaths != null) {
+            strokePaths.clear();
+        }
         invalidate();
     }
 
