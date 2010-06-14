@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import org.nick.wwwjdic.history.HistoryDbHelper;
+
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -29,14 +32,21 @@ public abstract class ResultListViewBase extends ListActivity implements
 
     protected ProgressDialog progressDialog;
 
+    private HistoryDbHelper db;
+
     protected ResultListViewBase() {
         guiThread = new Handler();
+        db = new HistoryDbHelper(this);
     }
 
     @Override
     protected void onDestroy() {
         if (transPending != null) {
             transPending.cancel(true);
+        }
+
+        if (db != null) {
+            db.close();
         }
 
         super.onDestroy();
@@ -122,6 +132,14 @@ public abstract class ResultListViewBase extends ListActivity implements
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
             progressDialog = null;
+        }
+    }
+
+    protected void setFavoriteId(Intent intent, WwwjdicEntry entry) {
+        Long favoriteId = db.getFavoriteId(entry.getHeading());
+        if (favoriteId != null) {
+            intent.putExtra(Constants.IS_FAVORITE, true);
+            entry.setId(favoriteId);
         }
     }
 }
