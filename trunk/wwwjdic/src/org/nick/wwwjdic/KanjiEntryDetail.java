@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.nick.wwwjdic.sod.SodActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,10 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class KanjiEntryDetail extends Activity implements OnClickListener {
+public class KanjiEntryDetail extends DetailActivity implements OnClickListener {
 
     private KanjiEntry entry;
 
@@ -28,6 +28,8 @@ public class KanjiEntryDetail extends Activity implements OnClickListener {
 
         entry = (KanjiEntry) getIntent().getSerializableExtra(
                 Constants.KANJI_ENTRY_KEY);
+        wwwjdicEntry = entry;
+        isFavorite = getIntent().getBooleanExtra(Constants.IS_FAVORITE, false);
 
         setTitle(String.format("Details for '%s'", entry.getKanji()));
 
@@ -89,6 +91,11 @@ public class KanjiEntryDetail extends Activity implements OnClickListener {
             View codesEntryView = createLabelTextView(codesEntry);
             meaningsCodesLayout.addView(codesEntryView);
         }
+
+        CheckBox starCb = (CheckBox) findViewById(R.id.star_kanji);
+        starCb.setOnCheckedChangeListener(null);
+        starCb.setChecked(isFavorite);
+        starCb.setOnCheckedChangeListener(this);
 
         // ExpandableListView expandableList = new ExpandableListView(this);
         // KanjiCodesAdapter kanjiCodesAdapter = new KanjiCodesAdapter(entry);

@@ -43,4 +43,5 @@ public class FavoritesAndHistory extends TabActivity implements
             history.refresh();
         }
     }
+
 }

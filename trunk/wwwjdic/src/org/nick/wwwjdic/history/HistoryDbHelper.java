@@ -1,6 +1,9 @@
 package org.nick.wwwjdic.history;
 
+import org.nick.wwwjdic.DictionaryEntry;
+import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.SearchCriteria;
+import org.nick.wwwjdic.WwwjdicEntry;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,44 +13,34 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class HistoryDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 10;
 
     private static final String DATABASE_NAME = "wwwjdic_history.db";
-
-    private static final String CRITERIA_TABLE_NAME = "search_criteria";
 
     private static final String HISTORY_TABLE_NAME = "search_history";
 
     private static final String FAVORITES_TABLE_NAME = "favorites";
 
-    private static final String[] CRITERIA_ALL_COLUMNS = { "_id", "time",
+    private static final String[] HISTORY_ALL_COLUMNS = { "_id", "time",
             "query_string", "is_exact_match", "is_kanji_lookup",
             "is_romanized_japanese", "is_common_words_only", "dictionary",
             "kanji_search_type", "min_stroke_count", "max_stroke_count" };
 
-    private static final String[] HISTORY_ALL_COLUMNS = { "_id", "time",
-            "criteria_id" };
-
-    private static final String[] FAVORITES_ALL_COLUMNS = { "_id", "time",
-            "criteria_id" };
-
-    private static final String CRITERIA_TABLE_CREATE = "create table "
-            + CRITERIA_TABLE_NAME
+    private static final String HISTORY_TABLE_CREATE = "create table "
+            + HISTORY_TABLE_NAME
             + " (_id integer primary key autoincrement, time integer not null, "
             + "query_string text not null, is_exact_match integer, "
             + "is_kanji_lookup integer not null, is_romanized_japanese integer, "
             + "is_common_words_only integer, dictionary text, kanji_search_type text, "
             + "min_stroke_count integer, max_stroke_count integer);";
 
-    private static final String HISTORY_TABLE_CREATE = "create table "
-            + HISTORY_TABLE_NAME
-            + " (_id integer primary key autoincrement, time integer not null, "
-            + "criteria_id integer not null);";
+    private static final String[] FAVORITES_ALL_COLUMNS = { "_id", "time",
+            "is_kanji", "dict_str" };
 
     private static final String FAVORITES_TABLE_CREATE = "create table "
             + FAVORITES_TABLE_NAME
             + " (_id integer primary key autoincrement, time integer not null, "
-            + "criteria_id integer not null);";
+            + "is_kanji integer not null, dict_str text not null);";
 
     public HistoryDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -55,14 +48,12 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CRITERIA_TABLE_CREATE);
         db.execSQL(HISTORY_TABLE_CREATE);
         db.execSQL(FAVORITES_TABLE_CREATE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table if exists search_criteria");
         db.execSQL("drop table if exists search_history");
         db.execSQL("drop table if exists favorites");
         onCreate(db);
@@ -74,12 +65,6 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         db.beginTransaction();
         try {
             ContentValues values = fromCriteria(criteria);
-            long criteriaId = db.insertOrThrow(CRITERIA_TABLE_NAME, null,
-                    values);
-
-            values = new ContentValues();
-            values.put("time", System.currentTimeMillis());
-            values.put("criteria_id", criteriaId);
             db.insertOrThrow(HISTORY_TABLE_NAME, null, values);
 
             db.setTransactionSuccessful();
@@ -88,15 +73,34 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addFavorite(SearchCriteria criteria) {
+    public long addFavorite(WwwjdicEntry entry) {
         SQLiteDatabase db = getWritableDatabase();
-        addFavorite(db, criteria);
+
+        db.beginTransaction();
+        try {
+            long result = addFavorite(db, entry);
+
+            db.setTransactionSuccessful();
+
+            return result;
+        } finally {
+            db.endTransaction();
+        }
     }
 
-    private void addFavorite(SQLiteDatabase db, SearchCriteria criteria) {
-        ContentValues values = fromCriteria(criteria);
+    private long addFavorite(SQLiteDatabase db, WwwjdicEntry entry) {
+        ContentValues values = fromEntry(entry);
 
-        db.insertOrThrow(FAVORITES_TABLE_NAME, null, values);
+        return db.insertOrThrow(FAVORITES_TABLE_NAME, null, values);
+    }
+
+    private ContentValues fromEntry(WwwjdicEntry entry) {
+        ContentValues values = new ContentValues();
+        values.put("time", System.currentTimeMillis());
+        values.put("is_kanji", entry.isKanji() ? 1 : 0);
+        values.put("dict_str", entry.getDictString());
+
+        return values;
     }
 
     private ContentValues fromCriteria(SearchCriteria criteria) {
@@ -117,24 +121,16 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
 
     public Cursor getHistory() {
         SQLiteDatabase db = getReadableDatabase();
-        // Cursor result = db.query(HISTORY_TABLE_NAME, HISTORY_ALL_COLUMNS,
-        // null,
-        // null, null, null, "time desc");
-        Cursor result = db.rawQuery(
-                "select * from search_criteria c where c._id "
-                        + "in (select h.criteria_id from search_history h)",
-                null);
+        Cursor result = db.query(HISTORY_TABLE_NAME, HISTORY_ALL_COLUMNS, null,
+                null, null, null, "time desc");
 
         return result;
     }
 
     public Cursor getFavorites() {
         SQLiteDatabase db = getReadableDatabase();
-        // Cursor result = db.query(FAVORITES_TABLE_NAME, FAVORITES_ALL_COLUMNS,
-        // null, null, null, null, "time desc");
-        Cursor result = db.rawQuery(
-                "select * from search_criteria c where c._id "
-                        + "in (select f.criteria_id from favorites f)", null);
+        Cursor result = db.query(FAVORITES_TABLE_NAME, FAVORITES_ALL_COLUMNS,
+                null, null, null, null, "time desc");
 
         return result;
     }
@@ -161,13 +157,7 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         idx = cursor.getColumnIndex("query_string");
         String queryString = cursor.getString(idx);
         idx = cursor.getColumnIndex("_id");
-        int id = cursor.getInt(idx);
-        idx = cursor.getColumnIndex("is_favorite");
-        // true for favorites table
-        boolean isFavorite = true;
-        if (idx != -1) {
-            isFavorite = cursor.getInt(idx) == 1;
-        }
+        long id = cursor.getLong(idx);
 
         if (isKanji) {
             idx = cursor.getColumnIndex("kanji_search_type");
@@ -177,7 +167,6 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
                 SearchCriteria result = SearchCriteria.createForKanji(
                         queryString, searchType);
                 result.setId(id);
-                result.setFavorite(isFavorite);
 
                 return result;
             }
@@ -192,7 +181,6 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
             SearchCriteria result = SearchCriteria.createWithStrokeCount(
                     queryString, searchType, minStrokeCount, maxStrokeCount);
             result.setId(id);
-            result.setFavorite(isFavorite);
 
             return result;
         }
@@ -209,38 +197,37 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         SearchCriteria result = SearchCriteria.createForDictionary(queryString,
                 isExactMatch, isRomanized, isCommonWordsOnly, dictionary);
         result.setId(id);
-        result.setFavorite(isFavorite);
 
         return result;
 
     }
 
-    public void toggleFavorite(int id, boolean isFavorite) {
-        SQLiteDatabase db = getWritableDatabase();
+    public static WwwjdicEntry createWwwjdicEntry(Cursor cursor) {
+        int idx = cursor.getColumnIndex("is_kanji");
+        boolean isKanji = cursor.getInt(idx) == 1;
+        idx = cursor.getColumnIndex("dict_str");
+        String dictStr = cursor.getString(idx);
+        idx = cursor.getColumnIndex("_id");
+        long id = cursor.getLong(idx);
 
-        db.beginTransaction();
-        try {
-            ContentValues values = new ContentValues();
-            values.put("is_favorite", isFavorite ? 1 : 0);
-            db.update(HISTORY_TABLE_NAME, values, "_id = " + id, null);
-
-            Cursor historyItemCursor = db.query(HISTORY_TABLE_NAME,
-                    HISTORY_ALL_COLUMNS, "_id = " + id, null, null, null, null);
-            SearchCriteria favorite = createCriteria(historyItemCursor);
-            addFavorite(favorite);
-
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
+        WwwjdicEntry result = null;
+        if (isKanji) {
+            result = KanjiEntry.parseKanjidic(dictStr);
+        } else {
+            result = DictionaryEntry.parseEdict(dictStr);
         }
+        result.setId(id);
+
+        return result;
+
     }
 
-    public void deleteHistoryItem(int id) {
+    public void deleteHistoryItem(long id) {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(HISTORY_TABLE_NAME, "_id = " + id, null);
     }
 
-    public void deleteFavorite(int id) {
+    public void deleteFavorite(long id) {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(FAVORITES_TABLE_NAME, "_id = " + id, null);
     }

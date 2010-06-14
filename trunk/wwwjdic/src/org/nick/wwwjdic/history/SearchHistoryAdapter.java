@@ -4,7 +4,6 @@
 package org.nick.wwwjdic.history;
 
 import org.nick.wwwjdic.SearchCriteria;
-import org.nick.wwwjdic.history.HistoryItem.FavoriteStatusChangedListener;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -14,12 +13,8 @@ import android.widget.CursorAdapter;
 
 class SearchHistoryAdapter extends CursorAdapter {
 
-    private FavoriteStatusChangedListener favoriteStatusChanged;
-
-    public SearchHistoryAdapter(Context context, Cursor c,
-            FavoriteStatusChangedListener statusChangedListener) {
+    public SearchHistoryAdapter(Context context, Cursor c) {
         super(context, c);
-        this.favoriteStatusChanged = statusChangedListener;
     }
 
     @Override
@@ -32,7 +27,7 @@ class SearchHistoryAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        HistoryItem result = new HistoryItem(context, favoriteStatusChanged);
+        HistoryItem result = new HistoryItem(context);
 
         return result;
     }

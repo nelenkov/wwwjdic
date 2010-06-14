@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class DictionaryEntry implements Serializable {
+public class DictionaryEntry extends WwwjdicEntry implements Serializable {
 
     /**
      * 
@@ -21,11 +21,12 @@ public class DictionaryEntry implements Serializable {
 
     private String tranlsationString;
 
-    private DictionaryEntry() {
+    private DictionaryEntry(String edictStr) {
+        super(edictStr);
     }
 
     public static DictionaryEntry parseEdict(String edictStr) {
-        DictionaryEntry result = new DictionaryEntry();
+        DictionaryEntry result = new DictionaryEntry(edictStr);
         String[] fields = edictStr.split(" ");
 
         result.word = fields[WORD_IDX];
@@ -74,6 +75,21 @@ public class DictionaryEntry implements Serializable {
 
     public String getTranslationString() {
         return tranlsationString;
+    }
+
+    @Override
+    public String getDetailString() {
+        return reading + " " + tranlsationString;
+    }
+
+    @Override
+    public String getHeading() {
+        return word;
+    }
+
+    @Override
+    public boolean isKanji() {
+        return false;
     }
 
 }
