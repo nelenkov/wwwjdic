@@ -158,7 +158,7 @@ public class StrokePath {
 
         for (int i = 0; i < path.length(); i++) {
             char c = path.charAt(i);
-            if (c == 'M') {
+            if (c == 'M' || c == 'm') {
                 isInMoveTo = true;
                 continue;
             }
@@ -255,8 +255,13 @@ public class StrokePath {
                     name = parser.getName();
                     if (name.equalsIgnoreCase("stroke")) {
                         String path = parser.getAttributeValue(null, "path");
+                        // System.out.println("parsing " + path);
                         StrokePath strokePath = StrokePath.parsePath(path);
                         strokes.add(strokePath);
+                    }
+                    if (name.equalsIgnoreCase("kanji")) {
+                        String unicode = parser.getAttributeValue(null, "id");
+                        // System.out.println(unicode);
                     }
                     break;
                 case XmlPullParser.END_TAG:
@@ -272,5 +277,4 @@ public class StrokePath {
 
         return strokes;
     }
-
 }
