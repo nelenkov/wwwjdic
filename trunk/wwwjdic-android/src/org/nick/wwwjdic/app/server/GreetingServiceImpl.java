@@ -44,7 +44,15 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
                     "Name must be at least 4 characters long");
         }
 
-        // EntityManager em = EMF.get().createEntityManager();
+        // saveKanji();
+
+        String serverInfo = getServletContext().getServerInfo();
+        String userAgent = getThreadLocalRequest().getHeader("User-Agent");
+        return "Hello, " + input + "!<br><br>I am running " + serverInfo
+                + ".<br><br>It looks like you are using:<br>" + userAgent;
+    }
+
+    private void saveKanji() {
         PersistenceManager pm = PMF.get().getPersistenceManager();
         Kanji kanji = new Kanji();
         kanji.setMidashi("™B");
@@ -78,22 +86,13 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
             pm.makePersistent(kanji);
             tx.commit();
-            // em.persist(s);
-            // kanji.getStrokes().add(key);
-            // em.persist(kanji);
         } finally {
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
 
-            // em.close();
             pm.close();
         }
-
-        String serverInfo = getServletContext().getServerInfo();
-        String userAgent = getThreadLocalRequest().getHeader("User-Agent");
-        return "Hello, " + input + "!<br><br>I am running " + serverInfo
-                + ".<br><br>It looks like you are using:<br>" + userAgent;
     }
 
     @SuppressWarnings("unchecked")
@@ -104,10 +103,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
         Transaction tx = null;
         try {
-            // q = pm.newQuery(Kanji.class);
-            // q.setFilter("unicodeNumber == unicodeNumberParam");
-            // q.declareParameters("String unicodeNumberParam");
-
             q = pm.newQuery("select from org.nick.wwwjdic.app.kanjivg.Kanji "
                     + "where unicodeNumber == unicodeNumberParam "
                     + "parameters String unicodeNumberParam ");
@@ -117,7 +112,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
             List<Kanji> kanjis = (List<Kanji>) q.execute(unicodeNumber);
             if (kanjis.isEmpty()) {
-                return "<empty>";
+                return String.format("kanji with unicode number %s not found",
+                        unicodeNumber);
             }
 
             Kanji k = kanjis.get(0);
@@ -166,29 +162,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
                 }
             }
 
-            // GZIPInputStream in = new GZIPInputStream(new
-            // ByteArrayInputStream(
-            // kanjivgGzip));
-            // KanjivgParser parser = new KanjivgParser(in);
-            //
-            // int numKanjis = 0;
-            // pm = PMF.get().getPersistenceManager();
-            //
-            // while (parser.hasNext()) {
-            // Kanji kanji = parser.next();
-            // logger.info("saving: " + kanji.getMidashi());
-            // saveKanji(pm, kanji);
-            // logger.info("done");
-            // numKanjis++;
-            // }
-            //
-            // return numKanjis;
-            return 1;
-        }
-        // catch (IOException e) {
-        // throw new RuntimeException(e);
-        // }
-        finally {
+            return kanjivgGzip.length;
+        } finally {
             if (pm != null) {
                 pm.close();
             }
