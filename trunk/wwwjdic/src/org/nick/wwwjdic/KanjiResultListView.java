@@ -30,6 +30,8 @@ public class KanjiResultListView extends ResultListViewBase {
         Intent intent = new Intent(this, KanjiEntryDetail.class);
         KanjiEntry entry = entries.get(position);
         intent.putExtra(Constants.KANJI_ENTRY_KEY, entry);
+        setFavoriteId(intent, entry);
+
         startActivity(intent);
     }
 

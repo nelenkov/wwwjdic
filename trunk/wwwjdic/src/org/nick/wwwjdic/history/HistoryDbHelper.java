@@ -227,4 +227,27 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(FAVORITES_TABLE_NAME, null, null);
     }
+
+    public Long getFavoriteId(String heading) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = db.query(FAVORITES_TABLE_NAME, new String[] { "_id" },
+                    "heading = ?", new String[] { heading }, null, null,
+                    "time desc");
+            int count = cursor.getCount();
+            if (count == 0) {
+                return null;
+            }
+
+            int idx = cursor.getColumnIndex("_id");
+            cursor.moveToFirst();
+
+            return cursor.getLong(idx);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
 }
