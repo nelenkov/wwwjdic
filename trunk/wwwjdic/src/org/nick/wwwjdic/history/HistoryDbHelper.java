@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class HistoryDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 12;
 
     private static final String DATABASE_NAME = "wwwjdic_history.db";
 
@@ -35,12 +35,12 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
             + "min_stroke_count integer, max_stroke_count integer);";
 
     private static final String[] FAVORITES_ALL_COLUMNS = { "_id", "time",
-            "is_kanji", "dict_str" };
+            "is_kanji", "heading", "dict_str" };
 
     private static final String FAVORITES_TABLE_CREATE = "create table "
             + FAVORITES_TABLE_NAME
             + " (_id integer primary key autoincrement, time integer not null, "
-            + "is_kanji integer not null, dict_str text not null);";
+            + "is_kanji integer not null, heading text not null, dict_str text not null);";
 
     public HistoryDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -62,30 +62,15 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
     public void addSearchCriteria(SearchCriteria criteria) {
         SQLiteDatabase db = getWritableDatabase();
 
-        db.beginTransaction();
-        try {
-            ContentValues values = fromCriteria(criteria);
-            db.insertOrThrow(HISTORY_TABLE_NAME, null, values);
-
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-        }
+        ContentValues values = fromCriteria(criteria);
+        db.insertOrThrow(HISTORY_TABLE_NAME, null, values);
     }
 
     public long addFavorite(WwwjdicEntry entry) {
         SQLiteDatabase db = getWritableDatabase();
+        long result = addFavorite(db, entry);
 
-        db.beginTransaction();
-        try {
-            long result = addFavorite(db, entry);
-
-            db.setTransactionSuccessful();
-
-            return result;
-        } finally {
-            db.endTransaction();
-        }
+        return result;
     }
 
     private long addFavorite(SQLiteDatabase db, WwwjdicEntry entry) {
@@ -98,6 +83,7 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("time", System.currentTimeMillis());
         values.put("is_kanji", entry.isKanji() ? 1 : 0);
+        values.put("heading", entry.getHeading());
         values.put("dict_str", entry.getDictString());
 
         return values;

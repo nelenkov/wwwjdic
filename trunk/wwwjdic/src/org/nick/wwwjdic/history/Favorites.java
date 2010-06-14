@@ -14,28 +14,16 @@ public class Favorites extends HistoryBase implements
         FavoriteStatusChangedListener {
 
     protected void setupAdapter() {
-        try {
-            Cursor cursor = db.getFavorites();
-            FavoritesAdapter adapter = new FavoritesAdapter(this, cursor, this);
-            setListAdapter(adapter);
-        } finally {
-            db.close();
-        }
-    }
-
-    public void refresh() {
-        try {
-            Cursor cursor = db.getFavorites();
-            FavoritesAdapter adapter = new FavoritesAdapter(this, cursor, this);
-            setListAdapter(adapter);
-        } finally {
-            db.close();
-        }
+        Cursor cursor = db.getFavorites();
+        startManagingCursor(cursor);
+        FavoritesAdapter adapter = new FavoritesAdapter(this, cursor, this);
+        setListAdapter(adapter);
     }
 
     @Override
     protected void deleteAll() {
         db.deleteAllFavorites();
+        refresh();
     }
 
     @Override

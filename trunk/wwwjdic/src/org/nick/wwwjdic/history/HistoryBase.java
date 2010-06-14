@@ -1,6 +1,9 @@
 package org.nick.wwwjdic.history;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +24,8 @@ public abstract class HistoryBase extends ListActivity {
     private static final int MENU_ITEM_LOOKUP = 1;
     private static final int MENU_ITEM_DELETE = 2;
 
+    private static final int CONFIRM_DELETE_DIALOG_ID = 0;
+
     protected HistoryDbHelper db;
 
     protected HistoryBase() {
@@ -35,6 +40,13 @@ public abstract class HistoryBase extends ListActivity {
         getListView().setOnCreateContextMenuListener(this);
 
         setupAdapter();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        db.close();
     }
 
     protected abstract int getContentView();
@@ -72,7 +84,7 @@ public abstract class HistoryBase extends ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case MENU_ITEM_DELETE_ALL:
-            deleteAll();
+            showDialog(CONFIRM_DELETE_DIALOG_ID);
 
             return true;
         }
@@ -134,6 +146,45 @@ public abstract class HistoryBase extends ListActivity {
         refresh();
     }
 
-    public abstract void refresh();
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        Dialog dialog = null;
+
+        switch (id) {
+        case 0:
+            dialog = createConfirmDeleteDialog();
+            break;
+        default:
+            dialog = null;
+        }
+
+        return dialog;
+    }
+
+    private Dialog createConfirmDeleteDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Delete all items?").setCancelable(false)
+                .setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                deleteAll();
+                            }
+                        }).setNegativeButton("No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog dialog = builder.create();
+
+        return dialog;
+    }
+
+    protected void refresh() {
+        Cursor cursor = getCursor();
+        cursor.requery();
+        CursorAdapter adapter = (CursorAdapter) getListAdapter();
+        adapter.notifyDataSetChanged();
+    }
 
 }

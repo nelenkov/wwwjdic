@@ -12,30 +12,16 @@ import android.database.Cursor;
 public class SearchHistory extends HistoryBase {
 
     protected void setupAdapter() {
-        try {
-            Cursor cursor = db.getHistory();
-            SearchHistoryAdapter adapter = new SearchHistoryAdapter(this,
-                    cursor);
-            setListAdapter(adapter);
-        } finally {
-            db.close();
-        }
-    }
-
-    public void refresh() {
-        try {
-            Cursor cursor = db.getHistory();
-            SearchHistoryAdapter adapter = new SearchHistoryAdapter(this,
-                    cursor);
-            setListAdapter(adapter);
-        } finally {
-            db.close();
-        }
+        Cursor cursor = db.getHistory();
+        startManagingCursor(cursor);
+        SearchHistoryAdapter adapter = new SearchHistoryAdapter(this, cursor);
+        setListAdapter(adapter);
     }
 
     @Override
     protected void deleteAll() {
         db.deleteAllHistory();
+        refresh();
     }
 
     @Override
