@@ -15,9 +15,11 @@ import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.StringUtils;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -82,6 +84,11 @@ public class SodActivity extends WebServiceBackedActivity implements
 
     private static final String STROKE_PATH_LOOKUP_URL = "http://wwwjdic-android.appspot.com/kanji/";
 
+    private static final String PREF_SOD_ANIMATION_DELAY = "pref_sod_animation_delay";
+    private static final String PREF_SOD_TIMEOUT = "pref_sod_server_timeout";
+
+    private static final String NOT_FOUND_STATUS = "not found";
+
     private Button drawButton;
     private Button clearButton;
     private Button animateButton;
@@ -135,6 +142,7 @@ public class SodActivity extends WebServiceBackedActivity implements
         this.strokes = new ArrayList<StrokePath>(strokes);
 
         strokeOrderView.setAnnotateStrokes(false);
+        final int animationDelay = getStrokeAnimationDelay();
 
         Runnable animationTask = new Runnable() {
             public void run() {
@@ -145,7 +153,7 @@ public class SodActivity extends WebServiceBackedActivity implements
                     msg.obj = toDraw;
                     handler.sendMessage(msg);
                     try {
-                        Thread.sleep(700);
+                        Thread.sleep(animationDelay);
                     } catch (InterruptedException e) {
                         Log.e(TAG, e.getMessage(), e);
                     }
@@ -163,8 +171,9 @@ public class SodActivity extends WebServiceBackedActivity implements
     private HttpClient createHttpClient() {
         HttpClient result = new DefaultHttpClient();
         HttpParams httpParams = result.getParams();
-        HttpConnectionParams.setConnectionTimeout(httpParams, 20 * 1000);
-        HttpConnectionParams.setSoTimeout(httpParams, 20 * 1000);
+        int timeout = getSodServerTimeout();
+        HttpConnectionParams.setConnectionTimeout(httpParams, timeout);
+        HttpConnectionParams.setSoTimeout(httpParams, timeout);
 
         return result;
     }
@@ -194,7 +203,28 @@ public class SodActivity extends WebServiceBackedActivity implements
         }
     }
 
+    private int getStrokeAnimationDelay() {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        String delayStr = preferences
+                .getString(PREF_SOD_ANIMATION_DELAY, "700");
+
+        return Integer.parseInt(delayStr);
+    }
+
+    private int getSodServerTimeout() {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        String delayStr = preferences.getString(PREF_SOD_TIMEOUT, "20");
+
+        return Integer.parseInt(delayStr) * 1000;
+    }
+
     class GetStrokePathTask implements Runnable {
+
+        private static final String USER_AGENT = "Android-WWWJDIC/0.9";
 
         private String unicodeNumber;
         private boolean animate;
@@ -215,6 +245,7 @@ public class SodActivity extends WebServiceBackedActivity implements
             HttpGet get = new HttpGet(lookupUrl);
             get.addHeader("Accept-Encoding", "gzip");
             get.addHeader("User-Agent", "gzip");
+            get.addHeader("X-User-Agent", USER_AGENT);
 
             try {
                 String responseStr = httpClient.execute(get,
@@ -260,7 +291,7 @@ public class SodActivity extends WebServiceBackedActivity implements
             return null;
         }
 
-        if ("<empty>".equals(reply)) {
+        if (reply.startsWith(NOT_FOUND_STATUS)) {
             return null;
         }
 

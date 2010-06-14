@@ -23,6 +23,8 @@ public class StrokeOrderView extends View {
 
     private List<StrokePath> strokePaths;
 
+    private int animationDelayMillis;
+
     public StrokeOrderView(Context context) {
         super(context);
         init();
@@ -94,6 +96,14 @@ public class StrokeOrderView extends View {
 
     public void setStrokePaths(List<StrokePath> strokePaths) {
         this.strokePaths = strokePaths;
+    }
+
+    public int getAnimationDelayMillis() {
+        return animationDelayMillis;
+    }
+
+    public void setAnimationDelayMillis(int animationDelayMillis) {
+        this.animationDelayMillis = animationDelayMillis;
     }
 
 }

@@ -33,7 +33,6 @@ public class GzipStringResponseHandler implements ResponseHandler<String> {
             }
 
             responseStr = new String(arr.toByteArray(), "UTF-8");
-            System.out.println("got gzip");
         } else {
             if (entity != null) {
                 responseStr = EntityUtils.toString(entity);
