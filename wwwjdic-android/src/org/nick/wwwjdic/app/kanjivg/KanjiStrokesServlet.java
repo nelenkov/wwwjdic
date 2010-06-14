@@ -3,6 +3,7 @@ package org.nick.wwwjdic.app.kanjivg;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -19,10 +20,19 @@ public class KanjiStrokesServlet extends HttpServlet {
      */
     private static final long serialVersionUID = 1176775953028953526L;
 
+    private static final Logger log = Logger
+            .getLogger(KanjiStrokesServlet.class.getName());
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        String xuserAgent = req.getHeader("X-User-Agent");
+        if (xuserAgent != null) {
+            log.info("X-User-Agent: " + xuserAgent);
+        }
+
         String unicodeNumber = req.getPathInfo().replace("/", "");
+        log.info("got request for " + unicodeNumber);
         String kanji = findKanji(unicodeNumber);
 
         resp.setCharacterEncoding("UTF-8");
@@ -42,10 +52,6 @@ public class KanjiStrokesServlet extends HttpServlet {
 
         Transaction tx = null;
         try {
-            // q = pm.newQuery(Kanji.class);
-            // q.setFilter("unicodeNumber == unicodeNumberParam");
-            // q.declareParameters("String unicodeNumberParam");
-
             q = pm.newQuery("select from org.nick.wwwjdic.app.kanjivg.Kanji "
                     + "where unicodeNumber == unicodeNumberParam "
                     + "parameters String unicodeNumberParam ");
@@ -55,11 +61,14 @@ public class KanjiStrokesServlet extends HttpServlet {
 
             List<Kanji> kanjis = (List<Kanji>) q.execute(unicodeNumber);
             if (kanjis.isEmpty()) {
-                return "<empty>";
+                log.info(String.format("KanjiVG data for %s not found",
+                        unicodeNumber));
+                return String.format("not found (%s)", unicodeNumber);
             }
 
             Kanji k = kanjis.get(0);
             String result = k.getMidashi() + " " + k.getUnicodeNumber() + "\n";
+            log.info("returning " + result);
 
             List<Stroke> strokes = k.getStrokes();
             for (Stroke s : strokes) {
