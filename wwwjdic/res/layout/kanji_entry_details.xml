@@ -4,15 +4,20 @@
     android:orientation="vertical" android:id="@+id/kanjiDetailLayout"
     android:paddingLeft="6dip">
     <LinearLayout android:id="@+id/kanjiReadingLayout"
-        android:orientation="horizontal" android:layout_width="wrap_content"
+        android:orientation="horizontal" android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5px">
         <TextView android:layout_height="fill_parent"
-            android:layout_width="fill_parent" android:id="@+id/kanjiText"
-            android:layout_marginRight="10px" style="@style/kanji_detail_heading"></TextView>
+            android:layout_width="wrap_content" android:id="@+id/kanjiText"
+            android:layout_marginRight="10px" style="@style/kanji_detail_heading"
+            android:gravity="center"></TextView>
         <LinearLayout android:id="@+id/readingLayout"
-            android:orientation="vertical" android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></LinearLayout>
+            android:layout_width="0dip" android:layout_weight="1"
+            android:orientation="vertical" android:layout_height="wrap_content"></LinearLayout>
+        <CheckBox android:id="@+id/star_kanji"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:focusable="false" android:button="@android:drawable/btn_star"
+            android:gravity="center_vertical" android:layout_gravity="center_vertical" />
     </LinearLayout>
     <TextView android:layout_width="fill_parent"
         android:textColor="#FFF" android:layout_height="wrap_content"

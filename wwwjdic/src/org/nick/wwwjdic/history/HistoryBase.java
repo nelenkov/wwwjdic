@@ -1,13 +1,6 @@
 package org.nick.wwwjdic.history;
 
-import org.nick.wwwjdic.Constants;
-import org.nick.wwwjdic.DictionaryResultListView;
-import org.nick.wwwjdic.KanjiResultListView;
-import org.nick.wwwjdic.SearchCriteria;
-import org.nick.wwwjdic.history.HistoryItem.FavoriteStatusChangedListener;
-
 import android.app.ListActivity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,8 +13,7 @@ import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 
-public abstract class HistoryBase extends ListActivity implements
-        FavoriteStatusChangedListener {
+public abstract class HistoryBase extends ListActivity {
 
     private static final String TAG = HistoryBase.class.getSimpleName();
 
@@ -54,21 +46,7 @@ public abstract class HistoryBase extends ListActivity implements
         lookupCurrentItem();
     }
 
-    private void lookupCurrentItem() {
-        Cursor c = getCursor();
-
-        SearchCriteria criteria = HistoryDbHelper.createCriteria(c);
-
-        Intent intent = null;
-        if (criteria.isKanjiLookup()) {
-            intent = new Intent(this, KanjiResultListView.class);
-        } else {
-            intent = new Intent(this, DictionaryResultListView.class);
-        }
-        intent.putExtra(Constants.CRITERIA_KEY, criteria);
-
-        startActivity(intent);
-    }
+    protected abstract void lookupCurrentItem();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -150,8 +128,10 @@ public abstract class HistoryBase extends ListActivity implements
     }
 
     @Override
-    public void onStatusChanged(boolean isFavorite, int id) {
-        db.toggleFavorite(id, isFavorite);
+    public void onResume() {
+        super.onResume();
+
+        refresh();
     }
 
     public abstract void refresh();

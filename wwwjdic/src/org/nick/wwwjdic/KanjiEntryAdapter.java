@@ -60,7 +60,8 @@ public class KanjiEntryAdapter extends BaseAdapter {
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             params.setMargins(5, 3, 5, 0);
 
-            LinearLayout.LayoutParams entryParams = new LinearLayout.LayoutParams(params);
+            LinearLayout.LayoutParams entryParams = new LinearLayout.LayoutParams(
+                    params);
             entryParams.gravity = Gravity.CENTER;
             entryText = createTextView(context, R.style.kanji_list_heading,
                     entry.getKanji());
@@ -80,7 +81,7 @@ public class KanjiEntryAdapter extends BaseAdapter {
                 readingMeaningsLayout.addView(kunyomiText, params);
             }
 
-            String meaningsStr = StringUtils.join(entry.getMeanings(), "/", 0);
+            String meaningsStr = entry.getMeaningsAsString();
             translationText = createTextView(context,
                     R.style.kanji_list_translation, meaningsStr);
             readingMeaningsLayout.addView(translationText, params);

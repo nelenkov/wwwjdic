@@ -1,15 +1,11 @@
 package org.nick.wwwjdic;
 
-import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class DictionaryEntryDetail extends Activity {
+public class DictionaryEntryDetail extends DetailActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -18,10 +14,12 @@ public class DictionaryEntryDetail extends Activity {
 
         DictionaryEntry entry = (DictionaryEntry) getIntent()
                 .getSerializableExtra(Constants.ENTRY_KEY);
+        wwwjdicEntry = entry;
+        isFavorite = getIntent().getBooleanExtra(Constants.IS_FAVORITE, false);
 
         setTitle(String.format("Details for '%s'", entry.getWord()));
 
-        LinearLayout detailLayout = (LinearLayout) findViewById(R.id.detailLayout);
+        LinearLayout wordReadingLayout = (LinearLayout) findViewById(R.id.word_reading_layout);
 
         TextView entryView = (TextView) findViewById(R.id.wordText);
         entryView.setText(entry.getWord());
@@ -30,28 +28,10 @@ public class DictionaryEntryDetail extends Activity {
             TextView readingView = new TextView(this, null,
                     R.style.dict_detail_reading);
             readingView.setText(entry.getReading());
-            detailLayout.addView(readingView);
+            wordReadingLayout.addView(readingView);
         }
 
-        TextView translationLabel = new TextView(this);
-        translationLabel.setText(R.string.translation);
-        translationLabel.setBackgroundColor(Color.GRAY);
-        translationLabel.setTextColor(Color.WHITE);
-        detailLayout.addView(translationLabel);
-
-        ScrollView scroll = new ScrollView(this);
-        LayoutParams lp = new LayoutParams(LayoutParams.FILL_PARENT,
-                LayoutParams.FILL_PARENT);
-        scroll.setLayoutParams(lp);
-        detailLayout.addView(scroll);
-
-        LinearLayout meaningsLayout = new LinearLayout(this);
-        meaningsLayout.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout.LayoutParams layoutLp = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.FILL_PARENT);
-        meaningsLayout.setLayoutParams(layoutLp);
-        scroll.addView(meaningsLayout);
+        LinearLayout meaningsLayout = (LinearLayout) findViewById(R.id.meanings_layout);
 
         for (String meaning : entry.getMeanings()) {
             TextView text = new TextView(this, null,
@@ -59,5 +39,10 @@ public class DictionaryEntryDetail extends Activity {
             text.setText(meaning);
             meaningsLayout.addView(text);
         }
+
+        CheckBox starCb = (CheckBox) findViewById(R.id.star_word);
+        starCb.setOnCheckedChangeListener(null);
+        starCb.setChecked(isFavorite);
+        starCb.setOnCheckedChangeListener(this);
     }
 }

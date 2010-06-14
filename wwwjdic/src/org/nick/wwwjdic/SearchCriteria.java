@@ -12,8 +12,7 @@ public class SearchCriteria implements Serializable {
     private static final String KANJI_TEXT_LOOKUP_CODE = "J";
     private static final String KANJI_RADICAL_LOOKUP_CODE = "B";
 
-    private Integer id;
-    private boolean favorite;
+    private Long id;
 
     private String queryString;
     private boolean isExactMatch;
@@ -116,20 +115,12 @@ public class SearchCriteria implements Serializable {
         return maxStrokeCount != null;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public boolean isFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
     }
 
     public boolean isNarrowedDown() {

@@ -24,6 +24,8 @@ public class Constants {
 
     public static final int CROP_RETURN_RESULT = 1;
 
+    public static final String IS_FAVORITE = "org.nick.wwwjdic.isFavorite";
+
     private Constants() {
     }
 

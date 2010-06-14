@@ -8,12 +8,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class KanjiEntry implements Serializable {
+public class KanjiEntry extends WwwjdicEntry implements Serializable {
 
-    /**
-	 * 
-	 */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -2260771889935344623L;
 
     private static final int KANJI_IDX = 0;
     private static final int JISCODE_IDX = 1;
@@ -59,11 +56,12 @@ public class KanjiEntry implements Serializable {
 
     private List<String> meanings = new ArrayList<String>();
 
-    private KanjiEntry() {
+    private KanjiEntry(String dictStr) {
+        super(dictStr);
     }
 
     public static KanjiEntry parseKanjidic(String kanjidicStr) {
-        KanjiEntry result = new KanjiEntry();
+        KanjiEntry result = new KanjiEntry(kanjidicStr);
 
         String[] fields = kanjidicStr.split(" ");
 
@@ -240,6 +238,25 @@ public class KanjiEntry implements Serializable {
 
     public List<String> getMeanings() {
         return Collections.unmodifiableList(meanings);
+    }
+
+    public String getMeaningsAsString() {
+        return StringUtils.join(getMeanings(), "/", 0);
+    }
+
+    @Override
+    public String getDetailString() {
+        return reading + " " + getMeaningsAsString();
+    }
+
+    @Override
+    public String getHeading() {
+        return kanji;
+    }
+
+    @Override
+    public boolean isKanji() {
+        return true;
     }
 
 }

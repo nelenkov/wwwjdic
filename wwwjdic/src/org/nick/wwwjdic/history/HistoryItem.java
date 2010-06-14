@@ -8,31 +8,17 @@ import org.nick.wwwjdic.StringUtils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
-public class HistoryItem extends LinearLayout implements
-        OnCheckedChangeListener {
+public class HistoryItem extends LinearLayout {
 
-    static interface FavoriteStatusChangedListener {
-        void onStatusChanged(boolean isFavorite, int id);
-    }
-
-    private int id;
     private TextView isKanjiText;
     private TextView searchKeyText;
     private TextView criteriaDetailsText;
-    private CheckBox starCb;
 
-    private FavoriteStatusChangedListener favoriteStatusChangedListener;
-
-    HistoryItem(Context context,
-            FavoriteStatusChangedListener statusChangedListener) {
+    HistoryItem(Context context) {
         super(context);
-        this.favoriteStatusChangedListener = statusChangedListener;
 
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.search_history_item, this);
@@ -40,12 +26,9 @@ public class HistoryItem extends LinearLayout implements
         isKanjiText = (TextView) findViewById(R.id.is_kanji);
         searchKeyText = (TextView) findViewById(R.id.search_key);
         criteriaDetailsText = (TextView) findViewById(R.id.criteria_details);
-        starCb = (CheckBox) findViewById(R.id.star);
-        starCb.setOnCheckedChangeListener(this);
     }
 
     public void populate(SearchCriteria criteria) {
-        id = criteria.getId();
         isKanjiText.setText(criteria.isKanjiLookup() ? "Š¿" : "‚ ");
         String searchKey = criteria.getQueryString();
         if (criteria.isKanjiRadicalLookup()) {
@@ -60,9 +43,6 @@ public class HistoryItem extends LinearLayout implements
             criteriaDetailsText.setText(detailStr);
         }
 
-        starCb.setOnCheckedChangeListener(null);
-        starCb.setChecked(criteria.isFavorite());
-        starCb.setOnCheckedChangeListener(this);
     }
 
     private String buildDetailString(SearchCriteria criteria) {
@@ -168,8 +148,4 @@ public class HistoryItem extends LinearLayout implements
         return -1;
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        favoriteStatusChangedListener.onStatusChanged(isChecked, id);
-    }
 }
