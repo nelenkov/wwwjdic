@@ -38,10 +38,21 @@
             android:defaultValue="10" />
         <CheckBoxPreference android:key="pref_kr_annotate"
             android:title="@string/pref_kr_annotate"
-            android:defaultValue="true" android:disableDependentsState="false"/>    
+            android:defaultValue="true" android:disableDependentsState="false" />
         <CheckBoxPreference android:key="pref_kr_annotate_midway"
             android:title="@string/pref_kr_annotate_midway"
             android:summary="@string/pref_kr_annotate_midway_summary"
-            android:defaultValue="false" android:dependency="pref_kr_annotate"/>
+            android:defaultValue="false" android:dependency="pref_kr_annotate" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_sod">
+        <EditTextPreference android:key="pref_sod_server_timeout"
+            android:title="@string/pref_sod_server_timeout" android:summary="@string/pref_timeout_summary"
+            android:singleLine="true" android:inputType="numberDecimal"
+            android:defaultValue="20" />
+        <EditTextPreference android:key="pref_sod_animation_delay"
+            android:title="@string/pref_sod_animation_delay"
+            android:summary="@string/pref_sod_animation_delay_summary"
+            android:singleLine="true" android:inputType="numberDecimal"
+            android:defaultValue="700" />
     </PreferenceCategory>
 </PreferenceScreen>

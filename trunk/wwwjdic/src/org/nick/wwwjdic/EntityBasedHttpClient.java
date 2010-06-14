@@ -14,7 +14,7 @@ import org.apache.http.protocol.HTTP;
 
 public abstract class EntityBasedHttpClient {
 
-    private static final String USER_AGENT_STRING = "Android-WWWJDIC/0.8";
+    private static final String USER_AGENT_STRING = "Android-WWWJDIC/0.9";
 
     protected String url;
     protected DefaultHttpClient httpClient;
