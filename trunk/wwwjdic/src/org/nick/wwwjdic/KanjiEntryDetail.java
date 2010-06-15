@@ -35,6 +35,7 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
 
         TextView entryView = (TextView) findViewById(R.id.kanjiText);
         entryView.setText(entry.getKanji());
+        entryView.setOnLongClickListener(this);
 
         TextView radicalGlyphText = (TextView) findViewById(R.id.radicalGlyphText);
         // radicalGlyphText.setTextSize(30f);

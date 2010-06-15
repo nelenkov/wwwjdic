@@ -23,6 +23,7 @@ public class DictionaryEntryDetail extends DetailActivity {
 
         TextView entryView = (TextView) findViewById(R.id.wordText);
         entryView.setText(entry.getWord());
+        entryView.setOnLongClickListener(this);
 
         if (entry.getReading() != null) {
             TextView readingView = new TextView(this, null,
@@ -45,4 +46,5 @@ public class DictionaryEntryDetail extends DetailActivity {
         starCb.setChecked(isFavorite);
         starCb.setOnCheckedChangeListener(this);
     }
+
 }

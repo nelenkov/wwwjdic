@@ -29,7 +29,8 @@ public class HistoryItem extends LinearLayout {
     }
 
     public void populate(SearchCriteria criteria) {
-        isKanjiText.setText(criteria.isKanjiLookup() ? "Š¿" : "‚ ");
+        isKanjiText.setText(criteria.isKanjiLookup() ? R.string.kanji_kan
+                : R.string.hiragana_a);
         String searchKey = criteria.getQueryString();
         if (criteria.isKanjiRadicalLookup()) {
             Radical radical = Radicals.getInstance().getRadicalByNumber(

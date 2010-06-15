@@ -1,11 +1,15 @@
 package org.nick.wwwjdic.history;
 
+import org.nick.wwwjdic.R;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -22,11 +26,14 @@ public abstract class HistoryBase extends ListActivity {
 
     private static final int MENU_ITEM_DELETE_ALL = 0;
     private static final int MENU_ITEM_LOOKUP = 1;
-    private static final int MENU_ITEM_DELETE = 2;
+    private static final int MENU_ITEM_COPY = 2;
+    private static final int MENU_ITEM_DELETE = 3;
 
     private static final int CONFIRM_DELETE_DIALOG_ID = 0;
 
     protected HistoryDbHelper db;
+
+    protected ClipboardManager clipboardManager;
 
     protected HistoryBase() {
         db = new HistoryDbHelper(this);
@@ -35,6 +42,8 @@ public abstract class HistoryBase extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
         setContentView(getContentView());
         getListView().setOnCreateContextMenuListener(this);
@@ -64,7 +73,7 @@ public abstract class HistoryBase extends ListActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        menu.add(0, MENU_ITEM_DELETE_ALL, 0, "Delete All").setIcon(
+        menu.add(0, MENU_ITEM_DELETE_ALL, 0, R.string.delete_all).setIcon(
                 android.R.drawable.ic_menu_delete);
 
         return true;
@@ -110,11 +119,12 @@ public abstract class HistoryBase extends ListActivity {
             return;
         }
 
-        menu.setHeaderTitle(cursor.getString(cursor
-                .getColumnIndex("query_string")));
+        // menu.setHeaderTitle(cursor.getString(cursor
+        // .getColumnIndex("query_string")));
 
-        menu.add(0, MENU_ITEM_LOOKUP, 0, "Look up");
-        menu.add(0, MENU_ITEM_DELETE, 1, "Delete");
+        menu.add(0, MENU_ITEM_LOOKUP, 0, R.string.look_up);
+        menu.add(0, MENU_ITEM_COPY, 1, R.string.copy);
+        menu.add(0, MENU_ITEM_DELETE, 2, R.string.delete);
     }
 
     @Override
@@ -123,6 +133,9 @@ public abstract class HistoryBase extends ListActivity {
         case MENU_ITEM_LOOKUP:
             lookupCurrentItem();
             return true;
+        case MENU_ITEM_COPY:
+            copyCurrentItem();
+            return true;
         case MENU_ITEM_DELETE: {
             deleteCurrentItem();
             return true;
@@ -130,6 +143,8 @@ public abstract class HistoryBase extends ListActivity {
         }
         return false;
     }
+
+    protected abstract void copyCurrentItem();
 
     protected abstract void deleteCurrentItem();
 
@@ -163,13 +178,13 @@ public abstract class HistoryBase extends ListActivity {
 
     private Dialog createConfirmDeleteDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Delete all items?").setCancelable(false)
-                .setPositiveButton("Yes",
+        builder.setMessage(R.string.delete_all_iteims).setCancelable(false)
+                .setPositiveButton(R.string.yes,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 deleteAll();
                             }
-                        }).setNegativeButton("No",
+                        }).setNegativeButton(R.string.no,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();

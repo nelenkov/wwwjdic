@@ -52,9 +52,7 @@ public class Favorites extends HistoryBase implements
 
     @Override
     protected void lookupCurrentItem() {
-        Cursor c = getCursor();
-
-        WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
+        WwwjdicEntry entry = getCurrentEntry();
 
         Intent intent = null;
         if (entry.isKanji()) {
@@ -68,6 +66,18 @@ public class Favorites extends HistoryBase implements
         }
 
         startActivity(intent);
+    }
+
+    @Override
+    protected void copyCurrentItem() {
+        WwwjdicEntry entry = getCurrentEntry();
+        clipboardManager.setText(entry.getHeadword());
+    }
+
+    private WwwjdicEntry getCurrentEntry() {
+        Cursor c = getCursor();
+        WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
+        return entry;
     }
 
 }

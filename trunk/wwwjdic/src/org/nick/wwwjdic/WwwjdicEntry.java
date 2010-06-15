@@ -25,7 +25,7 @@ public abstract class WwwjdicEntry implements Serializable {
         return dictString;
     }
 
-    public abstract String getHeading();
+    public abstract String getHeadword();
 
     public abstract boolean isKanji();
 

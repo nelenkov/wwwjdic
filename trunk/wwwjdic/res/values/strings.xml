@@ -198,4 +198,16 @@
     <string name="no_history">No history</string>
     <string name="stroke_order">Stroke order</string>
     <string name="no_favorites">No favorites</string>
+    <string name="delete_all">Delete all</string>
+    <string name="look_up">Look up</string>
+    <string name="copy">Copy</string>
+    <string name="delete">Delete</string>
+    <string name="delete_all_iteims">Delete all items?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="favorites">Favorites</string>
+    <string name="search_history">Search history</string>
+    <string name="favorites_hist">Favorites/Hist.</string>
+    <string name="uses_kanjivg">Uses KanjiVG</string>
+    <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
 </resources>
