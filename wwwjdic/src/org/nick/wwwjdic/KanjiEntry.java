@@ -250,7 +250,7 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
     }
 
     @Override
-    public String getHeading() {
+    public String getHeadword() {
         return kanji;
     }
 

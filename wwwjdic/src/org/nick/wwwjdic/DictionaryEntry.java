@@ -83,7 +83,7 @@ public class DictionaryEntry extends WwwjdicEntry implements Serializable {
     }
 
     @Override
-    public String getHeading() {
+    public String getHeadword() {
         return word;
     }
 

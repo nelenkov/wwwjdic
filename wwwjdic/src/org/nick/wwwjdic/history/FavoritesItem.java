@@ -45,8 +45,9 @@ public class FavoritesItem extends LinearLayout implements
     public void populate(WwwjdicEntry entry) {
         this.entry = entry;
 
-        isKanjiText.setText(entry.isKanji() ? "Š¿" : "‚ ");
-        dictHeadingText.setText(entry.getHeading());
+        isKanjiText.setText(entry.isKanji() ? R.string.kanji_kan
+                : R.string.hiragana_a);
+        dictHeadingText.setText(entry.getHeadword());
 
         String detailStr = entry.getDetailString();
         if (detailStr != null && !"".equals(detailStr)) {

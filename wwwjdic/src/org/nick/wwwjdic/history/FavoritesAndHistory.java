@@ -23,11 +23,11 @@ public class FavoritesAndHistory extends TabActivity implements
         TabHost tabHost = getTabHost();
 
         tabHost.addTab(tabHost.newTabSpec("favorites").setIndicator(
-                "Favorites",
+                getResources().getString(R.string.favorites),
                 getResources().getDrawable(R.drawable.ic_tab_favorites))
                 .setContent(new Intent(this, Favorites.class)));
         tabHost.addTab(tabHost.newTabSpec("history").setIndicator(
-                "Search history",
+                getResources().getString(R.string.search_history),
                 getResources().getDrawable(R.drawable.ic_tab_history))
                 .setContent(new Intent(this, SearchHistory.class)));
 

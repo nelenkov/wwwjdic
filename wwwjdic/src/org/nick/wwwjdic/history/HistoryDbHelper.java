@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class HistoryDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
 
     private static final String DATABASE_NAME = "wwwjdic_history.db";
 
@@ -35,12 +35,12 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
             + "min_stroke_count integer, max_stroke_count integer);";
 
     private static final String[] FAVORITES_ALL_COLUMNS = { "_id", "time",
-            "is_kanji", "heading", "dict_str" };
+            "is_kanji", "headword", "dict_str" };
 
     private static final String FAVORITES_TABLE_CREATE = "create table "
             + FAVORITES_TABLE_NAME
             + " (_id integer primary key autoincrement, time integer not null, "
-            + "is_kanji integer not null, heading text not null, dict_str text not null);";
+            + "is_kanji integer not null, headword text not null, dict_str text not null);";
 
     public HistoryDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -83,7 +83,7 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("time", System.currentTimeMillis());
         values.put("is_kanji", entry.isKanji() ? 1 : 0);
-        values.put("heading", entry.getHeading());
+        values.put("headword", entry.getHeadword());
         values.put("dict_str", entry.getDictString());
 
         return values;
@@ -228,12 +228,12 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         db.delete(FAVORITES_TABLE_NAME, null, null);
     }
 
-    public Long getFavoriteId(String heading) {
+    public Long getFavoriteId(String headword) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = null;
         try {
             cursor = db.query(FAVORITES_TABLE_NAME, new String[] { "_id" },
-                    "heading = ?", new String[] { heading }, null, null,
+                    "headword = ?", new String[] { headword }, null, null,
                     "time desc");
             int count = cursor.getCount();
             if (count == 0) {

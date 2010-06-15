@@ -3,10 +3,16 @@ package org.nick.wwwjdic;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 
 import android.app.Activity;
+import android.content.Context;
+import android.text.ClipboardManager;
+import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-public class DetailActivity extends Activity implements OnCheckedChangeListener {
+public class DetailActivity extends Activity implements
+        OnCheckedChangeListener, OnLongClickListener {
 
     protected HistoryDbHelper db;
     protected WwwjdicEntry wwwjdicEntry;
@@ -34,4 +40,15 @@ public class DetailActivity extends Activity implements OnCheckedChangeListener 
         }
     }
 
+    @Override
+    public boolean onLongClick(View v) {
+        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        cm.setText(wwwjdicEntry.getHeadword());
+        Toast t = Toast.makeText(this, String.format(
+                "'%s' copied to clipboard", wwwjdicEntry.getHeadword()),
+                Toast.LENGTH_SHORT);
+        t.show();
+
+        return false;
+    }
 }

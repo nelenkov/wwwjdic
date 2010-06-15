@@ -415,7 +415,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                 android.R.drawable.ic_menu_camera);
         menu.add(0, ITEM_ID_DRAW, 1, R.string.write_kanji).setIcon(
                 android.R.drawable.ic_menu_edit);
-        menu.add(0, ITEM_ID_HISTORY, 2, "Favorites/Hist.").setIcon(
+        menu.add(0, ITEM_ID_HISTORY, 2, R.string.favorites_hist).setIcon(
                 android.R.drawable.ic_menu_recent_history);
         menu.add(0, ITEM_ID_SETTINGS, 3, R.string.settings).setIcon(
                 android.R.drawable.ic_menu_preferences);

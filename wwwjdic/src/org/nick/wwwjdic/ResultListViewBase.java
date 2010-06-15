@@ -136,7 +136,7 @@ public abstract class ResultListViewBase extends ListActivity implements
     }
 
     protected void setFavoriteId(Intent intent, WwwjdicEntry entry) {
-        Long favoriteId = db.getFavoriteId(entry.getHeading());
+        Long favoriteId = db.getFavoriteId(entry.getHeadword());
         if (favoriteId != null) {
             intent.putExtra(Constants.IS_FAVORITE, true);
             entry.setId(favoriteId);

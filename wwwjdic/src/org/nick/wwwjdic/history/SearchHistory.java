@@ -31,9 +31,7 @@ public class SearchHistory extends HistoryBase {
 
     @Override
     protected void lookupCurrentItem() {
-        Cursor c = getCursor();
-
-        SearchCriteria criteria = HistoryDbHelper.createCriteria(c);
+        SearchCriteria criteria = getCurrentCriteria();
 
         Intent intent = null;
         if (criteria.isKanjiLookup()) {
@@ -54,6 +52,18 @@ public class SearchHistory extends HistoryBase {
         db.deleteHistoryItem(id);
 
         refresh();
+    }
+
+    @Override
+    protected void copyCurrentItem() {
+        SearchCriteria criteria = getCurrentCriteria();
+        clipboardManager.setText(criteria.getQueryString());
+    }
+
+    private SearchCriteria getCurrentCriteria() {
+        Cursor c = getCursor();
+        SearchCriteria criteria = HistoryDbHelper.createCriteria(c);
+        return criteria;
     }
 
 }
