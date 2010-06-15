@@ -255,13 +255,15 @@ public class StrokePath {
                     name = parser.getName();
                     if (name.equalsIgnoreCase("stroke")) {
                         String path = parser.getAttributeValue(null, "path");
-                        // System.out.println("parsing " + path);
-                        StrokePath strokePath = StrokePath.parsePath(path);
-                        strokes.add(strokePath);
+                        Log.d(TAG, "parsing " + path);
+                        if (path != null && !"".equals(path)) {
+                            StrokePath strokePath = StrokePath.parsePath(path);
+                            strokes.add(strokePath);
+                        }
                     }
                     if (name.equalsIgnoreCase("kanji")) {
                         String unicode = parser.getAttributeValue(null, "id");
-                        // System.out.println(unicode);
+                        Log.d(TAG, unicode);
                     }
                     break;
                 case XmlPullParser.END_TAG:
