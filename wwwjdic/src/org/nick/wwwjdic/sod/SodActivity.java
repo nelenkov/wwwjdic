@@ -217,7 +217,7 @@ public class SodActivity extends WebServiceBackedActivity implements
         SharedPreferences preferences = PreferenceManager
                 .getDefaultSharedPreferences(this);
 
-        String delayStr = preferences.getString(PREF_SOD_TIMEOUT, "20");
+        String delayStr = preferences.getString(PREF_SOD_TIMEOUT, "30");
 
         return Integer.parseInt(delayStr) * 1000;
     }
