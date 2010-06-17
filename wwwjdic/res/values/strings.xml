@@ -219,5 +219,6 @@
 * stroke order diagrams: \'Stroke order\' button in kanji detail view\n
   * server timeout and animation delay are in settings\n
 * headword copy: long press on kanji/dictionary headword in detail view\n 
+* layout adjustments
       </string>
 </resources>

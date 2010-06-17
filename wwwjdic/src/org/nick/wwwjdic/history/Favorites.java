@@ -45,6 +45,7 @@ public class Favorites extends HistoryBase implements
     public void onStatusChanged(boolean isFavorite, WwwjdicEntry entry) {
         if (isFavorite) {
             db.addFavorite(entry);
+            refresh();
         } else {
             db.deleteFavorite(entry.getId());
         }
