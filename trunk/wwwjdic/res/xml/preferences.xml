@@ -48,7 +48,7 @@
         <EditTextPreference android:key="pref_sod_server_timeout"
             android:title="@string/pref_sod_server_timeout" android:summary="@string/pref_timeout_summary"
             android:singleLine="true" android:inputType="numberDecimal"
-            android:defaultValue="20" />
+            android:defaultValue="30" />
         <EditTextPreference android:key="pref_sod_animation_delay"
             android:title="@string/pref_sod_animation_delay"
             android:summary="@string/pref_sod_animation_delay_summary"
