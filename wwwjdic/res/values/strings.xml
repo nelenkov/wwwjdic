@@ -210,4 +210,14 @@
     <string name="favorites_hist">Favorites/Hist.</string>
     <string name="uses_kanjivg">Uses KanjiVG</string>
     <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
+    <string name="whats_new_title">What\'s new in %s</string>
+    <string name="whats_new">
+* search history/favorites: press menu to access\n
+  * long press item to look up/copy/delete\n
+  * menu brings up delete all\n
+  * use star icon on detail screen to add to favorites\n
+* stroke order diagrams: \'Stroke order\' button in kanji detail view\n
+  * server timeout and animation delay are in settings\n
+* headword copy: long press on kanji/dictionary headword in detail view\n 
+      </string>
 </resources>
