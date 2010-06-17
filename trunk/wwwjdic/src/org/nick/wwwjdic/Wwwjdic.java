@@ -344,7 +344,9 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                 Intent intent = new Intent(this, DictionaryResultListView.class);
                 intent.putExtra(Constants.CRITERIA_KEY, criteria);
 
-                dbHelper.addSearchCriteria(criteria);
+                if (!StringUtils.isEmpty(criteria.getQueryString())) {
+                    dbHelper.addSearchCriteria(criteria);
+                }
 
                 startActivity(intent);
             } catch (RejectedExecutionException e) {
@@ -367,17 +369,19 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                     searchType = "J";
                 }
 
-                Integer minStrokeCount = tryParseInt(strokeCountMinInput
-                        .getText().toString());
-                Integer maxStrokeCount = tryParseInt(strokeCountMaxInput
-                        .getText().toString());
+                String minStr = strokeCountMinInput.getText().toString();
+                String maxStr = strokeCountMaxInput.getText().toString();
+                Integer minStrokeCount = tryParseInt(minStr);
+                Integer maxStrokeCount = tryParseInt(maxStr);
                 SearchCriteria criteria = SearchCriteria.createWithStrokeCount(
                         kanjiInput, searchType, minStrokeCount, maxStrokeCount);
 
                 Intent intent = new Intent(this, KanjiResultListView.class);
                 intent.putExtra(Constants.CRITERIA_KEY, criteria);
 
-                dbHelper.addSearchCriteria(criteria);
+                if (!StringUtils.isEmpty(criteria.getQueryString())) {
+                    dbHelper.addSearchCriteria(criteria);
+                }
 
                 startActivity(intent);
             } catch (RejectedExecutionException e) {

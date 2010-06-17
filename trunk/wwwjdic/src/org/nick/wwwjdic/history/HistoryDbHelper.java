@@ -148,8 +148,9 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         if (isKanji) {
             idx = cursor.getColumnIndex("kanji_search_type");
             String searchType = cursor.getString(idx);
-            idx = cursor.getColumnIndex("min_stroke_count");
-            if (cursor.isNull(idx)) {
+            int minStrokexIdx = cursor.getColumnIndex("min_stroke_count");
+            int maxStrokesIdx = cursor.getColumnIndex("max_stroke_count");
+            if (cursor.isNull(minStrokexIdx) && cursor.isNull(maxStrokesIdx)) {
                 SearchCriteria result = SearchCriteria.createForKanji(
                         queryString, searchType);
                 result.setId(id);
@@ -157,11 +158,13 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
                 return result;
             }
 
-            int minStrokeCount = cursor.getInt(idx);
-            idx = cursor.getColumnIndex("max_stroke_count");
+            Integer minStrokeCount = null;
+            if (!cursor.isNull(minStrokexIdx)) {
+                minStrokeCount = cursor.getInt(minStrokexIdx);
+            }
             Integer maxStrokeCount = null;
-            if (!cursor.isNull(idx)) {
-                maxStrokeCount = cursor.getInt(idx);
+            if (!cursor.isNull(maxStrokesIdx)) {
+                maxStrokeCount = cursor.getInt(maxStrokesIdx);
             }
 
             SearchCriteria result = SearchCriteria.createWithStrokeCount(
