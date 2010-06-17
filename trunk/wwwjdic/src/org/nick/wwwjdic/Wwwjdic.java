@@ -14,9 +14,11 @@ import android.app.Dialog;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -51,10 +53,15 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
     private static final int ITEM_ID_DRAW = 4;
     private static final int ITEM_ID_HISTORY = 5;
 
+    private static final int ABOUT_DIALOG_ID = 0;
+    private static final int WHATS_NEW_DIALOG_ID = 1;
+
     private static final String DICTIONARY_TAB = "dictionaryTab";
     private static final String KANJI_TAB = "kanjiTab";
 
     private static final String TAG = "WWWJDIC";
+
+    private static final String PREF_WHATS_NEW_SHOWN = "pref_whats_new_shown";
 
     private static final Map<Integer, String> IDX_TO_DICT = new HashMap<Integer, String>();
 
@@ -160,6 +167,20 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         }
 
         dbHelper = new HistoryDbHelper(this);
+
+        showWhatsNew();
+    }
+
+    private void showWhatsNew() {
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        String key = PREF_WHATS_NEW_SHOWN + "_" + getVersionName();
+        boolean whatsNewShown = prefs.getBoolean(key, false);
+        if (!whatsNewShown) {
+            prefs.edit().putBoolean(key, true).commit();
+            showDialog(WHATS_NEW_DIALOG_ID);
+        }
+
     }
 
     private void initRadicals() {
@@ -429,7 +450,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         switch (item.getItemId()) {
         case ITEM_ID_ABOUT:
-            showDialog(0);
+            showDialog(ABOUT_DIALOG_ID);
             return true;
         case ITEM_ID_OCR:
             Intent intent = new Intent(this, OcrActivity.class);
@@ -463,8 +484,11 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         Dialog dialog = null;
 
         switch (id) {
-        case 0:
+        case ABOUT_DIALOG_ID:
             dialog = createAboutDialog();
+            break;
+        case WHATS_NEW_DIALOG_ID:
+            dialog = createWhatsNewDialog();
             break;
         default:
             dialog = null;
@@ -485,6 +509,18 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         AlertDialog alertDialog = builder.create();
 
         return alertDialog;
+    }
+
+    private Dialog createWhatsNewDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.whats_new);
+        String titleTemplate = getResources().getString(
+                R.string.whats_new_title);
+        String title = String.format(titleTemplate, getVersionName());
+        builder.setTitle(title);
+        builder.setIcon(android.R.drawable.ic_dialog_info);
+
+        return builder.create();
     }
 
     private String getVersionName() {
