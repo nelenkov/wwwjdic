@@ -215,9 +215,9 @@
 * search history/favorites: press menu to access\n
   * long press item to look up/copy/delete\n
   * menu brings up delete all\n
-  * use star icon on detail screen to add to favorites\n
-* stroke order diagrams: \'Stroke order\' button in kanji detail view\n
-  * server timeout and animation delay are in settings\n
+  * use star icon in detail view to add to favorites\n
+* stroke order diagrams: use button in kanji detail view\n
+  * adjust server timeout and animation delay in settings\n
 * headword copy: long press on kanji/dictionary headword in detail view\n 
 * layout adjustments
       </string>
