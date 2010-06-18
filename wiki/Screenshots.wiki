@@ -18,3 +18,10 @@ http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/ocr-crop.png
 http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/hkr-draw.png
 http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/hkr-candidates.png
 
+== Stroke Order Diagrams ==
+http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/sod.png
+http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/sod-animated.png
+
+== History and Favorites ==
+http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/favorites.png
+http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/history.png
