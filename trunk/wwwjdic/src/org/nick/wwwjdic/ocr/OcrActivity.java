@@ -55,6 +55,11 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
     private static final String WEOCR_DEFAULT_URL = "http://maggie.ocrgrid.org/cgi-bin/weocr/nhocr.cgi";
 
+    // kind of arbitrary, but OCR seems to work fine with this, and we need to
+    // keep picture size small for faster recognition
+    private static final int MIN_PIXELS = 320 * 480;
+    private static final int MAX_PIXELS = 640 * 480;
+
     private static final String PREF_DUMP_CROPPED_IMAGES_KEY = "pref_ocr_dump_cropped_images";
     private static final String PREF_WEOCR_URL_KEY = "pref_weocr_url";
     private static final String PREF_WEOCR_TIMEOUT_KEY = "pref_weocr_timeout";
@@ -412,11 +417,11 @@ public class OcrActivity extends WebServiceBackedActivity implements
                 }
             }
 
-            if (w == 480) {
-                p.setPictureSize(w, h);
+            if (pictureSize != null) {
+                p.setPictureSize(pictureSize.width, pictureSize.height);
             } else {
-                if (pictureSize != null) {
-                    p.setPictureSize(pictureSize.width, pictureSize.height);
+                if (w == 480) {
+                    p.setPictureSize(w, h);
                 }
             }
 
@@ -453,8 +458,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
             }
 
             if (supportedPictueSizes != null) {
-                pictureSize = supportedPictueSizes.get(supportedPictueSizes
-                        .size() - 1);
+                pictureSize = getOptimalPictureSize(supportedPictueSizes);
                 Log.d(TAG, String.format("picture width: %d; height: %d",
                         pictureSize.width, pictureSize.height));
             }
@@ -464,6 +468,19 @@ public class OcrActivity extends WebServiceBackedActivity implements
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Size getOptimalPictureSize(List<Size> supportedPictueSizes) {
+        Size result = supportedPictueSizes.get(supportedPictueSizes.size() - 1);
+
+        for (Size s : supportedPictueSizes) {
+            int pixels = s.width * s.height;
+            if (pixels >= MIN_PIXELS && pixels <= MAX_PIXELS) {
+                return s;
+            }
+        }
+
+        return result;
     }
 
     private Size getOptimalPreviewSize(List<Size> sizes) {
