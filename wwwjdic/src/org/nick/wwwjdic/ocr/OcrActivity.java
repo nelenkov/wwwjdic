@@ -412,17 +412,24 @@ public class OcrActivity extends WebServiceBackedActivity implements
             if (previewSize != null) {
                 p.setPreviewSize(previewSize.width, previewSize.height);
             } else {
-                if (w == 480) {
-                    p.setPreviewSize(w, h);
+                String previewSizesStr = p.get("preview-size-values");
+                if (previewSizesStr == null) {
+                    previewSizesStr = p.get("preview-size-value");
                 }
+                Log.d(TAG, "preview sizes: " + previewSizesStr);
+                // TODO
+
+                int previewWidth = (w >> 3) << 3;
+                int previewHeight = (h >> 3) << 3;
+                p.setPreviewSize(previewWidth, previewHeight);
             }
 
             if (pictureSize != null) {
                 p.setPictureSize(pictureSize.width, pictureSize.height);
             } else {
-                if (w == 480) {
-                    p.setPictureSize(w, h);
-                }
+                int pictureWidth = (w >> 3) << 3;
+                int pictureHeight = (h >> 3) << 3;
+                p.setPictureSize(pictureWidth, pictureHeight);
             }
 
             if (supportsFlash) {
