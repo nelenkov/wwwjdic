@@ -3,6 +3,7 @@ package org.nick.wwwjdic.ocr;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.nick.wwwjdic.Constants;
@@ -412,13 +413,6 @@ public class OcrActivity extends WebServiceBackedActivity implements
             if (previewSize != null) {
                 p.setPreviewSize(previewSize.width, previewSize.height);
             } else {
-                String previewSizesStr = p.get("preview-size-values");
-                if (previewSizesStr == null) {
-                    previewSizesStr = p.get("preview-size-value");
-                }
-                Log.d(TAG, "preview sizes: " + previewSizesStr);
-                // TODO
-
                 int previewWidth = (w >> 3) << 3;
                 int previewHeight = (h >> 3) << 3;
                 p.setPreviewSize(previewWidth, previewHeight);
@@ -445,14 +439,41 @@ public class OcrActivity extends WebServiceBackedActivity implements
         }
     }
 
+    private List<Size> parseSizeListStr(String previewSizesStr) {
+        List<Size> result = new ArrayList<Size>();
+        String[] sizesStr = previewSizesStr.split(",");
+
+        for (String s : sizesStr) {
+            s = s.trim();
+
+            int idx = s.indexOf('x');
+            if (idx < 0) {
+                Log.w(TAG, "Bad preview-size: " + previewSize);
+                continue;
+            }
+
+            int width;
+            int height;
+            try {
+                width = Integer.parseInt(s.substring(0, idx));
+                height = Integer.parseInt(s.substring(idx + 1));
+            } catch (NumberFormatException nfe) {
+                Log.w(TAG, "Bad preview-size: " + previewSize);
+                continue;
+            }
+            // why is this not static??
+            result.add(camera.new Size(width, height));
+        }
+
+        return result;
+    }
+
     public void surfaceCreated(SurfaceHolder holder) {
         camera = Camera.open();
 
         Camera.Parameters params = camera.getParameters();
-        List<Size> supportedPreviewSizes = ReflectionUtils
-                .getSupportedPreviewSizes(params);
-        List<Size> supportedPictueSizes = ReflectionUtils
-                .getSupportedPictureSizes(params);
+        List<Size> supportedPreviewSizes = getSupportedPreviewSizes(params);
+        List<Size> supportedPictueSizes = getSupportedPictureSizes(params);
         supportsFlash = ReflectionUtils.getFlashMode(params) != null;
 
         try {
@@ -475,6 +496,42 @@ public class OcrActivity extends WebServiceBackedActivity implements
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private List<Size> getSupportedPictureSizes(Camera.Parameters params) {
+        List<Size> supportedPictureSizes = ReflectionUtils
+                .getSupportedPictureSizes(params);
+
+        if (supportedPictureSizes == null) {
+            String supportedSizesStr = params.get("picture-size-values");
+            if (supportedSizesStr == null) {
+                supportedSizesStr = params.get("picture-size-value");
+            }
+            Log.d(TAG, "picture sizes: " + supportedSizesStr);
+            if (supportedSizesStr != null) {
+                supportedPictureSizes = parseSizeListStr(supportedSizesStr);
+            }
+        }
+
+        return supportedPictureSizes;
+    }
+
+    private List<Size> getSupportedPreviewSizes(Camera.Parameters params) {
+        List<Size> supportedPreviewSizes = ReflectionUtils
+                .getSupportedPreviewSizes(params);
+
+        if (supportedPreviewSizes == null) {
+            String previewSizesStr = params.get("preview-size-values");
+            if (previewSizesStr == null) {
+                previewSizesStr = params.get("preview-size-value");
+            }
+            Log.d(TAG, "preview sizes: " + previewSizesStr);
+            if (previewSizesStr != null) {
+                supportedPreviewSizes = parseSizeListStr(previewSizesStr);
+            }
+        }
+
+        return supportedPreviewSizes;
     }
 
     private Size getOptimalPictureSize(List<Size> supportedPictueSizes) {
