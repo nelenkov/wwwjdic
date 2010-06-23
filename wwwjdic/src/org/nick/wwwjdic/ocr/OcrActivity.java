@@ -10,6 +10,7 @@ import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.Wwwjdic;
+import org.nick.wwwjdic.ocr.crop.CropImage;
 
 import android.content.Context;
 import android.content.Intent;
@@ -261,11 +262,12 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
     private void crop() {
         try {
-            Intent intent = new Intent("com.android.camera.action.CROP");
+            Intent intent = new Intent(this, CropImage.class);
             Bundle extras = new Bundle();
-            extras.putBoolean("noFaceDetection", false);
-            extras.putBoolean("return-data", true);
-            extras.putBoolean("scale", true);
+            // if we want to scale
+            // extras.putInt("outputX", 200);
+            // extras.putInt("outputY", 200);
+            // extras.putBoolean("scale", true);
             intent.setDataAndType(imageCaptureUri, "image/jpeg");
 
             intent.putExtras(extras);
