@@ -212,21 +212,10 @@
     <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
     <string name="whats_new_title">What\'s new in %s</string>
     <string name="whats_new">
-        * search history/favorites: press menu to
-        access\n
-        * long press item to look up/copy/delete\n
-        * menu brings
-        up delete all\n
-        * use star icon in detail view to add to
-        favorites\n
-        * stroke order diagrams: use button in kanji detail
-        view\n
-        * adjust server timeout and animation delay in settings\n
-        * headword copy: long press on kanji/dictionary headword in
-        detail
-        view\n
-        * layout adjustments
-      </string>
+        * better OCR preview size/picture size handling\n
+         * fixes crash on MyTouch Slide (and hopefully HTC legend)\n
+        * OCR cropping no longer depends on the default Camera app\n
+    </string>
     <!--  for cropper -->
     <string name="crop_save_text">Crop</string>
     <string name="crop_discard_text">Discard</string>
