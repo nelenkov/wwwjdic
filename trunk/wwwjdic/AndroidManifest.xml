@@ -23,6 +23,8 @@
         <activity android:name="WwwjdicPreferences"></activity>
         <activity android:name=".ocr.OcrActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
+        <activity android:name=".ocr.crop.CropImage"
+            android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name=".hkr.RecognizeKanjiActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name=".hkr.HkrCandidates"></activity>
