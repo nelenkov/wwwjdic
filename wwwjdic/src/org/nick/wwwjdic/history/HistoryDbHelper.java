@@ -95,7 +95,8 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         values.put("time", System.currentTimeMillis());
         values.put("query_string", criteria.getQueryString());
         values.put("is_exact_match", criteria.isExactMatch());
-        values.put("is_kanji_lookup", criteria.isKanjiLookup() ? 1 : 0);
+        // XXX rename column
+        values.put("is_kanji_lookup", criteria.getType());
         values.put("is_romanized_japanese", criteria.isRomanizedJapanese());
         values.put("is_common_words_only", criteria.isCommonWordsOnly());
         values.put("dictionary", criteria.getDictionary());
@@ -140,13 +141,15 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
 
     public static SearchCriteria createCriteria(Cursor cursor) {
         int idx = cursor.getColumnIndex("is_kanji_lookup");
-        boolean isKanji = cursor.getInt(idx) == 1;
+        // boolean isKanji = cursor.getInt(idx) == 1;
+        // XXX rename column
+        int type = cursor.getInt(idx);
         idx = cursor.getColumnIndex("query_string");
         String queryString = cursor.getString(idx);
         idx = cursor.getColumnIndex("_id");
         long id = cursor.getLong(idx);
 
-        if (isKanji) {
+        if (type == SearchCriteria.CRITERIA_TYPE_KANJI) {
             idx = cursor.getColumnIndex("kanji_search_type");
             String searchType = cursor.getString(idx);
             int minStrokexIdx = cursor.getColumnIndex("min_stroke_count");
@@ -173,22 +176,33 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
             result.setId(id);
 
             return result;
+        } else if (type == SearchCriteria.CRITERIA_TYPE_DICT) {
+            boolean isExactMatch = cursor.getInt(cursor
+                    .getColumnIndex("is_exact_match")) == 1;
+            boolean isRomanized = cursor.getInt(cursor
+                    .getColumnIndex("is_romanized_japanese")) == 1;
+            boolean isCommonWordsOnly = cursor.getInt(cursor
+                    .getColumnIndex("is_common_words_only")) == 1;
+            String dictionary = cursor.getString(cursor
+                    .getColumnIndex("dictionary"));
+
+            SearchCriteria result = SearchCriteria.createForDictionary(
+                    queryString, isExactMatch, isRomanized, isCommonWordsOnly,
+                    dictionary);
+            result.setId(id);
+
+            return result;
+        } else {
+            // XXX max results hardcoded
+            int numMaxResults = 20;
+            boolean isExactMatch = cursor.getInt(cursor
+                    .getColumnIndex("is_exact_match")) == 1;
+            SearchCriteria result = SearchCriteria.createForExampleSearch(
+                    queryString, isExactMatch, numMaxResults);
+            result.setId(id);
+
+            return result;
         }
-
-        boolean isExactMatch = cursor.getInt(cursor
-                .getColumnIndex("is_exact_match")) == 1;
-        boolean isRomanized = cursor.getInt(cursor
-                .getColumnIndex("is_romanized_japanese")) == 1;
-        boolean isCommonWordsOnly = cursor.getInt(cursor
-                .getColumnIndex("is_common_words_only")) == 1;
-        String dictionary = cursor.getString(cursor
-                .getColumnIndex("dictionary"));
-
-        SearchCriteria result = SearchCriteria.createForDictionary(queryString,
-                isExactMatch, isRomanized, isCommonWordsOnly, dictionary);
-        result.setId(id);
-
-        return result;
 
     }
 

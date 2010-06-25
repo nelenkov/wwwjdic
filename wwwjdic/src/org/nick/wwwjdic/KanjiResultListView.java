@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-public class KanjiResultListView extends ResultListViewBase {
+public class KanjiResultListView extends ResultListViewBase<KanjiEntry> {
 
     private List<KanjiEntry> entries;
 
@@ -20,8 +20,8 @@ public class KanjiResultListView extends ResultListViewBase {
 
         extractSearchCriteria();
 
-        TranslateTask translateTask = new KanjiTranslateTask(getWwwjdicUrl(),
-                getHttpTimeoutSeconds(), this, criteria);
+        TranslateTask<KanjiEntry> translateTask = new KanjiTranslateTask(
+                getWwwjdicUrl(), getHttpTimeoutSeconds(), this, criteria);
         submitTranslateTask(translateTask);
     }
 
@@ -35,9 +35,8 @@ public class KanjiResultListView extends ResultListViewBase {
         startActivity(intent);
     }
 
-    public void setResult(final List<?> result) {
+    public void setResult(final List<KanjiEntry> result) {
         guiThread.post(new Runnable() {
-            @SuppressWarnings("unchecked")
             public void run() {
                 entries = (List<KanjiEntry>) result;
                 KanjiEntryAdapter adapter = new KanjiEntryAdapter(

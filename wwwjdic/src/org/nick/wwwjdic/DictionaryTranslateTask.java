@@ -7,7 +7,8 @@ public class DictionaryTranslateTask extends
         BackdoorTranslateTask<DictionaryEntry> {
 
     public DictionaryTranslateTask(String url, int timeoutSeconds,
-            ResultListViewBase resultListView, SearchCriteria criteria) {
+            ResultListViewBase<DictionaryEntry> resultListView,
+            SearchCriteria criteria) {
         super(url, timeoutSeconds, resultListView, criteria);
     }
 

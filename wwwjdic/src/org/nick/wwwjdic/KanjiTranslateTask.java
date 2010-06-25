@@ -6,7 +6,7 @@ import java.net.URLEncoder;
 public class KanjiTranslateTask extends BackdoorTranslateTask<KanjiEntry> {
 
     public KanjiTranslateTask(String url, int timeoutSeconds,
-            ResultListView resultListView, SearchCriteria criteria) {
+            ResultListView<KanjiEntry> resultListView, SearchCriteria criteria) {
         super(url, timeoutSeconds, resultListView, criteria);
     }
 

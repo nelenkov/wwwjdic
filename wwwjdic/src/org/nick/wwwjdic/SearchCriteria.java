@@ -12,6 +12,10 @@ public class SearchCriteria implements Serializable {
     private static final String KANJI_TEXT_LOOKUP_CODE = "J";
     private static final String KANJI_RADICAL_LOOKUP_CODE = "B";
 
+    public static final int CRITERIA_TYPE_DICT = 0;
+    public static final int CRITERIA_TYPE_KANJI = 1;
+    public static final int CRITERIA_TYPE_EXAMPLES = 2;
+
     private Long id;
 
     private String queryString;
@@ -23,31 +27,44 @@ public class SearchCriteria implements Serializable {
     private String kanjiSearchType;
     private Integer minStrokeCount;
     private Integer maxStrokeCount;
+    private Integer numMaxResults;
+
+    private final int type;
 
     public static SearchCriteria createForDictionary(String queryString,
             boolean isExactMatch, boolean isRomanized,
             boolean isCommonWordsOnly, String dictionary) {
-        return new SearchCriteria(queryString, isExactMatch, false,
-                isRomanized, isCommonWordsOnly, dictionary, null, null, null);
+        return new SearchCriteria(CRITERIA_TYPE_DICT, queryString,
+                isExactMatch, false, isRomanized, isCommonWordsOnly,
+                dictionary, null, null, null, null);
     }
 
     public static SearchCriteria createForKanji(String queryString,
             String searchType) {
-        return new SearchCriteria(queryString, false, true, true, false, null,
-                searchType, null, null);
+        return new SearchCriteria(CRITERIA_TYPE_KANJI, queryString, false,
+                true, true, false, null, searchType, null, null, null);
     }
 
     public static SearchCriteria createWithStrokeCount(String queryString,
             String searchType, Integer minStrokeCount, Integer maxStrokeCount) {
-        return new SearchCriteria(queryString, false, true, true, false, null,
-                searchType, minStrokeCount, maxStrokeCount);
+        return new SearchCriteria(CRITERIA_TYPE_KANJI, queryString, false,
+                true, true, false, null, searchType, minStrokeCount,
+                maxStrokeCount, null);
     }
 
-    private SearchCriteria(String queryString, boolean isExactMatch,
+    public static SearchCriteria createForExampleSearch(String queryString,
+            boolean isExactMatch, int numMaxResults) {
+        return new SearchCriteria(CRITERIA_TYPE_EXAMPLES, queryString,
+                isExactMatch, false, false, false, null, null, null, null,
+                numMaxResults);
+    }
+
+    private SearchCriteria(int type, String queryString, boolean isExactMatch,
             boolean isKanjiLookup, boolean isRomanizedJapanese,
             boolean isCommonWordsOnly, String dictionary,
             String kanjiSearchType, Integer minStrokeCount,
-            Integer maxStrokeCount) {
+            Integer maxStrokeCount, Integer numMaxResults) {
+        this.type = type;
         this.queryString = queryString;
         this.isExactMatch = isExactMatch;
         this.isKanjiLookup = isKanjiLookup;
@@ -57,6 +74,7 @@ public class SearchCriteria implements Serializable {
         this.kanjiSearchType = kanjiSearchType;
         this.minStrokeCount = minStrokeCount;
         this.maxStrokeCount = maxStrokeCount;
+        this.numMaxResults = numMaxResults;
     }
 
     public String getQueryString() {
@@ -125,6 +143,14 @@ public class SearchCriteria implements Serializable {
 
     public boolean isNarrowedDown() {
         return isExactMatch || isCommonWordsOnly;
+    }
+
+    public Integer getNumMaxResults() {
+        return numMaxResults;
+    }
+
+    public int getType() {
+        return type;
     }
 
 }
