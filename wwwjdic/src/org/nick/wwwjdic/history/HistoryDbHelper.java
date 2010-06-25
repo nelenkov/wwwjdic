@@ -54,9 +54,10 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table if exists search_history");
-        db.execSQL("drop table if exists favorites");
-        onCreate(db);
+        // XXX destructive! use only for development
+        // db.execSQL("drop table if exists search_history");
+        // db.execSQL("drop table if exists favorites");
+        // onCreate(db);
     }
 
     public void addSearchCriteria(SearchCriteria criteria) {
