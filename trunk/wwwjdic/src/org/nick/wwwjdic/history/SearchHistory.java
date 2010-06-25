@@ -2,6 +2,7 @@ package org.nick.wwwjdic.history;
 
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.DictionaryResultListView;
+import org.nick.wwwjdic.ExamplesResultListView;
 import org.nick.wwwjdic.KanjiResultListView;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.SearchCriteria;
@@ -34,11 +35,20 @@ public class SearchHistory extends HistoryBase {
         SearchCriteria criteria = getCurrentCriteria();
 
         Intent intent = null;
-        if (criteria.isKanjiLookup()) {
-            intent = new Intent(this, KanjiResultListView.class);
-        } else {
+        switch (criteria.getType()) {
+        case SearchCriteria.CRITERIA_TYPE_DICT:
             intent = new Intent(this, DictionaryResultListView.class);
+            break;
+        case SearchCriteria.CRITERIA_TYPE_KANJI:
+            intent = new Intent(this, KanjiResultListView.class);
+            break;
+        case SearchCriteria.CRITERIA_TYPE_EXAMPLES:
+            intent = new Intent(this, ExamplesResultListView.class);
+            break;
+        default:
+            // do nothing?
         }
+
         intent.putExtra(Constants.CRITERIA_KEY, criteria);
 
         startActivity(intent);

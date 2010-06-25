@@ -7,7 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-public class DictionaryResultListView extends ResultListViewBase {
+public class DictionaryResultListView extends
+        ResultListViewBase<DictionaryEntry> {
 
     private List<DictionaryEntry> entries;
 
@@ -19,7 +20,7 @@ public class DictionaryResultListView extends ResultListViewBase {
         super.onCreate(savedInstanceState);
 
         extractSearchCriteria();
-        TranslateTask translateTask = new DictionaryTranslateTask(
+        TranslateTask<DictionaryEntry> translateTask = new DictionaryTranslateTask(
                 getWwwjdicUrl(), getHttpTimeoutSeconds(), this, criteria);
         submitTranslateTask(translateTask);
     }
@@ -34,9 +35,8 @@ public class DictionaryResultListView extends ResultListViewBase {
         startActivity(intent);
     }
 
-    public void setResult(final List<?> result) {
+    public void setResult(final List<DictionaryEntry> result) {
         guiThread.post(new Runnable() {
-            @SuppressWarnings("unchecked")
             public void run() {
                 entries = (List<DictionaryEntry>) result;
                 DictionaryEntryAdapter adapter = new DictionaryEntryAdapter(

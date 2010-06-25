@@ -17,8 +17,8 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 
-public abstract class ResultListViewBase extends ListActivity implements
-        ResultListView {
+public abstract class ResultListViewBase<T> extends ListActivity implements
+        ResultListView<T> {
 
     private static final String DEFAULT_WWWJDIC_URL = "http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi";
 
@@ -52,7 +52,7 @@ public abstract class ResultListViewBase extends ListActivity implements
         super.onDestroy();
     }
 
-    protected void submitTranslateTask(TranslateTask translateTask) {
+    protected void submitTranslateTask(TranslateTask<T> translateTask) {
         progressDialog = ProgressDialog.show(this, "", getResources().getText(
                 R.string.loading).toString(), true);
 
@@ -104,7 +104,7 @@ public abstract class ResultListViewBase extends ListActivity implements
         });
     }
 
-    public abstract void setResult(List<?> result);
+    public abstract void setResult(List<T> result);
 
     protected void extractSearchCriteria() {
         criteria = (SearchCriteria) getIntent().getSerializableExtra(

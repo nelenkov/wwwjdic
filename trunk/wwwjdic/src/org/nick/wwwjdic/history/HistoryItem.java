@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class HistoryItem extends LinearLayout {
 
-    private TextView isKanjiText;
+    private TextView searchTypeText;
     private TextView searchKeyText;
     private TextView criteriaDetailsText;
 
@@ -29,14 +29,20 @@ public class HistoryItem extends LinearLayout {
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.search_history_item, this);
 
-        isKanjiText = (TextView) findViewById(R.id.is_kanji);
+        searchTypeText = (TextView) findViewById(R.id.search_type);
         searchKeyText = (TextView) findViewById(R.id.search_key);
         criteriaDetailsText = (TextView) findViewById(R.id.criteria_details);
     }
 
     public void populate(SearchCriteria criteria) {
-        isKanjiText.setText(criteria.isKanjiLookup() ? R.string.kanji_kan
-                : R.string.hiragana_a);
+        if (criteria.getType() == SearchCriteria.CRITERIA_TYPE_DICT) {
+            searchTypeText.setText(R.string.hiragana_a);
+        } else if (criteria.getType() == SearchCriteria.CRITERIA_TYPE_KANJI) {
+            searchTypeText.setText(R.string.kanji_kan);
+        } else {
+            searchTypeText.setText(R.string.kanji_bun);
+        }
+
         String searchKey = criteria.getQueryString();
         if (criteria.isKanjiRadicalLookup()) {
             Radical radical = Radicals.getInstance().getRadicalByNumber(
@@ -49,13 +55,12 @@ public class HistoryItem extends LinearLayout {
         if (detailStr != null && !"".equals(detailStr)) {
             criteriaDetailsText.setText(detailStr);
         }
-
     }
 
     private String buildDetailString(SearchCriteria criteria) {
         StringBuffer buff = new StringBuffer();
 
-        if (criteria.isKanjiLookup()) {
+        if (criteria.getType() == SearchCriteria.CRITERIA_TYPE_KANJI) {
             String kanjiSearchName = lookupKanjiSearchName(criteria);
 
             buff.append(kanjiSearchName);
@@ -71,9 +76,11 @@ public class HistoryItem extends LinearLayout {
                 buff.append(")");
             }
         } else {
-            String dictName = lookupDictionaryName(criteria);
+            if (criteria.getType() == SearchCriteria.CRITERIA_TYPE_DICT) {
+                String dictName = lookupDictionaryName(criteria);
 
-            buff.append(dictName);
+                buff.append(dictName);
+            }
 
             String dictOptStr = buildDictOptionsString(criteria);
             if (!StringUtils.isEmpty(dictOptStr)) {

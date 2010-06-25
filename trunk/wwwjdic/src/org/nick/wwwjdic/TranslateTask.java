@@ -11,11 +11,11 @@ import org.apache.http.protocol.HttpContext;
 
 import android.util.Log;
 
-public abstract class TranslateTask implements Runnable {
+public abstract class TranslateTask<T> implements Runnable {
 
     private static final String TAG = TranslateTask.class.getSimpleName();
 
-    protected ResultListView resultListView;
+    protected ResultListView<T> resultListView;
     protected SearchCriteria searchCriteria;
 
     protected String url;
@@ -26,7 +26,7 @@ public abstract class TranslateTask implements Runnable {
     protected ResponseHandler<String> responseHandler = new GzipStringResponseHandler();
 
     public TranslateTask(String url, int timeoutSeconds,
-            ResultListView resultView, SearchCriteria searchCriteria) {
+            ResultListView<T> resultView, SearchCriteria searchCriteria) {
         this.url = url;
         this.timeoutMillis = timeoutSeconds * 1000;
         this.resultListView = resultView;
@@ -46,7 +46,7 @@ public abstract class TranslateTask implements Runnable {
 
     public void run() {
         try {
-            List<DictionaryEntry> result = fetchResult(searchCriteria);
+            List<T> result = fetchResult(searchCriteria);
             if (resultListView != null) {
                 resultListView.setResult(result);
             }
@@ -57,17 +57,17 @@ public abstract class TranslateTask implements Runnable {
     }
 
     @SuppressWarnings("unchecked")
-    private List<DictionaryEntry> fetchResult(SearchCriteria criteria) {
+    private List<T> fetchResult(SearchCriteria criteria) {
         String payload = query(criteria);
 
-        return (List<DictionaryEntry>) parseResult(payload);
+        return (List<T>) parseResult(payload);
     }
 
-    public ResultListView getResultListView() {
+    public ResultListView<T> getResultListView() {
         return resultListView;
     }
 
-    public void setResultListView(ResultListView resultListView) {
+    public void setResultListView(ResultListView<T> resultListView) {
         this.resultListView = resultListView;
     }
 

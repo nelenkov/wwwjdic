@@ -58,6 +58,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
     private static final String DICTIONARY_TAB = "dictionaryTab";
     private static final String KANJI_TAB = "kanjiTab";
+    private static final String EXAMPLE_SEARCH_TAB = "exampleSearchTab";
 
     private static final String TAG = "WWWJDIC";
 
@@ -124,6 +125,10 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
     private Button selectRadicalButton;
     private EditText strokeCountMinInput;
     private EditText strokeCountMaxInput;
+
+    private EditText exampleSearchInputText;
+    private EditText maxNumExamplesText;
+    private CheckBox exampleExactMatchCb;
 
     private TabHost tabHost;
 
@@ -263,6 +268,9 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         commonWordsCb.setOnCheckedChangeListener(this);
 
         selectRadicalButton.setOnClickListener(this);
+
+        View exampleSearchButton = findViewById(R.id.exampleSearchButton);
+        exampleSearchButton.setOnClickListener(this);
     }
 
     private void setupSpinners() {
@@ -311,11 +319,15 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         tabHost.addTab(tabHost.newTabSpec(DICTIONARY_TAB).setIndicator(
                 getResources().getText(R.string.dictionary),
                 getResources().getDrawable(R.drawable.ic_tab_dict)).setContent(
-                R.id.wordLookupTab));
+                R.id.dictLookupTab));
         tabHost.addTab(tabHost.newTabSpec(KANJI_TAB).setIndicator(
                 getResources().getText(R.string.kanji_lookup),
                 getResources().getDrawable(R.drawable.ic_tab_kanji))
                 .setContent(R.id.kanjiLookupTab));
+        tabHost.addTab(tabHost.newTabSpec(EXAMPLE_SEARCH_TAB).setIndicator(
+                getResources().getText(R.string.example_search),
+                getResources().getDrawable(R.drawable.ic_tab_example))
+                .setContent(R.id.exampleSearchTab));
 
         tabHost.setCurrentTab(0);
     }
@@ -392,6 +404,25 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
             Intent i = new Intent(this, RadicalChart.class);
 
             startActivityForResult(i, Constants.RADICAL_RETURN_RESULT);
+            break;
+        case R.id.exampleSearchButton:
+            hideKeyboard();
+
+            String queryString = exampleSearchInputText.getText().toString();
+            int numMaxResults = Integer.parseInt(maxNumExamplesText.getText()
+                    .toString());
+            SearchCriteria criteria = SearchCriteria
+                    .createForExampleSearch(queryString, exampleExactMatchCb
+                            .isChecked(), numMaxResults);
+
+            Intent intent = new Intent(this, ExamplesResultListView.class);
+            intent.putExtra(Constants.CRITERIA_KEY, criteria);
+
+            if (!StringUtils.isEmpty(criteria.getQueryString())) {
+                dbHelper.addSearchCriteria(criteria);
+            }
+
+            startActivity(intent);
             break;
         default:
             // do nothing
@@ -562,6 +593,10 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         strokeCountMinInput = (EditText) findViewById(R.id.strokeCountMinInput);
         strokeCountMaxInput = (EditText) findViewById(R.id.strokeCountMaxInput);
         selectRadicalButton = (Button) findViewById(R.id.selectRadicalButton);
+
+        exampleSearchInputText = (EditText) findViewById(R.id.exampleInputText);
+        maxNumExamplesText = (EditText) findViewById(R.id.maxExamplesInput);
+        exampleExactMatchCb = (CheckBox) findViewById(R.id.exampleExactMatchCb);
     }
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
