@@ -213,7 +213,7 @@
     <string name="whats_new_title">What\'s new in %s</string>
     <string name="whats_new">
         * better OCR preview size/picture size handling\n
-         * fixes crash on MyTouch Slide (and hopefully HTC legend)\n
+         * fixes crash on MyTouch Slide (and hopefully HTC Legend)\n
         * OCR cropping no longer depends on the default Camera app\n
     </string>
     <!--  for cropper -->
