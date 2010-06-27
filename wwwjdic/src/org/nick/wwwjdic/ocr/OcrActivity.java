@@ -604,6 +604,10 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
     private Uri createTempFile() {
         File sdDir = Environment.getExternalStorageDirectory();
+        if (isUseInternalStorage()) {
+            sdDir = new File("/emmc");
+        }
+
         File wwwjdicDir = new File(sdDir.getAbsolutePath() + "/wwwjdic");
         if (!wwwjdicDir.exists()) {
             wwwjdicDir.mkdir();
@@ -615,6 +619,13 @@ public class OcrActivity extends WebServiceBackedActivity implements
         }
 
         return null;
+    }
+
+    private boolean isUseInternalStorage() {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        return preferences.getBoolean("pref_ocr_use_internal_storage", false);
     }
 
     @Override

@@ -27,6 +27,10 @@
             android:title="@string/pref_ocr_dump_cropped_images"
             android:summary="@string/pref_ocr_dump_cropped_images_summary"
             android:defaultValue="false" />
+        <CheckBoxPreference android:key="pref_ocr_use_internal_storage"
+            android:title="Use internal storage"
+            android:summary="Uses /emmc instead of /sdcard"
+            android:defaultValue="false" />    
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_kr">
         <EditTextPreference android:key="pref_kr_url"
