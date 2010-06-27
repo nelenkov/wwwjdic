@@ -16,6 +16,7 @@ import org.nick.wwwjdic.StringUtils;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -246,6 +247,7 @@ public class SodActivity extends WebServiceBackedActivity implements
             get.addHeader("Accept-Encoding", "gzip");
             get.addHeader("User-Agent", "gzip");
             get.addHeader("X-User-Agent", USER_AGENT);
+            get.addHeader("X-Device-Version", getDeviceVersionStr());
 
             try {
                 String responseStr = httpClient.execute(get,
@@ -263,6 +265,10 @@ public class SodActivity extends WebServiceBackedActivity implements
                 handler.sendMessage(msg);
                 Log.e(TAG, e.getMessage(), e);
             }
+        }
+
+        private String getDeviceVersionStr() {
+            return String.format("%s/%s", Build.MODEL, Build.VERSION.RELEASE);
         }
     }
 
