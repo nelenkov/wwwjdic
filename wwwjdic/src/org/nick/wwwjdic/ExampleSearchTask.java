@@ -87,7 +87,7 @@ public class ExampleSearchTask extends TranslateTask<ExampleSentence> {
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
             String searchString = criteria.getQueryString();
             if (criteria.isExactMatch()) {
-                searchString += "\\>";
+                searchString = "\\<" + searchString + "\\>";
             }
             NameValuePair pair = new BasicNameValuePair("exsrchstr",
                     searchString);
@@ -108,5 +108,4 @@ public class ExampleSearchTask extends TranslateTask<ExampleSentence> {
             throw new RuntimeException(e);
         }
     }
-
 }
