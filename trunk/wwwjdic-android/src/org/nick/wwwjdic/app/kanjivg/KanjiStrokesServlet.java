@@ -31,6 +31,11 @@ public class KanjiStrokesServlet extends HttpServlet {
             log.info("X-User-Agent: " + xuserAgent);
         }
 
+        String xDeviceVersion = req.getHeader("X-Device-Version");
+        if (xuserAgent != null) {
+            log.info("X-Device-Version: " + xDeviceVersion);
+        }
+
         String unicodeNumber = req.getPathInfo().replace("/", "");
         log.info("got request for " + unicodeNumber);
         String kanji = findKanji(unicodeNumber);
