@@ -32,7 +32,7 @@ public class KanjiStrokesServlet extends HttpServlet {
         }
 
         String xDeviceVersion = req.getHeader("X-Device-Version");
-        if (xuserAgent != null) {
+        if (xDeviceVersion != null) {
             log.info("X-Device-Version: " + xDeviceVersion);
         }
 
