@@ -45,6 +45,12 @@ public class SearchCriteria implements Serializable {
                 true, true, false, null, searchType, null, null, null);
     }
 
+    public static SearchCriteria createForKanjiOrReading(String queryString) {
+        return new SearchCriteria(CRITERIA_TYPE_KANJI, queryString, false,
+                true, true, false, null, KANJI_TEXT_LOOKUP_CODE, null, null,
+                null);
+    }
+
     public static SearchCriteria createWithStrokeCount(String queryString,
             String searchType, Integer minStrokeCount, Integer maxStrokeCount) {
         return new SearchCriteria(CRITERIA_TYPE_KANJI, queryString, false,
