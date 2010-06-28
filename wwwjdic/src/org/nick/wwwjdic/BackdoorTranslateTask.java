@@ -58,8 +58,9 @@ public abstract class BackdoorTranslateTask<T> extends TranslateTask<T> {
     protected abstract T parseEntry(String entryStr);
 
     @Override
-    protected String query(SearchCriteria criteria) {
+    protected String query(WwwjdicQuery query) {
         try {
+            SearchCriteria criteria = (SearchCriteria) query;
             String lookupUrl = String.format("%s?%s", url,
                     generateBackdoorCode(criteria));
             HttpGet get = new HttpGet(lookupUrl);

@@ -2,7 +2,7 @@ package org.nick.wwwjdic;
 
 import java.io.Serializable;
 
-public class SearchCriteria implements Serializable {
+public class SearchCriteria extends WwwjdicQuery implements Serializable {
 
     /**
      * 
@@ -18,7 +18,6 @@ public class SearchCriteria implements Serializable {
 
     private Long id;
 
-    private String queryString;
     private boolean isExactMatch;
     private boolean isKanjiLookup;
     private boolean isRomanizedJapanese;
@@ -70,6 +69,7 @@ public class SearchCriteria implements Serializable {
             boolean isCommonWordsOnly, String dictionary,
             String kanjiSearchType, Integer minStrokeCount,
             Integer maxStrokeCount, Integer numMaxResults) {
+        super(queryString);
         this.type = type;
         this.queryString = queryString;
         this.isExactMatch = isExactMatch;
@@ -81,10 +81,6 @@ public class SearchCriteria implements Serializable {
         this.minStrokeCount = minStrokeCount;
         this.maxStrokeCount = maxStrokeCount;
         this.numMaxResults = numMaxResults;
-    }
-
-    public String getQueryString() {
-        return queryString;
     }
 
     public boolean isExactMatch() {
