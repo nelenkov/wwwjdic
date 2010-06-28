@@ -226,7 +226,9 @@
     <string name="exact_match">Exact match (Eng. only)</string> 
     <string name="enter_eng_or_jap">Enter English or Japanese</string>
     <string name="enter_kanji_search_key">Enter kanji search key</string>
+    <string name="break_down_jap">Break down Japanese</string>
     <string name="look_up_all_kanji">Look up all kanji</string>
     <string name="copy_jp">Copy Japanese</string>
     <string name="copy_eng">Copy English</string>
+    <string name="sentence_breakdown">Sentence breakdown</string>
 </resources>

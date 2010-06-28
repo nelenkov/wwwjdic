@@ -26,6 +26,8 @@ public class Constants {
 
     public static final String IS_FAVORITE = "org.nick.wwwjdic.isFavorite";
 
+    public static final String SENTENCE = "org.nick.wwwjdic.sentence";
+
     private Constants() {
     }
 

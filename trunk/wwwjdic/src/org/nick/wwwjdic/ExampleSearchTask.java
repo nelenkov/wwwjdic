@@ -81,8 +81,10 @@ public class ExampleSearchTask extends TranslateTask<ExampleSentence> {
     }
 
     @Override
-    protected String query(SearchCriteria criteria) {
+    protected String query(WwwjdicQuery query) {
         try {
+            SearchCriteria criteria = (SearchCriteria) query;
+
             HttpPost post = new HttpPost(url);
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
             String searchString = criteria.getQueryString();

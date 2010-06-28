@@ -17,7 +17,7 @@ public abstract class TranslateTask<T> implements Runnable {
     private static final String TAG = TranslateTask.class.getSimpleName();
 
     protected ResultListView<T> resultListView;
-    protected SearchCriteria searchCriteria;
+    protected WwwjdicQuery query;
 
     protected String url;
     protected int timeoutMillis;
@@ -27,11 +27,11 @@ public abstract class TranslateTask<T> implements Runnable {
     protected ResponseHandler<String> responseHandler = new GzipStringResponseHandler();
 
     public TranslateTask(String url, int timeoutSeconds,
-            ResultListView<T> resultView, SearchCriteria searchCriteria) {
+            ResultListView<T> resultView, WwwjdicQuery query) {
         this.url = url;
         this.timeoutMillis = timeoutSeconds * 1000;
         this.resultListView = resultView;
-        this.searchCriteria = searchCriteria;
+        this.query = query;
 
         createHttpClient();
     }
@@ -49,7 +49,7 @@ public abstract class TranslateTask<T> implements Runnable {
 
     public void run() {
         try {
-            List<T> result = fetchResult(searchCriteria);
+            List<T> result = fetchResult(query);
             if (resultListView != null) {
                 resultListView.setResult(result);
             }
@@ -59,11 +59,10 @@ public abstract class TranslateTask<T> implements Runnable {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private List<T> fetchResult(SearchCriteria criteria) {
-        String payload = query(criteria);
+    private List<T> fetchResult(WwwjdicQuery query) {
+        String payload = query(query);
 
-        return (List<T>) parseResult(payload);
+        return parseResult(payload);
     }
 
     public ResultListView<T> getResultListView() {
@@ -74,8 +73,8 @@ public abstract class TranslateTask<T> implements Runnable {
         this.resultListView = resultListView;
     }
 
-    protected abstract String query(SearchCriteria criteria);
+    protected abstract String query(WwwjdicQuery criteria);
 
-    protected abstract List<?> parseResult(String html);
+    protected abstract List<T> parseResult(String html);
 
 }

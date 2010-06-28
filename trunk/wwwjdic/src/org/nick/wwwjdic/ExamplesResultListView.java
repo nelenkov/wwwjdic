@@ -20,6 +20,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> {
@@ -29,9 +30,10 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
 
     private static final String EXAMPLE_SEARCH_QUERY_STR = "?11";
 
-    private static final int MENU_ITEM_LOOKUP_ALL_KANJI = 0;
-    private static final int MENU_ITEM_COPY_JP = 1;
-    private static final int MENU_ITEM_COPY_ENG = 2;
+    private static final int MENU_ITEM_BREAK_DOWN = 0;
+    private static final int MENU_ITEM_LOOKUP_ALL_KANJI = 1;
+    private static final int MENU_ITEM_COPY_JP = 2;
+    private static final int MENU_ITEM_COPY_ENG = 3;
 
     static class ExampleSentenceAdapter extends BaseAdapter {
 
@@ -149,9 +151,10 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {
-        menu.add(0, MENU_ITEM_LOOKUP_ALL_KANJI, 0, R.string.look_up_all_kanji);
-        menu.add(0, MENU_ITEM_COPY_JP, 1, R.string.copy_jp);
-        menu.add(0, MENU_ITEM_COPY_ENG, 2, R.string.copy_eng);
+        menu.add(0, MENU_ITEM_BREAK_DOWN, 0, R.string.break_down_jap);
+        menu.add(0, MENU_ITEM_LOOKUP_ALL_KANJI, 1, R.string.look_up_all_kanji);
+        menu.add(0, MENU_ITEM_COPY_JP, 2, R.string.copy_jp);
+        menu.add(0, MENU_ITEM_COPY_ENG, 3, R.string.copy_eng);
 
     }
 
@@ -166,18 +169,32 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
         }
 
         switch (item.getItemId()) {
+        case MENU_ITEM_BREAK_DOWN:
+            breakDown(info.id);
+            return true;
         case MENU_ITEM_LOOKUP_ALL_KANJI:
             lookupAllKanji(info.id);
             return true;
         case MENU_ITEM_COPY_JP:
             copyJapanese(info.id);
             return true;
-        case MENU_ITEM_COPY_ENG: {
+        case MENU_ITEM_COPY_ENG:
             copyEnglish(info.id);
             return true;
         }
-        }
         return false;
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        breakDown(id);
+    }
+
+    private void breakDown(long id) {
+        Intent intent = new Intent(this, SentenceBreakdown.class);
+        intent.putExtra(Constants.SENTENCE, getCurrentSentence(id)
+                .getJapanese());
+        startActivity(intent);
     }
 
     private void copyEnglish(long id) {
