@@ -7,6 +7,7 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HttpContext;
 
 import android.util.Log;
@@ -42,6 +43,8 @@ public abstract class TranslateTask<T> implements Runnable {
         HttpParams httpParams = httpclient.getParams();
         HttpConnectionParams.setConnectionTimeout(httpParams, timeoutMillis);
         HttpConnectionParams.setSoTimeout(httpParams, timeoutMillis);
+        HttpProtocolParams.setUserAgent(httpParams, WwwjdicApplication
+                .getUserAgentString());
     }
 
     public void run() {

@@ -14,6 +14,7 @@ import org.nick.wwwjdic.GzipStringResponseHandler;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.StringUtils;
 import org.nick.wwwjdic.WebServiceBackedActivity;
+import org.nick.wwwjdic.WwwjdicApplication;
 
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -225,8 +226,6 @@ public class SodActivity extends WebServiceBackedActivity implements
 
     class GetStrokePathTask implements Runnable {
 
-        private static final String USER_AGENT = "Android-WWWJDIC/0.9";
-
         private String unicodeNumber;
         private boolean animate;
 
@@ -246,7 +245,8 @@ public class SodActivity extends WebServiceBackedActivity implements
             HttpGet get = new HttpGet(lookupUrl);
             get.addHeader("Accept-Encoding", "gzip");
             get.addHeader("User-Agent", "gzip");
-            get.addHeader("X-User-Agent", USER_AGENT);
+            get.addHeader("X-User-Agent", WwwjdicApplication
+                    .getUserAgentString());
             get.addHeader("X-Device-Version", getDeviceVersionStr());
 
             try {
