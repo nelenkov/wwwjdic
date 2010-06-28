@@ -82,7 +82,7 @@ public class HistoryItem extends LinearLayout {
                 buff.append(dictName);
             }
 
-            String dictOptStr = buildDictOptionsString(criteria);
+            String dictOptStr = buildSearchOptionsString(criteria);
             if (!StringUtils.isEmpty(dictOptStr)) {
                 buff.append(" ");
                 buff.append(dictOptStr);
@@ -97,7 +97,7 @@ public class HistoryItem extends LinearLayout {
         return result;
     }
 
-    private String buildDictOptionsString(SearchCriteria criteria) {
+    private String buildSearchOptionsString(SearchCriteria criteria) {
         StringBuffer buff = new StringBuffer();
         if (criteria.isCommonWordsOnly()) {
             buff.append(" comm.");
@@ -109,6 +109,11 @@ public class HistoryItem extends LinearLayout {
 
         if (criteria.isRomanizedJapanese()) {
             buff.append(" rom.");
+        }
+
+        if (criteria.getType() == SearchCriteria.CRITERIA_TYPE_EXAMPLES) {
+            buff.append(String.format(" max results: %d", criteria
+                    .getNumMaxResults()));
         }
 
         String result = buff.toString().trim();
