@@ -3,20 +3,35 @@ package org.nick.wwwjdic;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.ClipboardManager;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> {
 
+    private static final String TAG = ExamplesResultListView.class
+            .getSimpleName();
+
     private static final String EXAMPLE_SEARCH_QUERY_STR = "?11";
+
+    private static final int MENU_ITEM_LOOKUP_ALL_KANJI = 0;
+    private static final int MENU_ITEM_COPY_JP = 1;
+    private static final int MENU_ITEM_COPY_ENG = 2;
 
     static class ExampleSentenceAdapter extends BaseAdapter {
 
@@ -51,8 +66,8 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
 
         static class ExampleSentenceView extends LinearLayout {
 
+            private static final int HILIGHT_COLOR = 0xff427ad7;
             private ExampleSentence sentence;
-            private String queryString;
 
             private TextView japaneseSentenceText;
             private TextView englishSentenceText;
@@ -61,7 +76,6 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
                     String queryString) {
                 super(context);
                 this.sentence = sentence;
-                this.queryString = queryString;
 
                 LayoutInflater inflater = LayoutInflater.from(context);
                 inflater.inflate(R.layout.example_sentence_item, this);
@@ -73,34 +87,56 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
             }
 
             private void populate(String queryString) {
-                SpannableString japanese = new SpannableString(sentence
-                        .getJapanese());
-                SpannableString english = new SpannableString(sentence
-                        .getEnglish());
-                int idx = sentence.getJapanese().indexOf(queryString);
-                if (idx != -1) {
-                    japanese.setSpan(new ForegroundColorSpan(Color.RED), idx,
-                            idx + queryString.length(), 0);
-                }
-
-                idx = sentence.getEnglish().indexOf(queryString);
-                if (idx != -1) {
-                    english.setSpan(new ForegroundColorSpan(Color.RED), idx,
-                            idx + queryString.length(), 0);
-                }
+                SpannableString english = markQueryString(
+                        sentence.getEnglish(), queryString, true);
+                SpannableString japanese = markQueryString(sentence
+                        .getJapanese(), queryString, false);
 
                 japaneseSentenceText.setText(japanese);
                 englishSentenceText.setText(english);
+            }
+
+            private SpannableString markQueryString(String sentenceStr,
+                    String queryString, boolean italicize) {
+                SpannableString result = new SpannableString(sentenceStr);
+
+                String sentenceUpper = sentenceStr.toUpperCase();
+                String queryUpper = queryString.toUpperCase();
+
+                int idx = sentenceUpper.indexOf(queryUpper);
+                while (idx != -1) {
+                    result.setSpan(new ForegroundColorSpan(HILIGHT_COLOR), idx,
+                            idx + queryString.length(), 0);
+                    if (italicize) {
+                        result.setSpan(new StyleSpan(Typeface.ITALIC), idx, idx
+                                + queryString.length(), 0);
+                    }
+
+                    int startIdx = idx + queryString.length() + 1;
+                    if (startIdx <= sentenceStr.length() - 1) {
+                        idx = sentenceUpper.indexOf(queryUpper, idx + 1);
+                    } else {
+                        break;
+                    }
+                }
+
+                return result;
             }
         }
 
     }
 
-    private List<ExampleSentence> entries;
+    private List<ExampleSentence> sentences;
+
+    private ClipboardManager clipboardManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+
+        getListView().setOnCreateContextMenuListener(this);
 
         extractSearchCriteria();
         TranslateTask<ExampleSentence> translateTask = new ExampleSearchTask(
@@ -111,17 +147,74 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View view,
+            ContextMenuInfo menuInfo) {
+        menu.add(0, MENU_ITEM_LOOKUP_ALL_KANJI, 0, R.string.look_up_all_kanji);
+        menu.add(0, MENU_ITEM_COPY_JP, 1, R.string.copy_jp);
+        menu.add(0, MENU_ITEM_COPY_ENG, 2, R.string.copy_eng);
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info;
+        try {
+            info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        } catch (ClassCastException e) {
+            Log.e(TAG, "bad menuInfo", e);
+            return false;
+        }
+
+        switch (item.getItemId()) {
+        case MENU_ITEM_LOOKUP_ALL_KANJI:
+            lookupAllKanji(info.id);
+            return true;
+        case MENU_ITEM_COPY_JP:
+            copyJapanese(info.id);
+            return true;
+        case MENU_ITEM_COPY_ENG: {
+            copyEnglish(info.id);
+            return true;
+        }
+        }
+        return false;
+    }
+
+    private void copyEnglish(long id) {
+        ExampleSentence sentence = getCurrentSentence(id);
+        clipboardManager.setText(sentence.getEnglish());
+    }
+
+    private ExampleSentence getCurrentSentence(long id) {
+        return sentences.get((int) id);
+    }
+
+    private void copyJapanese(long id) {
+        ExampleSentence sentence = getCurrentSentence(id);
+        clipboardManager.setText(sentence.getJapanese());
+    }
+
+    private void lookupAllKanji(long id) {
+        ExampleSentence sentence = getCurrentSentence(id);
+        SearchCriteria criteria = SearchCriteria
+                .createForKanjiOrReading(sentence.getJapanese());
+        Intent intent = new Intent(this, KanjiResultListView.class);
+        intent.putExtra(Constants.CRITERIA_KEY, criteria);
+        startActivity(intent);
+    }
+
+    @Override
     public void setResult(final List<ExampleSentence> result) {
         guiThread.post(new Runnable() {
             public void run() {
-                entries = (List<ExampleSentence>) result;
+                sentences = (List<ExampleSentence>) result;
                 ExampleSentenceAdapter adapter = new ExampleSentenceAdapter(
-                        ExamplesResultListView.this, entries, criteria
+                        ExamplesResultListView.this, sentences, criteria
                                 .getQueryString());
                 setListAdapter(adapter);
                 getListView().setTextFilterEnabled(true);
-                setTitle(String.format("%d example(s) for '%s'",
-                        entries.size(), criteria.getQueryString()));
+                setTitle(String.format("%d example(s) for '%s'", sentences
+                        .size(), criteria.getQueryString()));
                 dismissProgressDialog();
             }
         });
