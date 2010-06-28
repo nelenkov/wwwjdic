@@ -14,19 +14,19 @@ import org.apache.http.protocol.HTTP;
 
 public abstract class EntityBasedHttpClient {
 
-    private static final String USER_AGENT_STRING = "Android-WWWJDIC/0.9";
-
     protected String url;
     protected DefaultHttpClient httpClient;
 
     public EntityBasedHttpClient(String endpoint, int timeout) {
         this.url = endpoint;
+
         HttpParams params = new BasicHttpParams();
         HttpProtocolParams.setContentCharset(params,
                 HTTP.DEFAULT_CONTENT_CHARSET);
         HttpProtocolParams.setUseExpectContinue(params, true);
         HttpConnectionParams.setConnectionTimeout(params, timeout);
-        HttpProtocolParams.setUserAgent(params, USER_AGENT_STRING);
+        HttpProtocolParams.setUserAgent(params, WwwjdicApplication
+                .getUserAgentString());
         httpClient = new DefaultHttpClient(params);
     }
 
