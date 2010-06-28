@@ -16,13 +16,10 @@ import android.util.Log;
 public class SentenceBreakdownTask extends
         TranslateTask<SentenceBreakdownEntry> {
 
-    private static final Pattern CLOSING_UL_PATTERN = Pattern
-            .compile("^.*</ul>.*$");
     private static final Pattern ENTRY_WITH_EXPLANATION_PATTERN = Pattern
             .compile("^.*<li>\\s*(.+)<br>\\s*(.+)\\sÅy(\\S+)Åz\\s\\t(.+)</li>.*$");
     private static final Pattern ENTRY_PATTERN = Pattern
             .compile("^.*<li>\\s*(.+)\\sÅy(\\S+)Åz\\s\\t(.+)</li>.*$");
-    // <li> ÇÁÇµÇ¢ (adj,suf) appears like; ; KD </li>
     private static final Pattern NO_READING_ENTRY_PATTERN = Pattern
             .compile("^.*<li>\\s*(\\S+)\\s\\t(.+)</li>.*$");
 
@@ -69,11 +66,6 @@ public class SentenceBreakdownTask extends
                         .createNoReading(word, translation);
                 result.add(entry);
                 continue;
-            }
-
-            m = CLOSING_UL_PATTERN.matcher(line);
-            if (m.matches()) {
-                break;
             }
 
         }
