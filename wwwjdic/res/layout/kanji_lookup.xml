@@ -6,51 +6,53 @@
     android:minHeight="200px">
     <EditText android:layout_height="wrap_content"
         android:layout_width="fill_parent" android:id="@+id/kanjiInputText"
-        android:inputType="text" android:lines="1"></EditText>
-    <LinearLayout android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:orientation="horizontal"
-        android:id="@+id/searchTypeSelectionLayout" android:gravity="center_vertical|center_horizontal"
-        android:layout_gravity="center_vertical|center_horizontal">
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/dictLabel"
-            android:text="Search type:" android:textSize="16sp"
-            android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
-        <Spinner android:layout_height="wrap_content"
-            android:id="@+id/kanjiSearchTypeSpinner"
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="5px" android:minWidth="320px"
-            android:prompt="@string/select_search_type"></Spinner>
-    </LinearLayout>
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:orientation="horizontal"
-        android:id="@+id/strokeCountLayout" android:gravity="center_vertical|center_horizontal"
-        android:layout_gravity="center_vertical|center_horizontal">
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/radicalLabel"
-            android:text="@string/radical" android:textSize="12sp"
-            android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
-        <EditText android:layout_height="wrap_content"
-            android:layout_width="wrap_content" android:id="@+id/radicalInputText"
-            android:lines="1" android:text="  " android:minWidth="40dp"
-            android:cursorVisible="false" android:focusable="false"
-            android:textSize="18sp" android:inputType="none"></EditText>
-        <Button android:id="@+id/selectRadicalButton"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:textSize="12sp" android:text="@string/select" />
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/strokeCountLabel"
-            android:text="@string/strokes" android:textSize="12sp"
-            android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
-        <EditText android:layout_height="wrap_content"
-            android:layout_width="wrap_content" android:id="@+id/strokeCountMinInput"
-            android:lines="1" android:inputType="numberDecimal"
-            android:textSize="12sp" android:hint="@string/min"
-            android:imeOptions="actionNext"></EditText>
-        <EditText android:layout_height="wrap_content"
-            android:layout_width="wrap_content" android:id="@+id/strokeCountMaxInput"
-            android:lines="1" android:inputType="numberDecimal"
-            android:textSize="12sp" android:hint="@string/max"></EditText>
-    </LinearLayout>
-    <Button android:layout_height="wrap_content" android:id="@+id/kanjiSearchButton"
-        android:layout_width="fill_parent" android:text="@string/search"></Button>
+        android:inputType="text" android:lines="1"
+        android:hint="@string/enter_kanji_search_key"/>
+        <LinearLayout android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:orientation="horizontal"
+            android:id="@+id/searchTypeSelectionLayout" android:gravity="center_vertical|center_horizontal"
+            android:layout_gravity="center_vertical|center_horizontal">
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/dictLabel"
+                android:text="Search type:" android:textSize="16sp"
+                android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
+            <Spinner android:layout_height="wrap_content"
+                android:id="@+id/kanjiSearchTypeSpinner"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="5px" android:minWidth="320px"
+                android:prompt="@string/select_search_type"></Spinner>
+        </LinearLayout>
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:orientation="horizontal"
+            android:id="@+id/strokeCountLayout" android:gravity="center_vertical|center_horizontal"
+            android:layout_gravity="center_vertical|center_horizontal">
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/radicalLabel"
+                android:text="@string/radical" android:textSize="12sp"
+                android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
+            <EditText android:layout_height="wrap_content"
+                android:layout_width="wrap_content" android:id="@+id/radicalInputText"
+                android:lines="1" android:text="  " android:minWidth="40dp"
+                android:cursorVisible="false" android:focusable="false"
+                android:textSize="18sp" android:inputType="none"></EditText>
+            <Button android:id="@+id/selectRadicalButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:textSize="12sp"
+                android:text="@string/select" />
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/strokeCountLabel"
+                android:text="@string/strokes" android:textSize="12sp"
+                android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
+            <EditText android:layout_height="wrap_content"
+                android:layout_width="wrap_content" android:id="@+id/strokeCountMinInput"
+                android:lines="1" android:inputType="numberDecimal"
+                android:textSize="12sp" android:hint="@string/min"
+                android:imeOptions="actionNext"></EditText>
+            <EditText android:layout_height="wrap_content"
+                android:layout_width="wrap_content" android:id="@+id/strokeCountMaxInput"
+                android:lines="1" android:inputType="numberDecimal"
+                android:textSize="12sp" android:hint="@string/max"></EditText>
+        </LinearLayout>
+        <Button android:layout_height="wrap_content" android:id="@+id/kanjiSearchButton"
+            android:layout_width="fill_parent" android:text="@string/search"></Button>
 </LinearLayout>

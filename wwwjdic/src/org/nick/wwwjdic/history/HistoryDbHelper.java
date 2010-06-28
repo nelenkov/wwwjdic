@@ -239,7 +239,7 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
             return result;
         case SearchCriteria.CRITERIA_TYPE_EXAMPLES:
             int numMaxResults = cursor.getInt(cursor
-                    .getColumnIndex("max_resutls"));
+                    .getColumnIndex(HISTORY_MAX_RESULTS));
             isExactMatch = cursor.getInt(cursor
                     .getColumnIndex(HISTORY_IS_EXACT_MATCH)) == 1;
             result = SearchCriteria.createForExampleSearch(queryString,
