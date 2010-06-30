@@ -13,15 +13,14 @@ import org.apache.http.client.methods.HttpGet;
 
 import android.util.Log;
 
-public class SentenceBreakdownTask extends
-        SearchTask<SentenceBreakdownEntry> {
+public class SentenceBreakdownTask extends SearchTask<SentenceBreakdownEntry> {
 
     private static final Pattern ENTRY_WITH_EXPLANATION_PATTERN = Pattern
             .compile("^.*<li>\\s*(.+)<br>\\s*(.+)\\sÅy(.+)Åz\\s+(.+)</li>.*$");
     private static final Pattern ENTRY_PATTERN = Pattern
-            .compile("^.*<li>\\s*(.+)\\sÅy(.+)Åz\\s+(.+)</li>.*$");
+            .compile("^.*<li>\\s*(.+)\\sÅy(.+)Åz\\s+(.+)\\s+(<font.*>(.+)</font>)?</li>.*$");
     private static final Pattern NO_READING_ENTRY_PATTERN = Pattern
-            .compile("^.*<li>\\s*(\\S+)\\s+(.+)</li>.*$");
+            .compile("^.*<li>\\s*(\\S+)\\s+(.+)\\s+(<font.*>(.+)</font>)?</li>.*$");
 
     public SentenceBreakdownTask(String url, int timeoutSeconds,
             ResultListViewBase<SentenceBreakdownEntry> resultListView,
@@ -53,8 +52,16 @@ public class SentenceBreakdownTask extends
                 String word = m.group(1).trim();
                 String reading = m.group(2).trim();
                 String translation = m.group(3).trim();
-                SentenceBreakdownEntry entry = SentenceBreakdownEntry.create(
-                        word, reading, translation);
+
+                SentenceBreakdownEntry entry = null;
+                if (m.groupCount() > 4 && m.group(5) != null) {
+                    String explanation = m.group(5).trim();
+                    entry = SentenceBreakdownEntry.createWithExplanation(word,
+                            reading, translation, explanation);
+                } else {
+                    entry = SentenceBreakdownEntry.create(word, reading,
+                            translation);
+                }
                 result.add(entry);
                 continue;
             }
@@ -62,8 +69,16 @@ public class SentenceBreakdownTask extends
             if (m.matches()) {
                 String word = m.group(1).trim();
                 String translation = m.group(2).trim();
-                SentenceBreakdownEntry entry = SentenceBreakdownEntry
-                        .createNoReading(word, translation);
+
+                SentenceBreakdownEntry entry = null;
+                if (m.groupCount() > 3 && m.group(4) != null) {
+                    String explanation = m.group(4).trim();
+                    entry = SentenceBreakdownEntry.createWithExplanation(word,
+                            null, translation, explanation);
+                } else {
+                    entry = SentenceBreakdownEntry.createNoReading(word,
+                            translation);
+                }
                 result.add(entry);
                 continue;
             }
