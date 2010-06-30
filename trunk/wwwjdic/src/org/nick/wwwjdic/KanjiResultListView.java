@@ -22,9 +22,9 @@ public class KanjiResultListView extends ResultListViewBase<KanjiEntry> {
 
         extractSearchCriteria();
 
-        TranslateTask<KanjiEntry> translateTask = new KanjiTranslateTask(
+        SearchTask<KanjiEntry> searchTask = new KanjiSearchTask(
                 getWwwjdicUrl(), getHttpTimeoutSeconds(), this, criteria);
-        submitTranslateTask(translateTask);
+        submitSearchTask(searchTask);
     }
 
     @Override

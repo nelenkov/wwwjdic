@@ -14,7 +14,7 @@ import org.apache.http.client.methods.HttpGet;
 import android.util.Log;
 
 public class SentenceBreakdownTask extends
-        TranslateTask<SentenceBreakdownEntry> {
+        SearchTask<SentenceBreakdownEntry> {
 
     private static final Pattern ENTRY_WITH_EXPLANATION_PATTERN = Pattern
             .compile("^.*<li>\\s*(.+)<br>\\s*(.+)\\sÅy(.+)Åz\\s+(.+)</li>.*$");

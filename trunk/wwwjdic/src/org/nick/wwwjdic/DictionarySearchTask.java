@@ -3,10 +3,10 @@ package org.nick.wwwjdic;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-public class DictionaryTranslateTask extends
-        BackdoorTranslateTask<DictionaryEntry> {
+public class DictionarySearchTask extends
+        BackdoorSearchTask<DictionaryEntry> {
 
-    public DictionaryTranslateTask(String url, int timeoutSeconds,
+    public DictionarySearchTask(String url, int timeoutSeconds,
             ResultListViewBase<DictionaryEntry> resultListView,
             SearchCriteria criteria) {
         super(url, timeoutSeconds, resultListView, criteria);

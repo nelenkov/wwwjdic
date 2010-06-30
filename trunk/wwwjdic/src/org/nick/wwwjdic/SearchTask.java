@@ -12,9 +12,9 @@ import org.apache.http.protocol.HttpContext;
 
 import android.util.Log;
 
-public abstract class TranslateTask<T> implements Runnable {
+public abstract class SearchTask<T> implements Runnable {
 
-    private static final String TAG = TranslateTask.class.getSimpleName();
+    private static final String TAG = SearchTask.class.getSimpleName();
 
     protected ResultListView<T> resultListView;
     protected WwwjdicQuery query;
@@ -26,7 +26,7 @@ public abstract class TranslateTask<T> implements Runnable {
     protected HttpClient httpclient;
     protected ResponseHandler<String> responseHandler = new GzipStringResponseHandler();
 
-    public TranslateTask(String url, int timeoutSeconds,
+    public SearchTask(String url, int timeoutSeconds,
             ResultListView<T> resultView, WwwjdicQuery query) {
         this.url = url;
         this.timeoutMillis = timeoutSeconds * 1000;

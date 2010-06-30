@@ -111,9 +111,9 @@ public class SentenceBreakdown extends
         sentenceView.setText(markedSentence);
 
         WwwjdicQuery query = new WwwjdicQuery(sentenceStr);
-        TranslateTask<SentenceBreakdownEntry> translateTask = new SentenceBreakdownTask(
+        SearchTask<SentenceBreakdownEntry> searchTask = new SentenceBreakdownTask(
                 getWwwjdicUrl(), getHttpTimeoutSeconds(), this, query);
-        submitTranslateTask(translateTask);
+        submitSearchTask(searchTask);
     }
 
     private void markString(SpannableString spannable, String term, int color) {

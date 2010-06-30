@@ -142,11 +142,11 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
         getListView().setOnCreateContextMenuListener(this);
 
         extractSearchCriteria();
-        TranslateTask<ExampleSentence> translateTask = new ExampleSearchTask(
+        SearchTask<ExampleSentence> searchTask = new ExampleSearchTask(
                 getWwwjdicUrl() + EXAMPLE_SEARCH_QUERY_STR,
                 getHttpTimeoutSeconds(), this, criteria, criteria
                         .getNumMaxResults());
-        submitTranslateTask(translateTask);
+        submitSearchTask(searchTask);
     }
 
     @Override

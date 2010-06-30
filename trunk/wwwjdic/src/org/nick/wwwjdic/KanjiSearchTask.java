@@ -3,9 +3,9 @@ package org.nick.wwwjdic;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-public class KanjiTranslateTask extends BackdoorTranslateTask<KanjiEntry> {
+public class KanjiSearchTask extends BackdoorSearchTask<KanjiEntry> {
 
-    public KanjiTranslateTask(String url, int timeoutSeconds,
+    public KanjiSearchTask(String url, int timeoutSeconds,
             ResultListView<KanjiEntry> resultListView, SearchCriteria criteria) {
         super(url, timeoutSeconds, resultListView, criteria);
     }

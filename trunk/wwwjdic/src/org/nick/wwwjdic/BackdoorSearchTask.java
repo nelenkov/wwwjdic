@@ -11,7 +11,7 @@ import org.apache.http.client.methods.HttpGet;
 
 import android.util.Log;
 
-public abstract class BackdoorTranslateTask<T> extends TranslateTask<T> {
+public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
 
     protected static final Pattern PRE_START_PATTERN = Pattern
             .compile("^<pre>.*$");
@@ -19,7 +19,7 @@ public abstract class BackdoorTranslateTask<T> extends TranslateTask<T> {
     protected static final Pattern PRE_END_PATTERN = Pattern
             .compile("^</pre>.*$");
 
-    public BackdoorTranslateTask(String url, int timeoutSeconds,
+    public BackdoorSearchTask(String url, int timeoutSeconds,
             ResultListView<T> resultListView, SearchCriteria criteria) {
         super(url, timeoutSeconds, resultListView, criteria);
     }
