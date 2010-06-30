@@ -17,11 +17,11 @@ public class SentenceBreakdownTask extends
         TranslateTask<SentenceBreakdownEntry> {
 
     private static final Pattern ENTRY_WITH_EXPLANATION_PATTERN = Pattern
-            .compile("^.*<li>\\s*(.+)<br>\\s*(.+)\\sÅy(\\S+)Åz\\s\\t(.+)</li>.*$");
+            .compile("^.*<li>\\s*(.+)<br>\\s*(.+)\\sÅy(.+)Åz\\s+(.+)</li>.*$");
     private static final Pattern ENTRY_PATTERN = Pattern
-            .compile("^.*<li>\\s*(.+)\\sÅy(\\S+)Åz\\s\\t(.+)</li>.*$");
+            .compile("^.*<li>\\s*(.+)\\sÅy(.+)Åz\\s+(.+)</li>.*$");
     private static final Pattern NO_READING_ENTRY_PATTERN = Pattern
-            .compile("^.*<li>\\s*(\\S+)\\s\\t(.+)</li>.*$");
+            .compile("^.*<li>\\s*(\\S+)\\s+(.+)</li>.*$");
 
     public SentenceBreakdownTask(String url, int timeoutSeconds,
             ResultListViewBase<SentenceBreakdownEntry> resultListView,

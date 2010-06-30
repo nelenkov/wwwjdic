@@ -1,11 +1,26 @@
 package org.nick.wwwjdic;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class DictionaryEntryDetail extends DetailActivity {
+public class DictionaryEntryDetail extends DetailActivity implements
+        OnClickListener {
+
+    private static final String COMMON_USAGE_MARKER = "(P)";
+
+    private static final String VARIATION_DELIMITER = ";";
+
+    private static final int DEFAULT_MAX_NUM_EXAMPLES = 20;
+
+    private TextView entryView;
+    private CheckBox starCb;
+    private Button exampleSearchButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -21,7 +36,7 @@ public class DictionaryEntryDetail extends DetailActivity {
 
         LinearLayout wordReadingLayout = (LinearLayout) findViewById(R.id.word_reading_layout);
 
-        TextView entryView = (TextView) findViewById(R.id.wordText);
+        entryView = (TextView) findViewById(R.id.wordText);
         entryView.setText(entry.getWord());
         entryView.setOnLongClickListener(this);
 
@@ -41,10 +56,48 @@ public class DictionaryEntryDetail extends DetailActivity {
             meaningsLayout.addView(text);
         }
 
-        CheckBox starCb = (CheckBox) findViewById(R.id.star_word);
+        starCb = (CheckBox) findViewById(R.id.star_word);
         starCb.setOnCheckedChangeListener(null);
         starCb.setChecked(isFavorite);
         starCb.setOnCheckedChangeListener(this);
+
+        exampleSearchButton = (Button) findViewById(R.id.examples_button);
+        exampleSearchButton.setOnClickListener(this);
+
+        disableExampleSearchIfSingleKanji();
+    }
+
+    private void disableExampleSearchIfSingleKanji() {
+        if (wwwjdicEntry.isSingleKanji()) {
+            exampleSearchButton.setEnabled(false);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+        case R.id.examples_button:
+            Intent intent = new Intent(this, ExamplesResultListView.class);
+            String searchKey = extractSearchKey();
+            SearchCriteria criteria = SearchCriteria.createForExampleSearch(
+                    searchKey, false, DEFAULT_MAX_NUM_EXAMPLES);
+            intent.putExtra(Constants.CRITERIA_KEY, criteria);
+
+            startActivity(intent);
+            break;
+        default:
+            // do nothing
+        }
+    }
+
+    private String extractSearchKey() {
+        String searchKey = wwwjdicEntry.getHeadword();
+        if (searchKey.indexOf(VARIATION_DELIMITER) != -1) {
+            String[] variations = searchKey.split(VARIATION_DELIMITER);
+            searchKey = variations[0];
+            searchKey = searchKey.replace(COMMON_USAGE_MARKER, "");
+        }
+        return searchKey;
     }
 
 }

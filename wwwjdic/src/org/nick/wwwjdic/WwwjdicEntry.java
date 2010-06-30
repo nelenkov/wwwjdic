@@ -31,4 +31,8 @@ public abstract class WwwjdicEntry implements Serializable {
 
     public abstract String getDetailString();
 
+    public boolean isSingleKanji() {
+        return getHeadword().length() == 1;
+    }
+
 }

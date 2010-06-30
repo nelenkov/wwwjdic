@@ -13,13 +13,13 @@
             </intent-filter>
         </activity>
         <activity android:name="DictionaryResultListView"
-            android:configChanges="orientation|keyboardHidden|keyboard">
+            android:label="@string/searching" android:configChanges="orientation|keyboardHidden|keyboard">
         </activity>
         <activity android:name="DictionaryEntryDetail"></activity>
         <activity android:name="KanjiResultListView"
-            android:configChanges="orientation|keyboardHidden|keyboard"></activity>
+            android:label="@string/searching" android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name="ExamplesResultListView"
-            android:configChanges="orientation|keyboardHidden|keyboard"></activity>
+            android:label="@string/searching" android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name="SentenceBreakdown"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name="KanjiEntryDetail"></activity>

@@ -136,6 +136,7 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.search_results);
         clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
         getListView().setOnCreateContextMenuListener(this);
