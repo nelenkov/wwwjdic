@@ -13,7 +13,7 @@ import org.apache.http.message.BasicNameValuePair;
 public class ExampleSearchTask extends TranslateTask<ExampleSentence> {
 
     private static final Pattern UL_PATTERN = Pattern.compile("^.*<ul>.*$");
-    private static final Pattern closingUlPattern = Pattern
+    private static final Pattern CLOSING_UL_PATTERN = Pattern
             .compile("^.*</ul>.*$");
     private static final Pattern LI_PATTERN = Pattern.compile("^.*<li>.*$");
     private static final Pattern INPUT_PATTERN = Pattern
@@ -56,7 +56,7 @@ public class ExampleSearchTask extends TranslateTask<ExampleSentence> {
                 state = TRANSLATION_FOLLOWS;
                 continue;
             }
-            if (closingUlPattern.matcher(line).matches()) {
+            if (CLOSING_UL_PATTERN.matcher(line).matches()) {
                 state = EXAMPLES_FINISHED;
                 break;
             }

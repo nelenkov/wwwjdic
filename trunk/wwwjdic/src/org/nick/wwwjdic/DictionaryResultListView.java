@@ -19,6 +19,8 @@ public class DictionaryResultListView extends
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.search_results);
+
         extractSearchCriteria();
         TranslateTask<DictionaryEntry> translateTask = new DictionaryTranslateTask(
                 getWwwjdicUrl(), getHttpTimeoutSeconds(), this, criteria);

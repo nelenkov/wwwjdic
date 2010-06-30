@@ -66,7 +66,7 @@
         android:textColor="#FFF" android:layout_height="wrap_content"
         android:text="@string/english_meanings" android:background="#888888"></TextView>
     <ScrollView android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent" android:paddingTop="4dip">
         <LinearLayout android:id="@+id/meaningsCodesLayout"
             android:orientation="vertical" android:layout_width="fill_parent"
             android:layout_height="fill_parent">

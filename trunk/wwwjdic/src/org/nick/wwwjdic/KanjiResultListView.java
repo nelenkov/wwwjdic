@@ -18,6 +18,8 @@ public class KanjiResultListView extends ResultListViewBase<KanjiEntry> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.search_results);
+
         extractSearchCriteria();
 
         TranslateTask<KanjiEntry> translateTask = new KanjiTranslateTask(

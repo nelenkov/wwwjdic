@@ -231,4 +231,7 @@
     <string name="copy_jp">Copy Japanese</string>
     <string name="copy_eng">Copy English</string>
     <string name="sentence_breakdown">Sentence breakdown</string>
+    <string name="sentence_words">Words</string>
+    <string name="no_results">No results</string>
+    <string name="searching">Searching...</string>
 </resources>
