@@ -12,7 +12,7 @@ public class Constants {
 
     public static final String SEARCH_TEXT_KEY = "org.nick.wwwjdic.searchKey";
 
-    public static final String SEARCH_TEXT_KANJI_KEY = "org.nick.wwwjdic.isKanji";
+    public static final String SEARCH_TYPE = "org.nick.wwwjdic.searchType";
 
     public static final String HKR_CANDIDATES_KEY = "org.nick.wwwjdic.hkrCandidates";
 

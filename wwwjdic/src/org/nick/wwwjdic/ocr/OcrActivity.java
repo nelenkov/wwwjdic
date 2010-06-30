@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.SearchCriteria;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.ocr.crop.CropImage;
@@ -83,6 +84,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
     private TextView ocrredTextView;
     private Button dictSearchButton;
     private Button kanjidictSearchButton;
+    private Button exampleSearchButton;
 
     private ToggleButton flashToggle;
     private boolean supportsFlash = false;
@@ -110,6 +112,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
         dictSearchButton.setOnClickListener(this);
         kanjidictSearchButton = (Button) findViewById(R.id.send_to_kanjidict);
         kanjidictSearchButton.setOnClickListener(this);
+        exampleSearchButton = (Button) findViewById(R.id.send_to_example_search);
+        exampleSearchButton.setOnClickListener(this);
         toggleSearchButtons(false);
 
         flashToggle = (ToggleButton) findViewById(R.id.auto_flash_toggle);
@@ -121,6 +125,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
     private void toggleSearchButtons(boolean enabled) {
         dictSearchButton.setEnabled(enabled);
         kanjidictSearchButton.setEnabled(enabled);
+        exampleSearchButton.setEnabled(enabled);
     }
 
     void autoFocus() {
@@ -581,10 +586,16 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
         switch (v.getId()) {
         case R.id.send_to_dict:
-            extras.putBoolean(Constants.SEARCH_TEXT_KANJI_KEY, false);
+            extras.putInt(Constants.SEARCH_TYPE,
+                    SearchCriteria.CRITERIA_TYPE_DICT);
             break;
         case R.id.send_to_kanjidict:
-            extras.putBoolean(Constants.SEARCH_TEXT_KANJI_KEY, true);
+            extras.putInt(Constants.SEARCH_TYPE,
+                    SearchCriteria.CRITERIA_TYPE_KANJI);
+            break;
+        case R.id.send_to_example_search:
+            extras.putInt(Constants.SEARCH_TYPE,
+                    SearchCriteria.CRITERIA_TYPE_EXAMPLES);
             break;
         default:
         }

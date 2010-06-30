@@ -155,15 +155,23 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String searchKey = extras.getString(Constants.SEARCH_TEXT_KEY);
-            boolean isKanji = extras
-                    .getBoolean(Constants.SEARCH_TEXT_KANJI_KEY);
+            int searchType = extras.getInt(Constants.SEARCH_TYPE);
             if (searchKey != null) {
-                if (isKanji) {
-                    kanjiInputText.setText(searchKey);
-                    tabHost.setCurrentTab(1);
-                } else {
+                switch (searchType) {
+                case SearchCriteria.CRITERIA_TYPE_DICT:
                     inputText.setText(searchKey);
                     tabHost.setCurrentTab(0);
+                    break;
+                case SearchCriteria.CRITERIA_TYPE_KANJI:
+                    kanjiInputText.setText(searchKey);
+                    tabHost.setCurrentTab(1);
+                    break;
+                case SearchCriteria.CRITERIA_TYPE_EXAMPLES:
+                    exampleSearchInputText.setText(searchKey);
+                    tabHost.setCurrentTab(2);
+                    break;
+                default:
+                    // do nothing
                 }
                 inputTextFromBundle = true;
             }
