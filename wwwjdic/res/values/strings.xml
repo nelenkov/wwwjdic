@@ -212,9 +212,14 @@
     <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
     <string name="whats_new_title">What\'s new in %s</string>
     <string name="whats_new">
-        * better OCR preview size/picture size handling\n
-         * fixes crash on MyTouch Slide (and hopefully HTC Legend)\n
-        * OCR cropping no longer depends on the default Camera app\n
+        * Example search\n
+         * new \'Example Search\' tab\n
+         * use \'exact match\' for short English words\n
+         * new \'Ex.\' button in detail view\n
+           (disabled for single kanji words)\n
+        * Example sentence breakdown\n
+         * click sentence to break down/translate\n
+         * long press for more options (look up kanji/copy)
     </string>
     <!--  for cropper -->
     <string name="crop_save_text">Crop</string>
