@@ -3,7 +3,6 @@ package org.nick.wwwjdic;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -96,8 +95,7 @@ public class SentenceBreakdown extends
     private SpannableString markedSentence;
 
     private static final int HILIGHT_COLOR1 = 0xff427ad7;
-    // TODO come up with better color
-    private static final int HILIGHT_COLOR2 = Color.RED;
+    private static final int HILIGHT_COLOR2 = 0xfff97600;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

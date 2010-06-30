@@ -22,6 +22,8 @@ public class DictionaryEntryDetail extends DetailActivity implements
     private CheckBox starCb;
     private Button exampleSearchButton;
 
+    private String exampleSearchKey;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,11 +66,12 @@ public class DictionaryEntryDetail extends DetailActivity implements
         exampleSearchButton = (Button) findViewById(R.id.examples_button);
         exampleSearchButton.setOnClickListener(this);
 
+        exampleSearchKey = extractSearchKey();
         disableExampleSearchIfSingleKanji();
     }
 
     private void disableExampleSearchIfSingleKanji() {
-        if (wwwjdicEntry.isSingleKanji()) {
+        if (exampleSearchKey.length() == 1) {
             exampleSearchButton.setEnabled(false);
         }
     }
@@ -78,9 +81,8 @@ public class DictionaryEntryDetail extends DetailActivity implements
         switch (v.getId()) {
         case R.id.examples_button:
             Intent intent = new Intent(this, ExamplesResultListView.class);
-            String searchKey = extractSearchKey();
             SearchCriteria criteria = SearchCriteria.createForExampleSearch(
-                    searchKey, false, DEFAULT_MAX_NUM_EXAMPLES);
+                    exampleSearchKey, false, DEFAULT_MAX_NUM_EXAMPLES);
             intent.putExtra(Constants.CRITERIA_KEY, criteria);
 
             startActivity(intent);
