@@ -22,9 +22,9 @@ public class DictionaryResultListView extends
         setContentView(R.layout.search_results);
 
         extractSearchCriteria();
-        TranslateTask<DictionaryEntry> translateTask = new DictionaryTranslateTask(
+        SearchTask<DictionaryEntry> searchTask = new DictionarySearchTask(
                 getWwwjdicUrl(), getHttpTimeoutSeconds(), this, criteria);
-        submitTranslateTask(translateTask);
+        submitSearchTask(searchTask);
     }
 
     @Override

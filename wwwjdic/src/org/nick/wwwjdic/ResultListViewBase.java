@@ -52,12 +52,12 @@ public abstract class ResultListViewBase<T> extends ListActivity implements
         super.onDestroy();
     }
 
-    protected void submitTranslateTask(TranslateTask<T> translateTask) {
+    protected void submitSearchTask(SearchTask<T> searchTask) {
         progressDialog = ProgressDialog.show(this, "", getResources().getText(
                 R.string.loading).toString(), true);
 
         ExecutorService executorService = getApp().getExecutorService();
-        transPending = executorService.submit(translateTask);
+        transPending = executorService.submit(searchTask);
     }
 
     private WwwjdicApplication getApp() {

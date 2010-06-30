@@ -10,7 +10,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 
-public class ExampleSearchTask extends TranslateTask<ExampleSentence> {
+public class ExampleSearchTask extends SearchTask<ExampleSentence> {
 
     private static final Pattern UL_PATTERN = Pattern.compile("^.*<ul>.*$");
     private static final Pattern CLOSING_UL_PATTERN = Pattern
