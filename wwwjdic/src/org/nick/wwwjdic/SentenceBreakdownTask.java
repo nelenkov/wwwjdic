@@ -39,8 +39,6 @@ public class SentenceBreakdownTask extends SearchTask<SentenceBreakdownEntry> {
 
     @Override
     protected List<SentenceBreakdownEntry> parseResult(String html) {
-        System.out.println(html);
-
         List<SentenceBreakdownEntry> result = new ArrayList<SentenceBreakdownEntry>();
         List<String> inflectedForms = new ArrayList<String>();
 
@@ -129,7 +127,6 @@ public class SentenceBreakdownTask extends SearchTask<SentenceBreakdownEntry> {
 
         }
 
-        System.out.println(inflectedForms);
         return result;
     }
 
