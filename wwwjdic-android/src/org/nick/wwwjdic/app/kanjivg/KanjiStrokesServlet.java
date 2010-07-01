@@ -77,8 +77,12 @@ public class KanjiStrokesServlet extends HttpServlet {
 
             List<Stroke> strokes = k.getStrokes();
             for (Stroke s : strokes) {
-                result += s.getPath();
-                result += "\n";
+                String path = s.getPath();
+                // log.info("path: " + path);
+                if (!"".equals(path) && !"null".equals(path) && path != null) {
+                    result += s.getPath();
+                    result += "\n";
+                }
             }
 
             return result;
