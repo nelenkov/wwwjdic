@@ -116,7 +116,7 @@ public class SentenceBreakdown extends
         submitSearchTask(searchTask);
     }
 
-    private void markString(SpannableString spannable, String term, int color) {
+    private void markString(SpannableString spannable, String term) {
         String sentence = spannable.toString();
         String[] terms = term.split(" ");
         if (terms.length > 1) {
@@ -125,14 +125,31 @@ public class SentenceBreakdown extends
 
         int idx = sentence.indexOf(term);
         while (idx != -1) {
-            spannable.setSpan(new ForegroundColorSpan(color), idx, idx
-                    + term.length(), 0);
+            int color = HILIGHT_COLOR1;
+            ForegroundColorSpan[] spans = spannable.getSpans(0, idx,
+                    ForegroundColorSpan.class);
+            if (spans.length > 0) {
+                ForegroundColorSpan lastSpan = spans[spans.length - 1];
+                if (lastSpan.getForegroundColor() == HILIGHT_COLOR1) {
+                    color = HILIGHT_COLOR2;
+                } else {
+                    color = HILIGHT_COLOR1;
+                }
+            }
 
-            int startIdx = idx + term.length() + 1;
-            if (startIdx <= spannable.length() - 1) {
-                idx = sentence.indexOf(term, idx + 1);
-            } else {
+            int spanStart = idx;
+            int spanEnd = idx + term.length();
+            ForegroundColorSpan[] thisTermSpans = spannable.getSpans(spanStart,
+                    spanEnd, ForegroundColorSpan.class);
+            if (thisTermSpans.length == 0) {
+                spannable.setSpan(new ForegroundColorSpan(color), spanStart,
+                        spanEnd, 0);
                 break;
+            } else {
+                int startIdx = idx + term.length() + 1;
+                if (startIdx <= spannable.length() - 1) {
+                    idx = sentence.indexOf(term, idx + 1);
+                }
             }
         }
     }
@@ -148,11 +165,8 @@ public class SentenceBreakdown extends
                 getListView().setTextFilterEnabled(true);
                 setTitle(R.string.sentence_breakdown);
 
-                int i = 0;
                 for (SentenceBreakdownEntry entry : entries) {
-                    markString(markedSentence, entry.getWord(),
-                            i % 2 == 0 ? HILIGHT_COLOR1 : HILIGHT_COLOR2);
-                    i++;
+                    markString(markedSentence, entry.getInflectedForm());
                 }
                 sentenceView.setText(markedSentence);
                 dismissProgressDialog();
