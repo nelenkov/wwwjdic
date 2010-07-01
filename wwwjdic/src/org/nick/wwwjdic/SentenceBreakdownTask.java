@@ -15,12 +15,21 @@ import android.util.Log;
 
 public class SentenceBreakdownTask extends SearchTask<SentenceBreakdownEntry> {
 
+    private static final Pattern SENTENCE_PART_PATTERN = Pattern.compile(
+            "^.*<font color=\"\\S+\">\\S+</font>.*<br>$",
+            Pattern.CASE_INSENSITIVE);
+
+    private static final Pattern INFLECTED_FORM_PATTERN = Pattern.compile(
+            "<font color=\"\\S+\">(\\S+)</font>", Pattern.CASE_INSENSITIVE);
+
     private static final Pattern ENTRY_WITH_EXPLANATION_PATTERN = Pattern
             .compile("^.*<li>\\s*(.+)<br>\\s*(.+)\\sÅy(.+)Åz\\s+(.+)</li>.*$");
     private static final Pattern ENTRY_PATTERN = Pattern
             .compile("^.*<li>\\s*(.+)\\sÅy(.+)Åz\\s+(.+)\\s+(<font.*>(.+)</font>)?</li>.*$");
     private static final Pattern NO_READING_ENTRY_PATTERN = Pattern
             .compile("^.*<li>\\s*(\\S+)\\s+(.+)\\s+(<font.*>(.+)</font>)?</li>.*$");
+
+    private static final Pattern BR_PATTERN = Pattern.compile("^<br>$");
 
     public SentenceBreakdownTask(String url, int timeoutSeconds,
             ResultListViewBase<SentenceBreakdownEntry> resultListView,
@@ -30,20 +39,51 @@ public class SentenceBreakdownTask extends SearchTask<SentenceBreakdownEntry> {
 
     @Override
     protected List<SentenceBreakdownEntry> parseResult(String html) {
+        System.out.println(html);
+
         List<SentenceBreakdownEntry> result = new ArrayList<SentenceBreakdownEntry>();
+        List<String> inflectedForms = new ArrayList<String>();
 
         String[] lines = html.split("\n");
+        boolean exampleFollows = false;
+        int wordIdx = 0;
         for (String line : lines) {
-            Matcher m = ENTRY_WITH_EXPLANATION_PATTERN.matcher(line);
+            Matcher m = BR_PATTERN.matcher(line);
+            if (m.matches()) {
+                exampleFollows = true;
+                continue;
+            }
+
+            if (exampleFollows) {
+                m = INFLECTED_FORM_PATTERN.matcher(line);
+                while (m.find()) {
+                    inflectedForms.add(m.group(1));
+                }
+
+                exampleFollows = false;
+                continue;
+            }
+
+            m = SENTENCE_PART_PATTERN.matcher(line);
+            if (m.matches()) {
+                m = INFLECTED_FORM_PATTERN.matcher(line);
+                while (m.find()) {
+                    inflectedForms.add(m.group(1));
+                }
+                continue;
+            }
+
+            m = ENTRY_WITH_EXPLANATION_PATTERN.matcher(line);
             if (m.matches()) {
                 String explanation = m.group(1).trim();
                 String word = m.group(2).trim();
                 String reading = m.group(3).trim();
                 String translation = m.group(4).trim();
                 SentenceBreakdownEntry entry = SentenceBreakdownEntry
-                        .createWithExplanation(word, reading, translation,
-                                explanation);
+                        .createWithExplanation(inflectedForms.get(wordIdx),
+                                word, reading, translation, explanation);
                 result.add(entry);
+                wordIdx++;
                 continue;
             }
 
@@ -56,13 +96,15 @@ public class SentenceBreakdownTask extends SearchTask<SentenceBreakdownEntry> {
                 SentenceBreakdownEntry entry = null;
                 if (m.groupCount() > 4 && m.group(5) != null) {
                     String explanation = m.group(5).trim();
-                    entry = SentenceBreakdownEntry.createWithExplanation(word,
-                            reading, translation, explanation);
+                    entry = SentenceBreakdownEntry.createWithExplanation(
+                            inflectedForms.get(wordIdx), word, reading,
+                            translation, explanation);
                 } else {
-                    entry = SentenceBreakdownEntry.create(word, reading,
-                            translation);
+                    entry = SentenceBreakdownEntry.create(inflectedForms
+                            .get(wordIdx), word, reading, translation);
                 }
                 result.add(entry);
+                wordIdx++;
                 continue;
             }
             m = NO_READING_ENTRY_PATTERN.matcher(line);
@@ -73,18 +115,21 @@ public class SentenceBreakdownTask extends SearchTask<SentenceBreakdownEntry> {
                 SentenceBreakdownEntry entry = null;
                 if (m.groupCount() > 3 && m.group(4) != null) {
                     String explanation = m.group(4).trim();
-                    entry = SentenceBreakdownEntry.createWithExplanation(word,
-                            null, translation, explanation);
+                    entry = SentenceBreakdownEntry.createWithExplanation(
+                            inflectedForms.get(wordIdx), word, null,
+                            translation, explanation);
                 } else {
-                    entry = SentenceBreakdownEntry.createNoReading(word,
-                            translation);
+                    entry = SentenceBreakdownEntry.createNoReading(
+                            inflectedForms.get(wordIdx), word, translation);
                 }
                 result.add(entry);
+                wordIdx++;
                 continue;
             }
 
         }
 
+        System.out.println(inflectedForms);
         return result;
     }
 
