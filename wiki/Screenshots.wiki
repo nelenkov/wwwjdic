@@ -25,3 +25,7 @@ http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/sod-animated.png
 == History and Favorites ==
 http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/favorites.png
 http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/history.png
+
+== Example Search/Breakdown == 
+http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/examples.png
+http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/example-breakdown.png
