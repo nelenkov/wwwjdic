@@ -213,8 +213,8 @@
     <string name="whats_new_title">What\'s new in %s</string>
     <string name="whats_new">
         * Example search\n
-         * new \'Example Search\' tab\n
-         * use \'exact match\' for short English words\n
+         * new \'Example Search\'\n
+          (use \'exact match\' for short English words)\n
          * new \'Ex.\' button in detail view\n
            (disabled for single kanji words)\n
         * Example sentence breakdown\n
