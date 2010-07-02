@@ -150,8 +150,6 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         setupTabOrder();
         toggleRadicalStrokeCountPanel(false);
 
-        initRadicals();
-
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String searchKey = extras.getString(Constants.SEARCH_TEXT_KEY);
@@ -192,71 +190,6 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
             showDialog(WHATS_NEW_DIALOG_ID);
         }
 
-    }
-
-    private void initRadicals() {
-        Radicals radicals = Radicals.getInstance();
-        if (!radicals.isInitialized()) {
-            radicals.addRadicals(1,
-                    getIntArray(R.array.one_stroke_radical_numbers),
-                    getStrArray(R.array.one_stroke_radicals));
-            radicals.addRadicals(2,
-                    getIntArray(R.array.two_stroke_radical_numbers),
-                    getStrArray(R.array.two_stroke_radicals));
-            radicals.addRadicals(3,
-                    getIntArray(R.array.three_stroke_radical_numbers),
-                    getStrArray(R.array.three_stroke_radicals));
-            radicals.addRadicals(4,
-                    getIntArray(R.array.four_stroke_radical_numbers),
-                    getStrArray(R.array.four_stroke_radicals));
-            radicals.addRadicals(5,
-                    getIntArray(R.array.five_stroke_radical_numbers),
-                    getStrArray(R.array.five_stroke_radicals));
-            radicals.addRadicals(6,
-                    getIntArray(R.array.six_stroke_radical_numbers),
-                    getStrArray(R.array.six_stroke_radicals));
-            radicals.addRadicals(7,
-                    getIntArray(R.array.seven_stroke_radical_numbers),
-                    getStrArray(R.array.seven_stroke_radicals));
-            radicals.addRadicals(8,
-                    getIntArray(R.array.eight_stroke_radical_numbers),
-                    getStrArray(R.array.eight_stroke_radicals));
-            radicals.addRadicals(9,
-                    getIntArray(R.array.nine_stroke_radical_numbers),
-                    getStrArray(R.array.nine_stroke_radicals));
-            radicals.addRadicals(10,
-                    getIntArray(R.array.ten_stroke_radical_numbers),
-                    getStrArray(R.array.ten_stroke_radicals));
-            radicals.addRadicals(11,
-                    getIntArray(R.array.eleven_stroke_radical_numbers),
-                    getStrArray(R.array.eleven_stroke_radicals));
-            radicals.addRadicals(12,
-                    getIntArray(R.array.twelve_stroke_radical_numbers),
-                    getStrArray(R.array.twelve_stroke_radicals));
-            radicals.addRadicals(13,
-                    getIntArray(R.array.thirteen_stroke_radical_numbers),
-                    getStrArray(R.array.thirteen_stroke_radicals));
-            radicals.addRadicals(14,
-                    getIntArray(R.array.fourteen_stroke_radical_numbers),
-                    getStrArray(R.array.fourteen_stroke_radicals));
-            radicals.addRadicals(15,
-                    getIntArray(R.array.fivteen_stroke_radical_numbers),
-                    getStrArray(R.array.fivteen_stroke_radicals));
-            radicals.addRadicals(16,
-                    getIntArray(R.array.sixteen_stroke_radical_numbers),
-                    getStrArray(R.array.sixteen_stroke_radicals));
-            radicals.addRadicals(17,
-                    getIntArray(R.array.seventeen_stroke_radical_numbers),
-                    getStrArray(R.array.seventeen_stroke_radicals));
-        }
-    }
-
-    private int[] getIntArray(int id) {
-        return getResources().getIntArray(id);
-    }
-
-    private String[] getStrArray(int id) {
-        return getResources().getStringArray(id);
     }
 
     private void setupListeners() {
