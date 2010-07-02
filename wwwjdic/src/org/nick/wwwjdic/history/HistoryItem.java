@@ -65,7 +65,8 @@ public class HistoryItem extends LinearLayout {
 
             buff.append(kanjiSearchName);
             if (criteria.hasStrokes()) {
-                buff.append(" (strokes: ");
+                buff.append(String.format(" (%s: ",
+                        getStr(R.string.strokes_short)));
                 if (criteria.hasMinStrokes()) {
                     buff.append(criteria.getMinStrokeCount());
                 }
@@ -97,22 +98,27 @@ public class HistoryItem extends LinearLayout {
         return result;
     }
 
+    private String getStr(int id) {
+        return getResources().getString(id);
+    }
+
     private String buildSearchOptionsString(SearchCriteria criteria) {
         StringBuffer buff = new StringBuffer();
         if (criteria.isCommonWordsOnly()) {
-            buff.append(" comm.");
+            buff.append(String.format(" %s", getStr(R.string.common_short)));
         }
 
         if (criteria.isExactMatch()) {
-            buff.append(" ex.");
+            buff.append(String.format(" %s", getStr(R.string.exact_short)));
         }
 
         if (criteria.isRomanizedJapanese()) {
-            buff.append(" rom.");
+            buff.append(String.format(" %s", getStr(R.string.romanized_short)));
         }
 
         if (criteria.getType() == SearchCriteria.CRITERIA_TYPE_EXAMPLES) {
-            buff.append(String.format(" max results: %d", criteria
+            String message = getStr(R.string.max_results_short);
+            buff.append(String.format(" " + message, criteria
                     .getNumMaxResults()));
         }
 

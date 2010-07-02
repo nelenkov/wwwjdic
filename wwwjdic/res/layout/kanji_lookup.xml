@@ -14,7 +14,7 @@
             android:layout_gravity="center_vertical|center_horizontal">
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/dictLabel"
-                android:text="Search type:" android:textSize="16sp"
+                android:text="@string/search_type" android:textSize="16sp"
                 android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
             <Spinner android:layout_height="wrap_content"
                 android:id="@+id/kanjiSearchTypeSpinner"

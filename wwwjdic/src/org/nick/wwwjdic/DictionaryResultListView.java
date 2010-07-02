@@ -45,8 +45,9 @@ public class DictionaryResultListView extends
                         DictionaryResultListView.this, entries);
                 setListAdapter(adapter);
                 getListView().setTextFilterEnabled(true);
-                setTitle(String.format("%d result(s) for '%s'", entries.size(),
-                        criteria.getQueryString()));
+                String message = getResources().getString(R.string.results_for);
+                setTitle(String.format(message, entries.size(), criteria
+                        .getQueryString()));
                 dismissProgressDialog();
             }
         });

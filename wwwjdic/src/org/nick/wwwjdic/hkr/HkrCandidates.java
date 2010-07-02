@@ -2,6 +2,7 @@ package org.nick.wwwjdic.hkr;
 
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.KanjiResultListView;
+import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.SearchCriteria;
 
 import android.app.ListActivity;
@@ -29,7 +30,8 @@ public class HkrCandidates extends ListActivity {
 
         getListView().setTextFilterEnabled(true);
 
-        setTitle(String.format("%d result(s)", candidates.length));
+        String message = getResources().getString(R.string.results);
+        setTitle(String.format(message, candidates.length));
 
     }
 

@@ -231,8 +231,10 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
                                 .getQueryString());
                 setListAdapter(adapter);
                 getListView().setTextFilterEnabled(true);
-                setTitle(String.format("%d example(s) for '%s'", sentences
-                        .size(), criteria.getQueryString()));
+                String message = getResources()
+                        .getString(R.string.examples_for);
+                setTitle(String.format(message, sentences.size(), criteria
+                        .getQueryString()));
                 dismissProgressDialog();
             }
         });
