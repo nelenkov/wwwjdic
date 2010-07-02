@@ -1,28 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="translationError">エラー</string>
-    <string-array name="dictionary_codes_array">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>A</item>
-        <item>B</item>
-        <item>C</item>
-        <item>D</item>
-        <item>F</item>
-        <item>G</item>
-        <item>H</item>
-        <item>I</item>
-        <item>J</item>
-        <item>K</item>
-        <item>L</item>
-        <item>M</item>
-    </string-array>
     <string-array name="dictionaries_array">
         <item>一般</item>
         <item>人地名</item>
@@ -45,17 +23,6 @@
         <item>日本語--オランダ語</item>
         <item>日本語--スロベニア語</item>
     </string-array>
-    <string-array name="kanji_search_codes_array">
-        <item>J</item>
-        <item>C</item>
-        <item>B</item>
-        <item>E</item>
-        <item>U</item>
-        <item>J</item>
-        <item>P</item>
-        <item>Y</item>
-        <item>W</item>
-    </string-array>
     <string-array name="kanji_search_types_array">
         <item>漢字・読み</item>
         <item>画数</item>
@@ -67,12 +34,7 @@
         <item>標準中国語読み</item>
         <item>韓国語読み</item>
     </string-array>
-    <string name="about_text">WWWJDIC for Android, 2010</string>
-    <string name="about_by">by Nikolay Elenkov</string>
     <string name="about_bugtracking">詳細情報・変更履歴・バグ報告</string>
-    <string name="bugtracker_url">http://code.google.com/p/wwwjdic</string>
-    <string name="uses_kanjivg">Uses KanjiVG</string>
-    <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
     <string name="select_dictionary">辞書選択:</string>
     <string name="stroke_count">画数:  </string>
     <string name="radical_number">部首番号: </string>
@@ -83,7 +45,6 @@
     <string name="select_search_type">検索モード選択:</string>
     <string name="search">検索</string>
     <string name="error">エラー</string>
-    <string name="ok">OK</string>
     <string name="loading">読み込み中。お待ちください...</string>
     <string name="jis_code">JISコード: </string>
     <string name="unicode_number">ユニコード番号: </string>
@@ -119,10 +80,6 @@
         <item>maggie (メイン)</item>
         <item>jimbocho (代替)</item>
     </string-array>
-    <string-array name="weocr_mirror_urls">
-        <item>http://maggie.ocrgrid.org/cgi-bin/weocr/nhocr.cgi</item>
-        <item>http://jimbocho.ocrgrid.org/cgi-bin/weocr/nhocr.cgi</item>
-    </string-array>
     <string name="pref_weocr_timeout">WeOCRタイムアウト</string>
     <string name="pref_timeout_summary">[秒]</string>
     <string name="pref_wwwjdic">WWWJDIC設定</string>
@@ -135,15 +92,6 @@
         <item>スウェーデン</item>
         <item>アメリカ</item>
     </string-array>
-    <string-array name="wwwjdic_mirror_urls">
-        <item>http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi
-        </item>
-        <item>http://ryouko.imsb.nrc.ca/cgi-bin/wwwjdic</item>
-        <item>http://jp.msmobiles.com/cgi-bin/wwwjdic</item>
-        <item>http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi</item>
-        <item>http://wwwjdic.sys5.se/cgi-bin/wwwjdic.cgi</item>
-        <item>http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic</item>
-    </string-array>
     <string name="pref_wwwjdic_timeout">WWWJDICタイムアウト</string>
     <string name="pref_ocr_dump_cropped_images">切り抜き画像保存</string>
     <string name="pref_ocr_dump_cropped_images_summary">/sdcard/wwwjdicに保存する (デバッグ用)</string>
@@ -151,7 +99,6 @@
     <string name="pref_kr_url">手書き認識サーバURL</string>
     <string name="pref_kr_timeout">手書き認識タイムアウト</string>
     <string name="settings">設定</string>
-    <string name="ocr">OCR</string>
     <string name="write_kanji">手書き認識</string>
     <string name="hkr_failed">手書き認識失敗</string>
     <string name="sd_file_create_failed">SDカードに一時ファイルを作成できませんでした</string>
