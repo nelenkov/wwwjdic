@@ -31,7 +31,8 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
         wwwjdicEntry = entry;
         isFavorite = getIntent().getBooleanExtra(Constants.IS_FAVORITE, false);
 
-        setTitle(String.format("Details for '%s'", entry.getKanji()));
+        String message = getResources().getString(R.string.details_for);
+        setTitle(String.format(message, entry.getKanji()));
 
         TextView entryView = (TextView) findViewById(R.id.kanjiText);
         entryView.setText(entry.getKanji());

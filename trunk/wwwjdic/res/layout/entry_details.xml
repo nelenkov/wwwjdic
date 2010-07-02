@@ -23,7 +23,7 @@
                 android:gravity="center" android:layout_gravity="center" />
             <Button android:id="@+id/examples_button"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent" android:text="Ex."
+                android:layout_width="fill_parent" android:text="@string/ex"
                 android:background="@android:drawable/btn_default_small"
                 android:gravity="center" android:layout_gravity="center" />
         </LinearLayout>

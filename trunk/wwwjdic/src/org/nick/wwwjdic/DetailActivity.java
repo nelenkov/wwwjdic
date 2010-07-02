@@ -44,9 +44,10 @@ public class DetailActivity extends Activity implements
     public boolean onLongClick(View v) {
         ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         cm.setText(wwwjdicEntry.getHeadword());
-        Toast t = Toast.makeText(this, String.format(
-                "'%s' copied to clipboard", wwwjdicEntry.getHeadword()),
-                Toast.LENGTH_SHORT);
+        String messageTemplate = getResources().getString(
+                R.string.copied_to_clipboard);
+        Toast t = Toast.makeText(this, String.format(messageTemplate,
+                wwwjdicEntry.getHeadword()), Toast.LENGTH_SHORT);
         t.show();
 
         return false;

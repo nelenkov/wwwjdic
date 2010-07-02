@@ -29,7 +29,7 @@ public class RadicalChart extends Activity implements OnItemClickListener {
         GridView gridview = (GridView) findViewById(R.id.radicalChartGrid);
         gridview.setAdapter(new RadicalAdapter(this, radicals));
 
-        setTitle("Select radical");
+        setTitle(R.string.select_radical);
     }
 
     private static class RadicalAdapter extends BaseAdapter {

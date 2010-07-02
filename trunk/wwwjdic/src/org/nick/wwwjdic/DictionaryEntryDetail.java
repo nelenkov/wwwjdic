@@ -34,7 +34,8 @@ public class DictionaryEntryDetail extends DetailActivity implements
         wwwjdicEntry = entry;
         isFavorite = getIntent().getBooleanExtra(Constants.IS_FAVORITE, false);
 
-        setTitle(String.format("Details for '%s'", entry.getWord()));
+        String message = getResources().getString(R.string.details_for);
+        setTitle(String.format(message, entry.getWord()));
 
         LinearLayout wordReadingLayout = (LinearLayout) findViewById(R.id.word_reading_layout);
 

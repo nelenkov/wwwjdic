@@ -121,7 +121,8 @@ public class SodActivity extends WebServiceBackedActivity implements
                 Constants.KANJI_UNICODE_NUMBER);
         kanji = getIntent().getExtras().getString(Constants.KANJI_GLYPH);
 
-        setTitle(String.format("Stroke order diragram for '%s'", kanji));
+        String message = getResources().getString(R.string.sod_for);
+        setTitle(String.format(message, kanji));
 
         drawSod();
     }

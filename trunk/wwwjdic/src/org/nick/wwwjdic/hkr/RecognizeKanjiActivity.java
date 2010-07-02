@@ -197,7 +197,8 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     private void recognizeKanji() {
         List<Stroke> strokes = drawView.getStrokes();
         HkrTask task = new HkrTask(strokes, handler);
-        submitWsTask(task, "Doing character recognition...");
+        String message = getResources().getString(R.string.doing_hkr);
+        submitWsTask(task, message);
     }
 
     public void sendToDictionary(String[] results) {

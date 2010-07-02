@@ -329,7 +329,9 @@ public class OcrActivity extends WebServiceBackedActivity implements
                     }
 
                     OcrTask task = new OcrTask(blackAndWhiteBitmap, handler);
-                    submitWsTask(task, "Doing OCR...");
+                    String message = getResources().getString(
+                            R.string.doing_ocr);
+                    submitWsTask(task, message);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
