@@ -73,7 +73,7 @@
     <string name="about_bugtracking">More info/issue reporting</string>
     <string name="bugtracker_url">http://code.google.com/p/wwwjdic</string>
     <string name="uses_wwwjdic">Uses Jim Breen\'s WWWJDIC</string>
-    <string name="wwwjdic_link">http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi?1C
+    <string name="wwwjdic_link">http://wwwjdic.net
     </string>
     <string name="uses_weocr">Uses WeOCR </string>
     <string name="weocr_link">http://weocr.ocrgrid.org/
@@ -124,8 +124,7 @@
     <string name="ocr_hint2">* Crop a rectangular area (single line) on the
         next
         screen and press \'Save\' to OCR.</string>
-    <string name="ocr_hint3">* Press あ/漢/文 to send text to dictionary.
-        screen.</string>
+    <string name="ocr_hint3">* Press あ/漢/文 to send text to dictionary screen.</string>
     <string name="pref_ocr">OCR settings</string>
     <string name="pref_weocr_server">WeOCR server</string>
     <string name="pref_weocr_server_summary">Don\'t use the backup server if the main one
