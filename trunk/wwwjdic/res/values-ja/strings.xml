@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">WWWJDIC for Android</string>
     <string name="translationError">エラー</string>
     <string-array name="dictionary_codes_array">
         <item>1</item>
@@ -70,17 +69,10 @@
     </string-array>
     <string name="about_text">WWWJDIC for Android, 2010</string>
     <string name="about_by">by Nikolay Elenkov</string>
-    <string name="about_bugtracking">More info/issue reporting</string>
+    <string name="about_bugtracking">詳細情報・変更履歴・バグ報告</string>
     <string name="bugtracker_url">http://code.google.com/p/wwwjdic</string>
-    <string name="uses_wwwjdic">Uses Jim Breen\'s WWWJDIC</string>
-    <string name="wwwjdic_link">http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi?1C
-    </string>
-    <string name="uses_weocr">Uses WeOCR </string>
-    <string name="weocr_link">http://weocr.ocrgrid.org/
-	</string>
-    <string name="uses_kr">Uses kanji recognizer at </string>
-    <string name="kr_link">http://kanji.sljfaq.org/kanji16/draw-canvas.html
-    </string>
+    <string name="uses_kanjivg">Uses KanjiVG</string>
+    <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
     <string name="select_dictionary">辞書選択:</string>
     <string name="stroke_count">画数:  </string>
     <string name="radical_number">部首番号: </string>
@@ -88,7 +80,7 @@
     <string name="radical_strokes">部首・画数</string>
     <string name="codes_more">コードなど</string>
     <string name="translation">単語訳</string>
-    <string name="select_search_type">選択モード選択:</string>
+    <string name="select_search_type">検索モード選択:</string>
     <string name="search">検索</string>
     <string name="error">エラー</string>
     <string name="ok">OK</string>
@@ -104,7 +96,7 @@
     <string name="pinyn">標準中国読み: </string>
     <string name="more">その他...</string>
     <string name="dictionary_label">辞書:</string>
-    <string name="dictionary">辞書</string>
+    <string name="dictionary">辞書検索</string>
     <string name="kanji_lookup">漢字検索</string>
     <string name="about">情報</string>
     <string name="min">最小</string>
@@ -122,7 +114,7 @@
     <string name="pref_ocr">OCR設定</string>
     <string name="pref_weocr_server">WeOCRサーバ</string>
     <string name="pref_weocr_server_summary">メインサーバ
-        が一時的に利用できない場合のみに、代替サーバをご利用ください。常用は避けてください。</string>
+        が一時的に利用できない場合のみに、代替サーバをご利用ください。常用利用は避けてください。</string>
     <string-array name="weocr_mirror_names">
         <item>maggie (メイン)</item>
         <item>jimbocho (代替)</item>
@@ -165,7 +157,6 @@
     <string name="sd_file_create_failed">SDカードに一時ファイルを作成できませんでした</string>
     <string name="af_failed">A/F失敗</string>
     <string name="ocr_failed">OCR失敗</string>
-    <string name="cant_start_cropper">Could not start crop activity.</string>
     <string name="cancelled">キャンセルされました</string>
     <string name="recognize">認識</string>
     <string name="clear">クリア</string>
@@ -196,8 +187,6 @@
     <string name="favorites">お気に入り</string>
     <string name="search_history">検索履歴</string>
     <string name="favorites_hist">履歴</string>
-    <string name="uses_kanjivg">Uses KanjiVG</string>
-    <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
     <string name="whats_new_title">%sの新規機能</string>
     <string name="whats_new">
         * 例文検索\n
