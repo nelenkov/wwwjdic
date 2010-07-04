@@ -206,16 +206,7 @@
     <string name="uses_kanjivg">Uses KanjiVG</string>
     <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">
-        * Example search\n
-         * new \'Example Search\'\n
-          (use \'exact match\' for short English words)\n
-         * new \'Ex.\' button in detail view\n
-           (disabled for single kanji words)\n
-        * Example sentence breakdown\n
-         * click sentence to break down/translate\n
-         * long press for more options (look up kanji/copy)
-    </string>
+    <string name="whats_new">* Japanese localization\n* layout adjustments\n</string>
     <!--  for cropper -->
     <string name="crop_save_text">Crop</string>
     <string name="crop_discard_text">Discard</string>
@@ -246,7 +237,7 @@
     <string name="examples_for">%d example(s) for \'%s\'</string>
     <string name="sod_for">Stroke order diagram for \'%s\'</string>
     <string name="doing_ocr">Doing OCR...</string>
-    <string name="results">%d result(s)</string>
+    <string name="candidates">%d candidate(s)</string>
     <string name="doing_hkr">Doing character recognition...</string>
     <string name="strokes_short">strokes</string>
     <string name="common_short">comm.</string>

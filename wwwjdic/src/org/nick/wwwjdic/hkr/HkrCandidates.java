@@ -30,7 +30,7 @@ public class HkrCandidates extends ListActivity {
 
         getListView().setTextFilterEnabled(true);
 
-        String message = getResources().getString(R.string.results);
+        String message = getResources().getString(R.string.candidates);
         setTitle(String.format(message, candidates.length));
 
     }
