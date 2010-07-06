@@ -22,12 +22,20 @@ import android.widget.ListView;
 
 public abstract class HistoryBase extends ListActivity {
 
+    private static final int DELETE_ALL_ITEM_IDX = 2;
+
+    private static final int EXPORT_ITEM_IDX = 1;
+
+    private static final int IMPORT_ITEM_IDX = 0;
+
     private static final String TAG = HistoryBase.class.getSimpleName();
 
     private static final int MENU_ITEM_DELETE_ALL = 0;
     private static final int MENU_ITEM_LOOKUP = 1;
     private static final int MENU_ITEM_COPY = 2;
     private static final int MENU_ITEM_DELETE = 3;
+    private static final int MENU_ITEM_EXPORT = 4;
+    private static final int MENU_ITEM_IMPORT = 5;
 
     private static final int CONFIRM_DELETE_DIALOG_ID = 0;
 
@@ -73,8 +81,12 @@ public abstract class HistoryBase extends ListActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        menu.add(0, MENU_ITEM_DELETE_ALL, 0, R.string.delete_all).setIcon(
-                android.R.drawable.ic_menu_delete);
+        menu.add(0, MENU_ITEM_IMPORT, IMPORT_ITEM_IDX, "Import").setIcon(
+                android.R.drawable.ic_menu_add);
+        menu.add(0, MENU_ITEM_EXPORT, EXPORT_ITEM_IDX, "Export").setIcon(
+                android.R.drawable.ic_menu_save);
+        menu.add(0, MENU_ITEM_DELETE_ALL, DELETE_ALL_ITEM_IDX,
+                R.string.delete_all).setIcon(android.R.drawable.ic_menu_delete);
 
         return true;
     }
@@ -84,7 +96,8 @@ public abstract class HistoryBase extends ListActivity {
         super.onPrepareOptionsMenu(menu);
         final boolean hasItems = getListAdapter().getCount() > 0;
 
-        menu.getItem(0).setEnabled(hasItems);
+        menu.getItem(EXPORT_ITEM_IDX).setEnabled(hasItems);
+        menu.getItem(DELETE_ALL_ITEM_IDX).setEnabled(hasItems);
 
         return true;
     }
@@ -92,6 +105,12 @@ public abstract class HistoryBase extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case MENU_ITEM_IMPORT:
+            importItems();
+            break;
+        case MENU_ITEM_EXPORT:
+            exportItems();
+            break;
         case MENU_ITEM_DELETE_ALL:
             showDialog(CONFIRM_DELETE_DIALOG_ID);
 
@@ -100,6 +119,10 @@ public abstract class HistoryBase extends ListActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    protected abstract void importItems();
+
+    protected abstract void exportItems();
 
     protected abstract void deleteAll();
 

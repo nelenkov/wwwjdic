@@ -22,6 +22,8 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
 
     private Long id;
 
+    private final int type;
+
     private boolean isExactMatch;
     private boolean isKanjiLookup;
     private boolean isRomanizedJapanese;
@@ -31,8 +33,6 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
     private Integer minStrokeCount;
     private Integer maxStrokeCount;
     private Integer numMaxResults;
-
-    private final int type;
 
     public static SearchCriteria createForDictionary(String queryString,
             boolean isExactMatch, boolean isRomanized,
