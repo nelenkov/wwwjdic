@@ -13,6 +13,8 @@ import android.database.Cursor;
 public class Favorites extends HistoryBase implements
         FavoriteStatusChangedListener {
 
+    private static final String TAG = Favorites.class.getSimpleName();
+
     protected void setupAdapter() {
         Cursor cursor = db.getFavorites();
         startManagingCursor(cursor);
@@ -79,6 +81,17 @@ public class Favorites extends HistoryBase implements
         Cursor c = getCursor();
         WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
         return entry;
+    }
+
+    @Override
+    protected void exportItems() {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    protected void importItems() {
+        // TODO Auto-generated method stub
+
     }
 
 }
