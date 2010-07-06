@@ -143,7 +143,7 @@
     <string name="example_search">例文検索</string>
     <string name="kanji_bun">文</string>
     <string name="max_num_examples">例文最大数:</string>
-    <string name="exact_match">完全一致 (英語のみ)</string>
+    <string name="exact_match">完全一致\n(英語のみ)</string>
     <string name="enter_eng_or_jap">英語または日本語</string>
     <string name="enter_kanji_search_key">漢字検索キー</string>
     <string name="break_down_jap">日本語文分析</string>
