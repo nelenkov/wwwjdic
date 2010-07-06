@@ -124,7 +124,8 @@
     <string name="ocr_hint2">* Crop a rectangular area (single line) on the
         next
         screen and press \'Save\' to OCR.</string>
-    <string name="ocr_hint3">* Press あ/漢/文 to send text to dictionary screen.</string>
+    <string name="ocr_hint3">* Press あ/漢/文 to send text to dictionary screen.
+    </string>
     <string name="pref_ocr">OCR settings</string>
     <string name="pref_weocr_server">WeOCR server</string>
     <string name="pref_weocr_server_summary">Don\'t use the backup server if the main one
@@ -206,7 +207,8 @@
     <string name="uses_kanjivg">Uses KanjiVG</string>
     <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Japanese localization\n* layout adjustments\n</string>
+    <string name="whats_new">* Japanese localization\n* layout adjustments\n
+    </string>
     <!--  for cropper -->
     <string name="crop_save_text">Crop</string>
     <string name="crop_discard_text">Discard</string>
@@ -214,7 +216,7 @@
     <string name="example_search">Example Search</string>
     <string name="kanji_bun">文</string>
     <string name="max_num_examples">Max number \nof examples:</string>
-    <string name="exact_match">Exact match \n(Eng. only)</string> 
+    <string name="exact_match">Exact match \n(Eng. only)</string>
     <string name="enter_eng_or_jap">Enter English or Japanese</string>
     <string name="enter_kanji_search_key">Enter kanji search key</string>
     <string name="break_down_jap">Break down Japanese</string>
@@ -244,4 +246,7 @@
     <string name="exact_short">ex.</string>
     <string name="romanized_short">rom.</string>
     <string name="max_results_short">max results: %d</string>
+    <string name="pref_ocr_direct_search">Direct search</string>
+    <string name="pref_ocr_direct_search_summary">When checked OCR-ed text is not sent to
+        dictionary screen for editing before search.</string>
 </resources>

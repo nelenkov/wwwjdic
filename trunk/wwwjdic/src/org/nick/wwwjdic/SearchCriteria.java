@@ -12,6 +12,10 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
     private static final String KANJI_TEXT_LOOKUP_CODE = "J";
     private static final String KANJI_RADICAL_LOOKUP_CODE = "B";
 
+    private static final String DICTIONARY_CODE_GENERAL = "1";
+
+    private static final int DEFAULT_MAX_RESULTS = 20;
+
     public static final int CRITERIA_TYPE_DICT = 0;
     public static final int CRITERIA_TYPE_KANJI = 1;
     public static final int CRITERIA_TYPE_EXAMPLES = 2;
@@ -38,6 +42,11 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
                 dictionary, null, null, null, null);
     }
 
+    public static SearchCriteria createForDictionaryDefault(String queryString) {
+        return createForDictionary(queryString, false, false, false,
+                DICTIONARY_CODE_GENERAL);
+    }
+
     public static SearchCriteria createForKanji(String queryString,
             String searchType) {
         return new SearchCriteria(CRITERIA_TYPE_KANJI, queryString, false,
@@ -62,6 +71,11 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
         return new SearchCriteria(CRITERIA_TYPE_EXAMPLES, queryString,
                 isExactMatch, false, false, false, null, null, null, null,
                 numMaxResults);
+    }
+
+    public static SearchCriteria createForExampleSearchDefault(
+            String queryString) {
+        return createForExampleSearch(queryString, false, DEFAULT_MAX_RESULTS);
     }
 
     private SearchCriteria(int type, String queryString, boolean isExactMatch,

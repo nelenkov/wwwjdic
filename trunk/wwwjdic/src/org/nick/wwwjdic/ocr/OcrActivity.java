@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.nick.wwwjdic.Constants;
+import org.nick.wwwjdic.DictionaryResultListView;
+import org.nick.wwwjdic.ExamplesResultListView;
+import org.nick.wwwjdic.KanjiResultListView;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.SearchCriteria;
 import org.nick.wwwjdic.WebServiceBackedActivity;
@@ -66,6 +69,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
     private static final String PREF_DUMP_CROPPED_IMAGES_KEY = "pref_ocr_dump_cropped_images";
     private static final String PREF_WEOCR_URL_KEY = "pref_weocr_url";
     private static final String PREF_WEOCR_TIMEOUT_KEY = "pref_weocr_timeout";
+
+    private static final String PREF_DIRECT_SEARCH_KEY = "pref_ocr_direct_search";
 
     private Camera camera;
     private Size previewSize;
@@ -350,6 +355,13 @@ public class OcrActivity extends WebServiceBackedActivity implements
         return preferences.getBoolean(PREF_DUMP_CROPPED_IMAGES_KEY, false);
     }
 
+    private boolean isDirectSearch() {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        return preferences.getBoolean(PREF_DIRECT_SEARCH_KEY, false);
+    }
+
     private int getWeocrTimeout() {
         SharedPreferences preferences = PreferenceManager
                 .getDefaultSharedPreferences(this);
@@ -583,26 +595,49 @@ public class OcrActivity extends WebServiceBackedActivity implements
         TextView t = (TextView) findViewById(R.id.ocrredText);
         String key = t.getText().toString();
 
+        boolean isDirectSearch = isDirectSearch();
+        SearchCriteria criteria = null;
+        Intent intent = new Intent(this, Wwwjdic.class);
         Bundle extras = new Bundle();
-        extras.putString(Constants.SEARCH_TEXT_KEY, key);
 
         switch (v.getId()) {
         case R.id.send_to_dict:
-            extras.putInt(Constants.SEARCH_TYPE,
-                    SearchCriteria.CRITERIA_TYPE_DICT);
+            if (isDirectSearch) {
+                criteria = SearchCriteria.createForDictionaryDefault(key);
+                intent = new Intent(this, DictionaryResultListView.class);
+            } else {
+                extras.putInt(Constants.SEARCH_TYPE,
+                        SearchCriteria.CRITERIA_TYPE_DICT);
+            }
             break;
         case R.id.send_to_kanjidict:
-            extras.putInt(Constants.SEARCH_TYPE,
-                    SearchCriteria.CRITERIA_TYPE_KANJI);
+            if (isDirectSearch) {
+                criteria = SearchCriteria.createForKanjiOrReading(key);
+                intent = new Intent(this, KanjiResultListView.class);
+            } else {
+                extras.putInt(Constants.SEARCH_TYPE,
+                        SearchCriteria.CRITERIA_TYPE_KANJI);
+            }
             break;
         case R.id.send_to_example_search:
-            extras.putInt(Constants.SEARCH_TYPE,
-                    SearchCriteria.CRITERIA_TYPE_EXAMPLES);
+            if (isDirectSearch) {
+                criteria = SearchCriteria.createForExampleSearchDefault(key);
+                intent = new Intent(this, ExamplesResultListView.class);
+            } else {
+                extras.putInt(Constants.SEARCH_TYPE,
+                        SearchCriteria.CRITERIA_TYPE_EXAMPLES);
+            }
             break;
         default:
+            // do nothing
         }
 
-        Intent intent = new Intent(this, Wwwjdic.class);
+        if (isDirectSearch) {
+            extras.putSerializable(Constants.CRITERIA_KEY, criteria);
+        } else {
+            extras.putString(Constants.SEARCH_TEXT_KEY, key);
+        }
+
         intent.putExtras(extras);
 
         startActivity(intent);
