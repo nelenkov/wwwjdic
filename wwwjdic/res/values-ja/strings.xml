@@ -173,4 +173,7 @@
     <string name="exact_short">完全</string>
     <string name="romanized_short">ローマ字</string>
     <string name="max_results_short">最大: %d件</string>
+    <string name="pref_ocr_direct_search">直接検索</string>
+    <string name="pref_ocr_direct_search_summary">チェックされている場合は、OCRした文字列をメイン画面に送らず、直接検索します。
+    </string>
 </resources>

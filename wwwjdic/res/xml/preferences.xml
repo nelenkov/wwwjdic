@@ -23,6 +23,10 @@
             android:title="@string/pref_weocr_timeout" android:summary="@string/pref_timeout_summary"
             android:singleLine="true" android:inputType="numberDecimal"
             android:defaultValue="10" />
+        <CheckBoxPreference android:key="pref_ocr_direct_search"
+            android:title="@string/pref_ocr_direct_search"
+            android:summary="@string/pref_ocr_direct_search_summary"
+            android:defaultValue="false" />    
         <CheckBoxPreference android:key="pref_ocr_dump_cropped_images"
             android:title="@string/pref_ocr_dump_cropped_images"
             android:summary="@string/pref_ocr_dump_cropped_images_summary"
