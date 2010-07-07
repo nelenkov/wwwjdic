@@ -249,4 +249,10 @@
     <string name="pref_ocr_direct_search">Direct search</string>
     <string name="pref_ocr_direct_search_summary">When checked OCR-ed text is not sent to
         dictionary screen for editing before search.</string>
+    <string name="import_items">Import</string>
+    <string name="export_items">Export</string>
+    <string name="favorites_exported">Favorites exported to %s</string>
+    <string name="favorites_imported">Favorites imported from %s</string>
+    <string name="history_exported">Search history exported to %s</string>
+    <string name="history_imported">Search history imported from %s</string>
 </resources>
