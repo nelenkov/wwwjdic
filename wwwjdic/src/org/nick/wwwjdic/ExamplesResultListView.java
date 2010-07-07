@@ -63,7 +63,12 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
         public View getView(int position, View convertView, ViewGroup parent) {
             ExampleSentence entry = entries.get(position);
 
-            return new ExampleSentenceView(context, entry, queryString);
+            if (convertView == null) {
+                convertView = new ExampleSentenceView(context, entry,
+                        queryString);
+            }
+
+            return convertView;
         }
 
         static class ExampleSentenceView extends LinearLayout {
