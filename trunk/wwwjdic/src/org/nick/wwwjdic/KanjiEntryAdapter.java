@@ -36,7 +36,11 @@ public class KanjiEntryAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         KanjiEntry entry = entries.get(position);
 
-        return new KanjiEntryListView(context, entry);
+        if (convertView == null) {
+            convertView = new KanjiEntryListView(context, entry);
+        }
+
+        return convertView;
     }
 
     private static final class KanjiEntryListView extends LinearLayout {
