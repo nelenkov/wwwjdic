@@ -42,7 +42,11 @@ public class SentenceBreakdown extends
         public View getView(int position, View convertView, ViewGroup parent) {
             SentenceBreakdownEntry entry = entries.get(position);
 
-            return new SentenceBreakdownEntryView(context, entry);
+            if (convertView == null) {
+                convertView = new SentenceBreakdownEntryView(context, entry);
+            }
+
+            return convertView;
         }
 
         static class SentenceBreakdownEntryView extends LinearLayout {
