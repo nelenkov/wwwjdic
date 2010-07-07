@@ -3,6 +3,7 @@
 	<name>wwwjdic-app</name>
 	<comment></comment>
 	<projects>
+		<project>Wwwjdic</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -121,28 +121,38 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
     }
 
     public void addSearchCriteria(SearchCriteria criteria) {
+        addSearchCriteria(criteria, System.currentTimeMillis());
+    }
+
+    public void addSearchCriteria(SearchCriteria criteria,
+            long currentTimeMillis) {
         SQLiteDatabase db = getWritableDatabase();
 
-        ContentValues values = fromCriteria(criteria);
+        ContentValues values = fromCriteria(criteria, currentTimeMillis);
         db.insertOrThrow(HISTORY_TABLE_NAME, null, values);
     }
 
     public long addFavorite(WwwjdicEntry entry) {
+        return addFavorite(entry, System.currentTimeMillis());
+    }
+
+    public long addFavorite(WwwjdicEntry entry, long currentTimeInMillis) {
         SQLiteDatabase db = getWritableDatabase();
-        long result = addFavorite(db, entry);
+        long result = addFavorite(db, entry, currentTimeInMillis);
 
         return result;
     }
 
-    private long addFavorite(SQLiteDatabase db, WwwjdicEntry entry) {
-        ContentValues values = fromEntry(entry);
+    private long addFavorite(SQLiteDatabase db, WwwjdicEntry entry,
+            long currentTimeInMillis) {
+        ContentValues values = fromEntry(entry, currentTimeInMillis);
 
         return db.insertOrThrow(FAVORITES_TABLE_NAME, null, values);
     }
 
-    private ContentValues fromEntry(WwwjdicEntry entry) {
+    private ContentValues fromEntry(WwwjdicEntry entry, long currentTimeInMillis) {
         ContentValues values = new ContentValues();
-        values.put(TIME, System.currentTimeMillis());
+        values.put(TIME, currentTimeInMillis);
         values.put(FAVORITES_IS_KANJI,
                 entry.isKanji() ? SearchCriteria.CRITERIA_TYPE_KANJI
                         : SearchCriteria.CRITERIA_TYPE_DICT);
@@ -152,9 +162,10 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         return values;
     }
 
-    private ContentValues fromCriteria(SearchCriteria criteria) {
+    private ContentValues fromCriteria(SearchCriteria criteria,
+            long currentTimeMillis) {
         ContentValues values = new ContentValues();
-        values.put(TIME, System.currentTimeMillis());
+        values.put(TIME, currentTimeMillis);
         values.put(HISTORY_QUERY_STRING, criteria.getQueryString());
         values.put(HISTORY_IS_EXACT_MATCH, criteria.isExactMatch());
         values.put(HISTORY_SEARCH_TYPE, criteria.getType());

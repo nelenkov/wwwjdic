@@ -81,10 +81,10 @@ public abstract class HistoryBase extends ListActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        menu.add(0, MENU_ITEM_IMPORT, IMPORT_ITEM_IDX, "Import").setIcon(
-                android.R.drawable.ic_menu_add);
-        menu.add(0, MENU_ITEM_EXPORT, EXPORT_ITEM_IDX, "Export").setIcon(
-                android.R.drawable.ic_menu_save);
+        menu.add(0, MENU_ITEM_IMPORT, IMPORT_ITEM_IDX, R.string.import_items)
+                .setIcon(android.R.drawable.ic_menu_add);
+        menu.add(0, MENU_ITEM_EXPORT, EXPORT_ITEM_IDX, R.string.export_items)
+                .setIcon(android.R.drawable.ic_menu_save);
         menu.add(0, MENU_ITEM_DELETE_ALL, DELETE_ALL_ITEM_IDX,
                 R.string.delete_all).setIcon(android.R.drawable.ic_menu_delete);
 

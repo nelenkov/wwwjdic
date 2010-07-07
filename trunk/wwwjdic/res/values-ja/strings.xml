@@ -176,4 +176,10 @@
     <string name="pref_ocr_direct_search">直接検索</string>
     <string name="pref_ocr_direct_search_summary">チェックされている場合は、OCRした文字列をメイン画面に送らず、直接検索します。
     </string>
+    <string name="import_items">インポート</string>
+    <string name="export_items">エクスポート</string>
+    <string name="favorites_exported">お気に入りを%sにエックスポートしました</string>
+    <string name="favorites_imported">お気に入りを%sからインポートしました</string>
+    <string name="history_exported">検索履歴を%sにエックスポートしました</string>
+    <string name="history_imported">検索履歴を%sからインポートしました</string>
 </resources>
