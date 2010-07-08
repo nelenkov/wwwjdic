@@ -22,11 +22,10 @@ import android.widget.ListView;
 
 public abstract class HistoryBase extends ListActivity {
 
-    private static final int DELETE_ALL_ITEM_IDX = 2;
-
-    private static final int EXPORT_ITEM_IDX = 1;
-
     private static final int IMPORT_ITEM_IDX = 0;
+    private static final int EXPORT_ITEM_IDX = 1;
+    private static final int FILTER_ITEM_IDX = 2;
+    private static final int DELETE_ALL_ITEM_IDX = 3;
 
     private static final String TAG = HistoryBase.class.getSimpleName();
 
@@ -36,12 +35,20 @@ public abstract class HistoryBase extends ListActivity {
     private static final int MENU_ITEM_DELETE = 3;
     private static final int MENU_ITEM_EXPORT = 4;
     private static final int MENU_ITEM_IMPORT = 5;
+    private static final int MENU_ITEM_FILTER = 6;
 
     private static final int CONFIRM_DELETE_DIALOG_ID = 0;
+
+    protected static final int FILTER_ALL = -1;
+    protected static final int FILTER_DICT = 0;
+    protected static final int FILTER_KANJI = 1;
+    protected static final int FILTER_EXAMPLES = 2;
 
     protected HistoryDbHelper db;
 
     protected ClipboardManager clipboardManager;
+
+    private int selectedFilterIdx = 0;
 
     protected HistoryBase() {
         db = new HistoryDbHelper(this);
@@ -85,6 +92,8 @@ public abstract class HistoryBase extends ListActivity {
                 .setIcon(android.R.drawable.ic_menu_add);
         menu.add(0, MENU_ITEM_EXPORT, EXPORT_ITEM_IDX, R.string.export_items)
                 .setIcon(android.R.drawable.ic_menu_save);
+        menu.add(0, MENU_ITEM_FILTER, FILTER_ITEM_IDX, "Filter").setIcon(
+                R.drawable.ic_menu_filter);
         menu.add(0, MENU_ITEM_DELETE_ALL, DELETE_ALL_ITEM_IDX,
                 R.string.delete_all).setIcon(android.R.drawable.ic_menu_delete);
 
@@ -111,6 +120,22 @@ public abstract class HistoryBase extends ListActivity {
         case MENU_ITEM_EXPORT:
             exportItems();
             break;
+        case MENU_ITEM_FILTER:
+            final String[] items = { "All", "Dictionary", "Kanji", "Examples" };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Select type:");
+            builder.setSingleChoiceItems(items, selectedFilterIdx,
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
+                            selectedFilterIdx = item;
+                            filter(item - 1);
+                            dialog.dismiss();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+            break;
         case MENU_ITEM_DELETE_ALL:
             showDialog(CONFIRM_DELETE_DIALOG_ID);
 
@@ -123,6 +148,8 @@ public abstract class HistoryBase extends ListActivity {
     protected abstract void importItems();
 
     protected abstract void exportItems();
+
+    protected abstract void filter(int type);
 
     protected abstract void deleteAll();
 
