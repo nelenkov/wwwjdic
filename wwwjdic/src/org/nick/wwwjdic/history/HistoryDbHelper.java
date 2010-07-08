@@ -189,10 +189,28 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    public Cursor getHistoryByType(int type) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor result = db.query(HISTORY_TABLE_NAME, HISTORY_ALL_COLUMNS,
+                "search_type = ?", new String[] { Integer.toString(type) },
+                null, null, "time desc");
+
+        return result;
+    }
+
     public Cursor getFavorites() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor result = db.query(FAVORITES_TABLE_NAME, FAVORITES_ALL_COLUMNS,
                 null, null, null, null, "time desc");
+
+        return result;
+    }
+
+    public Cursor getFavoritesByType(int type) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor result = db.query(FAVORITES_TABLE_NAME, FAVORITES_ALL_COLUMNS,
+                "is_kanji = ?", new String[] { Integer.toString(type) }, null,
+                null, "time desc");
 
         return result;
     }

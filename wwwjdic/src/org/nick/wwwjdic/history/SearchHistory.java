@@ -17,6 +17,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.CursorAdapter;
 import android.widget.Toast;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
@@ -170,6 +171,21 @@ public class SearchHistory extends HistoryBase {
             }
             s.endTransaction();
         }
+    }
+
+    @Override
+    protected void filter(int type) {
+        Cursor c = null;
+        CursorAdapter adapter = (CursorAdapter) getListAdapter();
+        if (type == FILTER_ALL) {
+            c = db.getHistory();
+
+        } else {
+            c = db.getHistoryByType(type);
+        }
+
+        adapter.changeCursor(c);
+        refresh();
     }
 
 }

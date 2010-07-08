@@ -17,6 +17,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.CursorAdapter;
 import android.widget.Toast;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
@@ -171,6 +172,21 @@ public class Favorites extends HistoryBase implements
             }
             s.endTransaction();
         }
+    }
+
+    @Override
+    protected void filter(int type) {
+        Cursor c = null;
+        CursorAdapter adapter = (CursorAdapter) getListAdapter();
+        if (type == FILTER_ALL) {
+            c = db.getFavorites();
+
+        } else if (FILTER_DICT == type || FILTER_KANJI == type) {
+            c = db.getFavoritesByType(type);
+        }
+
+        adapter.changeCursor(c);
+        refresh();
     }
 
 }
