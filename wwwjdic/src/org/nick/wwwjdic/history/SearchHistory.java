@@ -17,7 +17,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.CursorAdapter;
 import android.widget.Toast;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
@@ -95,7 +94,7 @@ public class SearchHistory extends HistoryBase {
         CSVWriter writer = null;
 
         try {
-            Cursor c = db.getHistory();
+            Cursor c = filterCursor();
             File extStorage = Environment.getExternalStorageDirectory();
             String exportFile = extStorage.getAbsolutePath()
                     + "/search-history.csv";
@@ -174,18 +173,18 @@ public class SearchHistory extends HistoryBase {
     }
 
     @Override
-    protected void filter(int type) {
-        Cursor c = null;
-        CursorAdapter adapter = (CursorAdapter) getListAdapter();
-        if (type == FILTER_ALL) {
-            c = db.getHistory();
+    protected Cursor filterCursor() {
+        if (selectedFilter == FILTER_ALL) {
+            return db.getHistory();
 
-        } else {
-            c = db.getHistoryByType(type);
         }
 
-        adapter.changeCursor(c);
-        refresh();
+        return db.getHistoryByType(selectedFilter);
+    }
+
+    @Override
+    protected String[] getFilterTypes() {
+        return getResources().getStringArray(R.array.filter_types_history);
     }
 
 }
