@@ -182,4 +182,17 @@
     <string name="favorites_imported">お気に入りを%sからインポートしました</string>
     <string name="history_exported">検索履歴を%sにエックスポートしました</string>
     <string name="history_imported">検索履歴を%sからインポートしました</string>
+    <string name="filter">フィルタ</string>
+    <string name="select_filter_type">種別選択:</string>
+    <string-array name="filter_types_history">
+        <item>全て</item>
+        <item>(あ) 辞書</item>
+        <item>(漢) 漢字</item>
+        <item>(文) 例文</item>
+    </string-array>
+    <string-array name="filter_types_favorites">
+        <item>全て</item>
+        <item>(あ) 辞書</item>
+        <item>(漢) 漢字</item>
+    </string-array>
 </resources>

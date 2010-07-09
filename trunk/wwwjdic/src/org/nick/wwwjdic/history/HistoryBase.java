@@ -48,7 +48,7 @@ public abstract class HistoryBase extends ListActivity {
 
     protected ClipboardManager clipboardManager;
 
-    private int selectedFilterIdx = 0;
+    protected int selectedFilter = -1;
 
     protected HistoryBase() {
         db = new HistoryDbHelper(this);
@@ -92,8 +92,8 @@ public abstract class HistoryBase extends ListActivity {
                 .setIcon(android.R.drawable.ic_menu_add);
         menu.add(0, MENU_ITEM_EXPORT, EXPORT_ITEM_IDX, R.string.export_items)
                 .setIcon(android.R.drawable.ic_menu_save);
-        menu.add(0, MENU_ITEM_FILTER, FILTER_ITEM_IDX, "Filter").setIcon(
-                R.drawable.ic_menu_filter);
+        menu.add(0, MENU_ITEM_FILTER, FILTER_ITEM_IDX, R.string.filter)
+                .setIcon(R.drawable.ic_menu_filter);
         menu.add(0, MENU_ITEM_DELETE_ALL, DELETE_ALL_ITEM_IDX,
                 R.string.delete_all).setIcon(android.R.drawable.ic_menu_delete);
 
@@ -121,20 +121,7 @@ public abstract class HistoryBase extends ListActivity {
             exportItems();
             break;
         case MENU_ITEM_FILTER:
-            final String[] items = { "All", "Dictionary", "Kanji", "Examples" };
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Select type:");
-            builder.setSingleChoiceItems(items, selectedFilterIdx,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int item) {
-                            selectedFilterIdx = item;
-                            filter(item - 1);
-                            dialog.dismiss();
-                        }
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
+            showFilterDialog();
             break;
         case MENU_ITEM_DELETE_ALL:
             showDialog(CONFIRM_DELETE_DIALOG_ID);
@@ -145,11 +132,35 @@ public abstract class HistoryBase extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void showFilterDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.select_filter_type);
+        builder.setSingleChoiceItems(getFilterTypes(), selectedFilter + 1,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+                        selectedFilter = item - 1;
+                        filter();
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    protected abstract String[] getFilterTypes();
+
     protected abstract void importItems();
 
     protected abstract void exportItems();
 
-    protected abstract void filter(int type);
+    private void filter() {
+        Cursor c = filterCursor();
+        CursorAdapter adapter = (CursorAdapter) getListAdapter();
+        adapter.changeCursor(c);
+        refresh();
+    }
+
+    protected abstract Cursor filterCursor();
 
     protected abstract void deleteAll();
 

@@ -255,4 +255,17 @@
     <string name="favorites_imported">Favorites imported from %s</string>
     <string name="history_exported">Search history exported to %s</string>
     <string name="history_imported">Search history imported from %s</string>
+    <string name="filter">Filter</string>
+    <string name="select_filter_type">Select type:</string>
+    <string-array name="filter_types_history">
+        <item>All</item>
+        <item>(あ) Dictionary</item>
+        <item>(漢) Kanji</item>
+        <item>(文) Examples</item>
+    </string-array>
+    <string-array name="filter_types_favorites">
+        <item>All</item>
+        <item>(あ) Dictionary</item>
+        <item>(漢) Kanji</item>
+    </string-array>
 </resources>

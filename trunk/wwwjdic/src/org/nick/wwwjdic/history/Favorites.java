@@ -17,7 +17,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.CursorAdapter;
 import android.widget.Toast;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
@@ -100,7 +99,7 @@ public class Favorites extends HistoryBase implements
         CSVWriter writer = null;
 
         try {
-            Cursor c = db.getFavorites();
+            Cursor c = filterCursor();
             File extStorage = Environment.getExternalStorageDirectory();
             String exportFile = extStorage.getAbsolutePath() + "/favorites.csv";
             writer = new CSVWriter(new FileWriter(exportFile));
@@ -175,18 +174,18 @@ public class Favorites extends HistoryBase implements
     }
 
     @Override
-    protected void filter(int type) {
-        Cursor c = null;
-        CursorAdapter adapter = (CursorAdapter) getListAdapter();
-        if (type == FILTER_ALL) {
-            c = db.getFavorites();
+    protected Cursor filterCursor() {
+        if (selectedFilter == FILTER_ALL) {
+            return db.getFavorites();
 
-        } else if (FILTER_DICT == type || FILTER_KANJI == type) {
-            c = db.getFavoritesByType(type);
         }
 
-        adapter.changeCursor(c);
-        refresh();
+        return db.getFavoritesByType(selectedFilter);
+    }
+
+    @Override
+    protected String[] getFilterTypes() {
+        return getResources().getStringArray(R.array.filter_types_favorites);
     }
 
 }
