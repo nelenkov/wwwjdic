@@ -25,6 +25,8 @@ public class SearchHistory extends HistoryBase {
 
     private static final String TAG = SearchHistory.class.getSimpleName();
 
+    private static final String EXPORT_FILENAME = "search-history.csv";
+
     protected void setupAdapter() {
         Cursor cursor = db.getHistory();
         startManagingCursor(cursor);
@@ -96,8 +98,8 @@ public class SearchHistory extends HistoryBase {
         try {
             Cursor c = filterCursor();
             File extStorage = Environment.getExternalStorageDirectory();
-            String exportFile = extStorage.getAbsolutePath()
-                    + "/search-history.csv";
+            String exportFile = extStorage.getAbsolutePath() + "/"
+                    + EXPORT_FILENAME;
             writer = new CSVWriter(new FileWriter(exportFile));
 
             while (c.moveToNext()) {
@@ -136,15 +138,16 @@ public class SearchHistory extends HistoryBase {
         s.beginTransaction();
         try {
             File extStorage = Environment.getExternalStorageDirectory();
-            String importFile = extStorage.getAbsolutePath()
-                    + "/search-history.csv";
+            String importFile = extStorage.getAbsolutePath() + "/"
+                    + EXPORT_FILENAME;
             reader = new CSVReader(new FileReader(importFile));
 
             String[] record = null;
             while ((record = reader.readNext()) != null) {
                 SearchCriteria criteria = SearchCriteriaParser
                         .fromStringArray(record);
-                long time = Long.parseLong(record[11]);
+                long time = Long
+                        .parseLong(record[SearchCriteriaParser.TIME_IDX]);
                 db.addSearchCriteria(criteria, time);
 
             }

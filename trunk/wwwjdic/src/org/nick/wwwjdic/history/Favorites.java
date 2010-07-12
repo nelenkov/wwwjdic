@@ -26,6 +26,8 @@ public class Favorites extends HistoryBase implements
 
     private static final String TAG = Favorites.class.getSimpleName();
 
+    private static final String EXPORT_FILENAME = "favorites.csv";
+
     protected void setupAdapter() {
         Cursor cursor = db.getFavorites();
         startManagingCursor(cursor);
@@ -101,7 +103,8 @@ public class Favorites extends HistoryBase implements
         try {
             Cursor c = filterCursor();
             File extStorage = Environment.getExternalStorageDirectory();
-            String exportFile = extStorage.getAbsolutePath() + "/favorites.csv";
+            String exportFile = extStorage.getAbsolutePath() + "/"
+                    + EXPORT_FILENAME;
             writer = new CSVWriter(new FileWriter(exportFile));
 
             while (c.moveToNext()) {
@@ -139,14 +142,16 @@ public class Favorites extends HistoryBase implements
         s.beginTransaction();
         try {
             File extStorage = Environment.getExternalStorageDirectory();
-            String importFile = extStorage.getAbsolutePath() + "/favorites.csv";
+            String importFile = extStorage.getAbsolutePath() + "/"
+                    + EXPORT_FILENAME;
             reader = new CSVReader(new FileReader(importFile));
 
             String[] record = null;
             while ((record = reader.readNext()) != null) {
                 WwwjdicEntry entry = FavoritesEntryParser
                         .fromStringArray(record);
-                long time = Long.parseLong(record[3]);
+                long time = Long
+                        .parseLong(record[FavoritesEntryParser.TIME_IDX]);
                 db.addFavorite(entry, time);
 
             }

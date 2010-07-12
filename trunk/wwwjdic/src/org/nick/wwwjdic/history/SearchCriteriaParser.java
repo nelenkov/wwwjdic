@@ -7,18 +7,18 @@ public class SearchCriteriaParser {
 
     private static final int NUM_FILEDS = 12;
 
-    private static final int TYPE_IDX = 0;
-    private static final int QUERY_STRING_IDX = 1;
-    private static final int EXACT_MATCH_IDX = 2;
-    private static final int KANJI_LOOKUP_IDX = 3;
-    private static final int ROMANIZED_JAP_IDX = 4;
-    private static final int COMMON_WORDS_ONLY_IDX = 5;
-    private static final int DICTIONARY_IDX = 6;
-    private static final int KANJI_SEARCH_TYPE_IDX = 7;
-    private static final int MIN_STROKE_COUNT_IDX = 8;
-    private static final int MAX_STROKE_COUNT_IDX = 9;
-    private static final int NUM_MAX_RESULTS_IDX = 10;
-    private static final int TIME_IDX = 11;
+    public static final int TYPE_IDX = 0;
+    public static final int QUERY_STRING_IDX = 1;
+    public static final int EXACT_MATCH_IDX = 2;
+    public static final int KANJI_LOOKUP_IDX = 3;
+    public static final int ROMANIZED_JAP_IDX = 4;
+    public static final int COMMON_WORDS_ONLY_IDX = 5;
+    public static final int DICTIONARY_IDX = 6;
+    public static final int KANJI_SEARCH_TYPE_IDX = 7;
+    public static final int MIN_STROKE_COUNT_IDX = 8;
+    public static final int MAX_STROKE_COUNT_IDX = 9;
+    public static final int NUM_MAX_RESULTS_IDX = 10;
+    public static final int TIME_IDX = 11;
 
     private SearchCriteriaParser() {
     }

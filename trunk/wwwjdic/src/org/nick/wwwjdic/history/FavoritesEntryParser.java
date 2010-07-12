@@ -8,10 +8,10 @@ public class FavoritesEntryParser {
 
     private static final int NUM_RECORDS = 4;
 
-    private static final int TYPE_IDX = 0;
-    private static final int HEADWORD_IDX = 1;
-    private static final int DICT_STR_IDX = 2;
-    private static final int TIME_IDX = 3;
+    public static final int TYPE_IDX = 0;
+    public static final int HEADWORD_IDX = 1;
+    public static final int DICT_STR_IDX = 2;
+    public static final int TIME_IDX = 3;
 
     private static final int TYPE_DICT = 0;
     private static final int TYPE_KANJI = 1;
