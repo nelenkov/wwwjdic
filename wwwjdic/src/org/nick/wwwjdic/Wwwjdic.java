@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TabActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -41,6 +42,8 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView.OnEditorActionListener;
+
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 public class Wwwjdic extends TabActivity implements OnClickListener,
         OnFocusChangeListener, OnCheckedChangeListener, OnItemSelectedListener {
@@ -134,6 +137,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
     private HistoryDbHelper dbHelper;
 
+    private GoogleAnalyticsTracker tracker;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -177,7 +182,18 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
         dbHelper = new HistoryDbHelper(this);
 
+        tracker = GoogleAnalyticsTracker.getInstance();
+
+        // Start the tracker in manual dispatch mode...
+        tracker.start("UA-15225020-3", this);
+
         showWhatsNew();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        tracker.stop();
     }
 
     private void showWhatsNew() {
@@ -299,6 +315,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                     dbHelper.addSearchCriteria(criteria);
                 }
 
+                tracker.trackPageView("/dictionarySearch");
+                tracker.dispatch();
                 startActivity(intent);
             } catch (RejectedExecutionException e) {
                 Log.e(TAG, e.getMessage(), e);
@@ -334,6 +352,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                     dbHelper.addSearchCriteria(criteria);
                 }
 
+                tracker.trackPageView("/kanjiSearch");
+                tracker.dispatch();
                 startActivity(intent);
             } catch (RejectedExecutionException e) {
                 Log.e(TAG, "RejectedExecutionException", e);
@@ -361,6 +381,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                 dbHelper.addSearchCriteria(criteria);
             }
 
+            tracker.trackPageView("/exampleSearch");
+            tracker.dispatch();
             startActivity(intent);
             break;
         default:
@@ -488,6 +510,14 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
     private Dialog createWhatsNewDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.whats_new);
+        builder.setPositiveButton(R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                    }
+                });
         String titleTemplate = getResources().getString(
                 R.string.whats_new_title);
         String title = String.format(titleTemplate, getVersionName());
