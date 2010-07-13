@@ -43,25 +43,23 @@ public class SentenceBreakdown extends
             SentenceBreakdownEntry entry = entries.get(position);
 
             if (convertView == null) {
-                convertView = new SentenceBreakdownEntryView(context, entry);
+                convertView = new SentenceBreakdownEntryView(context);
             }
+
+            ((SentenceBreakdownEntryView) convertView).populate(entry);
 
             return convertView;
         }
 
         static class SentenceBreakdownEntryView extends LinearLayout {
 
-            private SentenceBreakdownEntry entry;
-
             private TextView explanationText;
             private TextView wordText;
             private TextView readingText;
             private TextView translationText;
 
-            SentenceBreakdownEntryView(Context context,
-                    SentenceBreakdownEntry entry) {
+            SentenceBreakdownEntryView(Context context) {
                 super(context);
-                this.entry = entry;
 
                 LayoutInflater inflater = LayoutInflater.from(context);
                 inflater.inflate(R.layout.breakdown_item, this);
@@ -70,11 +68,9 @@ public class SentenceBreakdown extends
                 wordText = (TextView) findViewById(R.id.wordText);
                 readingText = (TextView) findViewById(R.id.readingText);
                 translationText = (TextView) findViewById(R.id.translationText);
-
-                populate();
             }
 
-            private void populate() {
+            void populate(SentenceBreakdownEntry entry) {
                 if (!StringUtils.isEmpty(entry.getExplanation())) {
                     explanationText.setText(entry.getExplanation());
                 } else {

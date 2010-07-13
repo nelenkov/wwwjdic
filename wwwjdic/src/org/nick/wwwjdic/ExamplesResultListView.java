@@ -64,9 +64,10 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
             ExampleSentence entry = entries.get(position);
 
             if (convertView == null) {
-                convertView = new ExampleSentenceView(context, entry,
-                        queryString);
+                convertView = new ExampleSentenceView(context);
             }
+
+            ((ExampleSentenceView) convertView).populate(entry, queryString);
 
             return convertView;
         }
@@ -74,26 +75,21 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
         static class ExampleSentenceView extends LinearLayout {
 
             private static final int HILIGHT_COLOR = 0xff427ad7;
-            private ExampleSentence sentence;
 
             private TextView japaneseSentenceText;
             private TextView englishSentenceText;
 
-            ExampleSentenceView(Context context, ExampleSentence sentence,
-                    String queryString) {
+            ExampleSentenceView(Context context) {
                 super(context);
-                this.sentence = sentence;
 
                 LayoutInflater inflater = LayoutInflater.from(context);
                 inflater.inflate(R.layout.example_sentence_item, this);
 
                 japaneseSentenceText = (TextView) findViewById(R.id.japaneseSentenceText);
                 englishSentenceText = (TextView) findViewById(R.id.englishSentenceText);
-
-                populate(queryString);
             }
 
-            private void populate(String queryString) {
+            void populate(ExampleSentence sentence, String queryString) {
                 SpannableString english = markQueryString(
                         sentence.getEnglish(), queryString, true);
                 SpannableString japanese = markQueryString(sentence

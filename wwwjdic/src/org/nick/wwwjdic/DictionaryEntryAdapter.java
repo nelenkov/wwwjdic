@@ -35,19 +35,15 @@ public class DictionaryEntryAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         DictionaryEntry entry = entries.get(position);
 
-        if (convertView == null) {
-            convertView = new DictionaryEntryListView(context, entry);
-        }
-
-        return convertView;
+        return new DictionaryEntryView(context, entry);
     }
 
-    private final class DictionaryEntryListView extends LinearLayout {
+    private final class DictionaryEntryView extends LinearLayout {
         private TextView entryText;
         private TextView readingText;
         private TextView translationText;
 
-        public DictionaryEntryListView(Context context, DictionaryEntry entry) {
+        public DictionaryEntryView(Context context, DictionaryEntry entry) {
             super(context);
             setOrientation(LinearLayout.VERTICAL);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
