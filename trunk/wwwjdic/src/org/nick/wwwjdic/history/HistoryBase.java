@@ -57,8 +57,6 @@ public abstract class HistoryBase extends ListActivity {
 
     protected int selectedFilter = -1;
 
-    private boolean confirmDialogResult = false;
-
     protected HistoryBase() {
         db = new HistoryDbHelper(this);
     }
@@ -115,6 +113,7 @@ public abstract class HistoryBase extends ListActivity {
         final boolean hasItems = getListAdapter().getCount() > 0;
 
         menu.getItem(EXPORT_ITEM_IDX).setEnabled(hasItems);
+        menu.getItem(FILTER_ITEM_IDX).setEnabled(hasItems);
         menu.getItem(DELETE_ALL_ITEM_IDX).setEnabled(hasItems);
 
         return true;
@@ -168,7 +167,42 @@ public abstract class HistoryBase extends ListActivity {
 
     protected abstract void importItems();
 
-    protected abstract void exportItems();
+    protected void exportItems() {
+        createWwwjdicDirIfNecessary();
+
+        String exportFile = getExportFilename();
+
+        confirmOverwriteAndExport(exportFile);
+    }
+
+    protected abstract String getExportFilename();
+
+    protected void confirmOverwriteAndExport(final String filename) {
+        File file = new File(filename);
+        if (!file.exists()) {
+            doExport(filename);
+            return;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String message = getResources().getString(R.string.overwrite_file);
+        builder.setMessage(String.format(message, filename)).setCancelable(
+                false).setPositiveButton(R.string.yes,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        doExport(filename);
+                    }
+                }).setNegativeButton(R.string.no,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    protected abstract void doExport(String filename);
 
     private void filter() {
         Cursor c = filterCursor();
@@ -306,30 +340,4 @@ public abstract class HistoryBase extends ListActivity {
         return new CSVReader(new FileReader(importFile));
     }
 
-    protected boolean confirmOverwrite(String filename) {
-        File file = new File(filename);
-        if (!file.exists()) {
-            return true;
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String message = getResources().getString(R.string.overwrite_file);
-        builder.setMessage(String.format(message, filename)).setCancelable(
-                false).setPositiveButton(R.string.yes,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        confirmDialogResult = true;
-                    }
-                }).setNegativeButton(R.string.no,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        confirmDialogResult = false;
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-        return confirmDialogResult;
-    }
 }

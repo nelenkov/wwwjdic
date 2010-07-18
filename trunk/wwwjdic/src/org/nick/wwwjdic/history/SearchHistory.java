@@ -91,23 +91,20 @@ public class SearchHistory extends HistoryBase {
     }
 
     @Override
-    protected void exportItems() {
+    protected String getExportFilename() {
+        File extStorage = Environment.getExternalStorageDirectory();
+
+        return extStorage.getAbsolutePath() + "/" + EXPORT_FILENAME;
+    }
+
+    @Override
+    protected void doExport(String filename) {
         CSVWriter writer = null;
 
         try {
             Cursor c = filterCursor();
 
-            createWwwjdicDirIfNecessary();
-
-            File extStorage = Environment.getExternalStorageDirectory();
-            String exportFile = extStorage.getAbsolutePath() + "/"
-                    + EXPORT_FILENAME;
-            boolean overwrite = confirmOverwrite(exportFile);
-            if (!overwrite) {
-                return;
-            }
-
-            writer = new CSVWriter(new FileWriter(exportFile));
+            writer = new CSVWriter(new FileWriter(filename));
 
             while (c.moveToNext()) {
                 long time = c.getLong(c.getColumnIndex("time"));
@@ -115,12 +112,11 @@ public class SearchHistory extends HistoryBase {
                 String[] criteriaStr = SearchCriteriaParser.toStringArray(
                         criteria, time);
                 writer.writeNext(criteriaStr);
-
             }
 
             String message = getResources()
                     .getString(R.string.history_exported);
-            Toast t = Toast.makeText(this, String.format(message, exportFile),
+            Toast t = Toast.makeText(this, String.format(message, filename),
                     Toast.LENGTH_SHORT);
             t.show();
         } catch (IOException e) {
@@ -135,7 +131,6 @@ public class SearchHistory extends HistoryBase {
                 } catch (IOException e) {
                     Log.w(TAG, "error closing CSV writer", e);
                 }
-
             }
         }
     }
