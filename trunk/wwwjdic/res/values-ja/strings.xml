@@ -146,11 +146,11 @@
     <string name="exact_match">完全一致\n(英語のみ)</string>
     <string name="enter_eng_or_jap">英語または日本語</string>
     <string name="enter_kanji_search_key">漢字検索キー</string>
-    <string name="break_down_jap">日本語文分析</string>
+    <string name="break_down_jap">日本語文解析</string>
     <string name="look_up_all_kanji">全ての漢字で検索</string>
     <string name="copy_jp">日本語文コピー</string>
     <string name="copy_eng">英語文コピー</string>
-    <string name="sentence_breakdown">例文分析</string>
+    <string name="sentence_breakdown">例文解析</string>
     <string name="sentence_words">単語</string>
     <string name="no_results">検索結果はありません</string>
     <string name="searching">検索中...</string>
