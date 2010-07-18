@@ -97,20 +97,19 @@ public class Favorites extends HistoryBase implements
     }
 
     @Override
-    protected void exportItems() {
+    protected String getExportFilename() {
+        File extStorage = Environment.getExternalStorageDirectory();
+
+        return extStorage.getAbsolutePath() + "/" + EXPORT_FILENAME;
+    }
+
+    @Override
+    protected void doExport(final String exportFile) {
         CSVWriter writer = null;
 
         try {
-            Cursor c = filterCursor();
+            final Cursor c = filterCursor();
 
-            createWwwjdicDirIfNecessary();
-            File extStorage = Environment.getExternalStorageDirectory();
-            String exportFile = extStorage.getAbsolutePath() + "/"
-                    + EXPORT_FILENAME;
-            boolean overwrite = confirmOverwrite(exportFile);
-            if (!overwrite) {
-                return;
-            }
             writer = new CSVWriter(new FileWriter(exportFile));
 
             while (c.moveToNext()) {
@@ -124,14 +123,15 @@ public class Favorites extends HistoryBase implements
 
             String message = getResources().getString(
                     R.string.favorites_exported);
-            Toast t = Toast.makeText(this, String.format(message, exportFile),
-                    Toast.LENGTH_SHORT);
+            Toast t = Toast.makeText(Favorites.this, String.format(message,
+                    exportFile), Toast.LENGTH_SHORT);
             t.show();
+
         } catch (IOException e) {
-            Log.e(TAG, "error exporting favorites", e);
             String message = getResources().getString(R.string.export_error);
-            Toast.makeText(this, String.format(message, e.getMessage()),
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(Favorites.this,
+                    String.format(message, e.getMessage()), Toast.LENGTH_SHORT)
+                    .show();
         } finally {
             if (writer != null) {
                 try {
