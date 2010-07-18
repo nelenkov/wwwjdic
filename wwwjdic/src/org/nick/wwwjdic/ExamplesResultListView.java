@@ -193,6 +193,8 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
     }
 
     private void breakDown(long id) {
+        Analytics.event("sentenceBreakdown", this);
+
         Intent intent = new Intent(this, SentenceBreakdown.class);
         intent.putExtra(Constants.SENTENCE, getCurrentSentence(id)
                 .getJapanese());

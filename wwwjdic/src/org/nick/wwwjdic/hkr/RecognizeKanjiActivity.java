@@ -3,6 +3,7 @@ package org.nick.wwwjdic.hkr;
 import java.util.Arrays;
 import java.util.List;
 
+import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
@@ -56,6 +57,20 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         drawView.setAnnotateStrokesMidway(isAnnotateStrokesMidway());
 
         drawView.requestFocus();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Analytics.startSession(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        Analytics.endSession(this);
     }
 
     private void findViews() {
@@ -199,6 +214,8 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         HkrTask task = new HkrTask(strokes, handler);
         String message = getResources().getString(R.string.doing_hkr);
         submitWsTask(task, message);
+
+        Analytics.event("recognizeKanji", this);
     }
 
     public void sendToDictionary(String[] results) {

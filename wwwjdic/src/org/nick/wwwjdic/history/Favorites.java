@@ -26,7 +26,7 @@ public class Favorites extends HistoryBase implements
 
     private static final String TAG = Favorites.class.getSimpleName();
 
-    private static final String EXPORT_FILENAME = "favorites.csv";
+    private static final String EXPORT_FILENAME = "wwwjdic/favorites.csv";
 
     protected void setupAdapter() {
         Cursor cursor = db.getFavorites();
@@ -102,9 +102,15 @@ public class Favorites extends HistoryBase implements
 
         try {
             Cursor c = filterCursor();
+
+            createWwwjdicDirIfNecessary();
             File extStorage = Environment.getExternalStorageDirectory();
             String exportFile = extStorage.getAbsolutePath() + "/"
                     + EXPORT_FILENAME;
+            boolean overwrite = confirmOverwrite(exportFile);
+            if (!overwrite) {
+                return;
+            }
             writer = new CSVWriter(new FileWriter(exportFile));
 
             while (c.moveToNext()) {
@@ -122,7 +128,10 @@ public class Favorites extends HistoryBase implements
                     Toast.LENGTH_SHORT);
             t.show();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Log.e(TAG, "error exporting favorites", e);
+            String message = getResources().getString(R.string.export_error);
+            Toast.makeText(this, String.format(message, e.getMessage()),
+                    Toast.LENGTH_SHORT).show();
         } finally {
             if (writer != null) {
                 try {
@@ -145,6 +154,9 @@ public class Favorites extends HistoryBase implements
             String importFile = extStorage.getAbsolutePath() + "/"
                     + EXPORT_FILENAME;
             reader = new CSVReader(new FileReader(importFile));
+            if (reader == null) {
+                return;
+            }
 
             String[] record = null;
             while ((record = reader.readNext()) != null) {
@@ -164,7 +176,10 @@ public class Favorites extends HistoryBase implements
                     Toast.LENGTH_SHORT);
             t.show();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Log.e(TAG, "error importing favorites", e);
+            String message = getResources().getString(R.string.import_error);
+            Toast.makeText(this, String.format(message, e.getMessage()),
+                    Toast.LENGTH_SHORT).show();
         } finally {
             if (reader != null) {
                 try {

@@ -1,7 +1,6 @@
 package org.nick.wwwjdic.history;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -25,7 +24,7 @@ public class SearchHistory extends HistoryBase {
 
     private static final String TAG = SearchHistory.class.getSimpleName();
 
-    private static final String EXPORT_FILENAME = "search-history.csv";
+    private static final String EXPORT_FILENAME = "wwwjdic/search-history.csv";
 
     protected void setupAdapter() {
         Cursor cursor = db.getHistory();
@@ -97,9 +96,17 @@ public class SearchHistory extends HistoryBase {
 
         try {
             Cursor c = filterCursor();
+
+            createWwwjdicDirIfNecessary();
+
             File extStorage = Environment.getExternalStorageDirectory();
             String exportFile = extStorage.getAbsolutePath() + "/"
                     + EXPORT_FILENAME;
+            boolean overwrite = confirmOverwrite(exportFile);
+            if (!overwrite) {
+                return;
+            }
+
             writer = new CSVWriter(new FileWriter(exportFile));
 
             while (c.moveToNext()) {
@@ -117,7 +124,10 @@ public class SearchHistory extends HistoryBase {
                     Toast.LENGTH_SHORT);
             t.show();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Log.e(TAG, "error exporting history", e);
+            String message = getResources().getString(R.string.export_error);
+            Toast.makeText(this, String.format(message, e.getMessage()),
+                    Toast.LENGTH_SHORT).show();
         } finally {
             if (writer != null) {
                 try {
@@ -140,7 +150,10 @@ public class SearchHistory extends HistoryBase {
             File extStorage = Environment.getExternalStorageDirectory();
             String importFile = extStorage.getAbsolutePath() + "/"
                     + EXPORT_FILENAME;
-            reader = new CSVReader(new FileReader(importFile));
+            reader = openImportFile(importFile);
+            if (reader == null) {
+                return;
+            }
 
             String[] record = null;
             while ((record = reader.readNext()) != null) {
@@ -161,7 +174,10 @@ public class SearchHistory extends HistoryBase {
                     Toast.LENGTH_SHORT);
             t.show();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Log.e(TAG, "error importing history", e);
+            String message = getResources().getString(R.string.import_error);
+            Toast.makeText(this, String.format(message, e.getMessage()),
+                    Toast.LENGTH_SHORT).show();
         } finally {
             if (reader != null) {
                 try {

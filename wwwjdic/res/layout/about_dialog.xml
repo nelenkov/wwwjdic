@@ -49,6 +49,9 @@
     <TextView android:text="@string/kanjivg_link"
         android:layout_width="fill_parent" android:layout_height="wrap_content"
         android:id="@+id/kanjivg_link" android:autoLink="web"
-        android:layout_marginBottom="4dip"></TextView>     
+        android:layout_marginBottom="4dip"></TextView>
+     <TextView android:text="@string/uses_analytics"
+        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:id="@+id/uses_analytics"></TextView>          
 
 </LinearLayout>

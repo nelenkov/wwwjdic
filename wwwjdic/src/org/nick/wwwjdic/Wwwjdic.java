@@ -43,8 +43,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.google.android.apps.analytics.GoogleAnalyticsTracker;
-
 public class Wwwjdic extends TabActivity implements OnClickListener,
         OnFocusChangeListener, OnCheckedChangeListener, OnItemSelectedListener {
 
@@ -137,8 +135,6 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
     private HistoryDbHelper dbHelper;
 
-    private GoogleAnalyticsTracker tracker;
-
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -182,18 +178,26 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
         dbHelper = new HistoryDbHelper(this);
 
-        tracker = GoogleAnalyticsTracker.getInstance();
-
-        // Start the tracker in manual dispatch mode...
-        tracker.start("UA-15225020-3", this);
-
         showWhatsNew();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Analytics.startSession(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        Analytics.endSession(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        tracker.stop();
     }
 
     private void showWhatsNew() {
@@ -315,8 +319,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                     dbHelper.addSearchCriteria(criteria);
                 }
 
-                tracker.trackPageView("/dictionarySearch");
-                tracker.dispatch();
+                Analytics.event("dictSearch", this);
+
                 startActivity(intent);
             } catch (RejectedExecutionException e) {
                 Log.e(TAG, e.getMessage(), e);
@@ -352,8 +356,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                     dbHelper.addSearchCriteria(criteria);
                 }
 
-                tracker.trackPageView("/kanjiSearch");
-                tracker.dispatch();
+                Analytics.event("kanjiSearch", this);
+
                 startActivity(intent);
             } catch (RejectedExecutionException e) {
                 Log.e(TAG, "RejectedExecutionException", e);
@@ -381,8 +385,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                 dbHelper.addSearchCriteria(criteria);
             }
 
-            tracker.trackPageView("/exampleSearch");
-            tracker.dispatch();
+            Analytics.event("exampleSearch", this);
+
             startActivity(intent);
             break;
         default:
