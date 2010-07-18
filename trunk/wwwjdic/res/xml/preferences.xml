@@ -26,17 +26,17 @@
         <CheckBoxPreference android:key="pref_ocr_direct_search"
             android:title="@string/pref_ocr_direct_search"
             android:summary="@string/pref_ocr_direct_search_summary"
-            android:defaultValue="false" />    
+            android:defaultValue="false" />
         <CheckBoxPreference android:key="pref_ocr_dump_cropped_images"
             android:title="@string/pref_ocr_dump_cropped_images"
             android:summary="@string/pref_ocr_dump_cropped_images_summary"
             android:defaultValue="false" />
-        <!-- 
-        <CheckBoxPreference android:key="pref_ocr_use_internal_storage"
-            android:title="Use internal storage"
-            android:summary="Uses /emmc instead of /sdcard"
-            android:defaultValue="false" />
-        -->        
+        <!--
+            <CheckBoxPreference
+            android:key="pref_ocr_use_internal_storage"
+            android:title="Use internal storage" android:summary="Uses
+            /emmc instead of /sdcard" android:defaultValue="false" />
+        -->
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_kr">
         <EditTextPreference android:key="pref_kr_url"
@@ -56,7 +56,8 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_sod">
         <EditTextPreference android:key="pref_sod_server_timeout"
-            android:title="@string/pref_sod_server_timeout" android:summary="@string/pref_timeout_summary"
+            android:title="@string/pref_sod_server_timeout"
+            android:summary="@string/pref_timeout_summary"
             android:singleLine="true" android:inputType="numberDecimal"
             android:defaultValue="30" />
         <EditTextPreference android:key="pref_sod_animation_delay"
@@ -64,5 +65,11 @@
             android:summary="@string/pref_sod_animation_delay_summary"
             android:singleLine="true" android:inputType="numberDecimal"
             android:defaultValue="700" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_analytics">
+        <CheckBoxPreference android:key="pref_enable_analytics"
+            android:title="@string/pref_enable_analytics"
+            android:summary="@string/pref_analytics_summary"
+            android:defaultValue="true" android:disableDependentsState="false" />
     </PreferenceCategory>
 </PreferenceScreen>

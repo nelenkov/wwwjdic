@@ -195,4 +195,13 @@
         <item>(あ) 辞書</item>
         <item>(漢) 漢字</item>
     </string-array>
+    <string name="cancel">キャンセル</string>
+    <string name="file_not_found">%sは存在しません。</string>
+    <string name="import_error">インポートエラー: %s。</string>
+    <string name="export_error">エックスポートエラー: %s。</string>
+    <string name="overwrite_file">%sはすでに存在しています。上書きしますか?</string>
+    <string name="pref_analytics">Analytics</string>
+    <string name="pref_enable_analytics">Analyticsを有効にする</string>
+    <string name="pref_analytics_summary">アプリ改善に役立つ匿名利用情報を収集します。</string>
+    <string name="uses_analytics">Flurry Analyticsを利用して匿名利用情報を収集します。(設定画面で無効にできます)</string>
 </resources>

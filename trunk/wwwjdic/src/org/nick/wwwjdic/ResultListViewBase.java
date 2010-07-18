@@ -40,6 +40,20 @@ public abstract class ResultListViewBase<T> extends ListActivity implements
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        Analytics.startSession(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        Analytics.endSession(this);
+    }
+
+    @Override
     protected void onDestroy() {
         if (transPending != null) {
             transPending.cancel(true);

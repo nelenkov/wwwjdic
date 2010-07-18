@@ -9,6 +9,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
+import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.GzipStringResponseHandler;
 import org.nick.wwwjdic.R;
@@ -125,6 +126,20 @@ public class SodActivity extends WebServiceBackedActivity implements
         setTitle(String.format(message, kanji));
 
         drawSod();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Analytics.startSession(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        Analytics.endSession(this);
     }
 
     public void drawSod(List<StrokePath> strokes) {
@@ -274,6 +289,8 @@ public class SodActivity extends WebServiceBackedActivity implements
     }
 
     private void drawSod() {
+        Analytics.event("drawSod", this);
+
         if (strokes == null) {
             Runnable getStrokesTask = new GetStrokePathTask(unicodeNumber,
                     false, httpClient, handler);
@@ -284,6 +301,8 @@ public class SodActivity extends WebServiceBackedActivity implements
     }
 
     private void animate() {
+        Analytics.event("animateSod", this);
+
         if (strokes == null) {
             Runnable getStrokesTask = new GetStrokePathTask(unicodeNumber,
                     true, httpClient, handler);

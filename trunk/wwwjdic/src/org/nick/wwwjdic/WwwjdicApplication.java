@@ -1,11 +1,15 @@
 package org.nick.wwwjdic;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import android.app.Application;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.AssetManager;
 
 public class WwwjdicApplication extends Application {
 
@@ -13,9 +17,13 @@ public class WwwjdicApplication extends Application {
 
     private static String version;
 
+    private static String flurryKey;
+
     @Override
     public void onCreate() {
         version = getVersionName();
+
+        flurryKey = readKey();
 
         initRadicals();
     }
@@ -29,6 +37,39 @@ public class WwwjdicApplication extends Application {
         } catch (NameNotFoundException e) {
             return "";
         }
+    }
+
+    private String readKey() {
+        AssetManager assetManager = getAssets();
+
+        InputStream in = null;
+        try {
+            in = assetManager.open("keys");
+
+            return readTextFile(in);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException ignored) {
+                }
+            }
+        }
+
+    }
+
+    private String readTextFile(InputStream in) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte buff[] = new byte[1024];
+
+        int len = -1;
+        while ((len = in.read(buff)) != -1) {
+            baos.write(buff, 0, len);
+        }
+
+        return baos.toString("ASCII");
     }
 
     public WwwjdicApplication() {
@@ -45,6 +86,10 @@ public class WwwjdicApplication extends Application {
 
     public static String getUserAgentString() {
         return "Android-WWWJDIC/" + getVersion();
+    }
+
+    public static String getFlurryKey() {
+        return flurryKey;
     }
 
     private void initRadicals() {

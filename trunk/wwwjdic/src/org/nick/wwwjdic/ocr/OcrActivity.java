@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.DictionaryResultListView;
 import org.nick.wwwjdic.ExamplesResultListView;
@@ -125,6 +126,20 @@ public class OcrActivity extends WebServiceBackedActivity implements
         flashToggle.setOnCheckedChangeListener(this);
 
         surfaceView.requestFocus();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Analytics.startSession(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        Analytics.endSession(this);
     }
 
     private void toggleSearchButtons(boolean enabled) {
@@ -332,6 +347,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
                     if (isDumpCroppedImages()) {
                         dumpBitmap(blackAndWhiteBitmap, "cropped.jpg");
                     }
+
+                    Analytics.event("ocr", this);
 
                     OcrTask task = new OcrTask(blackAndWhiteBitmap, handler);
                     String message = getResources().getString(
