@@ -73,6 +73,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
     private static final String PREF_DIRECT_SEARCH_KEY = "pref_ocr_direct_search";
 
+    private static final String IMAGE_CAPTURE_URI_KEY = "ocr.imageCaptureUri";
+
     private Camera camera;
     private Size previewSize;
     private Size pictureSize;
@@ -125,7 +127,18 @@ public class OcrActivity extends WebServiceBackedActivity implements
         flashToggle = (ToggleButton) findViewById(R.id.auto_flash_toggle);
         flashToggle.setOnCheckedChangeListener(this);
 
+        if (icicle != null) {
+            imageCaptureUri = icicle.getParcelable(IMAGE_CAPTURE_URI_KEY);
+        }
+
         surfaceView.requestFocus();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(IMAGE_CAPTURE_URI_KEY, imageCaptureUri);
     }
 
     @Override
