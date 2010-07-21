@@ -13,7 +13,6 @@ import org.nick.wwwjdic.SearchCriteria;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
@@ -91,7 +90,7 @@ public class SearchHistory extends HistoryBase {
     }
 
     @Override
-    protected String getExportFilename() {
+    protected String getImportExportFilename() {
         File extStorage = Environment.getExternalStorageDirectory();
 
         return extStorage.getAbsolutePath() + "/" + EXPORT_FILENAME;
@@ -106,18 +105,20 @@ public class SearchHistory extends HistoryBase {
 
             writer = new CSVWriter(new FileWriter(filename));
 
+            int count = 0;
             while (c.moveToNext()) {
                 long time = c.getLong(c.getColumnIndex("time"));
                 SearchCriteria criteria = HistoryDbHelper.createCriteria(c);
                 String[] criteriaStr = SearchCriteriaParser.toStringArray(
                         criteria, time);
                 writer.writeNext(criteriaStr);
+                count++;
             }
 
             String message = getResources()
                     .getString(R.string.history_exported);
-            Toast t = Toast.makeText(this, String.format(message, filename),
-                    Toast.LENGTH_SHORT);
+            Toast t = Toast.makeText(this, String.format(message, filename,
+                    count), Toast.LENGTH_SHORT);
             t.show();
         } catch (IOException e) {
             Log.e(TAG, "error exporting history", e);
@@ -136,37 +137,36 @@ public class SearchHistory extends HistoryBase {
     }
 
     @Override
-    protected void importItems() {
+    protected void doImport(String importFile) {
         CSVReader reader = null;
 
-        SQLiteDatabase s = db.getWritableDatabase();
-        s.beginTransaction();
+        db.beginTransaction();
         try {
-            File extStorage = Environment.getExternalStorageDirectory();
-            String importFile = extStorage.getAbsolutePath() + "/"
-                    + EXPORT_FILENAME;
+            db.deleteAllHistory();
+
             reader = openImportFile(importFile);
             if (reader == null) {
                 return;
             }
 
             String[] record = null;
+            int count = 0;
             while ((record = reader.readNext()) != null) {
                 SearchCriteria criteria = SearchCriteriaParser
                         .fromStringArray(record);
                 long time = Long
                         .parseLong(record[SearchCriteriaParser.TIME_IDX]);
                 db.addSearchCriteria(criteria, time);
-
+                count++;
             }
-            s.setTransactionSuccessful();
+            db.setTransactionSuccessful();
 
             refresh();
 
             String message = getResources()
                     .getString(R.string.history_imported);
-            Toast t = Toast.makeText(this, String.format(message, importFile),
-                    Toast.LENGTH_SHORT);
+            Toast t = Toast.makeText(this, String.format(message, importFile,
+                    count), Toast.LENGTH_SHORT);
             t.show();
         } catch (IOException e) {
             Log.e(TAG, "error importing history", e);
@@ -182,7 +182,7 @@ public class SearchHistory extends HistoryBase {
                 }
 
             }
-            s.endTransaction();
+            db.endTransaction();
         }
     }
 

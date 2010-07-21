@@ -165,17 +165,47 @@ public abstract class HistoryBase extends ListActivity {
 
     protected abstract String[] getFilterTypes();
 
-    protected abstract void importItems();
+    protected void importItems() {
+        String importFile = getImportExportFilename();
+
+        confirmOverwriteAndImport(importFile);
+    }
+
+    private void confirmOverwriteAndImport(final String filename) {
+        if (getListAdapter().isEmpty()) {
+            doImport(filename);
+            return;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.import_and_overwrite).setCancelable(false)
+                .setPositiveButton(R.string.yes,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                doImport(filename);
+                            }
+                        }).setNegativeButton(R.string.no,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    protected abstract void doImport(String filename);
 
     protected void exportItems() {
         createWwwjdicDirIfNecessary();
 
-        String exportFile = getExportFilename();
+        String exportFile = getImportExportFilename();
 
         confirmOverwriteAndExport(exportFile);
     }
 
-    protected abstract String getExportFilename();
+    protected abstract String getImportExportFilename();
 
     protected void confirmOverwriteAndExport(final String filename) {
         File file = new File(filename);
