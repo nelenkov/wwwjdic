@@ -16,7 +16,7 @@
         <ToggleButton android:id="@+id/auto_flash_toggle"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:background="@drawable/ic_flash" android:textOn=""
-            android:textOff="" />
+            android:textOff="" android:focusable="false"/>
     </LinearLayout>
     <LinearLayout android:id="@+id/button_group"
         android:layout_height="wrap_content" android:layout_width="wrap_content"
