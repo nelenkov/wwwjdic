@@ -292,6 +292,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
             return super.onKeyDown(keyCode, event);
         }
         if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+            Analytics.event("ocrTake", this);
             requestAutoFocus();
         }
 
@@ -675,6 +676,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        Analytics.event("ocrTouch", this);
         requestAutoFocus();
 
         return false;
