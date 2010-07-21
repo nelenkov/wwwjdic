@@ -208,6 +208,7 @@ public abstract class HistoryBase extends ListActivity {
         Cursor c = filterCursor();
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.changeCursor(c);
+        startManagingCursor(c);
         refresh();
     }
 
