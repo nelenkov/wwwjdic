@@ -14,7 +14,6 @@ import org.nick.wwwjdic.history.FavoritesItem.FavoriteStatusChangedListener;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
@@ -97,7 +96,7 @@ public class Favorites extends HistoryBase implements
     }
 
     @Override
-    protected String getExportFilename() {
+    protected String getImportExportFilename() {
         File extStorage = Environment.getExternalStorageDirectory();
 
         return extStorage.getAbsolutePath() + "/" + EXPORT_FILENAME;
@@ -112,19 +111,20 @@ public class Favorites extends HistoryBase implements
 
             writer = new CSVWriter(new FileWriter(exportFile));
 
+            int count = 0;
             while (c.moveToNext()) {
                 WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
                 long time = c.getLong(c.getColumnIndex("time"));
                 String[] entryStr = FavoritesEntryParser.toStringArray(entry,
                         time);
                 writer.writeNext(entryStr);
-
+                count++;
             }
 
             String message = getResources().getString(
                     R.string.favorites_exported);
             Toast t = Toast.makeText(Favorites.this, String.format(message,
-                    exportFile), Toast.LENGTH_SHORT);
+                    exportFile, count), Toast.LENGTH_SHORT);
             t.show();
 
         } catch (IOException e) {
@@ -144,36 +144,35 @@ public class Favorites extends HistoryBase implements
     }
 
     @Override
-    protected void importItems() {
+    protected void doImport(String importFile) {
         CSVReader reader = null;
 
-        SQLiteDatabase s = db.getWritableDatabase();
-        s.beginTransaction();
+        db.beginTransaction();
         try {
-            File extStorage = Environment.getExternalStorageDirectory();
-            String importFile = extStorage.getAbsolutePath() + "/"
-                    + EXPORT_FILENAME;
+            db.deleteAllFavorites();
+
             reader = new CSVReader(new FileReader(importFile));
             if (reader == null) {
                 return;
             }
 
             String[] record = null;
+            int count = 0;
             while ((record = reader.readNext()) != null) {
                 WwwjdicEntry entry = FavoritesEntryParser
                         .fromStringArray(record);
                 long time = Long
                         .parseLong(record[FavoritesEntryParser.TIME_IDX]);
                 db.addFavorite(entry, time);
-
+                count++;
             }
-            s.setTransactionSuccessful();
+            db.setTransactionSuccessful();
 
             refresh();
             String message = getResources().getString(
                     R.string.favorites_imported);
-            Toast t = Toast.makeText(this, String.format(message, importFile),
-                    Toast.LENGTH_SHORT);
+            Toast t = Toast.makeText(this, String.format(message, importFile,
+                    count), Toast.LENGTH_SHORT);
             t.show();
         } catch (IOException e) {
             Log.e(TAG, "error importing favorites", e);
@@ -189,7 +188,7 @@ public class Favorites extends HistoryBase implements
                 }
 
             }
-            s.endTransaction();
+            db.endTransaction();
         }
     }
 

@@ -345,4 +345,16 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
             }
         }
     }
+
+    public void beginTransaction() {
+        getWritableDatabase().beginTransaction();
+    }
+
+    public void setTransactionSuccessful() {
+        getWritableDatabase().setTransactionSuccessful();
+    }
+
+    public void endTransaction() {
+        getWritableDatabase().endTransaction();
+    }
 }

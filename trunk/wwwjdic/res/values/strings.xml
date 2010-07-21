@@ -251,10 +251,10 @@
         dictionary screen for editing before search.</string>
     <string name="import_items">Import</string>
     <string name="export_items">Export</string>
-    <string name="favorites_exported">Favorites exported to %s</string>
-    <string name="favorites_imported">Favorites imported from %s</string>
-    <string name="history_exported">Search history exported to %s</string>
-    <string name="history_imported">Search history imported from %s</string>
+    <string name="favorites_exported">Favorites exported to %s (%d item(s))</string>
+    <string name="favorites_imported">Favorites imported from %s (%d item(s))</string>
+    <string name="history_exported">Search history exported to %s (%d item(s))</string>
+    <string name="history_imported">Search history imported from %s (%d item(s))</string>
     <string name="filter">Filter</string>
     <string name="select_filter_type">Select type:</string>
     <string-array name="filter_types_history">
@@ -273,6 +273,7 @@
     <string name="import_error">Import error: %s.</string>
     <string name="export_error">Export error: %s.</string>
     <string name="overwrite_file">%s already exists. Overwrite?</string>
+    <string name="import_and_overwrite">Import and overwrite existing items?</string>
     <string name="pref_analytics">Analytics</string>
     <string name="pref_enable_analytics">Enable analytics</string>
     <string name="pref_analytics_summary">Send anonymous usage statistics to
