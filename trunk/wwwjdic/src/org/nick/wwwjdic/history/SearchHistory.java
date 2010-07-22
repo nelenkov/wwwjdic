@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.DictionaryResultListView;
 import org.nick.wwwjdic.ExamplesResultListView;
@@ -34,7 +35,19 @@ public class SearchHistory extends HistoryBase {
 
     @Override
     protected void deleteAll() {
-        db.deleteAllHistory();
+        Cursor c = filterCursor();
+
+        db.beginTransaction();
+        try {
+            while (c.moveToNext()) {
+                int id = c.getInt(c.getColumnIndex("_id"));
+                db.deleteHistoryItem(id);
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+
         refresh();
     }
 
@@ -115,6 +128,8 @@ public class SearchHistory extends HistoryBase {
                 count++;
             }
 
+            Analytics.event("historyExport", this);
+
             String message = getResources()
                     .getString(R.string.history_exported);
             Toast t = Toast.makeText(this, String.format(message, filename,
@@ -162,6 +177,8 @@ public class SearchHistory extends HistoryBase {
             db.setTransactionSuccessful();
 
             refresh();
+
+            Analytics.event("historyImport", this);
 
             String message = getResources()
                     .getString(R.string.history_imported);

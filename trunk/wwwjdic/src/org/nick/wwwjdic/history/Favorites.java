@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.DictionaryEntryDetail;
 import org.nick.wwwjdic.KanjiEntryDetail;
@@ -36,7 +37,19 @@ public class Favorites extends HistoryBase implements
 
     @Override
     protected void deleteAll() {
-        db.deleteAllFavorites();
+        Cursor c = filterCursor();
+
+        db.beginTransaction();
+        try {
+            while (c.moveToNext()) {
+                int id = c.getInt(c.getColumnIndex("_id"));
+                db.deleteFavorite(id);
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+
         refresh();
     }
 
@@ -121,6 +134,8 @@ public class Favorites extends HistoryBase implements
                 count++;
             }
 
+            Analytics.event("favoritesExport", this);
+
             String message = getResources().getString(
                     R.string.favorites_exported);
             Toast t = Toast.makeText(Favorites.this, String.format(message,
@@ -169,6 +184,9 @@ public class Favorites extends HistoryBase implements
             db.setTransactionSuccessful();
 
             refresh();
+
+            Analytics.event("favoritesImport", this);
+
             String message = getResources().getString(
                     R.string.favorites_imported);
             Toast t = Toast.makeText(this, String.format(message, importFile,
