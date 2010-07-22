@@ -113,7 +113,6 @@ public abstract class HistoryBase extends ListActivity {
         final boolean hasItems = getListAdapter().getCount() > 0;
 
         menu.getItem(EXPORT_ITEM_IDX).setEnabled(hasItems);
-        menu.getItem(FILTER_ITEM_IDX).setEnabled(hasItems);
         menu.getItem(DELETE_ALL_ITEM_IDX).setEnabled(hasItems);
 
         return true;
@@ -169,6 +168,8 @@ public abstract class HistoryBase extends ListActivity {
         String importFile = getImportExportFilename();
 
         confirmOverwriteAndImport(importFile);
+
+        showAll();
     }
 
     private void confirmOverwriteAndImport(final String filename) {
@@ -243,6 +244,11 @@ public abstract class HistoryBase extends ListActivity {
     }
 
     protected abstract Cursor filterCursor();
+
+    protected void showAll() {
+        selectedFilter = FILTER_ALL;
+        filter();
+    }
 
     protected abstract void deleteAll();
 
