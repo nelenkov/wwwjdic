@@ -151,6 +151,8 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         setupTabOrder();
         toggleRadicalStrokeCountPanel(false);
 
+        inputText.requestFocus();
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String searchKey = extras.getString(Constants.SEARCH_TEXT_KEY);
