@@ -260,7 +260,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
             try {
                 WeOcrClient client = new WeOcrClient(getWeocrUrl(),
                         getWeocrTimeout());
-                String ocredText = client.sendOcrRequest(bitmap);
+                String ocredText = client.sendLineOcrRequest(bitmap);
                 Log.d(TAG, "OCR result: " + ocredText);
 
                 if (ocredText != null && !"".equals(ocredText)) {

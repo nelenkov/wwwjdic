@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Locale;
 
 import org.apache.http.entity.AbstractHttpEntity;
 
@@ -25,28 +26,42 @@ public class OcrFormEntity extends AbstractHttpEntity {
     private static final String TRAILER = "\r\n" + "--" + BOUNDARY + "\r\n"
             + "Content-Disposition: form-data; name=\"outputformat\"\r\n"
             + "\r\n" + "txt\r\n" + "--" + BOUNDARY + "\r\n"
-            + "Content-Disposition: form-data; name=\"outputencoding\"\r\n"
-            + "\r\n" + "utf-8\r\n" + "--" + BOUNDARY + "--\r\n"
             + "Content-Disposition: form-data; name=\"eclass\"\r\n" + "\r\n"
-            + "text_line\r\n" + "--" + BOUNDARY + "--\r\n";
+            + "%s\r\n" + "--" + BOUNDARY + "\r\n"
+            + "Content-Disposition: form-data; name=\"ntop\"\r\n" + "\r\n"
+            + "%d\r\n" + "--" + BOUNDARY + "\r\n"
+            + "Content-Disposition: form-data; name=\"outputencoding\"\r\n"
+            + "\r\n" + "utf-8\r\n" + "--" + BOUNDARY + "--\r\n";
 
     private static final int BUFF_SIZE = 2048;
     private static final int IMG_QUALITY = 90;
 
     private ByteArrayOutputStream buff;
+    private String trailer;
 
-    public OcrFormEntity(Bitmap bitmap, int quality) throws IOException {
+    public OcrFormEntity(Bitmap bitmap, int quality, String eclass,
+            Integer numberOfTopCandidates) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream(BUFF_SIZE);
         bitmap.compress(CompressFormat.JPEG, quality, baos);
         baos.close();
 
         buff = baos;
+        int ntop = 1;
+        if (numberOfTopCandidates != null) {
+            ntop = numberOfTopCandidates;
+        }
+        trailer = String.format(Locale.US, TRAILER, eclass, ntop);
         setContentType(CONTENT_TYPE);
         setChunked(false);
     }
 
+    public OcrFormEntity(Bitmap img, String eclass,
+            Integer numberOfTopCandidates) throws IOException {
+        this(img, IMG_QUALITY, eclass, numberOfTopCandidates);
+    }
+
     public OcrFormEntity(Bitmap img) throws IOException {
-        this(img, IMG_QUALITY);
+        this(img, IMG_QUALITY, "text_line", null);
     }
 
     @Override
@@ -56,7 +71,7 @@ public class OcrFormEntity extends AbstractHttpEntity {
 
     @Override
     public long getContentLength() {
-        return buff.size() + HEADER.length() + TRAILER.length();
+        return buff.size() + HEADER.length() + trailer.length();
     }
 
     @Override
@@ -77,7 +92,8 @@ public class OcrFormEntity extends AbstractHttpEntity {
 
         os.write(HEADER.getBytes("ascii"));
         buff.writeTo(os);
-        os.write(TRAILER.getBytes("ascii"));
+
+        os.write(trailer.getBytes("ascii"));
         os.flush();
     }
 }

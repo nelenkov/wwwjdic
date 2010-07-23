@@ -7,9 +7,14 @@ import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
+import org.nick.wwwjdic.ocr.WeOcrClient;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,10 +39,18 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     private static final String PREF_KR_ANNOTATE = "pref_kr_annotate";
     private static final String PREF_KR_ANNOTATE_MIDWAY = "pref_kr_annotate_midway";
 
+    private static final String WEOCR_DEFAULT_URL = "http://maggie.ocrgrid.org/cgi-bin/weocr/nhocr.cgi";
+    private static final String PREF_WEOCR_URL_KEY = "pref_weocr_url";
+    private static final String PREF_WEOCR_TIMEOUT_KEY = "pref_weocr_timeout";
+
+    private static final int OCR_IMAGE_WIDTH = 128;
+    private static final int NUM_OCR_CANDIDATES = 20;
+
     private static final int HKR_RESULT = 1;
 
     private Button clearButton;
     private Button recognizeButton;
+    private Button ocrButton;
     private CheckBox lookAheadCb;
 
     private KanjiDrawView drawView;
@@ -52,6 +65,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
         clearButton.setOnClickListener(this);
         recognizeButton.setOnClickListener(this);
+        ocrButton.setOnClickListener(this);
 
         drawView.setAnnotateStrokes(isAnnoateStrokes());
         drawView.setAnnotateStrokesMidway(isAnnotateStrokesMidway());
@@ -78,6 +92,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
         clearButton = (Button) findViewById(R.id.clear_canvas_button);
         recognizeButton = (Button) findViewById(R.id.recognize_button);
+        ocrButton = (Button) findViewById(R.id.ocr_button);
         lookAheadCb = (CheckBox) findViewById(R.id.lookAheadCb);
     }
 
@@ -198,11 +213,100 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
             break;
         case R.id.recognize_button:
             recognizeKanji();
-
+            break;
+        case R.id.ocr_button:
+            ocrKanji();
             break;
         default:
             // do nothing
         }
+    }
+
+    private void ocrKanji() {
+        Bitmap bitmap = drawingToBitmap();
+        OcrTask task = new OcrTask(bitmap, handler);
+        String message = getResources().getString(R.string.doing_hkr);
+        submitWsTask(task, message);
+
+        Analytics.event("recognizeKanjiOcr", this);
+    }
+
+    class OcrTask implements Runnable {
+
+        private Bitmap bitmap;
+        private Handler handler;
+
+        public OcrTask(Bitmap b, Handler h) {
+            bitmap = b;
+            handler = h;
+        }
+
+        @Override
+        public void run() {
+            try {
+                WeOcrClient client = new WeOcrClient(getWeocrUrl(),
+                        getWeocrTimeout());
+                String[] candidates = client.sendCharacterOcrRequest(bitmap,
+                        NUM_OCR_CANDIDATES);
+
+                if (candidates != null) {
+                    Message msg = handler.obtainMessage(HKR_RESULT, 1, 0);
+                    msg.obj = candidates;
+                    handler.sendMessage(msg);
+                } else {
+                    Log.d("TAG", "OCR failed: null returned");
+                    Message msg = handler.obtainMessage(HKR_RESULT, 0, 0);
+                    handler.sendMessage(msg);
+                }
+            } catch (Exception e) {
+                Log.e("TAG", "OCR failed", e);
+                Message msg = handler.obtainMessage(HKR_RESULT, 0, 0);
+                handler.sendMessage(msg);
+            }
+        }
+    }
+
+    private int getWeocrTimeout() {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        String timeoutStr = preferences.getString(PREF_WEOCR_TIMEOUT_KEY, "10");
+
+        return Integer.parseInt(timeoutStr) * 1000;
+    }
+
+    private String getWeocrUrl() {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        return preferences.getString(PREF_WEOCR_URL_KEY, WEOCR_DEFAULT_URL);
+    }
+
+    private Bitmap drawingToBitmap() {
+        Bitmap b = Bitmap.createBitmap(drawView.getWidth(),
+                drawView.getWidth(), Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(b);
+
+        boolean annotate = drawView.isAnnotateStrokes();
+        drawView.setAnnotateStrokes(false);
+        drawView.setBackgroundColor(0xff888888);
+        drawView.setStrokePaintColor(Color.BLACK);
+
+        drawView.draw(c);
+
+        drawView.setAnnotateStrokes(annotate);
+        drawView.setBackgroundColor(Color.BLACK);
+        drawView.setStrokePaintColor(Color.WHITE);
+
+        int width = drawView.getWidth();
+        int newWidth = OCR_IMAGE_WIDTH;
+        float scale = ((float) newWidth) / width;
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale, scale);
+        c.scale(scale, scale);
+        Bitmap resized = Bitmap.createBitmap(b, 0, 0, width, width, matrix,
+                true);
+        return resized;
     }
 
     private void clear() {
