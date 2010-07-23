@@ -13,11 +13,10 @@ import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 
-public class KanjiDrawView extends View implements OnTouchListener {
+public class KanjiDrawView extends View {
 
-    private static final float STROKE_WIDTH = 4f;
+    private static final float STROKE_WIDTH = 8f;
     private static final float OUTLINE_WIDTH = 2f;
 
     public static interface OnStrokesChangedListener {
@@ -36,6 +35,8 @@ public class KanjiDrawView extends View implements OnTouchListener {
     private boolean annotateStrokes = true;
     private boolean annotateStrokesMidway = false;
 
+    private boolean currentStrokeDone = false;
+
     public KanjiDrawView(Context context) {
         super(context);
         init();
@@ -49,25 +50,36 @@ public class KanjiDrawView extends View implements OnTouchListener {
     private void init() {
         setFocusable(true);
         setFocusableInTouchMode(true);
-        setOnTouchListener(this);
 
         strokePaint = new Paint();
         strokePaint.setColor(Color.WHITE);
-        strokePaint.setStyle(Style.FILL);
+        strokePaint.setStyle(Paint.Style.STROKE);
         strokePaint.setAntiAlias(true);
+        strokePaint.setDither(true);
         strokePaint.setStrokeWidth(STROKE_WIDTH);
+        strokePaint.setStrokeJoin(Paint.Join.ROUND);
+        strokePaint.setStrokeCap(Paint.Cap.ROUND);
 
         strokeAnnotationPaint = new Paint();
         strokeAnnotationPaint.setColor(Color.GREEN);
         strokeAnnotationPaint.setStyle(Style.FILL);
         strokeAnnotationPaint.setAntiAlias(true);
-        strokeAnnotationPaint.setStrokeWidth(STROKE_WIDTH);
 
         outlinePaint = new Paint();
         outlinePaint.setColor(Color.GRAY);
         outlinePaint.setStyle(Style.STROKE);
         outlinePaint.setAntiAlias(true);
         outlinePaint.setStrokeWidth(OUTLINE_WIDTH);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        // TODO?
+        // scale and translate?
+    }
+
+    public void setStrokePaintColor(int color) {
+        strokePaint.setColor(color);
     }
 
     @Override
@@ -81,7 +93,7 @@ public class KanjiDrawView extends View implements OnTouchListener {
     }
 
     @Override
-    public boolean onTouch(View view, MotionEvent event) {
+    public boolean onTouchEvent(MotionEvent event) {
         final float x = event.getX();
         final float y = event.getY();
 
@@ -89,16 +101,18 @@ public class KanjiDrawView extends View implements OnTouchListener {
         case MotionEvent.ACTION_DOWN:
             currentStroke = new Stroke();
             currentStroke.addPoint(new PointF(x, y));
+            strokes.add(currentStroke);
+            currentStrokeDone = false;
             break;
         case MotionEvent.ACTION_MOVE:
             currentStroke.addPoint(new PointF(x, y));
             break;
         case MotionEvent.ACTION_UP:
             currentStroke.addPoint(new PointF(x, y));
-            strokes.add(currentStroke);
             if (onStrokesChangedListener != null) {
                 onStrokesChangedListener.strokesUpdated(strokes.size());
             }
+            currentStrokeDone = true;
             break;
         }
         invalidate();
@@ -108,10 +122,15 @@ public class KanjiDrawView extends View implements OnTouchListener {
 
     private void drawStrokes(Canvas canvas) {
         int strokeNum = 1;
-        for (Stroke stroke : strokes) {
+        for (int i = 0; i < strokes.size(); i++) {
+            Stroke stroke = strokes.get(i);
             stroke.draw(canvas, strokePaint);
 
             if (annotateStrokes) {
+                if (i == strokes.size() - 1 && !currentStrokeDone) {
+                    break;
+                }
+
                 if (annotateStrokesMidway) {
                     stroke.annotateMidway(canvas, strokeAnnotationPaint,
                             strokeNum);
