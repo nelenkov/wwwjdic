@@ -10,7 +10,7 @@
             android:title="@string/pref_wwwjdic_timeout"
             android:summary="@string/pref_timeout_summary"
             android:singleLine="true" android:inputType="numberDecimal"
-            android:defaultValue="15" />
+            android:defaultValue="15" android:maxLength="4" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_ocr">
         <ListPreference android:key="pref_weocr_url"
@@ -22,7 +22,7 @@
         <EditTextPreference android:key="pref_weocr_timeout"
             android:title="@string/pref_weocr_timeout" android:summary="@string/pref_timeout_summary"
             android:singleLine="true" android:inputType="numberDecimal"
-            android:defaultValue="10" />
+            android:defaultValue="10" android:maxLength="4" />
         <CheckBoxPreference android:key="pref_ocr_direct_search"
             android:title="@string/pref_ocr_direct_search"
             android:summary="@string/pref_ocr_direct_search_summary"
@@ -45,7 +45,7 @@
         <EditTextPreference android:key="pref_kr_timeout"
             android:title="@string/pref_kr_timeout" android:summary="@string/pref_timeout_summary"
             android:singleLine="true" android:inputType="numberDecimal"
-            android:defaultValue="10" />
+            android:defaultValue="10" android:maxLength="4" />
         <CheckBoxPreference android:key="pref_kr_annotate"
             android:title="@string/pref_kr_annotate"
             android:defaultValue="true" android:disableDependentsState="false" />
@@ -59,12 +59,12 @@
             android:title="@string/pref_sod_server_timeout"
             android:summary="@string/pref_timeout_summary"
             android:singleLine="true" android:inputType="numberDecimal"
-            android:defaultValue="30" />
+            android:defaultValue="30" android:maxLength="4" />
         <EditTextPreference android:key="pref_sod_animation_delay"
             android:title="@string/pref_sod_animation_delay"
             android:summary="@string/pref_sod_animation_delay_summary"
             android:singleLine="true" android:inputType="numberDecimal"
-            android:defaultValue="700" />
+            android:defaultValue="700" android:maxLength="4" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_analytics">
         <CheckBoxPreference android:key="pref_enable_analytics"
