@@ -20,7 +20,8 @@
             android:layout_width="wrap_content" android:id="@+id/maxExamplesInput"
             android:lines="1" android:inputType="numberDecimal"
             android:textSize="12sp" android:hint="@string/max"
-            android:text="20" android:layout_gravity="center_vertical"></EditText>
+            android:maxLength="3" android:text="20"
+            android:layout_gravity="center_vertical"></EditText>
         <CheckBox android:layout_width="wrap_content"
             android:id="@+id/exampleExactMatchCb" android:text="@string/exact_match"
             android:textSize="12sp" android:layout_marginLeft="4dip"
