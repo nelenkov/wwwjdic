@@ -452,7 +452,18 @@ public class OcrActivity extends WebServiceBackedActivity implements
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
+        Log.d(TAG, String.format("surface changed: w=%d; h=%d)", w, h));
+
         if (holder != surfaceHolder) {
+            return;
+        }
+
+        // it seems surfaceChanged is sometimes called twice:
+        // once with SCREEN_ORIENTATION_PORTRAIT and once with
+        // SCREEN_ORIENTATION_LANDSCAPE. At least on a Sapphire with
+        // CyanogenMod. Calling setPreviewSize with wrong width and
+        // height leads to a FC, so skip it.
+        if (w < h) {
             return;
         }
 
@@ -463,18 +474,26 @@ public class OcrActivity extends WebServiceBackedActivity implements
         try {
             Camera.Parameters p = camera.getParameters();
             if (previewSize != null) {
+                Log.d(TAG, String.format("previewSize: w=%d; h=%d",
+                        previewSize.width, previewSize.height));
                 p.setPreviewSize(previewSize.width, previewSize.height);
             } else {
                 int previewWidth = (w >> 3) << 3;
                 int previewHeight = (h >> 3) << 3;
+                Log.d(TAG, String.format("previewSize: w=%d; h=%d",
+                        previewWidth, previewHeight));
                 p.setPreviewSize(previewWidth, previewHeight);
             }
 
             if (pictureSize != null) {
+                Log.d(TAG, String.format("pictureSize: w=%d; h=%d",
+                        pictureSize.width, pictureSize.height));
                 p.setPictureSize(pictureSize.width, pictureSize.height);
             } else {
                 int pictureWidth = (w >> 3) << 3;
                 int pictureHeight = (h >> 3) << 3;
+                Log.d(TAG, String.format("pictureSize: w=%d; h=%d",
+                        pictureWidth, pictureHeight));
                 p.setPictureSize(pictureWidth, pictureHeight);
             }
 
@@ -521,6 +540,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
+        Log.d(TAG, "surfaceCreated");
         camera = Camera.open();
 
         Camera.Parameters params = camera.getParameters();
