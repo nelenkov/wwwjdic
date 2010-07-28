@@ -6,7 +6,6 @@ import java.util.concurrent.RejectedExecutionException;
 
 import org.nick.wwwjdic.history.FavoritesAndHistory;
 import org.nick.wwwjdic.history.HistoryDbHelper;
-import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
 import org.nick.wwwjdic.ocr.OcrActivity;
 
 import android.app.AlertDialog;
@@ -465,7 +464,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
             startActivity(intent);
             return true;
         case ITEM_ID_DRAW:
-            intent = new Intent(this, RecognizeKanjiActivity.class);
+            intent = new Intent("org.nick.wwwjdic.RECOGNIZE_KANJI");
 
             startActivity(intent);
             return true;

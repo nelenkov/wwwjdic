@@ -31,8 +31,7 @@ public class Stroke {
             float dx = Math.abs(p.x - lastPoint.x);
             float dy = Math.abs(p.y - lastPoint.y);
             if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-                path.quadTo(lastPoint.x, lastPoint.y,
-                        (p.x + lastPoint.x) / 2,
+                path.quadTo(lastPoint.x, lastPoint.y, (p.x + lastPoint.x) / 2,
                         (p.y + lastPoint.y) / 2);
                 lastPoint = new PointF(p.x, p.y);
             }
@@ -127,6 +126,10 @@ public class Stroke {
 
         String strokeNumStr = Integer.toString(strokeNum);
         canvas.drawText(strokeNumStr, x + xOffset, y + yOffset, paint);
+    }
+
+    public List<PointF> getPoints() {
+        return points;
     }
 
     public String toBase36Points() {
