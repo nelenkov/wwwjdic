@@ -31,7 +31,13 @@
         <activity android:name="org.nick.wwwjdic.ocr.crop.CropImage"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name="org.nick.wwwjdic.hkr.RecognizeKanjiActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard"></activity>
+            android:configChanges="orientation|keyboardHidden|keyboard"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="org.nick.wwwjdic.RECOGNIZE_KANJI" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name="org.nick.wwwjdic.hkr.HkrCandidates"></activity>
         <activity android:name="org.nick.wwwjdic.history.Favorites"></activity>
         <activity android:name="org.nick.wwwjdic.history.SearchHistory"></activity>
