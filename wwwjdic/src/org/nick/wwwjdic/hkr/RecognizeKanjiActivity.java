@@ -87,6 +87,12 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         Analytics.endSession(this);
     }
 
+    @Override
+    protected void onResume() {
+        drawView.setAnnotateStrokes(isAnnoateStrokes());
+        drawView.setAnnotateStrokesMidway(isAnnotateStrokesMidway());
+    }
+
     private void findViews() {
         drawView = (KanjiDrawView) this.findViewById(R.id.kanji_draw_view);
 
