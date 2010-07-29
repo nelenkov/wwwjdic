@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.R;
 
 import android.app.AlertDialog;
@@ -78,6 +79,20 @@ public abstract class HistoryBase extends ListActivity {
         super.onDestroy();
 
         db.close();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Analytics.startSession(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        Analytics.endSession(this);
     }
 
     protected abstract int getContentView();

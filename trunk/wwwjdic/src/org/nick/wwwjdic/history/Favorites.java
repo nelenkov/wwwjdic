@@ -93,6 +93,8 @@ public class Favorites extends HistoryBase implements
             intent.putExtra(Constants.IS_FAVORITE, true);
         }
 
+        Analytics.event("lookupFromFavorites", this);
+
         startActivity(intent);
     }
 
