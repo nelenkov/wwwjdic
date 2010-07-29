@@ -77,6 +77,8 @@ public class SearchHistory extends HistoryBase {
 
         intent.putExtra(Constants.CRITERIA_KEY, criteria);
 
+        Analytics.event("lookupFromHistory", this);
+
         startActivity(intent);
     }
 

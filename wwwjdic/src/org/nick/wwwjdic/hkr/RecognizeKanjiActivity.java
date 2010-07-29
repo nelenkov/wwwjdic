@@ -89,6 +89,8 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
     @Override
     protected void onResume() {
+        super.onResume();
+
         drawView.setAnnotateStrokes(isAnnoateStrokes());
         drawView.setAnnotateStrokesMidway(isAnnotateStrokesMidway());
     }
