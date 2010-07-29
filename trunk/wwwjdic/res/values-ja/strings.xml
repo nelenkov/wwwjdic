@@ -135,7 +135,7 @@
     <string name="search_history">検索履歴</string>
     <string name="favorites_hist">履歴</string>
     <string name="whats_new_title">%sの新規機能</string>
-    <string name="whats_new">* OCR直接検索オプション(設定画面)\n * お気に入り・検索履歴フィルタ\n *　お気に入り・検索履歴CSVインポート・エックスポート\n * よりスムーズな手書き\n * OCRベース手書き認識(書き順に依存しない)\n * OCRクラッシュ修正\n * レイアウト調整\n * 匿名利用情報収集(設定画面で無効にできます)</string>
+    <string name="whats_new">* CyanogenMod 5 DSでのOCRクラッシュ対応\n* OCRパラメータ調整\n* 情報ダイアログを専用Activityで置き換え\n* マイナーバグ修正</string>
     <!--  for cropper -->
     <string name="crop_save_text">切り抜く</string>
     <string name="crop_discard_text">キャンセル</string>
