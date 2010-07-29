@@ -13,6 +13,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="org.nick.wwwjdic.AboutActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name="org.nick.wwwjdic.DictionaryResultListView"
             android:label="@string/searching" android:configChanges="orientation|keyboardHidden|keyboard">
         </activity>

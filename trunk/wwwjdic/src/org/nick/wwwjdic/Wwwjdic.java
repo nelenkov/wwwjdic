@@ -19,11 +19,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -51,7 +49,6 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
     private static final int ITEM_ID_DRAW = 4;
     private static final int ITEM_ID_HISTORY = 5;
 
-    private static final int ABOUT_DIALOG_ID = 0;
     private static final int WHATS_NEW_DIALOG_ID = 1;
 
     private static final String DICTIONARY_TAB = "dictionaryTab";
@@ -451,10 +448,11 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         switch (item.getItemId()) {
         case ITEM_ID_ABOUT:
-            showDialog(ABOUT_DIALOG_ID);
+            Intent intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
             return true;
         case ITEM_ID_OCR:
-            Intent intent = new Intent(this, OcrActivity.class);
+            intent = new Intent(this, OcrActivity.class);
 
             startActivity(intent);
             return true;
@@ -485,9 +483,6 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         Dialog dialog = null;
 
         switch (id) {
-        case ABOUT_DIALOG_ID:
-            dialog = createAboutDialog();
-            break;
         case WHATS_NEW_DIALOG_ID:
             dialog = createWhatsNewDialog();
             break;
@@ -496,20 +491,6 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         }
 
         return dialog;
-    }
-
-    private Dialog createAboutDialog() {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.about_dialog,
-                (ViewGroup) findViewById(R.id.layout_root));
-        TextView versionText = (TextView) layout.findViewById(R.id.versionText);
-        versionText.setText("version " + getVersionName());
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(layout);
-        AlertDialog alertDialog = builder.create();
-
-        return alertDialog;
     }
 
     private Dialog createWhatsNewDialog() {
