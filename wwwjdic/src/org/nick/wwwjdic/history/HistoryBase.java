@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 import org.nick.wwwjdic.Analytics;
+import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
 
 import android.app.AlertDialog;
@@ -12,6 +13,7 @@ import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Environment;
@@ -47,10 +49,10 @@ public abstract class HistoryBase extends ListActivity {
 
     private static final int CONFIRM_DELETE_DIALOG_ID = 0;
 
-    protected static final int FILTER_ALL = -1;
-    protected static final int FILTER_DICT = 0;
-    protected static final int FILTER_KANJI = 1;
-    protected static final int FILTER_EXAMPLES = 2;
+    public static final int FILTER_ALL = -1;
+    public static final int FILTER_DICT = 0;
+    public static final int FILTER_KANJI = 1;
+    public static final int FILTER_EXAMPLES = 2;
 
     protected HistoryDbHelper db;
 
@@ -70,6 +72,9 @@ public abstract class HistoryBase extends ListActivity {
 
         setContentView(getContentView());
         getListView().setOnCreateContextMenuListener(this);
+
+        Intent intent = getIntent();
+        selectedFilter = intent.getIntExtra(Constants.FILTER_TYPE, FILTER_ALL);
 
         setupAdapter();
     }

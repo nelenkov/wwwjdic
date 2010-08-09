@@ -1,10 +1,12 @@
 package org.nick.wwwjdic;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
 import org.nick.wwwjdic.history.FavoritesAndHistory;
+import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.ocr.OcrActivity;
 
@@ -43,6 +45,8 @@ import android.widget.TextView.OnEditorActionListener;
 public class Wwwjdic extends TabActivity implements OnClickListener,
         OnFocusChangeListener, OnCheckedChangeListener, OnItemSelectedListener {
 
+    private static final int NUM_RECENT_HISTORY_ENTRIES = 5;
+
     private static final int ITEM_ID_ABOUT = 1;
     private static final int ITEM_ID_OCR = 2;
     private static final int ITEM_ID_SETTINGS = 3;
@@ -51,8 +55,11 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
     private static final int WHATS_NEW_DIALOG_ID = 1;
 
+    private static final int DICTIONARY_TAB_IDX = 0;
     private static final String DICTIONARY_TAB = "dictionaryTab";
+    private static final int KANJI_TAB_IDX = 1;
     private static final String KANJI_TAB = "kanjiTab";
+    private static final int EXAMPLE_SEARRCH_TAB_IDX = 2;
     private static final String EXAMPLE_SEARCH_TAB = "exampleSearchTab";
 
     private static final String TAG = "WWWJDIC";
@@ -127,6 +134,10 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
     private TabHost tabHost;
 
+    private FavoritesAndHistorySummaryView dictHistorySummary;
+    private FavoritesAndHistorySummaryView kanjiHistorySummary;
+    private FavoritesAndHistorySummaryView examplesHistorySummary;
+
     private boolean inputTextFromBundle;
 
     private HistoryDbHelper dbHelper;
@@ -176,7 +187,97 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
         dbHelper = new HistoryDbHelper(this);
 
+        setupFavoritesAndHistorySummary();
+
         showWhatsNew();
+    }
+
+    private void setupFavoritesAndHistorySummary() {
+        setupDictSummary();
+
+        setupKanjiSummary();
+
+        setupExamplesSummary();
+    }
+
+    private void setupDictSummary() {
+        dbHelper.beginTransaction();
+        try {
+            long numAllFavorites = dbHelper.getDictFavoritesCount();
+            List<String> recentFavorites = dbHelper
+                    .getRecentDictFavorites(NUM_RECENT_HISTORY_ENTRIES);
+            long numAllHistory = dbHelper.getDictHistoryCount();
+            List<String> recentHistory = dbHelper
+                    .getRecentDictHistory(NUM_RECENT_HISTORY_ENTRIES);
+            dictHistorySummary
+                    .setFavoritesFilterType(HistoryDbHelper.FAVORITES_TYPE_DICT);
+            dictHistorySummary
+                    .setHistoryFilterType(HistoryDbHelper.HISTORY_SEARCH_TYPE_DICT);
+            dictHistorySummary.setRecentEntries(numAllFavorites,
+                    recentFavorites, numAllHistory, recentHistory);
+            dbHelper.setTransactionSuccessful();
+        } finally {
+            dbHelper.endTransaction();
+        }
+    }
+
+    private void setupKanjiSummary() {
+        dbHelper.beginTransaction();
+        try {
+            long numAllFavorites = dbHelper.getKanjiFavoritesCount();
+            List<String> recentFavorites = dbHelper
+                    .getRecentKanjiFavorites(NUM_RECENT_HISTORY_ENTRIES);
+            long numAllHistory = dbHelper.getKanjiHistoryCount();
+            List<String> recentHistory = dbHelper
+                    .getRecentKanjiHistory(NUM_RECENT_HISTORY_ENTRIES);
+
+            kanjiHistorySummary
+                    .setFavoritesFilterType(HistoryDbHelper.FAVORITES_TYPE_KANJI);
+            kanjiHistorySummary
+                    .setHistoryFilterType(HistoryDbHelper.HISTORY_SEARCH_TYPE_KANJI);
+            kanjiHistorySummary.setRecentEntries(numAllFavorites,
+                    recentFavorites, numAllHistory, recentHistory);
+            dbHelper.setTransactionSuccessful();
+        } finally {
+            dbHelper.endTransaction();
+        }
+    }
+
+    private void setupExamplesSummary() {
+        dbHelper.beginTransaction();
+        try {
+            long numAllHistory = dbHelper.getExamplesHistoryCount();
+            List<String> recentHistory = dbHelper
+                    .getRecentExamplesHistory(NUM_RECENT_HISTORY_ENTRIES);
+
+            examplesHistorySummary
+                    .setHistoryFilterType(HistoryDbHelper.HISTORY_SEARCH_TYPE_EXAMPLES);
+            examplesHistorySummary.setRecentEntries(0, null, numAllHistory,
+                    recentHistory);
+            dbHelper.setTransactionSuccessful();
+        } finally {
+            dbHelper.endTransaction();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        int currentTab = tabHost.getCurrentTab();
+        switch (currentTab) {
+        case DICTIONARY_TAB_IDX:
+            setupDictSummary();
+            break;
+        case KANJI_TAB_IDX:
+            setupKanjiSummary();
+            break;
+        case EXAMPLE_SEARRCH_TAB_IDX:
+            setupExamplesSummary();
+            break;
+        default:
+            // do nothing
+        }
     }
 
     @Override
@@ -286,7 +387,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                 getResources().getDrawable(R.drawable.ic_tab_example))
                 .setContent(R.id.exampleSearchTab));
 
-        tabHost.setCurrentTab(0);
+        tabHost.setCurrentTab(DICTIONARY_TAB_IDX);
     }
 
     public void onClick(View v) {
@@ -545,6 +646,10 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         exampleSearchInputText = (EditText) findViewById(R.id.exampleInputText);
         maxNumExamplesText = (EditText) findViewById(R.id.maxExamplesInput);
         exampleExactMatchCb = (CheckBox) findViewById(R.id.exampleExactMatchCb);
+
+        dictHistorySummary = (FavoritesAndHistorySummaryView) findViewById(R.id.dict_history_summary);
+        kanjiHistorySummary = (FavoritesAndHistorySummaryView) findViewById(R.id.kanji_history_summary);
+        examplesHistorySummary = (FavoritesAndHistorySummaryView) findViewById(R.id.examples_history_summary);
     }
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
