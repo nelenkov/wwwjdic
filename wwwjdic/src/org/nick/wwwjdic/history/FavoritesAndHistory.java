@@ -18,7 +18,8 @@ public class FavoritesAndHistory extends TabActivity implements
         setContentView(R.layout.favorites_history);
 
         Intent intent = getIntent();
-        int filterType = intent.getIntExtra(Constants.FILTER_TYPE, 0);
+        int filterType = intent.getIntExtra(Constants.FILTER_TYPE,
+                HistoryBase.FILTER_ALL);
         int tabIdx = intent.getIntExtra(
                 Constants.FAVORITES_HISTORY_SELECTED_TAB_IDX, 0);
 
