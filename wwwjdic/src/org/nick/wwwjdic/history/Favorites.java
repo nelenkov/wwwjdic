@@ -29,7 +29,6 @@ public class Favorites extends HistoryBase implements
     private static final String EXPORT_FILENAME = "wwwjdic/favorites.csv";
 
     protected void setupAdapter() {
-        // Cursor cursor = db.getFavorites();
         Cursor cursor = filterCursor();
         startManagingCursor(cursor);
         FavoritesAdapter adapter = new FavoritesAdapter(this, cursor, this);

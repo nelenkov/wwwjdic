@@ -27,7 +27,6 @@ public class SearchHistory extends HistoryBase {
     private static final String EXPORT_FILENAME = "wwwjdic/search-history.csv";
 
     protected void setupAdapter() {
-        // Cursor cursor = db.getHistory();
         Cursor cursor = filterCursor();
         startManagingCursor(cursor);
         SearchHistoryAdapter adapter = new SearchHistoryAdapter(this, cursor);
