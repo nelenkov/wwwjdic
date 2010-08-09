@@ -48,9 +48,10 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
     private static final int HKR_RESULT = 1;
 
-    private Button clearButton;
     private Button recognizeButton;
     private Button ocrButton;
+    private Button removeStrokeButton;
+    private Button clearButton;
     private CheckBox lookAheadCb;
 
     private KanjiDrawView drawView;
@@ -63,9 +64,10 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
         findViews();
 
-        clearButton.setOnClickListener(this);
         recognizeButton.setOnClickListener(this);
         ocrButton.setOnClickListener(this);
+        removeStrokeButton.setOnClickListener(this);
+        clearButton.setOnClickListener(this);
 
         drawView.setAnnotateStrokes(isAnnoateStrokes());
         drawView.setAnnotateStrokesMidway(isAnnotateStrokesMidway());
@@ -98,9 +100,10 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     private void findViews() {
         drawView = (KanjiDrawView) this.findViewById(R.id.kanji_draw_view);
 
-        clearButton = (Button) findViewById(R.id.clear_canvas_button);
         recognizeButton = (Button) findViewById(R.id.recognize_button);
         ocrButton = (Button) findViewById(R.id.ocr_button);
+        removeStrokeButton = (Button) findViewById(R.id.remove_stroke_button);
+        clearButton = (Button) findViewById(R.id.clear_canvas_button);
         lookAheadCb = (CheckBox) findViewById(R.id.lookAheadCb);
     }
 
@@ -215,15 +218,17 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.clear_canvas_button:
-            clear();
-
-            break;
         case R.id.recognize_button:
             recognizeKanji();
             break;
         case R.id.ocr_button:
             ocrKanji();
+            break;
+        case R.id.remove_stroke_button:
+            drawView.removeLastStroke();
+            break;
+        case R.id.clear_canvas_button:
+            clear();
             break;
         default:
             // do nothing
