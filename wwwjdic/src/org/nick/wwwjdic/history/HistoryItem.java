@@ -1,7 +1,5 @@
 package org.nick.wwwjdic.history;
 
-import java.util.regex.Pattern;
-
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.Radical;
 import org.nick.wwwjdic.Radicals;
@@ -18,10 +16,6 @@ public class HistoryItem extends LinearLayout {
     private TextView searchTypeText;
     private TextView searchKeyText;
     private TextView criteriaDetailsText;
-
-    private static final Pattern HEX_PATTERN = Pattern
-            .compile("[0-9a-fA-F]{4}");
-    private static final int JIS_IDX = 5;
 
     HistoryItem(Context context) {
         super(context);
@@ -61,7 +55,9 @@ public class HistoryItem extends LinearLayout {
         StringBuffer buff = new StringBuffer();
 
         if (criteria.getType() == SearchCriteria.CRITERIA_TYPE_KANJI) {
-            String kanjiSearchName = lookupKanjiSearchName(criteria);
+            String kanjiSearchName = HistoryUtils.lookupKanjiSearchName(
+                    criteria.getKanjiSearchType(), criteria.getQueryString(),
+                    getContext());
 
             buff.append(kanjiSearchName);
             if (criteria.hasStrokes()) {
@@ -144,37 +140,6 @@ public class HistoryItem extends LinearLayout {
             dictName = dictNames[idx];
         }
         return dictName;
-    }
-
-    private String lookupKanjiSearchName(SearchCriteria criteria) {
-        String kanjiSearchCode = criteria.getKanjiSearchType();
-        String kanjiSearchName = kanjiSearchCode;
-
-        String[] searchCodes = getResources().getStringArray(
-                R.array.kanji_search_codes_array);
-        String[] searchNames = getResources().getStringArray(
-                R.array.kanji_search_types_array);
-        int idx = linearSearch(kanjiSearchCode, searchCodes);
-
-        if (idx != -1 && idx < searchNames.length) {
-            kanjiSearchName = searchNames[idx];
-        }
-
-        // ugly, but no other way(?) to differentiate between reading search and
-        // JIS code search
-        if (isJisSearch(criteria)) {
-            kanjiSearchName = searchNames[JIS_IDX];
-        }
-
-        return kanjiSearchName;
-    }
-
-    private boolean isJisSearch(SearchCriteria criteria) {
-        if (!"J".equals(criteria.getKanjiSearchType())) {
-            return false;
-        }
-
-        return HEX_PATTERN.matcher(criteria.getQueryString()).matches();
     }
 
     private int linearSearch(String key, String[] arr) {

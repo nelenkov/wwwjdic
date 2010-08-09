@@ -89,8 +89,11 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
     private SQLiteStatement favoritesCountStatement;
     private SQLiteStatement historyCountStatement;
 
+    private Context context;
+
     public HistoryDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -269,14 +272,25 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
 
         Cursor c = null;
         try {
-            c = db.query(HISTORY_TABLE_NAME,
-                    new String[] { HISTORY_QUERY_STRING }, "search_type = ?",
-                    new String[] { Integer.toString(type) }, null, null,
-                    "time desc", Integer.toString(top));
+            c = db.query(HISTORY_TABLE_NAME, new String[] {
+                    HISTORY_QUERY_STRING, HISTORY_KANJI_SEARCH_TYPE },
+                    "search_type = ?", new String[] { Integer.toString(type) },
+                    null, null, "time desc", Integer.toString(top));
             while (c.moveToNext()) {
                 String searchQuery = c.getString(c
                         .getColumnIndex(HISTORY_QUERY_STRING));
-                result.add(searchQuery);
+                String historyStr = searchQuery;
+                if (!c.isNull(c.getColumnIndex(HISTORY_KANJI_SEARCH_TYPE))) {
+                    String kanjiSearchType = c.getString(c
+                            .getColumnIndex(HISTORY_KANJI_SEARCH_TYPE));
+                    String kanjiSearchName = HistoryUtils
+                            .lookupKanjiSearchName(kanjiSearchType,
+                                    searchQuery, context);
+                    historyStr = String.format("%s(%s)", searchQuery,
+                            kanjiSearchName);
+                }
+
+                result.add(historyStr);
             }
 
             return result;
