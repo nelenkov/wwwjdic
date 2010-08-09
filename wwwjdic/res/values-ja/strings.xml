@@ -209,4 +209,5 @@
     </string>
     <string name="favorties_summary">お気に入り (%d)</string>
     <string name="history_summary">検索履歴 (%d)</string>
+    <string name="remove_stroke">画削除</string>
 </resources>

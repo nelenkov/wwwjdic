@@ -290,4 +290,5 @@
         statistics (can be disabled in settings).</string>
     <string name="favorties_summary">Favorites (%d)</string>
     <string name="history_summary">Search History (%d)</string>
+    <string name="remove_stroke">Del stroke</string>
 </resources>
