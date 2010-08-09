@@ -135,7 +135,8 @@
     <string name="search_history">検索履歴</string>
     <string name="favorites_hist">履歴</string>
     <string name="whats_new_title">%sの新規機能</string>
-    <string name="whats_new">* CyanogenMod 5 DSでのOCRクラッシュ対応\n* OCRパラメータ調整\n* 情報ダイアログを専用Activityで置き換え\n* マイナーバグ修正</string>
+    <string name="whats_new">* CyanogenMod 5 DSでのOCRクラッシュ対応\n* OCRパラメータ調整\n*
+        情報ダイアログを専用Activityで置き換え\n* マイナーバグ修正</string>
     <!--  for cropper -->
     <string name="crop_save_text">切り抜く</string>
     <string name="crop_discard_text">キャンセル</string>
@@ -204,5 +205,8 @@
     <string name="pref_analytics">Analytics</string>
     <string name="pref_enable_analytics">Analyticsを有効にする</string>
     <string name="pref_analytics_summary">アプリ改善に役立つ匿名利用情報を収集します。</string>
-    <string name="uses_analytics">Flurry Analyticsを利用して匿名利用情報を収集します。(設定画面で無効にできます)</string>
+    <string name="uses_analytics">Flurry Analyticsを利用して匿名利用情報を収集します。(設定画面で無効にできます)
+    </string>
+    <string name="favorties_summary">お気に入り (%d)</string>
+    <string name="history_summary">検索履歴 (%d)</string>
 </resources>
