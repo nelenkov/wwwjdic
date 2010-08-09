@@ -3,6 +3,7 @@ package org.nick.wwwjdic.history;
 import java.util.regex.Pattern;
 
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.SearchCriteria;
 
 import android.content.Context;
 
@@ -45,6 +46,23 @@ public class HistoryUtils {
         }
 
         return HEX_PATTERN.matcher(queryString).matches();
+    }
+
+    public static String lookupDictionaryName(SearchCriteria criteria,
+            Context context) {
+        String dictCode = criteria.getDictionary();
+        String dictName = dictCode;
+
+        String[] dictCodes = context.getResources().getStringArray(
+                R.array.dictionary_codes_array);
+        String[] dictNames = context.getResources().getStringArray(
+                R.array.dictionaries_array);
+        int idx = linearSearch(dictCode, dictCodes);
+
+        if (idx != -1 && idx < dictNames.length - 1) {
+            dictName = dictNames[idx];
+        }
+        return dictName;
     }
 
     private static int linearSearch(String key, String[] arr) {

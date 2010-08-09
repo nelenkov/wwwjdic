@@ -74,7 +74,8 @@ public class HistoryItem extends LinearLayout {
             }
         } else {
             if (criteria.getType() == SearchCriteria.CRITERIA_TYPE_DICT) {
-                String dictName = lookupDictionaryName(criteria);
+                String dictName = HistoryUtils.lookupDictionaryName(criteria,
+                        getContext());
 
                 buff.append(dictName);
             }
@@ -124,33 +125,6 @@ public class HistoryItem extends LinearLayout {
         }
 
         return result;
-    }
-
-    private String lookupDictionaryName(SearchCriteria criteria) {
-        String dictCode = criteria.getDictionary();
-        String dictName = dictCode;
-
-        String[] dictCodes = getResources().getStringArray(
-                R.array.dictionary_codes_array);
-        String[] dictNames = getResources().getStringArray(
-                R.array.dictionaries_array);
-        int idx = linearSearch(dictCode, dictCodes);
-
-        if (idx != -1 && idx < dictNames.length - 1) {
-            dictName = dictNames[idx];
-        }
-        return dictName;
-    }
-
-    private int linearSearch(String key, String[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            String code = arr[i];
-            if (code.equals(key)) {
-                return i;
-            }
-        }
-
-        return -1;
     }
 
 }
