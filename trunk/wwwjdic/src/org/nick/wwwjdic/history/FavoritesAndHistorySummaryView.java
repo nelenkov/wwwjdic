@@ -211,7 +211,7 @@ public class FavoritesAndHistorySummaryView extends ListView implements
                     summary.setText(String.format(message, numAllEntries));
                 }
 
-                String itemsAsStr = TextUtils.join(",", recentEntries);
+                String itemsAsStr = TextUtils.join(", ", recentEntries);
                 if (numAllEntries > recentEntries.size()) {
                     itemsAsStr = itemsAsStr + "...";
                 }
