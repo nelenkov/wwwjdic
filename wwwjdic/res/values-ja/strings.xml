@@ -98,6 +98,8 @@
     <string name="pref_kr">手書き認識設定</string>
     <string name="pref_kr_url">手書き認識サーバURL</string>
     <string name="pref_kr_timeout">手書き認識タイムアウト</string>
+    <string name="pref_kr_use_kanji_recognizer">Kanji Recognizer使用</string>
+    <string name="pref_kr_use_kanji_recognizer_summary">Kanji Recognizerアプリを手書き認識に使用します。</string>
     <string name="settings">設定</string>
     <string name="write_kanji">手書き認識</string>
     <string name="hkr_failed">手書き認識失敗</string>
