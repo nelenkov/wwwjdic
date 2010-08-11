@@ -3,20 +3,26 @@ package org.nick.wwwjdic.hkr;
 import java.util.Arrays;
 import java.util.List;
 
+import org.nick.kanjirecognizer.hkr.CharacterRecognizer;
 import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.ocr.WeOcrClient;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -38,6 +44,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     private static final String PREF_KR_TIMEOUT_KEY = "pref_kr_timeout";
     private static final String PREF_KR_ANNOTATE = "pref_kr_annotate";
     private static final String PREF_KR_ANNOTATE_MIDWAY = "pref_kr_annotate_midway";
+    private static final String PREF_KR_USE_KANJI_RECOGNIZER_KEY = "pref_kr_use_kanji_recognizer";
 
     private static final String WEOCR_DEFAULT_URL = "http://maggie.ocrgrid.org/cgi-bin/weocr/nhocr.cgi";
     private static final String PREF_WEOCR_URL_KEY = "pref_weocr_url";
@@ -45,6 +52,8 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
     private static final int OCR_IMAGE_WIDTH = 128;
     private static final int NUM_OCR_CANDIDATES = 20;
+
+    private static final int NUM_KR_CANDIDATES = 10;
 
     private static final int HKR_RESULT = 1;
 
@@ -55,6 +64,9 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     private CheckBox lookAheadCb;
 
     private KanjiDrawView drawView;
+
+    private CharacterRecognizer recognizer;
+    private boolean bound;
 
     @Override
     protected void activityOnCreate(Bundle savedInstanceState) {
@@ -75,11 +87,33 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         drawView.requestFocus();
     }
 
+    private ServiceConnection connection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            recognizer = CharacterRecognizer.Stub.asInterface(service);
+            bound = true;
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            recognizer = null;
+            bound = false;
+        }
+    };
+
     @Override
     protected void onStart() {
         super.onStart();
 
         Analytics.startSession(this);
+
+        if (!bound) {
+            boolean success = bindService(new Intent(CharacterRecognizer.class
+                    .getName()), connection, Context.BIND_AUTO_CREATE);
+            if (success) {
+                Log.d(TAG, "successfully bound to KR service");
+            } else {
+                Log.d(TAG, "could not bind to KR service");
+            }
+        }
     }
 
     @Override
@@ -87,6 +121,11 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         super.onStop();
 
         Analytics.endSession(this);
+
+        if (bound) {
+            bound = false;
+            unbindService(connection);
+        }
     }
 
     @Override
@@ -211,6 +250,13 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         return preferences.getBoolean(PREF_KR_ANNOTATE, true);
     }
 
+    private boolean isUseKanjiRecognizer() {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        return preferences.getBoolean(PREF_KR_USE_KANJI_RECOGNIZER_KEY, true);
+    }
+
     private boolean isUseLookahead() {
         return lookAheadCb.isChecked();
     }
@@ -328,11 +374,53 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
     private void recognizeKanji() {
         List<Stroke> strokes = drawView.getStrokes();
-        HkrTask task = new HkrTask(strokes, handler);
-        String message = getResources().getString(R.string.doing_hkr);
-        submitWsTask(task, message);
 
-        Analytics.event("recognizeKanji", this);
+        if (isUseKanjiRecognizer()) {
+            Analytics.event("recognizeKanjiKr", this);
+
+            reconizeKanjiRecognizer(strokes);
+        } else {
+            Analytics.event("recognizeKanji", this);
+
+            HkrTask task = new HkrTask(strokes, handler);
+            String message = getResources().getString(R.string.doing_hkr);
+            submitWsTask(task, message);
+        }
+    }
+
+    private void reconizeKanjiRecognizer(List<Stroke> strokes) {
+        if (recognizer == null) {
+            Toast t = Toast.makeText(this, R.string.kr_not_initialized,
+                    Toast.LENGTH_SHORT);
+            t.show();
+            return;
+        }
+
+        try {
+            recognizer.startRecognition(drawView.getWidth(), drawView
+                    .getHeight());
+            int strokeNum = 0;
+            for (Stroke s : strokes) {
+                for (PointF p : s.getPoints()) {
+                    recognizer.addPoint(strokeNum, (int) p.x, (int) p.y);
+                }
+                strokeNum++;
+            }
+
+            String[] candidates = recognizer.recognize(NUM_KR_CANDIDATES);
+            if (candidates != null) {
+                Message msg = handler.obtainMessage(HKR_RESULT, 1, 0);
+                msg.obj = candidates;
+                handler.sendMessage(msg);
+            } else {
+                Message msg = handler.obtainMessage(HKR_RESULT, 0, 0);
+                handler.sendMessage(msg);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "error calling recognizer", e);
+            Message msg = handler.obtainMessage(HKR_RESULT, 0, 0);
+            handler.sendMessage(msg);
+        }
     }
 
     public void sendToDictionary(String[] results) {

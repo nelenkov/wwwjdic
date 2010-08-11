@@ -210,4 +210,6 @@
     <string name="favorties_summary">お気に入り (%d)</string>
     <string name="history_summary">検索履歴 (%d)</string>
     <string name="remove_stroke">画削除</string>
+    <string name="kr_not_initialized">Kanji Recogninzerは初期化されていません</string>
+    <string name="install_kr">このオプションを有効にするには、Kanji Recognizer アプリをインストールする必要があります。インストールしますか?</string>
 </resources>

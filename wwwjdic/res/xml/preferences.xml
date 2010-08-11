@@ -39,13 +39,19 @@
         -->
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_kr">
+        <CheckBoxPreference android:key="pref_kr_use_kanji_recognizer"
+            android:title="@string/pref_kr_use_kanji_recognizer"
+            android:summary="@string/pref_kr_use_kanji_recognizer_summary"
+            android:defaultValue="false" android:disableDependentsState="true" />
         <EditTextPreference android:key="pref_kr_url"
             android:title="@string/pref_kr_url" android:singleLine="true"
-            android:defaultValue="http://kanji.sljfaq.org/kanji16/kanji-0.016.cgi" />
+            android:defaultValue="http://kanji.sljfaq.org/kanji16/kanji-0.016.cgi"
+            android:dependency="pref_kr_use_kanji_recognizer" />
         <EditTextPreference android:key="pref_kr_timeout"
             android:title="@string/pref_kr_timeout" android:summary="@string/pref_timeout_summary"
             android:singleLine="true" android:inputType="numberDecimal"
-            android:defaultValue="10" android:maxLength="4" />
+            android:defaultValue="10" android:maxLength="4"
+            android:dependency="pref_kr_use_kanji_recognizer" />
         <CheckBoxPreference android:key="pref_kr_annotate"
             android:title="@string/pref_kr_annotate"
             android:defaultValue="true" android:disableDependentsState="false" />
