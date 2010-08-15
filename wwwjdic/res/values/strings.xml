@@ -211,11 +211,7 @@
     <string name="uses_kanjivg">Uses KanjiVG</string>
     <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Fixed OCR crash on CyanogenMod 5 DS\n* Better
-        OCR parameters\n* Replaced about dialog with dedicated
-        activity\n* Various minor bugfixes\n\nReminder: Please report
-        all bugs/crashes via the bug tracker (see About). If you report
-        via the Market comments, there is usually very little I can do.
+    <string name="whats_new">* Offline kanji recognition via the Kanji Recognizer app (enable in Settings)\n* Links to history/favorites in each tab\n * Added \'delete stroke\' button to kanji draw view
     </string>
     <!--  for cropper -->
     <string name="crop_save_text">Crop</string>
