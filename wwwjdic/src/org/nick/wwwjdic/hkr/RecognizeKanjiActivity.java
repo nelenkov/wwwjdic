@@ -105,11 +105,13 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
         Analytics.startSession(this);
 
-        if (!bound) {
-            boolean success = bindService(new Intent(CharacterRecognizer.class
-                    .getName()), connection, Context.BIND_AUTO_CREATE);
+        if (isUseKanjiRecognizer() && !bound) {
+            boolean success = bindService(new Intent(
+                    "org.nick.kanjirecognizer.hkr.RECOGNIZE_KANJI"),
+                    connection, Context.BIND_AUTO_CREATE);
             if (success) {
                 Log.d(TAG, "successfully bound to KR service");
+                lookAheadCb.setEnabled(false);
             } else {
                 Log.d(TAG, "could not bind to KR service");
             }
@@ -376,25 +378,28 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         List<Stroke> strokes = drawView.getStrokes();
 
         if (isUseKanjiRecognizer()) {
-            Analytics.event("recognizeKanjiKr", this);
-
+            if (recognizer == null) {
+                Toast t = Toast.makeText(this, R.string.kr_not_initialized,
+                        Toast.LENGTH_SHORT);
+                t.show();
+                recognizeWs(strokes);
+            }
             reconizeKanjiRecognizer(strokes);
         } else {
-            Analytics.event("recognizeKanji", this);
-
-            HkrTask task = new HkrTask(strokes, handler);
-            String message = getResources().getString(R.string.doing_hkr);
-            submitWsTask(task, message);
+            recognizeWs(strokes);
         }
     }
 
+    private void recognizeWs(List<Stroke> strokes) {
+        Analytics.event("recognizeKanji", this);
+
+        HkrTask task = new HkrTask(strokes, handler);
+        String message = getResources().getString(R.string.doing_hkr);
+        submitWsTask(task, message);
+    }
+
     private void reconizeKanjiRecognizer(List<Stroke> strokes) {
-        if (recognizer == null) {
-            Toast t = Toast.makeText(this, R.string.kr_not_initialized,
-                    Toast.LENGTH_SHORT);
-            t.show();
-            return;
-        }
+        Analytics.event("recognizeKanjiKr", this);
 
         try {
             recognizer.startRecognition(drawView.getWidth(), drawView

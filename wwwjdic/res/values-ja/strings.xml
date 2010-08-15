@@ -212,6 +212,6 @@
     <string name="favorties_summary">お気に入り (%d)</string>
     <string name="history_summary">検索履歴 (%d)</string>
     <string name="remove_stroke">画削除</string>
-    <string name="kr_not_initialized">Kanji Recogninzerは初期化されていません</string>
-    <string name="install_kr">このオプションを有効にするには、Kanji Recognizer アプリをインストールする必要があります。インストールしますか?</string>
+    <string name="kr_not_initialized">Kanji Recogninzerは初期化されていません。Webサービスベース手書き認識を使用します。</string>
+    <string name="install_kr">このオプションを有効にするには、Kanji Recognizer (v.1.1) アプリをインストールする必要があります。インストールしますか? (WWWJDICから利用するときは、報告を表示しません。)</string>
 </resources>

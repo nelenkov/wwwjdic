@@ -12,9 +12,12 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.util.Log;
 
 public class WwwjdicPreferences extends PreferenceActivity implements
         OnPreferenceChangeListener {
+
+    private static final String TAG = WwwjdicPreferences.class.getSimpleName();
 
     private CheckBoxPreference useKrPreference;
 
@@ -75,6 +78,12 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         PackageManager pm = getPackageManager();
         try {
             PackageInfo pi = pm.getPackageInfo(KR_PACKAGE, 0);
+            if (pi.versionCode < 2) {
+                Log.d(TAG, String.format(
+                        "Kanji recognizer %s is installed, but we need 1.1",
+                        pi.versionName));
+                return false;
+            }
 
             return pm.checkSignatures("org.nick.wwwjdic", pi.packageName) == PackageManager.SIGNATURE_MATCH;
         } catch (NameNotFoundException e) {
