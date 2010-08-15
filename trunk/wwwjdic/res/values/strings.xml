@@ -294,6 +294,6 @@
     <string name="favorties_summary">Favorites (%d)</string>
     <string name="history_summary">Search History (%d)</string>
     <string name="remove_stroke">Del stroke</string>
-    <string name="kr_not_initialized">Kanji Recogninzer not initialized</string>
-    <string name="install_kr">To enable this option you need to install the Kanji Recognizer application first. Would you like to install it now?</string>
+    <string name="kr_not_initialized">Kanji Recogninzer not properly initialized. Falling back to WS-based recognition.</string>
+    <string name="install_kr">To enable this option you need to install the Kanji Recognizer (v.1.1) application first. Would you like to install it now? (no ads are displayed when used from WWWJDIC)</string>
 </resources>
