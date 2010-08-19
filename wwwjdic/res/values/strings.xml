@@ -211,8 +211,7 @@
     <string name="uses_kanjivg">Uses KanjiVG</string>
     <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Offline kanji recognition via the Kanji Recognizer app (enable in Settings)\n* Links to history/favorites in each tab\n * Added \'delete stroke\' button to kanji draw view
-    </string>
+    <string name="whats_new">* Kanji Recognizer binding bugfixes.</string>
     <!--  for cropper -->
     <string name="crop_save_text">Crop</string>
     <string name="crop_discard_text">Discard</string>
