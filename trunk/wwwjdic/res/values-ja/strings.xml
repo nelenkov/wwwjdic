@@ -137,7 +137,7 @@
     <string name="search_history">検索履歴</string>
     <string name="favorites_hist">履歴</string>
     <string name="whats_new_title">%sの新規機能</string>
-    <string name="whats_new">* Kanji Recognizerアプリを利用したオフライン手書き認識(設定画面で有効にしてください)\n* 各タブにお気に入り・検索履歴へのリンクを追加\n* 手書きパネルに「画削除ボタン」を追加</string>
+    <string name="whats_new">* Kanji Recognizer を使った手書き認識関連バグ修正。</string>
     <!--  for cropper -->
     <string name="crop_save_text">切り抜く</string>
     <string name="crop_discard_text">キャンセル</string>

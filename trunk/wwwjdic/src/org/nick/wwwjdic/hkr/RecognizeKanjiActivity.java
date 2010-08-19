@@ -256,7 +256,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         SharedPreferences preferences = PreferenceManager
                 .getDefaultSharedPreferences(this);
 
-        return preferences.getBoolean(PREF_KR_USE_KANJI_RECOGNIZER_KEY, true);
+        return preferences.getBoolean(PREF_KR_USE_KANJI_RECOGNIZER_KEY, false);
     }
 
     private boolean isUseLookahead() {
@@ -383,8 +383,9 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                         Toast.LENGTH_SHORT);
                 t.show();
                 recognizeWs(strokes);
+            } else {
+                reconizeKanjiRecognizer(strokes);
             }
-            reconizeKanjiRecognizer(strokes);
         } else {
             recognizeWs(strokes);
         }
