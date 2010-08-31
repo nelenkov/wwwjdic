@@ -218,7 +218,7 @@
     <string name="runningFaceDetection">Please wait\u2026</string>
     <string name="example_search">Example Search</string>
     <string name="kanji_bun">文</string>
-    <string name="max_num_examples">Max number \nof examples:</string>
+    <string name="max_num_examples">Max\nexamples:</string>
     <string name="exact_match">Exact match \n(Eng. only)</string>
     <string name="enter_eng_or_jap">Enter English or Japanese</string>
     <string name="enter_kanji_search_key">Enter kanji search key</string>
@@ -289,6 +289,16 @@
     <string name="favorties_summary">Favorites (%d)</string>
     <string name="history_summary">Search History (%d)</string>
     <string name="remove_stroke">Del stroke</string>
-    <string name="kr_not_initialized">Kanji Recogninzer not properly initialized. Falling back to WS-based recognition.</string>
-    <string name="install_kr">To enable this option you need to install the Kanji Recognizer (v.1.1) application first. Would you like to install it now? (no ads are displayed when used from WWWJDIC)</string>
+    <string name="kr_not_initialized">Kanji Recogninzer not properly initialized.
+        Falling back to WS-based recognition.</string>
+    <string name="install_kr">To enable this option you need to install the
+        Kanji Recognizer (v.1.1) application first. Would you like to
+        install it now? (no ads are displayed when used from WWWJDIC)
+    </string>
+    <string name="select_mode">Select mode:</string>
+    <string name="enter_japanese_text">Enter Japanese text</string>
+    <string-array name="sentence_modes">
+        <item>Example search</item>
+        <item>Sentence translation</item>
+    </string-array>
 </resources>

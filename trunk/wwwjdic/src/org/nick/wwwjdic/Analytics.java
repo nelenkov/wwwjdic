@@ -13,6 +13,7 @@ public class Analytics {
     public static void startSession(Context ctx) {
         if (isEnabled(ctx)) {
             FlurryAgent.onStartSession(ctx, WwwjdicApplication.getFlurryKey());
+            FlurryAgent.setCaptureUncaughtExceptions(false);
         }
     }
 

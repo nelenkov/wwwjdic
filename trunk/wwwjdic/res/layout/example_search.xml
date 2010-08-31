@@ -8,7 +8,20 @@
         <EditText android:layout_height="wrap_content"
             android:layout_width="fill_parent" android:id="@+id/exampleInputText"
             android:inputType="text" android:lines="1"
-            android:hint="@string/enter_eng_or_jap" />
+            android:hint="@string/enter_eng_or_jap" android:maxLength="256" />
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:orientation="horizontal"
+            android:id="@+id/optionsLayout" android:gravity="center_vertical|center_horizontal"
+            android:layout_gravity="center_vertical|center_horizontal">
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/modeLabel"
+                android:text="Mode:" android:textSize="16sp"
+                android:textColor="#FFFF" android:gravity="center_vertical"></TextView>
+            <Spinner android:layout_height="wrap_content"
+                android:id="@+id/modeSpinner" android:layout_width="wrap_content"
+                android:layout_marginLeft="5px" android:minWidth="320px"
+                android:prompt="@string/select_mode"></Spinner>
+        </LinearLayout>
         <LinearLayout android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:orientation="horizontal"
             android:id="@+id/optionsLayout" android:gravity="center_vertical|center_horizontal"

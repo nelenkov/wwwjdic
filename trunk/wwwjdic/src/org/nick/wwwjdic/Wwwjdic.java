@@ -131,6 +131,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
     private EditText exampleSearchInputText;
     private EditText maxNumExamplesText;
     private CheckBox exampleExactMatchCb;
+    private Spinner sentenceModeSpinner;
 
     private TabHost tabHost;
 
@@ -345,6 +346,14 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         kanjiSearchTypeSpinner.setAdapter(kajiSearchTypeAdapter);
         kanjiSearchTypeSpinner.setOnItemSelectedListener(this);
+
+        ArrayAdapter<CharSequence> sentenceModeAdapter = ArrayAdapter
+                .createFromResource(this, R.array.sentence_modes,
+                        R.layout.spinner_text);
+        sentenceModeAdapter
+                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sentenceModeSpinner.setAdapter(sentenceModeAdapter);
+        sentenceModeSpinner.setOnItemSelectedListener(this);
     }
 
     private void setupTabOrder() {
@@ -471,22 +480,28 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
             hideKeyboard();
 
             String queryString = exampleSearchInputText.getText().toString();
-            int numMaxResults = Integer.parseInt(maxNumExamplesText.getText()
-                    .toString());
-            SearchCriteria criteria = SearchCriteria
-                    .createForExampleSearch(queryString, exampleExactMatchCb
-                            .isChecked(), numMaxResults);
+            if (sentenceModeSpinner.getSelectedItemPosition() == 0) {
+                int numMaxResults = Integer.parseInt(maxNumExamplesText
+                        .getText().toString());
+                SearchCriteria criteria = SearchCriteria
+                        .createForExampleSearch(queryString,
+                                exampleExactMatchCb.isChecked(), numMaxResults);
 
-            Intent intent = new Intent(this, ExamplesResultListView.class);
-            intent.putExtra(Constants.CRITERIA_KEY, criteria);
+                Intent intent = new Intent(this, ExamplesResultListView.class);
+                intent.putExtra(Constants.CRITERIA_KEY, criteria);
 
-            if (!StringUtils.isEmpty(criteria.getQueryString())) {
-                dbHelper.addSearchCriteria(criteria);
+                if (!StringUtils.isEmpty(criteria.getQueryString())) {
+                    dbHelper.addSearchCriteria(criteria);
+                }
+
+                Analytics.event("exampleSearch", this);
+
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, SentenceBreakdown.class);
+                intent.putExtra(Constants.SENTENCE, queryString);
+                startActivity(intent);
             }
-
-            Analytics.event("exampleSearch", this);
-
-            startActivity(intent);
             break;
         default:
             // do nothing
@@ -646,6 +661,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         exampleSearchInputText = (EditText) findViewById(R.id.exampleInputText);
         maxNumExamplesText = (EditText) findViewById(R.id.maxExamplesInput);
         exampleExactMatchCb = (CheckBox) findViewById(R.id.exampleExactMatchCb);
+        sentenceModeSpinner = (Spinner) findViewById(R.id.modeSpinner);
 
         dictHistorySummary = (FavoritesAndHistorySummaryView) findViewById(R.id.dict_history_summary);
         kanjiHistorySummary = (FavoritesAndHistorySummaryView) findViewById(R.id.kanji_history_summary);
@@ -696,13 +712,20 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
             return;
         }
 
-        kanjiInputText.setText("");
-        kanjiInputText.requestFocus();
+        switch (parent.getId()) {
+        case R.id.kanjiSearchTypeSpinner:
+            kanjiInputText.setText("");
+            kanjiInputText.requestFocus();
 
-        if (position != 2) {
-            toggleRadicalStrokeCountPanel(false);
-        } else {
-            toggleRadicalStrokeCountPanel(true);
+            if (position != 2) {
+                toggleRadicalStrokeCountPanel(false);
+            } else {
+                toggleRadicalStrokeCountPanel(true);
+            }
+            break;
+        case R.id.modeSpinner:
+            toggleExampleOptions(position == 0);
+            break;
         }
     }
 
@@ -717,6 +740,22 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
             strokeCountMaxInput.setText("");
             radicalEditText.setText("");
             kanjiInputText.requestFocus();
+        }
+    }
+
+    private void toggleExampleOptions(boolean isEnabled) {
+        maxNumExamplesText.setEnabled(isEnabled);
+        exampleExactMatchCb.setEnabled(isEnabled);
+        maxNumExamplesText.setFocusableInTouchMode(isEnabled);
+        exampleExactMatchCb.setFocusableInTouchMode(isEnabled);
+
+        exampleSearchInputText.setText("");
+        exampleSearchInputText.requestFocus();
+
+        if (!isEnabled) {
+            exampleSearchInputText.setHint(R.string.enter_japanese_text);
+        } else {
+            exampleSearchInputText.setHint(R.string.enter_eng_or_jap);
         }
     }
 
