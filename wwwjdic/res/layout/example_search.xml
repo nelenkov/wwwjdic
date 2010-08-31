@@ -11,7 +11,7 @@
             android:hint="@string/enter_eng_or_jap" android:maxLength="256" />
         <LinearLayout android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:orientation="horizontal"
-            android:id="@+id/optionsLayout" android:gravity="center_vertical|center_horizontal"
+            android:id="@+id/modeLayout" android:gravity="center_vertical|center_horizontal"
             android:layout_gravity="center_vertical|center_horizontal">
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/modeLabel"
@@ -24,7 +24,7 @@
         </LinearLayout>
         <LinearLayout android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:orientation="horizontal"
-            android:id="@+id/optionsLayout" android:gravity="center_vertical|center_horizontal"
+            android:id="@+id/examplesOptionsLayout" android:gravity="center_vertical|center_horizontal"
             android:layout_gravity="center_vertical|center_horizontal">
             <TextView android:layout_height="wrap_content"
                 android:layout_width="wrap_content" android:textColor="#ffff"
