@@ -35,6 +35,8 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
     private static final Pattern KATAKANA_PATTERN = Pattern.compile(
             "\\p{InKatakana}+", Pattern.COMMENTS);
 
+    private static final String NANORI_TAG = "T1";
+
     private String kanji;
 
     private String jisCode;
@@ -50,6 +52,7 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
     private String reading;
     private String onyomi;
     private String kunyomi;
+    private String nanori;
 
     private String koreanReading;
     private String pinyin;
@@ -234,6 +237,10 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
 
     public String getKunyomi() {
         return kunyomi;
+    }
+
+    public String getNanori() {
+        return nanori;
     }
 
     public List<String> getMeanings() {
