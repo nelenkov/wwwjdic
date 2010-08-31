@@ -132,6 +132,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
     private EditText maxNumExamplesText;
     private CheckBox exampleExactMatchCb;
     private Spinner sentenceModeSpinner;
+    private Button exampleSearchButton;
 
     private TabHost tabHost;
 
@@ -662,6 +663,7 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
         maxNumExamplesText = (EditText) findViewById(R.id.maxExamplesInput);
         exampleExactMatchCb = (CheckBox) findViewById(R.id.exampleExactMatchCb);
         sentenceModeSpinner = (Spinner) findViewById(R.id.modeSpinner);
+        exampleSearchButton = (Button) findViewById(R.id.exampleSearchButton);
 
         dictHistorySummary = (FavoritesAndHistorySummaryView) findViewById(R.id.dict_history_summary);
         kanjiHistorySummary = (FavoritesAndHistorySummaryView) findViewById(R.id.kanji_history_summary);
@@ -754,8 +756,10 @@ public class Wwwjdic extends TabActivity implements OnClickListener,
 
         if (!isEnabled) {
             exampleSearchInputText.setHint(R.string.enter_japanese_text);
+            exampleSearchButton.setText(R.string.translate);
         } else {
             exampleSearchInputText.setHint(R.string.enter_eng_or_jap);
+            exampleSearchButton.setText(R.string.search);
         }
     }
 
