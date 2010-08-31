@@ -126,8 +126,9 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
         }
 
         if (entry.getClassicalRadicalNumber() != null) {
-            data.add(new Pair<String, String>(getStr(R.string.unicode_number),
-                    entry.getClassicalRadicalNumber().toString()));
+            data.add(new Pair<String, String>(
+                    getStr(R.string.classical_radical), entry
+                            .getClassicalRadicalNumber().toString()));
         }
 
         if (entry.getFrequncyeRank() != null) {
