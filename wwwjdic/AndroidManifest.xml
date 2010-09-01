@@ -20,6 +20,10 @@
                 </intent-filter>
             -->
         </activity>
+        <activity android:name="Dictionary"></activity>
+        <activity android:name="KanjiLookup"></activity>
+        <activity android:name="ExampleSearch"></activity>
+        
         <activity android:name=".AboutActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name="DictionaryResultListView"

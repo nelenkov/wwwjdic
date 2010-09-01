@@ -11,6 +11,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
 
+import com.flurry.android.FlurryAgent;
+
 public class WwwjdicApplication extends Application {
 
     private ExecutorService executorService;
@@ -24,6 +26,7 @@ public class WwwjdicApplication extends Application {
         version = getVersionName();
 
         flurryKey = readKey();
+        FlurryAgent.setCaptureUncaughtExceptions(false);
 
         initRadicals();
     }

@@ -13,6 +13,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="org.nick.wwwjdic.Dictionary"></activity>
+        <activity android:name="org.nick.wwwjdic.KanjiLookup"></activity>
+        <activity android:name="org.nick.wwwjdic.ExampleSearch"></activity>
+        
         <activity android:name="org.nick.wwwjdic.AboutActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name="org.nick.wwwjdic.DictionaryResultListView"
