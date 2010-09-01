@@ -43,9 +43,41 @@ public class KanjiEntryTest {
     }
 
     @Test
+    public void testParseNanori() {
+        String kanjidicStr = "阿 3024 U963f B170 G9 S8 XN5008 F1126 J1 N4985 V6435 H346 DK256 L1295 K1515 O569 MN41599 MP11.0798 IN2258 DM1304 P1-3-5 I2d5.6 Q7122.0 Ya1 Ye1 Ya5 Ya2 Ya4 Wa Wog ア オ おもね.る くま T1 ほとり あず あわ おか きた な {Africa} {flatter} {fawn upon} {corner} {nook} {recess}";
+        KanjiEntry entry = KanjiEntry.parseKanjidic(kanjidicStr);
+        assertNotNull(entry);
+
+        assertEquals("阿", entry.getKanji());
+        assertNull(entry.getClassicalRadicalNumber());
+        assertEquals(1126, entry.getFrequncyeRank().intValue());
+        assertEquals(9, entry.getGrade().intValue());
+        assertEquals("3024", entry.getJisCode());
+        assertEquals(1, entry.getJlptLevel().intValue());
+        // assertEquals("a og ", entry.getKoreanReading());
+        // assertEquals("a1 e1 a5 a2 a4", entry.getPinyin());
+        assertEquals(170, entry.getRadicalNumber());
+        assertEquals("1-3-5", entry.getSkipCode());
+        assertEquals(8, entry.getStrokeCount());
+        assertEquals("963f", entry.getUnicodeNumber());
+
+        assertEquals("ア オ おもね.る くま ほとり あず あわ おか きた な", entry.getReading());
+        assertEquals("ア オ", entry.getOnyomi());
+        assertEquals("おもね.る くま", entry.getKunyomi());
+        assertEquals(6, entry.getMeanings().size());
+        assertEquals("ほとり あず あわ おか きた な", entry.getNanori());
+        assertEquals("Africa", entry.getMeanings().get(0));
+        assertEquals("flatter", entry.getMeanings().get(1));
+        assertEquals("fawn upon", entry.getMeanings().get(2));
+        assertEquals("corner", entry.getMeanings().get(3));
+        assertEquals("nook", entry.getMeanings().get(4));
+        assertEquals("recess", entry.getMeanings().get(5));
+    }
+
+    @Test
     public void testKanjidic() throws Exception {
         FileInputStream fis = new FileInputStream(
-                "C:/home/nick/android/wwwjdic/wwwjdic-test/dict/kanjidic");
+                "/home/nick/android/wwwjdic/dict/kanjidic");
         List<String> lines = new ArrayList<String>();
         BufferedReader r = new BufferedReader(new InputStreamReader(fis,
                 "EUC-JP"));
