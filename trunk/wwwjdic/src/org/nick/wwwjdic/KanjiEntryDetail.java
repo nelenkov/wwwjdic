@@ -8,6 +8,7 @@ import org.nick.wwwjdic.sod.SodActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,28 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
                     R.style.dict_detail_reading);
             kunyomiView.setText(entry.getKunyomi());
             readingLayout.addView(kunyomiView);
+        }
+
+        if (!TextUtils.isEmpty(entry.getNanori())) {
+            LinearLayout layout = new LinearLayout(KanjiEntryDetail.this);
+            layout.setOrientation(LinearLayout.HORIZONTAL);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0, 0, 5, 0);
+
+            TextView labelView = new TextView(KanjiEntryDetail.this);
+            labelView.setText(R.string.nanori_label);
+            labelView.setTextSize(10f);
+            labelView.setGravity(Gravity.CENTER);
+            layout.addView(labelView, lp);
+
+            TextView textView = new TextView(this, null,
+                    R.style.dict_detail_reading);
+            textView.setText(entry.getNanori());
+            layout.addView(textView, lp);
+
+            readingLayout.addView(layout);
         }
 
         LinearLayout meaningsCodesLayout = (LinearLayout) findViewById(R.id.meaningsCodesLayout);

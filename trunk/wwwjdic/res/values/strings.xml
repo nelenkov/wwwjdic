@@ -303,4 +303,5 @@
         <item>Sentence translation</item>
     </string-array>
     <string name="translate">Translate</string>
+    <string name="nanori_label">Nanori: </string>
 </resources>

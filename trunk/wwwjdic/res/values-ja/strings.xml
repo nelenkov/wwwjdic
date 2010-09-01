@@ -221,4 +221,5 @@
         <item>日本語文解析</item>
     </string-array>
     <string name="translate">解析</string>
+    <string name="nanori_label">名乗り: </string>
 </resources>

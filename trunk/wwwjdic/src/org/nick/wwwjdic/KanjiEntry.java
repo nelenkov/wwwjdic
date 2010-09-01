@@ -152,7 +152,9 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
         String[] readingFields = reading.split(" ");
         StringBuffer onyomiBuff = new StringBuffer();
         StringBuffer kunyomiBuff = new StringBuffer();
+        StringBuffer nanoriBuff = new StringBuffer();
 
+        boolean foundNanori = false;
         for (String r : readingFields) {
             Matcher m = KATAKANA_PATTERN.matcher(r);
             if (m.matches()) {
@@ -162,13 +164,24 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
 
             m = HIRAGANA_PATTERN.matcher(Character.toString(r.charAt(0)));
             if (m.matches()) {
-                kunyomiBuff.append(r.trim());
-                kunyomiBuff.append(" ");
+                if (foundNanori) {
+                    nanoriBuff.append(r.trim());
+                    nanoriBuff.append(" ");
+                } else {
+                    kunyomiBuff.append(r.trim());
+                    kunyomiBuff.append(" ");
+                }
+            }
+
+            if (NANORI_TAG.equals(r)) {
+                foundNanori = true;
             }
         }
 
         onyomi = onyomiBuff.toString().trim();
         kunyomi = kunyomiBuff.toString().trim();
+        nanori = nanoriBuff.toString().trim();
+        reading = reading.replaceAll(" " + NANORI_TAG, "");
     }
 
     private static Integer parseIntCode(String field) {
