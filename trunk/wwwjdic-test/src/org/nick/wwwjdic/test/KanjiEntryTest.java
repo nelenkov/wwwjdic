@@ -164,6 +164,14 @@ public class KanjiEntryTest {
         assertNotNull(entry);
 
         assertEquals("Š‘", entry.getKanji());
+        assertEquals("hwa", entry.getKoreanReading());
+        assertNull(entry.getPinyin());
+        assertEquals("", entry.getOnyomi());
+        assertEquals("‚©‚Î ‚à‚Ý‚¶", entry.getKunyomi());
+        assertEquals("", entry.getNanori());
+        assertEquals(2, entry.getMeanings().size());
+        assertEquals("birch", entry.getMeanings().get(0));
+        assertEquals("maple", entry.getMeanings().get(1));
     }
 
     @Test
