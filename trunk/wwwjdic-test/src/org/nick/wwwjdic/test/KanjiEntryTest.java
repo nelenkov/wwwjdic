@@ -75,6 +75,32 @@ public class KanjiEntryTest {
     }
 
     @Test
+    public void testParseNanori2() {
+        String kanjidicStr = "ˆº 303C U7d62 B120 G9 S12 F2315 J1 N3530 V4481 H1347 DK911 L2664 O2150 MN27427 MP8.1051 IN2194 P1-6-6 I6a6.14 Q2792.0 Yxuan4 Whyeon ƒPƒ“ T1 ‚¶‚ã‚ñ ‚ ‚â {kimono design}";
+        KanjiEntry entry = KanjiEntry.parseKanjidic(kanjidicStr);
+        assertNotNull(entry);
+
+        assertEquals("ˆº", entry.getKanji());
+        assertNull(entry.getClassicalRadicalNumber());
+        assertEquals(2315, entry.getFrequncyeRank().intValue());
+        assertEquals(9, entry.getGrade().intValue());
+        assertEquals("303C", entry.getJisCode());
+        assertEquals(1, entry.getJlptLevel().intValue());
+        assertEquals("hyeon", entry.getKoreanReading());
+        assertEquals("xuan4", entry.getPinyin());
+        assertEquals(120, entry.getRadicalNumber());
+        assertEquals("1-6-6", entry.getSkipCode());
+        assertEquals(12, entry.getStrokeCount());
+        assertEquals("7d62", entry.getUnicodeNumber());
+
+        assertEquals("ƒPƒ“ ‚¶‚ã‚ñ ‚ ‚â", entry.getReading());
+        assertEquals("ƒPƒ“", entry.getOnyomi());
+        assertEquals("", entry.getKunyomi());
+        assertEquals(1, entry.getMeanings().size());
+        assertEquals("kimono design", entry.getMeanings().get(0));
+    }
+
+    @Test
     public void testKanjidic() throws Exception {
         FileInputStream fis = new FileInputStream(
                 "/home/nick/android/wwwjdic/dict/kanjidic");
