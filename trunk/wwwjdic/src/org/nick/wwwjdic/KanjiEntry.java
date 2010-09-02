@@ -140,6 +140,7 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
                 } else {
                     // no meaning? take the rest as reading
                     result.reading = readingAndMeanings;
+                    result.parseReading();
                     break;
                 }
             }
