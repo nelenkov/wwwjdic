@@ -90,6 +90,28 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
             readingLayout.addView(layout);
         }
 
+        if (!TextUtils.isEmpty(entry.getRadicalName())) {
+            LinearLayout layout = new LinearLayout(KanjiEntryDetail.this);
+            layout.setOrientation(LinearLayout.HORIZONTAL);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0, 0, 5, 0);
+
+            TextView labelView = new TextView(KanjiEntryDetail.this);
+            labelView.setText(R.string.radical_name_label);
+            labelView.setTextSize(10f);
+            labelView.setGravity(Gravity.CENTER);
+            layout.addView(labelView, lp);
+
+            TextView textView = new TextView(this, null,
+                    R.style.dict_detail_reading);
+            textView.setText(entry.getRadicalName());
+            layout.addView(textView, lp);
+
+            readingLayout.addView(layout);
+        }
+
         LinearLayout meaningsCodesLayout = (LinearLayout) findViewById(R.id.meaningsCodesLayout);
 
         if (entry.getMeanings().isEmpty()) {
