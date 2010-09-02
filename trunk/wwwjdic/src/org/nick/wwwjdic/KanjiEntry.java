@@ -108,11 +108,22 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
                 case SKIP_CODE:
                     result.skipCode = parseStrCode(field);
                     break;
+                // there can be multiple readings
                 case KOREAN_READING_CODE:
-                    result.koreanReading = parseStrCode(field);
+                    if (StringUtils.isEmpty(result.koreanReading)) {
+                        result.koreanReading = parseStrCode(field);
+                    } else {
+                        result.koreanReading += " ";
+                        result.koreanReading += parseStrCode(field);
+                    }
                     break;
                 case PINYIN_CODE:
-                    result.pinyin = parseStrCode(field);
+                    if (StringUtils.isEmpty(result.pinyin)) {
+                        result.pinyin = parseStrCode(field);
+                    } else {
+                        result.pinyin += " ";
+                        result.pinyin += parseStrCode(field);
+                    }
                     break;
                 default:
                     // ignore
@@ -183,6 +194,13 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
         kunyomi = kunyomiBuff.toString().trim();
         nanori = nanoriBuff.toString().trim();
         reading = reading.replaceAll(" " + NANORI_TAG, "");
+
+        if (!StringUtils.isEmpty(koreanReading)) {
+            koreanReading = koreanReading.trim();
+        }
+        if (!StringUtils.isEmpty(pinyin)) {
+            pinyin = pinyin.trim();
+        }
     }
 
     private static Integer parseIntCode(String field) {
