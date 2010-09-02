@@ -138,6 +138,35 @@ public class KanjiEntryTest {
     }
 
     @Test
+    public void testParseMultipleKoreanPinyin() {
+        String kanjidicStr = "ˆ¢ 3024 U963f B170 G9 S8 XN5008 F1126 J1 N4985 V6435 H346 DK256 L1295 K1515 O569 MN41599 MP11.0798 IN2258 DM1304 P1-3-5 I2d5.6 Q7122.0 Ya1 Ye1 Ya5 Ya2 Ya4 Wa Wog ƒA ƒI ‚¨‚à‚Ë.‚é ‚­‚Ü T1 ‚Ù‚Æ‚è ‚ ‚¸ ‚ ‚í ‚¨‚© ‚«‚½ ‚È {Africa} {flatter} {fawn upon} {corner} {nook} {recess}";
+        KanjiEntry entry = KanjiEntry.parseKanjidic(kanjidicStr);
+        assertNotNull(entry);
+
+        assertEquals("ˆ¢", entry.getKanji());
+        assertNull(entry.getClassicalRadicalNumber());
+        assertEquals(1126, entry.getFrequncyeRank().intValue());
+        assertEquals(9, entry.getGrade().intValue());
+        assertEquals("3024", entry.getJisCode());
+        assertEquals(1, entry.getJlptLevel().intValue());
+        assertEquals("a og", entry.getKoreanReading());
+        assertEquals("a1 e1 a5 a2 a4", entry.getPinyin());
+        assertEquals(170, entry.getRadicalNumber());
+        assertEquals("1-3-5", entry.getSkipCode());
+        assertEquals(8, entry.getStrokeCount());
+        assertEquals("963f", entry.getUnicodeNumber());
+    }
+
+    @Test
+    public void testParseNoPinyin() {
+        String kanjidicStr = "Š‘ 3371 U691b B75 G9 S11 V2683 O1363 MN15065X MP6.0420 P1-4-7 I4a7.14 Q4491.4 Whwa ‚©‚Î ‚à‚Ý‚¶ {birch} {maple}";
+        KanjiEntry entry = KanjiEntry.parseKanjidic(kanjidicStr);
+        assertNotNull(entry);
+
+        assertEquals("Š‘", entry.getKanji());
+    }
+
+    @Test
     public void testKanjidic() throws Exception {
         FileInputStream fis = new FileInputStream(KANJIDIC_PATH);
         List<String> lines = new ArrayList<String>();
