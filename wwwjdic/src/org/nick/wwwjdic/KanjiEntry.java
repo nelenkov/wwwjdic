@@ -194,6 +194,7 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
 
             if (NANORI_TAG.equals(r)) {
                 foundNanori = true;
+                foundRadicalName = false;
             }
             if (RADICAL_NAME_TAG.equals(r)) {
                 foundNanori = false;
