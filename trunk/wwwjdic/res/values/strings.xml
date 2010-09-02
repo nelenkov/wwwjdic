@@ -304,4 +304,5 @@
     </string-array>
     <string name="translate">Translate</string>
     <string name="nanori_label">Nanori: </string>
+    <string name="radical_name_label">Radical name: </string>
 </resources>

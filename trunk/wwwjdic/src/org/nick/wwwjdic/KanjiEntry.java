@@ -36,6 +36,7 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
             "\\p{InKatakana}+", Pattern.COMMENTS);
 
     private static final String NANORI_TAG = "T1";
+    private static final String RADICAL_NAME_TAG = "T2";
 
     private String kanji;
 
@@ -53,6 +54,7 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
     private String onyomi;
     private String kunyomi;
     private String nanori;
+    private String radicalName;
 
     private String koreanReading;
     private String pinyin;
@@ -165,8 +167,10 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
         StringBuffer onyomiBuff = new StringBuffer();
         StringBuffer kunyomiBuff = new StringBuffer();
         StringBuffer nanoriBuff = new StringBuffer();
+        StringBuffer radicalNameBuff = new StringBuffer();
 
         boolean foundNanori = false;
+        boolean foundRadicalName = false;
         for (String r : readingFields) {
             Matcher m = KATAKANA_PATTERN.matcher(r);
             if (m.matches()) {
@@ -179,6 +183,9 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
                 if (foundNanori) {
                     nanoriBuff.append(r.trim());
                     nanoriBuff.append(" ");
+                } else if (foundRadicalName) {
+                    radicalNameBuff.append(r.trim());
+                    radicalNameBuff.append(" ");
                 } else {
                     kunyomiBuff.append(r.trim());
                     kunyomiBuff.append(" ");
@@ -188,12 +195,18 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
             if (NANORI_TAG.equals(r)) {
                 foundNanori = true;
             }
+            if (RADICAL_NAME_TAG.equals(r)) {
+                foundNanori = false;
+                foundRadicalName = true;
+            }
         }
 
         onyomi = onyomiBuff.toString().trim();
         kunyomi = kunyomiBuff.toString().trim();
         nanori = nanoriBuff.toString().trim();
+        radicalName = radicalNameBuff.toString().trim();
         reading = reading.replaceAll(" " + NANORI_TAG, "");
+        reading = reading.replaceAll(" " + RADICAL_NAME_TAG, "");
 
         if (!StringUtils.isEmpty(koreanReading)) {
             koreanReading = koreanReading.trim();
@@ -273,6 +286,10 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
 
     public String getNanori() {
         return nanori;
+    }
+
+    public String getRadicalName() {
+        return radicalName;
     }
 
     public List<String> getMeanings() {

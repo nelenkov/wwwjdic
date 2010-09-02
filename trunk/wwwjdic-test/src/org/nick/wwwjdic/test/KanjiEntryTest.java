@@ -175,6 +175,65 @@ public class KanjiEntryTest {
     }
 
     @Test
+    public void testParseRadicalName() {
+        String kanjidicStr = "巛 565F U5ddb B47 S3 V1527 H9 MN8669 MP4.0326 P1-1-2 I0a3.2 Q2233.7 Ychuan1 Wcheon セン かわ T2 まがりがわ {curving river radical (no.47)}";
+        KanjiEntry entry = KanjiEntry.parseKanjidic(kanjidicStr);
+        assertNotNull(entry);
+
+        assertEquals("巛", entry.getKanji());
+        assertNull(entry.getClassicalRadicalNumber());
+        assertNull(entry.getFrequncyeRank());
+        assertNull(entry.getGrade());
+        assertEquals("565F", entry.getJisCode());
+        assertNull(entry.getJlptLevel());
+        assertEquals("cheon", entry.getKoreanReading());
+        assertEquals("chuan1", entry.getPinyin());
+        assertEquals(47, entry.getRadicalNumber());
+        assertEquals("1-1-2", entry.getSkipCode());
+        assertEquals(3, entry.getStrokeCount());
+        assertEquals("5ddb", entry.getUnicodeNumber());
+
+        assertEquals("セン かわ まがりがわ", entry.getReading());
+        assertEquals("セン", entry.getOnyomi());
+        assertEquals("かわ", entry.getKunyomi());
+        assertEquals("", entry.getNanori());
+        assertEquals("まがりがわ", entry.getRadicalName());
+        assertEquals(1, entry.getMeanings().size());
+        assertEquals("curving river radical (no.47)", entry.getMeanings()
+                .get(0));
+    }
+
+    @Test
+    public void testParseNanoriRadicalName() {
+        String kanjidicStr = "工 3929 U5de5 B48 G2 S3 F299 J3 N1451 V1532 H3381 DK2118 L76 K169 O39 DO77 MN8714 MP4.0340 E113 IN139 DS71 DF161 DH125 DT84 DC173 DJ379 DB2.16 DG550 DM76 P4-3-1 I0a3.6 Q1010.0 DR3172 Ygong1 Wgong コウ ク グ T1 もく T2 たくみ {craft} {construction} {katakana e radical (no. 48)}";
+        KanjiEntry entry = KanjiEntry.parseKanjidic(kanjidicStr);
+        assertNotNull(entry);
+
+        assertEquals("工", entry.getKanji());
+        assertNull(entry.getClassicalRadicalNumber());
+        assertEquals(299, entry.getFrequncyeRank().intValue());
+        assertEquals(2, entry.getGrade().intValue());
+        assertEquals("3929", entry.getJisCode());
+        assertEquals(3, entry.getJlptLevel().intValue());
+        assertEquals("gong", entry.getKoreanReading());
+        assertEquals("gong1", entry.getPinyin());
+        assertEquals(48, entry.getRadicalNumber());
+        assertEquals("4-3-1", entry.getSkipCode());
+        assertEquals(3, entry.getStrokeCount());
+        assertEquals("5de5", entry.getUnicodeNumber());
+
+        assertEquals("コウ ク グ もく たくみ", entry.getReading());
+        assertEquals("コウ ク グ", entry.getOnyomi());
+        assertEquals("", entry.getKunyomi());
+        assertEquals("もく", entry.getNanori());
+        assertEquals("たくみ", entry.getRadicalName());
+        assertEquals(3, entry.getMeanings().size());
+        assertEquals("craft", entry.getMeanings().get(0));
+        assertEquals("construction", entry.getMeanings().get(1));
+        assertEquals("katakana e radical (no. 48)", entry.getMeanings().get(2));
+    }
+
+    @Test
     public void testKanjidic() throws Exception {
         FileInputStream fis = new FileInputStream(KANJIDIC_PATH);
         List<String> lines = new ArrayList<String>();
