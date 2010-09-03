@@ -41,7 +41,7 @@ public class Wwwjdic extends TabActivity {
 
         showDonationThanks();
 
-        if (!isDonateVersion()) {
+        if (!isDonateVersion() || isDonationThanksShown()) {
             showWhatsNew();
         }
     }
@@ -59,6 +59,13 @@ public class Wwwjdic extends TabActivity {
             prefs.edit().putBoolean(key, true).commit();
             showDialog(DONATION_THANKS_DIALOG_ID);
         }
+    }
+
+    private boolean isDonationThanksShown() {
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        return prefs.getBoolean(PREF_DONATION_THANKS_SHOWN, false);
     }
 
     private boolean isDonateVersion() {
