@@ -233,7 +233,7 @@
     <string name="uses_kanjivg">Uses KanjiVG</string>
     <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Kanji Recognizer binding bugfixes.</string>
+    <string name="whats_new">* Short Japanese sentence translation (word breakdown) support.\n* Added default dictionary setting.\n* Display kanji nanori readings.\n* Display kanji radical name readings.\n* Display multiple pinyin/Korean readings properly.\n* Donate version now available (check About).</string>
     <!--  for cropper -->
     <string name="crop_save_text">Crop</string>
     <string name="crop_discard_text">Discard</string>
