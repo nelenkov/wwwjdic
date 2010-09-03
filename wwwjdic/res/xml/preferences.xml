@@ -11,6 +11,11 @@
             android:summary="@string/pref_timeout_summary"
             android:singleLine="true" android:inputType="numberDecimal"
             android:defaultValue="15" android:maxLength="4" />
+         <ListPreference android:title="@string/pref_default_dict"
+            android:key="pref_default_dict"
+            android:defaultValue="0"
+            android:entries="@array/dictionaries_array"
+            android:entryValues="@array/dictionary_idxs_array" />    
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_ocr">
         <ListPreference android:key="pref_weocr_url"
