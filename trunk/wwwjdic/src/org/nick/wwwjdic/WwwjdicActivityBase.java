@@ -1,6 +1,7 @@
 package org.nick.wwwjdic;
 
 import org.nick.wwwjdic.history.FavoritesAndHistory;
+import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
 import org.nick.wwwjdic.ocr.OcrActivity;
 
 import android.app.Activity;
@@ -55,7 +56,7 @@ public class WwwjdicActivityBase extends Activity {
             startActivity(intent);
             return true;
         case ITEM_ID_DRAW:
-            intent = new Intent("org.nick.wwwjdic.RECOGNIZE_KANJI");
+            intent = new Intent(this, RecognizeKanjiActivity.class);
 
             startActivity(intent);
             return true;

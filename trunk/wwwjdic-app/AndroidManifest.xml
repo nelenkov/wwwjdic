@@ -40,7 +40,6 @@
             android:configChanges="orientation|keyboardHidden|keyboard"
             android:exported="false">
             <intent-filter>
-                <action android:name="org.nick.wwwjdic.RECOGNIZE_KANJI" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
