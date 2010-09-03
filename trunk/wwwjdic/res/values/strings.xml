@@ -24,7 +24,7 @@
         <item>L</item>
         <item>M</item>
     </string-array>
-     <string-array name="dictionary_idxs_array">
+    <string-array name="dictionary_idxs_array">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -328,4 +328,7 @@
     <string name="nanori_label">Nanori: </string>
     <string name="radical_name_label">Radical name: </string>
     <string name="pref_default_dict">Default dictionary</string>
+    <string name="buy_donate_version">If you find this application useful, please
+        consider buying the donate version.</string>
+    <string name="donate_version">Donate version</string>
 </resources>
