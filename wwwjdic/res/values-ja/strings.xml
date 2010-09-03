@@ -211,9 +211,12 @@
     <string name="favorties_summary">お気に入り (%d)</string>
     <string name="history_summary">検索履歴 (%d)</string>
     <string name="remove_stroke">画削除</string>
-    <string name="kr_not_initialized">Kanji Recogninzerは初期化されていません。Webサービスベース手書き認識を使用します。</string>
-    <string name="install_kr">このオプションを有効にするには、Kanji Recognizer (v.1.1) アプリをインストールする必要があります。インストールしますか? (WWWJDICから利用するときは、報告を表示しません。)</string>
-     <string name="select_mode">モード選択:</string>
+    <string name="kr_not_initialized">Kanji
+        Recogninzerは初期化されていません。Webサービスベース手書き認識を使用します。</string>
+    <string name="install_kr">このオプションを有効にするには、Kanji Recognizer (v.1.1)
+        アプリをインストールする必要があります。インストールしますか? (WWWJDICから利用するときは、報告を表示しません。)
+    </string>
+    <string name="select_mode">モード選択:</string>
     <string name="enter_japanese_text">日本語文</string>
     <string name="mode">モード:</string>
     <string-array name="sentence_modes">
@@ -224,4 +227,6 @@
     <string name="nanori_label">名乗り: </string>
     <string name="radical_name_label">部首名: </string>
     <string name="pref_default_dict">既定辞書</string>
+    <string name="buy_donate_version">このアプリが役立っていれば、寄付バージョンのご購入をご検討ください。</string>
+    <string name="donate_version">寄付バージョン</string>
 </resources>
