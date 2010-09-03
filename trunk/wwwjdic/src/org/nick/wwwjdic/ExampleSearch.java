@@ -21,8 +21,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 public class ExampleSearch extends WwwjdicActivityBase implements
         OnClickListener, OnItemSelectedListener {
 
-    private static final String TAG = ExampleSearch.class.getSimpleName();
-
     private EditText exampleSearchInputText;
     private EditText maxNumExamplesText;
     private CheckBox exampleExactMatchCb;
@@ -133,6 +131,9 @@ public class ExampleSearch extends WwwjdicActivityBase implements
             } else {
                 Intent intent = new Intent(this, SentenceBreakdown.class);
                 intent.putExtra(Constants.SENTENCE, queryString);
+
+                Analytics.event("sentenceTranslation", this);
+
                 startActivity(intent);
             }
             break;
