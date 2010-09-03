@@ -227,6 +227,6 @@
     <string name="nanori_label">名乗り: </string>
     <string name="radical_name_label">部首名: </string>
     <string name="pref_default_dict">既定辞書</string>
-    <string name="buy_donate_version">このアプリが役立っていれば、寄付バージョンのご購入をご検討ください。</string>
-    <string name="donate_version">寄付バージョン</string>
+    <string name="buy_donate_version">このアプリが役立っていれば、寄付版のご購入をご検討ください。</string>
+    <string name="donate_version">寄付版</string>
 </resources>

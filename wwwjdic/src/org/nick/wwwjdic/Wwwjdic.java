@@ -14,6 +14,7 @@ import android.widget.TabHost;
 public class Wwwjdic extends TabActivity {
 
     private static final int WHATS_NEW_DIALOG_ID = 1;
+    private static final int DONATION_THANKS_DIALOG_ID = 2;
 
     private static final int DICTIONARY_TAB_IDX = 0;
     private static final String DICTIONARY_TAB = "dictionaryTab";
@@ -23,6 +24,9 @@ public class Wwwjdic extends TabActivity {
     private static final String EXAMPLE_SEARCH_TAB = "exampleSearchTab";
 
     private static final String PREF_WHATS_NEW_SHOWN = "pref_whats_new_shown";
+
+    private static final String DONATE_VERSION_PACKAGE = "org.nick.wwwjdic.donate";
+    private static final String PREF_DONATION_THANKS_SHOWN = "pref_donation_thanks_shown";
 
     /** Called when the activity is first created. */
     @Override
@@ -35,7 +39,32 @@ public class Wwwjdic extends TabActivity {
 
         setupTabs();
 
-        showWhatsNew();
+        showDonationThanks();
+
+        if (!isDonateVersion()) {
+            showWhatsNew();
+        }
+    }
+
+    private void showDonationThanks() {
+        if (!isDonateVersion()) {
+            return;
+        }
+
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        String key = PREF_DONATION_THANKS_SHOWN;
+        boolean thanksShown = prefs.getBoolean(key, false);
+        if (!thanksShown) {
+            prefs.edit().putBoolean(key, true).commit();
+            showDialog(DONATION_THANKS_DIALOG_ID);
+        }
+    }
+
+    private boolean isDonateVersion() {
+        String appPackage = getApplication().getPackageName();
+
+        return DONATE_VERSION_PACKAGE.equals(appPackage);
     }
 
     @Override
@@ -66,7 +95,6 @@ public class Wwwjdic extends TabActivity {
             prefs.edit().putBoolean(key, true).commit();
             showDialog(WHATS_NEW_DIALOG_ID);
         }
-
     }
 
     private void setupTabs() {
@@ -130,6 +158,9 @@ public class Wwwjdic extends TabActivity {
         case WHATS_NEW_DIALOG_ID:
             dialog = createWhatsNewDialog();
             break;
+        case DONATION_THANKS_DIALOG_ID:
+            dialog = createDonationThanksDialog();
+            break;
         default:
             dialog = null;
         }
@@ -137,22 +168,40 @@ public class Wwwjdic extends TabActivity {
         return dialog;
     }
 
-    private Dialog createWhatsNewDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.whats_new);
-        builder.setPositiveButton(R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+    private Dialog createDonationThanksDialog() {
+        DialogInterface.OnClickListener okAction = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                showWhatsNew();
 
-                    }
-                });
-        String titleTemplate = getResources().getString(
-                R.string.whats_new_title);
+            }
+        };
+        return createInfoDialog(R.string.donation_thanks_title,
+                R.string.donation_thanks, okAction);
+    }
+
+    private Dialog createWhatsNewDialog() {
+        DialogInterface.OnClickListener okAction = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        };
+        return createInfoDialog(R.string.whats_new_title, R.string.whats_new,
+                okAction);
+    }
+
+    private Dialog createInfoDialog(int titleId, int messageId,
+            DialogInterface.OnClickListener okAction) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String titleTemplate = getResources().getString(titleId);
         String title = String.format(titleTemplate, getVersionName());
         builder.setTitle(title);
         builder.setIcon(android.R.drawable.ic_dialog_info);
+        builder.setMessage(messageId);
+        builder.setPositiveButton(R.string.ok, okAction);
 
         return builder.create();
     }

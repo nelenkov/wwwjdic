@@ -23,7 +23,11 @@ public class AboutActivity extends Activity implements OnClickListener {
         versionText.setText("version " + WwwjdicApplication.getVersion());
 
         Button buyDonateButton = (Button) findViewById(R.id.buy_donate);
-        buyDonateButton.setOnClickListener(this);
+        if (!isDonateVersion()) {
+            buyDonateButton.setOnClickListener(this);
+        } else {
+            buyDonateButton.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -31,5 +35,11 @@ public class AboutActivity extends Activity implements OnClickListener {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri
                 .parse("market://details?id=" + DONATE_VERSION_PACKAGE));
         startActivity(intent);
+    }
+
+    private boolean isDonateVersion() {
+        String appPackage = getApplication().getPackageName();
+
+        return DONATE_VERSION_PACKAGE.equals(appPackage);
     }
 }

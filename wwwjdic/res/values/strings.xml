@@ -331,4 +331,12 @@
     <string name="buy_donate_version">If you find this application useful, please
         consider buying the donate version.</string>
     <string name="donate_version">Donate version</string>
+    <string name="donation_thanks_title">Thank you</string>
+    <string name="donation_thanks">Thank you for buying the donate version!\nTo
+        import your search history and favorites, use the CSV export
+        feature of the free version (press the menu button in
+        the favorites/history screen), and then import the resulting
+        files.\nFree and donation version can co-exist, but it is
+        advisable to uninstall the free version after importing.
+    </string>
 </resources>
