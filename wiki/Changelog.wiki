@@ -1,6 +1,18 @@
 #summary Full changelog
 
 = Changelog =
+ * v1.4 Japanese sentence translation support
+  * Short Japanese sentence translation (word breakdown) support.
+  * Added default dictionary setting.
+  * Display kanji nanori readings.
+  * Display kanji radical name readings.
+  * Display multiple pinyin/Korean readings properly.
+ * v1.31 Bugfixes
+  * Kanji Recognizer binding bugfixes
+ * v1.3 Kanji Recognizer integration
+  * Offline kanji recognition via the Kanji Recognizer app
+  * Links to history/favorites in each tab
+  * Added 'delete stroke' button to kanji draw view
  * v1.21 Bug fixes
   * fixed crash on CyanogenMod 5 DS (Issue 12)
   * better OCR paremeters (auto instead of line)
