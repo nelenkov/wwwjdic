@@ -223,4 +223,5 @@
     <string name="translate">解析</string>
     <string name="nanori_label">名乗り: </string>
     <string name="radical_name_label">部首名: </string>
+    <string name="pref_default_dict">既定辞書</string>
 </resources>

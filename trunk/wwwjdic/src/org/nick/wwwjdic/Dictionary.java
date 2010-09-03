@@ -10,7 +10,9 @@ import org.nick.wwwjdic.history.HistoryDbHelper;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -76,6 +78,8 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         IDX_TO_CODE.put(8, "W");
     }
 
+    private static final String PREF_DEFAULT_DICT_PREF_KEY = "pref_default_dict";
+
     private EditText inputText;
     private CheckBox exactMatchCb;
     private CheckBox commonWordsCb;
@@ -97,6 +101,7 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         setupSpinners();
 
         inputText.requestFocus();
+        selectDictionary();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -119,11 +124,17 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         setupDictSummary();
     }
 
+    private void selectDictionary() {
+        dictSpinner.setSelection(getDefaultDictionaryIdx());
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
 
         setupDictSummary();
+
+        selectDictionary();
     }
 
     private void findViews() {
@@ -277,4 +288,12 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         mgr.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
+    private int getDefaultDictionaryIdx() {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        String idxStr = preferences.getString(PREF_DEFAULT_DICT_PREF_KEY, "0");
+
+        return Integer.parseInt(idxStr);
+    }
 }
