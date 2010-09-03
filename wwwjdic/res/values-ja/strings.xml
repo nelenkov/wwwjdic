@@ -137,7 +137,7 @@
     <string name="search_history">検索履歴</string>
     <string name="favorites_hist">履歴</string>
     <string name="whats_new_title">%sの新規機能</string>
-    <string name="whats_new">* Kanji Recognizer を使った手書き認識関連バグ修正。</string>
+    <string name="whats_new">* 日本語文解析機能追加。\n* 既定辞書設定追加。\n* 名乗り表示。\n* 部首名表示。\n* 複数の標準中国・韓国読みを正しく表示。\n* 寄付版公開中。(情報画面をチェック)</string>
     <!--  for cropper -->
     <string name="crop_save_text">切り抜く</string>
     <string name="crop_discard_text">キャンセル</string>

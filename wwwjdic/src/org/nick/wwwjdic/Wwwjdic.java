@@ -39,11 +39,11 @@ public class Wwwjdic extends TabActivity {
 
         setupTabs();
 
-        showDonationThanks();
-
         if (!isDonateVersion() || isDonationThanksShown()) {
             showWhatsNew();
         }
+
+        showDonationThanks();
     }
 
     private void showDonationThanks() {
