@@ -314,7 +314,9 @@
     <string name="kr_not_initialized">Kanji Recogninzer not properly initialized.
         Falling back to WS-based recognition.</string>
     <string name="install_kr">To enable this option you need to install the
-        Kanji Recognizer (v.1.1) application first. Would you like to
+        Kanji Recognizer (v.1.1) application first. To get better recognition, 
+        start it and download the full recognition model after you install it 
+        (Menu->Settings->Full recognition model). Would you like to 
         install it now? (no ads are displayed when used from WWWJDIC)
     </string>
     <string name="select_mode">Select mode:</string>
