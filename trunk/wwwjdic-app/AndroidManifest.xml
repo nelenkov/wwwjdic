@@ -6,7 +6,7 @@
         android:label="@string/app_name" android:debuggable="false"
         android:name="org.nick.wwwjdic.WwwjdicApplication">
         <activity android:name="org.nick.wwwjdic.Wwwjdic"
-            android:label="@string/app_name"
+            android:label="@string/app_name_short"
             android:windowSoftInputMode="stateVisible|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

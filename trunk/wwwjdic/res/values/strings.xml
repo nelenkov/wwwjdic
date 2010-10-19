@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WWWJDIC for Android</string>
+    <string name="app_name_short">WWWJDIC</string>
     <string name="translationError">Error</string>
     <string-array name="dictionary_codes_array">
         <item>1</item>
