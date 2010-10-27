@@ -234,7 +234,12 @@
     <string name="uses_kanjivg">Uses KanjiVG</string>
     <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Short Japanese sentence translation (word breakdown) support.\n* Added default dictionary setting.\n* Display kanji nanori readings.\n* Display kanji radical name readings.\n* Display multiple pinyin/Korean readings properly.\n* Donate version now available (check About).</string>
+    <string name="whats_new">* Short Japanese sentence translation (word
+        breakdown) support.\n* Added default dictionary setting.\n*
+        Display kanji nanori readings.\n* Display kanji radical name
+        readings.\n* Display multiple pinyin/Korean readings
+        properly.\n* Donate version now available (check About).
+    </string>
     <!--  for cropper -->
     <string name="crop_save_text">Crop</string>
     <string name="crop_discard_text">Discard</string>
@@ -315,10 +320,14 @@
     <string name="kr_not_initialized">Kanji Recogninzer not properly initialized.
         Falling back to WS-based recognition.</string>
     <string name="install_kr">To enable this option you need to install the
-        Kanji Recognizer (v.1.1) application first. To get better recognition, 
-        start it and download the full recognition model after you install it 
-        (Menu->Settings->Full recognition model). Would you like to 
-        install it now? (no ads are displayed when used from WWWJDIC)
+        Kanji Recognizer (v.1.1) application first. To get better
+        recognition,
+        start it and download the full recognition model
+        after you install it
+        (Menu->Settings->Full recognition model).
+        Would you like to
+        install it now? (no ads are displayed when used
+        from WWWJDIC)
     </string>
     <string name="select_mode">Select mode:</string>
     <string name="enter_japanese_text">Enter Japanese text</string>
@@ -338,8 +347,12 @@
     <string name="donation_thanks">Thank you for buying the donate version!\nTo
         import your search history and favorites, use the CSV export
         feature of the free version (press the menu button in
-        the favorites/history screen), and then import the resulting
+        the
+        favorites/history screen), and then import the resulting
         files.\nFree and donation version can co-exist, but it is
         advisable to uninstall the free version after importing.
     </string>
+    <string name="kanji_details">Kanji details</string>
+    <string name="appended_to_clipboard">\'%s\' appended to clipboard</string>
+    <string name="append">Append to clipboard</string>
 </resources>
