@@ -22,7 +22,8 @@ public class KanjiRecognizerClient extends EntityBasedHttpClient {
             .getSimpleName();
 
     public KanjiRecognizerClient(String endpoint, int timeout) {
-        super(endpoint, timeout);
+        // super(endpoint, timeout);
+        super("http://kanji.sljfaq.org/kanji.cgi", timeout);
     }
 
     private String createRecognizerRequest(List<Stroke> strokes,
@@ -35,7 +36,8 @@ public class KanjiRecognizerClient extends EntityBasedHttpClient {
         }
 
         for (Stroke s : strokes) {
-            buff.append(s.toBase36Points());
+            // buff.append(s.toBase36Points());
+            buff.append(s.toPoints());
             buff.append("\n");
         }
         buff.append("\n");
@@ -89,7 +91,8 @@ public class KanjiRecognizerClient extends EntityBasedHttpClient {
         JSONArray jsonArr = jsonObj.getJSONArray("results");
         String[] result = new String[jsonArr.length()];
         for (int i = 0; i < result.length; i++) {
-            result[i] = (String) jsonArr.get(i);
+            // result[i] = (String) jsonArr.get(i);
+            result[i] = (String) ((JSONArray) jsonArr.get(i)).get(0);
         }
 
         return result;
