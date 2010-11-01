@@ -355,4 +355,12 @@
     <string name="kanji_details">Kanji details</string>
     <string name="appended_to_clipboard">\'%s\' appended to clipboard</string>
     <string name="append">Append to clipboard</string>
+    <string-array name="kr_url_names">
+        <item>default</item>
+        <item>backup</item>
+    </string-array>
+    <string-array name="kr_urls">
+        <item>http://kanji.sljfaq.org/kanji16/kanji-0.016.cgi</item>
+        <item>http://kanji.sljfaq.org/kanji.cgi</item>
+    </string-array>
 </resources>
