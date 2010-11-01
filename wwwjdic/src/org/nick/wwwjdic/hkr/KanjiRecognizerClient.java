@@ -22,27 +22,34 @@ public class KanjiRecognizerClient extends EntityBasedHttpClient {
             .getSimpleName();
 
     public KanjiRecognizerClient(String endpoint, int timeout) {
-        // super(endpoint, timeout);
-        super("http://kanji.sljfaq.org/kanji.cgi", timeout);
+        super(endpoint, timeout);
     }
 
     private String createRecognizerRequest(List<Stroke> strokes,
             boolean useLookAhead) {
         StringBuffer buff = new StringBuffer();
-        if (useLookAhead) {
+        if (useLookAhead && isBetaUrl()) {
             buff.append("HL ");
         } else {
             buff.append("H ");
         }
 
         for (Stroke s : strokes) {
-            // buff.append(s.toBase36Points());
-            buff.append(s.toPoints());
+            if (isBetaUrl()) {
+                buff.append(s.toBase36Points());
+            } else {
+                buff.append(s.toPoints());
+            }
+
             buff.append("\n");
         }
         buff.append("\n");
 
         return buff.toString();
+    }
+
+    private boolean isBetaUrl() {
+        return url.contains("kanji16");
     }
 
     public String[] recognize(List<Stroke> strokes, boolean useLookAhead)
@@ -91,8 +98,11 @@ public class KanjiRecognizerClient extends EntityBasedHttpClient {
         JSONArray jsonArr = jsonObj.getJSONArray("results");
         String[] result = new String[jsonArr.length()];
         for (int i = 0; i < result.length; i++) {
-            // result[i] = (String) jsonArr.get(i);
-            result[i] = (String) ((JSONArray) jsonArr.get(i)).get(0);
+            if (isBetaUrl()) {
+                result[i] = (String) jsonArr.get(i);
+            } else {
+                result[i] = (String) ((JSONArray) jsonArr.get(i)).get(0);
+            }
         }
 
         return result;
