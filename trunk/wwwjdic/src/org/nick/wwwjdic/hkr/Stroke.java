@@ -148,6 +148,22 @@ public class Stroke {
         return buff.toString();
     }
 
+    public String toPoints() {
+        StringBuffer buff = new StringBuffer();
+
+        for (int i = 0; i < points.size(); i++) {
+            String pointStr = "";
+            int x = (int) points.get(i).x;
+            pointStr += " " + x;
+            int y = (int) points.get(i).y;
+            pointStr += " " + y;
+
+            buff.append(pointStr);
+        }
+
+        return buff.toString();
+    }
+
     private String toBase36(int i) {
         String result = Integer.toString(i, 36);
         if (result.length() == 1) {
