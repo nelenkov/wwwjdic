@@ -6,10 +6,12 @@ import java.util.List;
 import org.nick.kanjirecognizer.hkr.CharacterRecognizer;
 import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
+import org.nick.wwwjdic.Dialogs;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.ocr.WeOcrClient;
 
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -50,6 +52,9 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     private static final String PREF_WEOCR_URL_KEY = "pref_weocr_url";
     private static final String PREF_WEOCR_TIMEOUT_KEY = "pref_weocr_timeout";
 
+    private static final int KR_USAGE_TIP_DIALOG_ID = 0;
+    private static final String KR_USAGE_TIP_DIALOG = "kr_usage";
+
     private static final int OCR_IMAGE_WIDTH = 128;
     private static final int NUM_OCR_CANDIDATES = 20;
 
@@ -85,6 +90,8 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         drawView.setAnnotateStrokesMidway(isAnnotateStrokesMidway());
 
         drawView.requestFocus();
+
+        Dialogs.showTipOnce(this, KR_USAGE_TIP_DIALOG_ID, KR_USAGE_TIP_DIALOG);
     }
 
     private ServiceConnection connection = new ServiceConnection() {
@@ -146,6 +153,21 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         removeStrokeButton = (Button) findViewById(R.id.remove_stroke_button);
         clearButton = (Button) findViewById(R.id.clear_canvas_button);
         lookAheadCb = (CheckBox) findViewById(R.id.lookAheadCb);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        Dialog dialog = null;
+
+        switch (id) {
+        case KR_USAGE_TIP_DIALOG_ID:
+            dialog = Dialogs.createTipDialog(this, R.string.kr_usage_tip);
+            break;
+        default:
+            dialog = null;
+        }
+
+        return dialog;
     }
 
     public static class RecognizeKanjiHandler extends WsResultHandler {
@@ -399,34 +421,41 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         submitWsTask(task, message);
     }
 
-    private void reconizeKanjiRecognizer(List<Stroke> strokes) {
+    private void reconizeKanjiRecognizer(final List<Stroke> strokes) {
         Analytics.event("recognizeKanjiKr", this);
 
-        try {
-            recognizer.startRecognition(drawView.getWidth(), drawView
-                    .getHeight());
-            int strokeNum = 0;
-            for (Stroke s : strokes) {
-                for (PointF p : s.getPoints()) {
-                    recognizer.addPoint(strokeNum, (int) p.x, (int) p.y);
-                }
-                strokeNum++;
-            }
+        Runnable krTask = new Runnable() {
+            public void run() {
+                try {
+                    recognizer.startRecognition(drawView.getWidth(), drawView
+                            .getHeight());
+                    int strokeNum = 0;
+                    for (Stroke s : strokes) {
+                        for (PointF p : s.getPoints()) {
+                            recognizer
+                                    .addPoint(strokeNum, (int) p.x, (int) p.y);
+                        }
+                        strokeNum++;
+                    }
 
-            String[] candidates = recognizer.recognize(NUM_KR_CANDIDATES);
-            if (candidates != null) {
-                Message msg = handler.obtainMessage(HKR_RESULT, 1, 0);
-                msg.obj = candidates;
-                handler.sendMessage(msg);
-            } else {
-                Message msg = handler.obtainMessage(HKR_RESULT, 0, 0);
-                handler.sendMessage(msg);
+                    String[] candidates = recognizer
+                            .recognize(NUM_KR_CANDIDATES);
+                    if (candidates != null) {
+                        Message msg = handler.obtainMessage(HKR_RESULT, 1, 0);
+                        msg.obj = candidates;
+                        handler.sendMessage(msg);
+                    } else {
+                        Message msg = handler.obtainMessage(HKR_RESULT, 0, 0);
+                        handler.sendMessage(msg);
+                    }
+                } catch (Exception e) {
+                    Log.d(TAG, "error calling recognizer", e);
+                    Message msg = handler.obtainMessage(HKR_RESULT, 0, 0);
+                    handler.sendMessage(msg);
+                }
             }
-        } catch (Exception e) {
-            Log.d(TAG, "error calling recognizer", e);
-            Message msg = handler.obtainMessage(HKR_RESULT, 0, 0);
-            handler.sendMessage(msg);
-        }
+        };
+        submitWsTask(krTask, getResources().getString(R.string.doing_hkr));
     }
 
     public void sendToDictionary(String[] results) {
