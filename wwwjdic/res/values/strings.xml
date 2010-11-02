@@ -269,9 +269,9 @@
     <string name="results_for">%d result(s) for \'%s\'</string>
     <string name="examples_for">%d example(s) for \'%s\'</string>
     <string name="sod_for">Stroke order diagram for \'%s\'</string>
-    <string name="doing_ocr">Doing OCR...</string>
+    <string name="doing_ocr">OCR in progress...</string>
     <string name="candidates">%d candidate(s)</string>
-    <string name="doing_hkr">Doing character recognition...</string>
+    <string name="doing_hkr">Processing...</string>
     <string name="strokes_short">strokes</string>
     <string name="common_short">comm.</string>
     <string name="exact_short">ex.</string>
@@ -320,14 +320,8 @@
     <string name="kr_not_initialized">Kanji Recogninzer not properly initialized.
         Falling back to WS-based recognition.</string>
     <string name="install_kr">To enable this option you need to install the
-        Kanji Recognizer (v.1.1) application first. To get better
-        recognition,
-        start it and download the full recognition model
-        after you install it
-        (Menu->Settings->Full recognition model).
-        Would you like to
-        install it now? (no ads are displayed when used
-        from WWWJDIC)
+        Kanji Recognizer (v.1.1 or above) application first. Start it at least once after installing, so that it can download the recognition model.
+        Would you like to install it now? (no ads are displayed when used from WWWJDIC)
     </string>
     <string name="select_mode">Select mode:</string>
     <string name="enter_japanese_text">Enter Japanese text</string>
@@ -363,4 +357,6 @@
         <item>http://kanji.sljfaq.org/kanji16/kanji-0.016.cgi</item>
         <item>http://kanji.sljfaq.org/kanji.cgi</item>
     </string-array>
+    <string name="tip">Tip</string>
+    <string name="kr_usage_tip">* The \'HKR\'(\'Hand-written Kanji Recognition\') button offers best accuracy, but proper stroke order is required.\n* The \'OCR\' (\'Optical Character Recognition\') button will try to recognize the character you\'ve drawn as an image. Stroke order doesn\'t matter, but recognition is less accurate.</string>
 </resources>

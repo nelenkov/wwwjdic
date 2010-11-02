@@ -32,6 +32,8 @@ public class Constants {
 
     public static final String FAVORITES_HISTORY_SELECTED_TAB_IDX = "org.nick.wwwjdic.favoritesAndHistorySelectedTabIdx";
 
+    public static final String PREF_TIP_SHOWN = "pref_tip_shown";
+
     private Constants() {
     }
 
