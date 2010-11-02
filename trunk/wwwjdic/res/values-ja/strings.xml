@@ -214,8 +214,8 @@
     <string name="remove_stroke">画削除</string>
     <string name="kr_not_initialized">Kanji
         Recogninzerは初期化されていません。Webサービスベース手書き認識を使用します。</string>
-    <string name="install_kr">このオプションを有効にするには、Kanji Recognizer (v.1.1)
-        アプリをインストールする必要があります。インストールしますか? (WWWJDICから利用するときは、報告を表示しません。)
+    <string name="install_kr">このオプションを有効にするには、Kanji Recognizer (v.1.1以上)
+        アプリをインストールする必要があります。手書き認識モデルをインストールするために、Kanji Recognizerを少なくとも一回起動してください。インストールしますか? (WWWJDICから利用するときは、報告を表示しません。)
     </string>
     <string name="select_mode">モード選択:</string>
     <string name="enter_japanese_text">日本語文</string>
@@ -237,4 +237,5 @@
     <string name="kanji_details">漢字詳細</string>
     <string name="appended_to_clipboard">\'%s\'をクリップボードに連結しました。</string>
     <string name="append">クリップボードに連結</string>
+    <string name="kr_usage_tip">* \'HKR\' (手書き漢字認識)ボタンは、一番精度の高い結果を返すが、書き順を守る必要があります。\n* \'OCR\' (光学式文字認識)ボタンは、書いた字を画像として処理します。書き順は無関係が、精度はHKRより低いです。</string>
 </resources>
