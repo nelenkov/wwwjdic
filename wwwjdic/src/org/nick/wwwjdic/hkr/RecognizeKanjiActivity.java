@@ -62,6 +62,10 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
     private static final int HKR_RESULT = 1;
 
+    private static final int HKR_RESULT_TYPE_WS = 0;
+    private static final int HKR_RESULT_TYPE_OCR = 1;
+    private static final int HKR_RESULT_TYPE_KR = 2;
+
     private Button recognizeButton;
     private Button ocrButton;
     private Button removeStrokeButton;
@@ -197,9 +201,15 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                     String[] results = (String[]) msg.obj;
                     krActivity.sendToDictionary(results);
                 } else {
-                    Toast t = Toast.makeText(krActivity, R.string.hkr_failed,
-                            Toast.LENGTH_SHORT);
-                    t.show();
+                    if (msg.arg2 == HKR_RESULT_TYPE_WS) {
+                        Toast t = Toast.makeText(krActivity,
+                                R.string.ws_hkr_failed, Toast.LENGTH_LONG);
+                        t.show();
+                    } else {
+                        Toast t = Toast.makeText(krActivity,
+                                R.string.hkr_failed, Toast.LENGTH_SHORT);
+                        t.show();
+                    }
                 }
                 break;
             default:
@@ -233,12 +243,14 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                         .recognize(strokes, isUseLookahead());
                 Log.i(TAG, "go KR result " + Arrays.asList(results));
 
-                Message msg = handler.obtainMessage(HKR_RESULT, 1, 0);
+                Message msg = handler.obtainMessage(HKR_RESULT, 1,
+                        HKR_RESULT_TYPE_WS);
                 msg.obj = results;
                 handler.sendMessage(msg);
             } catch (Exception e) {
                 Log.e("TAG", "Character recognition failed", e);
-                Message msg = handler.obtainMessage(HKR_RESULT, 0, 0);
+                Message msg = handler.obtainMessage(HKR_RESULT, 0,
+                        HKR_RESULT_TYPE_WS);
                 handler.sendMessage(msg);
             }
         }
@@ -333,17 +345,20 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                         NUM_OCR_CANDIDATES);
 
                 if (candidates != null) {
-                    Message msg = handler.obtainMessage(HKR_RESULT, 1, 0);
+                    Message msg = handler.obtainMessage(HKR_RESULT, 1,
+                            HKR_RESULT_TYPE_OCR);
                     msg.obj = candidates;
                     handler.sendMessage(msg);
                 } else {
                     Log.d("TAG", "OCR failed: null returned");
-                    Message msg = handler.obtainMessage(HKR_RESULT, 0, 0);
+                    Message msg = handler.obtainMessage(HKR_RESULT, 0,
+                            HKR_RESULT_TYPE_OCR);
                     handler.sendMessage(msg);
                 }
             } catch (Exception e) {
                 Log.e("TAG", "OCR failed", e);
-                Message msg = handler.obtainMessage(HKR_RESULT, 0, 0);
+                Message msg = handler.obtainMessage(HKR_RESULT, 0,
+                        HKR_RESULT_TYPE_OCR);
                 handler.sendMessage(msg);
             }
         }
@@ -441,16 +456,19 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                     String[] candidates = recognizer
                             .recognize(NUM_KR_CANDIDATES);
                     if (candidates != null) {
-                        Message msg = handler.obtainMessage(HKR_RESULT, 1, 0);
+                        Message msg = handler.obtainMessage(HKR_RESULT, 1,
+                                HKR_RESULT_TYPE_KR);
                         msg.obj = candidates;
                         handler.sendMessage(msg);
                     } else {
-                        Message msg = handler.obtainMessage(HKR_RESULT, 0, 0);
+                        Message msg = handler.obtainMessage(HKR_RESULT, 0,
+                                HKR_RESULT_TYPE_KR);
                         handler.sendMessage(msg);
                     }
                 } catch (Exception e) {
                     Log.d(TAG, "error calling recognizer", e);
-                    Message msg = handler.obtainMessage(HKR_RESULT, 0, 0);
+                    Message msg = handler.obtainMessage(HKR_RESULT, 0,
+                            HKR_RESULT_TYPE_KR);
                     handler.sendMessage(msg);
                 }
             }
