@@ -1,6 +1,11 @@
 #summary Full changelog
 
 = Changelog =
+ * v1.41 UI improvements
+  * Added backup URL for kanji recognizer web service.
+  * Added context menu (details/copy/append) to recognition candidates.
+  * Added usage tips.
+  * Changed shortcut name.
  * v1.4 Japanese sentence translation support
   * Short Japanese sentence translation (word breakdown) support.
   * Added default dictionary setting.
