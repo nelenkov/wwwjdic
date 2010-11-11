@@ -29,8 +29,12 @@ public class KanjiResultListView extends ResultListViewBase<KanjiEntry> {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        Intent intent = new Intent(this, KanjiEntryDetail.class);
         KanjiEntry entry = entries.get(position);
+        showDetails(entry);
+    }
+
+    private void showDetails(KanjiEntry entry) {
+        Intent intent = new Intent(this, KanjiEntryDetail.class);
         intent.putExtra(Constants.KANJI_ENTRY_KEY, entry);
         setFavoriteId(intent, entry);
 
