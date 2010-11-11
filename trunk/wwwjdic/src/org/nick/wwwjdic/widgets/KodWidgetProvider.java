@@ -18,9 +18,8 @@ import org.apache.http.params.HttpProtocolParams;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.GzipStringResponseHandler;
 import org.nick.wwwjdic.KanjiEntry;
-import org.nick.wwwjdic.KanjiResultListView;
+import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.SearchCriteria;
 import org.nick.wwwjdic.StringUtils;
 import org.nick.wwwjdic.WwwjdicApplication;
 
@@ -103,10 +102,8 @@ public class KodWidgetProvider extends AppWidgetProvider {
 
                 String kod = entries.get(0).getHeadword();
                 Log.d(TAG, "KOD: " + kod);
-                SearchCriteria criteria = SearchCriteria
-                        .createForKanjiOrReading(kod);
-                Intent intent = new Intent(context, KanjiResultListView.class);
-                intent.putExtra(Constants.CRITERIA_KEY, criteria);
+                Intent intent = new Intent(context, KanjiEntryDetail.class);
+                intent.putExtra(Constants.KANJI_ENTRY_KEY, entries.get(0));
                 PendingIntent pendingIntent = PendingIntent.getActivity(
                         context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
