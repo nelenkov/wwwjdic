@@ -49,13 +49,15 @@
         <activity android:name="org.nick.wwwjdic.history.FavoritesAndHistory"></activity>
         <activity android:name="org.nick.wwwjdic.sod.SodActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
-        <receiver android:name="org.nick.wwwjdic.KodWidgetProvider">
+            
+        <receiver android:name="org.nick.wwwjdic.widgets.KodWidgetProvider" android:label="@string/kanji_of_the_day">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/kod_widget_info" />
         </receiver>
+        <service android:name="org.nick.wwwjdic.widgets.KodWidgetProvider$GetKanjiService" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>

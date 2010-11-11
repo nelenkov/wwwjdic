@@ -16,9 +16,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public abstract class ResultListViewBase<T> extends ListActivity implements
         ResultListView<T> {
+
+    private static final String TAG = ResultListViewBase.class.getSimpleName();
 
     private static final String DEFAULT_WWWJDIC_URL = "http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi";
 
@@ -123,6 +126,7 @@ public abstract class ResultListViewBase<T> extends ListActivity implements
     protected void extractSearchCriteria() {
         criteria = (SearchCriteria) getIntent().getSerializableExtra(
                 Constants.CRITERIA_KEY);
+        Log.d(TAG, "query string: " + criteria.getQueryString());
     }
 
     protected String getWwwjdicUrl() {
