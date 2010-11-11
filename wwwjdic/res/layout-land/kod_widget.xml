@@ -11,6 +11,7 @@
         android:background="@drawable/appwidget_button"
         android:clickable="true" android:focusable="true"
         android:orientation="vertical">
+
         <TextView android:id="@+id/kod_text"
             android:layout_width="fill_parent"
             android:layout_height="0dip"
@@ -19,7 +20,7 @@
             android:gravity="center"
             android:textColor="#ffffffff" 
             android:textStyle="bold"
-            android:textSize="28dp"></TextView>
+            android:textSize="24dp"></TextView>
         <TextView android:id="@+id/footer_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -27,7 +28,7 @@
             android:scaleType="fitXY"
             android:gravity="center"
             android:textStyle="bold"
-            android:textSize="9dp"
+            android:textSize="12dp"
             android:text="@string/kanji_of_the_day_jp"></TextView>    
     </LinearLayout>
 </LinearLayout>

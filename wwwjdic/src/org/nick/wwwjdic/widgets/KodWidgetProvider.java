@@ -109,7 +109,7 @@ public class KodWidgetProvider extends AppWidgetProvider {
                 intent.putExtra(Constants.CRITERIA_KEY, criteria);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 PendingIntent pendingIntent = PendingIntent.getActivity(
-                        context, 0, intent, 0);
+                        context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
                 views.setTextViewText(R.id.kod_text, kod);
                 views.setOnClickPendingIntent(R.id.kod_text, pendingIntent);

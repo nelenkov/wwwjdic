@@ -357,4 +357,5 @@
     <string name="tip">Tip</string>
     <string name="kr_usage_tip">* The \'HKR\'(\'Hand-written Kanji Recognition\') button offers best accuracy, but proper stroke order is required.\n* The \'OCR\' (\'Optical Character Recognition\') button will try to recognize the character you\'ve drawn as an image. Stroke order doesn\'t matter, but recognition is less accurate.</string>
     <string name="kanji_of_the_day">Kanji of the Day</string>
+    <string name="kanji_of_the_day_jp">今日の漢字</string>
 </resources>
