@@ -107,7 +107,6 @@ public class KodWidgetProvider extends AppWidgetProvider {
                         .createForKanjiOrReading(kod);
                 Intent intent = new Intent(context, KanjiResultListView.class);
                 intent.putExtra(Constants.CRITERIA_KEY, criteria);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 PendingIntent pendingIntent = PendingIntent.getActivity(
                         context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
