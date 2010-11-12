@@ -57,4 +57,9 @@
     <style name="radical_subscript">
         <item name="android:textSize">12sp</item>
     </style>
+    
+      <style name="kod_loading">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/semi_white</item>
+    </style>
 </resources>
