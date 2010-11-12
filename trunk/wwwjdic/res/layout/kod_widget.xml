@@ -11,6 +11,12 @@
         android:background="@drawable/appwidget_button"
         android:clickable="true" android:focusable="true"
         android:orientation="vertical">
+        <TextView android:id="@+id/kod_message_text"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="@string/widget_loading"
+            style="@style/kod_loading"></TextView> 
         <TextView android:id="@+id/kod_text"
             android:layout_width="fill_parent"
             android:layout_height="0dip"
@@ -19,14 +25,16 @@
             android:textColor="@color/white" 
             android:textStyle="bold"
             android:textSize="36sp" 
-            android:text="E"></TextView>
-        <TextView android:id="@+id/footer_text"
+            android:text="E"
+            android:visibility="gone"></TextView>
+        <TextView android:id="@+id/kod_footer_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/yellow" 
             android:textStyle="bold"
             android:textSize="9sp"
-            android:text="@string/kanji_of_the_day_jp"></TextView>    
+            android:text="@string/kanji_of_the_day_jp"
+            android:visibility="gone"></TextView>    
     </LinearLayout>
 </LinearLayout>

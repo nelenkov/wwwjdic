@@ -8,6 +8,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +38,7 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 public class GetKanjiService extends Service {
@@ -57,14 +60,11 @@ public class GetKanjiService extends Service {
 
     private final RandomJisGenerator jisGenerator = new RandomJisGenerator();
 
+    private final Executor executor = Executors.newSingleThreadExecutor();
+
     @Override
     public void onStart(Intent intent, int startId) {
-        RemoteViews updateViews = buildUpdate(this);
-
-        ComponentName thisWidget = new ComponentName(this,
-                KodWidgetProvider.class);
-        AppWidgetManager manager = AppWidgetManager.getInstance(this);
-        manager.updateAppWidget(thisWidget, updateViews);
+        executor.execute(new GetKanjiTask());
     }
 
     @Override
@@ -72,10 +72,28 @@ public class GetKanjiService extends Service {
         return null;
     }
 
+    private class GetKanjiTask implements Runnable {
+        public void run() {
+            RemoteViews updateViews = buildUpdate(GetKanjiService.this);
+
+            ComponentName thisWidget = new ComponentName(GetKanjiService.this,
+                    KodWidgetProvider.class);
+            AppWidgetManager manager = AppWidgetManager
+                    .getInstance(GetKanjiService.this);
+            manager.updateAppWidget(thisWidget, updateViews);
+
+            stopSelf();
+        }
+    }
+
     private RemoteViews buildUpdate(Context context) {
         RemoteViews views = null;
 
         try {
+            views = new RemoteViews(context.getPackageName(),
+                    R.layout.kod_widget);
+            showLoading(views);
+
             HttpClient client = createHttpClient(getWwwjdicUrl(),
                     getHttpTimeoutSeconds() * 1000);
             String jisCode = jisGenerator.generate();
@@ -87,11 +105,8 @@ public class GetKanjiService extends Service {
             Log.d(TAG, "WWWJDIC response " + wwwjdicResponse);
             List<KanjiEntry> entries = parseResult(wwwjdicResponse);
 
-            views = new RemoteViews(context.getPackageName(),
-                    R.layout.kod_widget);
-
             if (entries.isEmpty()) {
-                views.setTextViewText(R.id.kod_text, "E");
+                showError(views);
 
                 return views;
             }
@@ -107,6 +122,7 @@ public class GetKanjiService extends Service {
 
             views.setTextViewText(R.id.kod_text, kod);
             views.setOnClickPendingIntent(R.id.kod_text, pendingIntent);
+            clearLoading(views);
 
             return views;
 
@@ -114,10 +130,32 @@ public class GetKanjiService extends Service {
             Log.e(TAG, "Couldn't contact WWWJDIC", e);
             views = new RemoteViews(context.getPackageName(),
                     R.layout.kod_widget);
-            views.setTextViewText(R.id.kod_text, "E");
+            showError(views);
 
             return views;
         }
+    }
+
+    private void showError(RemoteViews views) {
+        views.setViewVisibility(R.id.kod_message_text, View.VISIBLE);
+        views.setTextViewText(R.id.kod_message_text, getResources().getString(
+                R.string.error));
+        views.setViewVisibility(R.id.kod_text, View.GONE);
+        views.setViewVisibility(R.id.kod_footer_text, View.GONE);
+    }
+
+    private void showLoading(RemoteViews views) {
+        views.setTextViewText(R.id.kod_message_text, getResources().getString(
+                R.string.widget_loading));
+        views.setViewVisibility(R.id.kod_message_text, View.VISIBLE);
+        views.setViewVisibility(R.id.kod_text, View.GONE);
+        views.setViewVisibility(R.id.kod_footer_text, View.GONE);
+    }
+
+    private void clearLoading(RemoteViews views) {
+        views.setViewVisibility(R.id.kod_message_text, View.GONE);
+        views.setViewVisibility(R.id.kod_text, View.VISIBLE);
+        views.setViewVisibility(R.id.kod_footer_text, View.VISIBLE);
     }
 
     private HttpClient createHttpClient(String url, int timeoutMillis) {
