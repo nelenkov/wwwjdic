@@ -238,4 +238,6 @@
     <string name="appended_to_clipboard">\'%s\'をクリップボードに連結しました。</string>
     <string name="append">クリップボードに連結</string>
     <string name="kr_usage_tip">* \'HKR\' (手書き漢字認識)ボタンは、一番精度の高い結果を返すが、書き順を守る必要があります。\n* \'OCR\' (光学式文字認識)ボタンは、書いた字を画像として処理します。書き順は無関係が、精度はHKRより低いです。</string>
+    <string name="kanji_of_the_day">今日の漢字</string>
+    <string name="widget_loading">読み込み中...</string>
 </resources>
