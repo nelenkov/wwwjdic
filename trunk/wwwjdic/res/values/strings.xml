@@ -359,4 +359,7 @@
     <string name="kanji_of_the_day">Kanji of the Day</string>
     <string name="kanji_of_the_day_jp">今日の漢字</string>
     <string name="widget_loading">Loading...</string>
+    <string name="getting_sod_info">Getting SOD info...</string>
+    <string name="no_sod_data">No SOD data for \'%s\'</string>
+    <string name="getting_sod_data_failed">Getting SOD data failed</string>
 </resources>

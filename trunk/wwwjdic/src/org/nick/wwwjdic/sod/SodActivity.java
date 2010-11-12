@@ -57,15 +57,14 @@ public class SodActivity extends WebServiceBackedActivity implements
                             sodActivity.drawSod(strokes);
                         }
                     } else {
-                        Toast t = Toast.makeText(sodActivity,
-                                String.format("No SOD data for '%s'",
-                                        sodActivity.getKanji()),
-                                Toast.LENGTH_SHORT);
+                        Toast t = Toast.makeText(sodActivity, String.format(
+                                sodActivity.getString(R.string.no_sod_data),
+                                sodActivity.getKanji()), Toast.LENGTH_SHORT);
                         t.show();
                     }
                 } else {
                     Toast t = Toast.makeText(sodActivity,
-                            "Getting SOD data failed", Toast.LENGTH_SHORT);
+                            R.string.getting_sod_data_failed, Toast.LENGTH_SHORT);
                     t.show();
                 }
                 break;
@@ -294,7 +293,8 @@ public class SodActivity extends WebServiceBackedActivity implements
         if (strokes == null) {
             Runnable getStrokesTask = new GetStrokePathTask(unicodeNumber,
                     false, httpClient, handler);
-            submitWsTask(getStrokesTask, "Getting SOD info...");
+            submitWsTask(getStrokesTask, getResources().getString(
+                    R.string.getting_sod_info));
         } else {
             drawSod(strokes);
         }
@@ -306,7 +306,8 @@ public class SodActivity extends WebServiceBackedActivity implements
         if (strokes == null) {
             Runnable getStrokesTask = new GetStrokePathTask(unicodeNumber,
                     true, httpClient, handler);
-            submitWsTask(getStrokesTask, "Getting SOD info...");
+            submitWsTask(getStrokesTask, getResources().getString(
+                    R.string.getting_sod_info));
         } else {
             animate(strokes);
         }
