@@ -15,19 +15,18 @@
             android:layout_width="fill_parent"
             android:layout_height="0dip"
             android:layout_weight="1"
-            android:scaleType="center"
             android:gravity="center"
-            android:textColor="#ffffffff" 
+            android:textColor="@color/white" 
             android:textStyle="bold"
-            android:textSize="28dp"></TextView>
+            android:textSize="36sp" 
+            android:text="E"></TextView>
         <TextView android:id="@+id/footer_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textColor="#ffffffaa" 
-            android:scaleType="fitXY"
             android:gravity="center"
+            android:textColor="@color/yellow" 
             android:textStyle="bold"
-            android:textSize="9dp"
+            android:textSize="9sp"
             android:text="@string/kanji_of_the_day_jp"></TextView>    
     </LinearLayout>
 </LinearLayout>

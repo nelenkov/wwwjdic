@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.nick.wwwjdic" 
-    android:installLocation="auto" 
+    package="org.nick.wwwjdic" android:installLocation="auto"
     android:versionName="1.41" android:versionCode="20">
     <application android:icon="@drawable/icon"
         android:label="@string/app_name" android:debuggable="false"
@@ -30,7 +29,8 @@
             android:label="@string/searching" android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name="org.nick.wwwjdic.SentenceBreakdown"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
-        <activity android:name="org.nick.wwwjdic.KanjiEntryDetail"></activity>
+        <activity android:name="org.nick.wwwjdic.KanjiEntryDetail"
+            android:taskAffinity=""></activity>
         <activity android:name="org.nick.wwwjdic.RadicalChart"></activity>
         <activity android:name="org.nick.wwwjdic.WwwjdicPreferences"></activity>
         <activity android:name="org.nick.wwwjdic.ocr.OcrActivity"
@@ -50,15 +50,16 @@
         <activity android:name="org.nick.wwwjdic.history.FavoritesAndHistory"></activity>
         <activity android:name="org.nick.wwwjdic.sod.SodActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
-            
-        <receiver android:name="org.nick.wwwjdic.widgets.KodWidgetProvider" android:label="@string/kanji_of_the_day">
+
+        <receiver android:name="org.nick.wwwjdic.widgets.KodWidgetProvider"
+            android:label="@string/kanji_of_the_day">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/kod_widget_info" />
         </receiver>
-        <service android:name="org.nick.wwwjdic.widgets.KodWidgetProvider$GetKanjiService" />
+        <service android:name="org.nick.wwwjdic.widgets.GetKanjiService" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
@@ -66,8 +67,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
-    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.flash"
+        android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen"
+        android:required="false" />
     <uses-sdk android:minSdkVersion="3"
         android:targetSdkVersion="8" />
 </manifest> 
