@@ -2,22 +2,21 @@ package org.nick.wwwjdic.history;
 
 import org.nick.wwwjdic.DictionaryEntry;
 import org.nick.wwwjdic.KanjiEntry;
+import org.nick.wwwjdic.StringUtils;
 import org.nick.wwwjdic.WwwjdicEntry;
-
-import android.text.TextUtils;
 
 public class FavoritesEntryParser {
 
-    private static final int NUM_RECORDS = 4;
+    private static final int NUM_FIELDS = 4;
 
     public static final int TYPE_IDX = 0;
     public static final int HEADWORD_IDX = 1;
     public static final int DICT_STR_IDX = 2;
     public static final int TIME_IDX = 3;
 
-    private static final int HEADWORD_DETAILS_IDX = 0;
-    private static final int READING_IDX = 1;
-    private static final int TRANSLATION_IDX = 2;
+    private static final int DICT_DETAILS_NUM_FIELDS = 3;
+
+    private static final int KANJI_DETAILS_NUM_FIELDS = 17;
 
     private static final int TYPE_DICT = 0;
     private static final int TYPE_KANJI = 1;
@@ -26,7 +25,7 @@ public class FavoritesEntryParser {
     }
 
     public static String[] toStringArray(WwwjdicEntry entry, long time) {
-        String[] result = new String[NUM_RECORDS];
+        String[] result = new String[NUM_FIELDS];
         result[TYPE_IDX] = entry.isKanji() ? "1" : "0";
         result[HEADWORD_IDX] = entry.getHeadword();
         result[DICT_STR_IDX] = entry.getDictString();
@@ -35,12 +34,53 @@ public class FavoritesEntryParser {
         return result;
     }
 
-    public static String[] toFieldsStringArray(WwwjdicEntry entry, long time) {
-        String[] result = new String[3];
-        result[HEADWORD_DETAILS_IDX] = entry.getHeadword();
-        DictionaryEntry de = (DictionaryEntry) entry;
-        result[READING_IDX] = de.getReading();
-        result[TRANSLATION_IDX] = TextUtils.join("\n", de.getMeanings());
+    public static String[] toFieldsStringArray(WwwjdicEntry entry) {
+        if (entry.isKanji()) {
+            return generateKanjiCsv((KanjiEntry) entry);
+        }
+
+        return generateDictCsv((DictionaryEntry) entry);
+    }
+
+    private static String[] generateKanjiCsv(KanjiEntry entry) {
+        String[] result = new String[KANJI_DETAILS_NUM_FIELDS];
+
+        int idx = 0;
+        result[idx++] = entry.getKanji();
+
+        result[idx++] = entry.getOnyomi();
+        result[idx++] = entry.getKunyomi();
+        result[idx++] = entry.getNanori();
+        result[idx++] = entry.getRadicalName();
+        result[idx++] = Integer.toString(entry.getRadicalNumber());
+        result[idx++] = Integer.toString(entry.getStrokeCount());
+        result[idx++] = toStr(entry.getClassicalRadicalNumber());
+        String meaningStr = StringUtils.join(entry.getMeanings(), "\n", 0);
+        result[idx++] = meaningStr;
+
+        result[idx++] = entry.getJisCode();
+        result[idx++] = entry.getUnicodeNumber();
+        result[idx++] = toStr(entry.getFrequncyeRank());
+        result[idx++] = toStr(entry.getGrade());
+        result[idx++] = toStr(entry.getJlptLevel());
+        result[idx++] = entry.getSkipCode();
+
+        result[idx++] = entry.getKoreanReading();
+        result[idx++] = entry.getPinyin();
+
+        return result;
+    }
+
+    private static String toStr(Integer i) {
+        return i == null ? null : i.toString();
+    }
+
+    private static String[] generateDictCsv(DictionaryEntry entry) {
+        String[] result = new String[DICT_DETAILS_NUM_FIELDS];
+        int idx = 0;
+        result[idx++] = entry.getWord();
+        result[idx++] = entry.getReading();
+        result[idx++] = StringUtils.join(entry.getMeanings(), "\n", 0);
 
         return result;
     }

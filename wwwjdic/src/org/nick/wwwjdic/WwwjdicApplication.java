@@ -1,6 +1,7 @@
 package org.nick.wwwjdic;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
@@ -10,10 +11,16 @@ import android.app.Application;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
+import android.os.Environment;
+import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
 
 public class WwwjdicApplication extends Application {
+
+    private static final String TAG = WwwjdicApplication.class.getSimpleName();
+
+    private static final String WWWJDIC_DIR = "wwwjdic";
 
     private ExecutorService executorService;
 
@@ -28,7 +35,26 @@ public class WwwjdicApplication extends Application {
         flurryKey = readKey();
         FlurryAgent.setCaptureUncaughtExceptions(false);
 
+        createWwwjdicDirIfNecessary();
+
         initRadicals();
+    }
+
+    private void createWwwjdicDirIfNecessary() {
+        File wwwjdicDir = getWwwjdicDir();
+        if (!wwwjdicDir.exists()) {
+            boolean success = wwwjdicDir.mkdir();
+            if (success) {
+                Log.d(TAG, "successfully created "
+                        + wwwjdicDir.getAbsolutePath());
+            } else {
+                Log.d(TAG, "failed to create " + wwwjdicDir.getAbsolutePath());
+            }
+        }
+    }
+
+    public static File getWwwjdicDir() {
+        return new File(Environment.getExternalStorageDirectory(), WWWJDIC_DIR);
     }
 
     private String getVersionName() {
