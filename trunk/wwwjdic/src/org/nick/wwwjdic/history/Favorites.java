@@ -417,6 +417,42 @@ public class Favorites extends HistoryBase implements
     }
 
     @Override
+    protected void exportItems() {
+        final CharSequence[] items = { "Local backup", "Google Docs" };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Export favorites to");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                switch (item) {
+                case 0:
+                    Favorites.super.exportItems();
+                    break;
+                case 1:
+                    exportToGDocs();
+                    break;
+                default:
+                    // do noting
+                }
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void exportToGDocs() {
+        String exportFile = getImportExportFilename();
+        //
+        File f = new File(exportFile);
+        sendData = new SendData();
+        sendData.contentLength = f.length();
+        sendData.contentType = "text/csv";
+        sendData.fileName = exportFile;
+
+        gotAccount(false);
+    }
+
+    @Override
     protected void doExport(final String exportFile) {
         CSVWriter writer = null;
 
@@ -425,26 +461,24 @@ public class Favorites extends HistoryBase implements
 
             writer = new CSVWriter(new FileWriter(exportFile));
 
+            String[] header = new String[] { "Headword", "Reading(s)",
+                    "Translation(s)" };
+            writer.writeNext(header);
+
             int count = 0;
             while (c.moveToNext()) {
                 WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
                 long time = c.getLong(c.getColumnIndex("time"));
-                String[] entryStr = FavoritesEntryParser.toStringArray(entry,
-                        time);
+                // String[] entryStr = FavoritesEntryParser.toStringArray(entry,
+                // time);
+                String[] entryStr = FavoritesEntryParser.toFieldsStringArray(
+                        entry, time);
                 writer.writeNext(entryStr);
                 count++;
             }
 
             writer.flush();
             writer.close();
-            //
-            File f = new File(exportFile);
-            sendData = new SendData();
-            sendData.contentLength = f.length();
-            sendData.contentType = "text/csv";
-            sendData.fileName = exportFile;
-
-            gotAccount(false);
 
             Analytics.event("favoritesExport", this);
 

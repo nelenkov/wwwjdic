@@ -4,6 +4,8 @@ import org.nick.wwwjdic.DictionaryEntry;
 import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.WwwjdicEntry;
 
+import android.text.TextUtils;
+
 public class FavoritesEntryParser {
 
     private static final int NUM_RECORDS = 4;
@@ -12,6 +14,10 @@ public class FavoritesEntryParser {
     public static final int HEADWORD_IDX = 1;
     public static final int DICT_STR_IDX = 2;
     public static final int TIME_IDX = 3;
+
+    private static final int HEADWORD_DETAILS_IDX = 0;
+    private static final int READING_IDX = 1;
+    private static final int TRANSLATION_IDX = 2;
 
     private static final int TYPE_DICT = 0;
     private static final int TYPE_KANJI = 1;
@@ -25,6 +31,16 @@ public class FavoritesEntryParser {
         result[HEADWORD_IDX] = entry.getHeadword();
         result[DICT_STR_IDX] = entry.getDictString();
         result[TIME_IDX] = Long.toString(time);
+
+        return result;
+    }
+
+    public static String[] toFieldsStringArray(WwwjdicEntry entry, long time) {
+        String[] result = new String[3];
+        result[HEADWORD_DETAILS_IDX] = entry.getHeadword();
+        DictionaryEntry de = (DictionaryEntry) entry;
+        result[READING_IDX] = de.getReading();
+        result[TRANSLATION_IDX] = TextUtils.join("\n", de.getMeanings());
 
         return result;
     }
