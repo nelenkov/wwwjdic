@@ -45,9 +45,12 @@
             </intent-filter>
         </activity>
         <activity android:name="org.nick.wwwjdic.hkr.HkrCandidates"></activity>
-        <activity android:name="org.nick.wwwjdic.history.Favorites"></activity>
-        <activity android:name="org.nick.wwwjdic.history.SearchHistory"></activity>
-        <activity android:name="org.nick.wwwjdic.history.FavoritesAndHistory"></activity>
+        <activity android:name="org.nick.wwwjdic.history.Favorites"
+            android:configChanges="orientation|keyboardHidden|keyboard"></activity>
+        <activity android:name="org.nick.wwwjdic.history.SearchHistory"
+            android:configChanges="orientation|keyboardHidden|keyboard"></activity>
+        <activity android:name="org.nick.wwwjdic.history.FavoritesAndHistory"
+            android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name="org.nick.wwwjdic.sod.SodActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
 
