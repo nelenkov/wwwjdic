@@ -7,8 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
@@ -96,6 +94,9 @@ public class Favorites extends HistoryBase implements
         AtomParser parser = new AtomParser();
         parser.namespaceDictionary = Namespace.DICTIONARY;
         transport.addParser(parser);
+
+        // for wire debugging
+        // Logger.getLogger("com.google.api.client").setLevel(Level.ALL);
     }
 
     @Override
@@ -210,26 +211,24 @@ public class Favorites extends HistoryBase implements
         authenticated();
     }
 
-    static class SendData {
+    static class UploadData {
         String filename;
         String localFilename;
         String contentType;
         long contentLength;
 
-        SendData() {
+        UploadData() {
         }
     }
 
-    private SendData sendData;
+    private UploadData uploadData;
 
     private class GDocsExportTask extends AsyncTask<Void, Object, Boolean> {
 
         private Throwable error;
         private boolean tokenExpired = false;
-        private SendData sendData;
 
-        GDocsExportTask(SendData sendData) {
-            this.sendData = sendData;
+        GDocsExportTask() {
         }
 
         @Override
@@ -258,12 +257,12 @@ public class Favorites extends HistoryBase implements
                 HttpRequest request = transport.buildPostRequest();
                 request.url = DocsUrl.forDefaultPrivateFull();
                 ((GoogleHeaders) request.headers)
-                        .setSlugFromFileName(sendData.filename);
+                        .setSlugFromFileName(uploadData.filename);
                 InputStreamContent content = new InputStreamContent();
                 content.inputStream = new FileInputStream(
-                        sendData.localFilename);
-                content.type = sendData.contentType;
-                content.length = sendData.contentLength;
+                        uploadData.localFilename);
+                content.type = uploadData.contentType;
+                content.length = uploadData.contentLength;
                 request.content = content;
                 request.execute().ignore();
 
@@ -290,6 +289,7 @@ public class Favorites extends HistoryBase implements
             } catch (IOException e) {
                 error = e;
                 Log.d(TAG, "Error uploading to Google docs", e);
+                deleteTempFile();
 
                 return false;
             }
@@ -304,7 +304,7 @@ public class Favorites extends HistoryBase implements
 
         private void deleteTempFile() {
             Log.d(TAG, "Google docs upload cancelled, deleting temp files...");
-            File f = new File(sendData.localFilename);
+            File f = new File(uploadData.localFilename);
             boolean success = f.delete();
             if (success) {
                 Log.d(TAG, "successfully deleted " + f.getAbsolutePath());
@@ -329,35 +329,20 @@ public class Favorites extends HistoryBase implements
             String template = result ? r
                     .getString(R.string.gdocs_upload_success) : r
                     .getString(R.string.gdocs_upload_failure);
-            String message = result ? String
-                    .format(template, sendData.filename) : String.format(
-                    template, error.getMessage());
+            String message = result ? String.format(template,
+                    uploadData.filename) : String.format(template, error
+                    .getMessage());
             Toast t = Toast
                     .makeText(Favorites.this, message, Toast.LENGTH_LONG);
+            uploadData = null;
             t.show();
         }
     }
 
     private void authenticated() {
-        if (sendData != null && sendData.filename != null) {
-            try {
-                GDocsExportTask task = new GDocsExportTask(sendData);
-                task.execute(new Void[] {});
-            } finally {
-                sendData = null;
-            }
-        }
-    }
-
-    private void setLogging(boolean logging) {
-        Logger.getLogger("com.google.api.client").setLevel(Level.ALL);
-        SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        boolean currentSetting = settings.getBoolean("logging", false);
-        if (currentSetting != logging) {
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putBoolean("logging", logging);
-            editor.commit();
+        if (uploadData != null && uploadData.filename != null) {
+            GDocsExportTask task = new GDocsExportTask();
+            task.execute(new Void[] {});
         }
     }
 
@@ -567,9 +552,9 @@ public class Favorites extends HistoryBase implements
 
     private void exportToCsv(String exportFile, Writer w, boolean showMessages) {
         CSVWriter writer = null;
-
+        Cursor c = null;
         try {
-            final Cursor c = filterCursor();
+            c = filterCursor();
             writer = new CSVWriter(w);
 
             boolean isKanji = selectedFilter == FILTER_KANJI;
@@ -583,7 +568,7 @@ public class Favorites extends HistoryBase implements
             while (c.moveToNext()) {
                 WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
                 String[] entryStr = FavoritesEntryParser
-                        .toFieldsStringArray(entry);
+                        .toParsedStringArray(entry);
                 writer.writeNext(entryStr);
                 count++;
             }
@@ -618,6 +603,9 @@ public class Favorites extends HistoryBase implements
                     Log.w(TAG, "error closing CSV writer", e);
                 }
             }
+            if (c != null) {
+                c.close();
+            }
         }
     }
 
@@ -642,11 +630,11 @@ public class Favorites extends HistoryBase implements
             Writer writer = new FileWriter(f);
             exportToCsv(f.getAbsolutePath(), writer, false);
 
-            sendData = new SendData();
-            sendData.contentLength = f.length();
-            sendData.contentType = "text/csv";
-            sendData.filename = filename;
-            sendData.localFilename = f.getAbsolutePath();
+            uploadData = new UploadData();
+            uploadData.contentLength = f.length();
+            uploadData.contentType = "text/csv";
+            uploadData.filename = filename;
+            uploadData.localFilename = f.getAbsolutePath();
 
             gotAccount(false);
         } catch (IOException e) {
@@ -660,9 +648,10 @@ public class Favorites extends HistoryBase implements
     @Override
     protected void doExport(final String exportFile) {
         CSVWriter writer = null;
+        Cursor c = null;
 
         try {
-            final Cursor c = filterCursor();
+            c = filterCursor();
             writer = new CSVWriter(new FileWriter(exportFile));
 
             int count = 0;
@@ -686,8 +675,7 @@ public class Favorites extends HistoryBase implements
                     exportFile, count), Toast.LENGTH_SHORT);
             t.show();
 
-            // } catch (IOException e) {
-        } catch (Exception e) {
+        } catch (IOException e) {
             String message = getResources().getString(R.string.export_error);
             Toast.makeText(Favorites.this,
                     String.format(message, e.getMessage()), Toast.LENGTH_SHORT)
@@ -699,6 +687,9 @@ public class Favorites extends HistoryBase implements
                 } catch (IOException e) {
                     Log.w(TAG, "error closing CSV writer", e);
                 }
+            }
+            if (c != null) {
+                c.close();
             }
         }
     }
