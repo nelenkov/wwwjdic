@@ -196,7 +196,9 @@
     <string name="ocr">OCR</string>
     <string name="write_kanji">Write kanji</string>
     <string name="hkr_failed">Character recognition failed</string>
-    <string name="ws_hkr_failed">Character recognition failed. If the problem persists, try setting the kanji recognizer URL to \'backup\' in Settings.</string>
+    <string name="ws_hkr_failed">Character recognition failed. If the problem
+        persists, try setting the kanji recognizer URL to \'backup\' in
+        Settings.</string>
     <string name="sd_file_create_failed">Could not create temp file on SD card.</string>
     <string name="af_failed">A/F failed</string>
     <string name="ocr_failed">OCR failed</string>
@@ -235,7 +237,10 @@
     <string name="uses_kanjivg">Uses KanjiVG</string>
     <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Added backup URL for kanji recognizer web service (Settings).\n* Added context menu (details/copy/append) to recognition candiates (long press to display).\n* Added usage tips.\n* Changed shortcut name.
+    <string name="whats_new">* Added backup URL for kanji recognizer web
+        service (Settings).\n* Added context menu (details/copy/append)
+        to recognition candiates (long press to display).\n* Added usage
+        tips.\n* Changed shortcut name.
     </string>
     <!--  for cropper -->
     <string name="crop_save_text">Crop</string>
@@ -317,8 +322,11 @@
     <string name="kr_not_initialized">Kanji Recogninzer not properly initialized.
         Falling back to WS-based recognition.</string>
     <string name="install_kr">To enable this option you need to install the
-        Kanji Recognizer (v.1.1 or above) application first. Start it at least once after installing, so that it can download the recognition model.
-        Would you like to install it now? (no ads are displayed when used from WWWJDIC)
+        Kanji Recognizer (v.1.1 or above) application first. Start it at
+        least once after installing, so that it can download the
+        recognition model.
+        Would you like to install it now? (no ads are
+        displayed when used from WWWJDIC)
     </string>
     <string name="select_mode">Select mode:</string>
     <string name="enter_japanese_text">Enter Japanese text</string>
@@ -355,11 +363,54 @@
         <item>http://kanji.sljfaq.org/kanji.cgi</item>
     </string-array>
     <string name="tip">Tip</string>
-    <string name="kr_usage_tip">* The \'HKR\'(\'Hand-written Kanji Recognition\') button offers best accuracy, but proper stroke order is required.\n* The \'OCR\' (\'Optical Character Recognition\') button will try to recognize the character you\'ve drawn as an image. Stroke order doesn\'t matter, but recognition is less accurate.</string>
+    <string name="kr_usage_tip">* The \'HKR\'(\'Hand-written Kanji
+        Recognition\') button offers best accuracy, but proper stroke
+        order is required.\n* The \'OCR\' (\'Optical Character
+        Recognition\') button will try to recognize the character
+        you\'ve drawn as an image. Stroke order doesn\'t matter, but
+        recognition is less accurate.</string>
     <string name="kanji_of_the_day">Kanji of the Day</string>
     <string name="kanji_of_the_day_jp">今日の漢字</string>
     <string name="widget_loading">Loading...</string>
     <string name="getting_sod_info">Getting SOD info...</string>
     <string name="no_sod_data">No SOD data for \'%s\'</string>
     <string name="getting_sod_data_failed">Getting SOD data failed</string>
+    <string-array name="dict_csv_headers">
+        <item>Headword</item>
+        <item>Reading(s)</item>
+        <item>Translation(s)</item>
+    </string-array>
+    <string-array name="kanji_csv_headers">
+        <item>Kanji</item>
+        <item>Onyomi</item>
+        <item>Kunyomi</item>
+        <item>Nanori</item>
+        <item>Radical name</item>
+        
+        <item>Radical number</item>
+        <item>Stroke count</item>
+        <item>Classical radical number</item>
+        
+        <item>Meaning(s)</item>
+
+        <item>JIS code</item>
+        <item>Unicode number</item>
+        <item>Frequecy rank</item>
+        <item>Grade</item>
+        <item>JLPT level</item>
+        <item>SKIP code</item>
+        <item>Korean reading</item>
+        <item>Pinyin</item>
+    </string-array>
+    <string-array name="favorites_export_dialog_items">
+        <item>Local backup</item>
+        <item>Local CSV</item>
+        <item>Google Docs</item>
+        <item>Anki deck</item>
+    </string-array>
+    <string name="favorites_export_dialog_title">Export favorites to</string>
+    <string name="uploading_to_gdocs">Uploading to Google Docs...</string>
+    <string name="gdocs_upload_success">Uploaded \'%s\' to Google Docs.</string>
+    <string name="gdocs_upload_failure">Error uploading to Google Docs: %s</string>
+    <string name="select_google_account">Select a Google account</string>
 </resources>
