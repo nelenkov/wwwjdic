@@ -114,9 +114,9 @@ public class SearchHistory extends HistoryBase {
     @Override
     protected void doExport(String filename) {
         CSVWriter writer = null;
-
+        Cursor c = null;
         try {
-            Cursor c = filterCursor();
+            c = filterCursor();
 
             writer = new CSVWriter(new FileWriter(filename));
 
@@ -149,6 +149,9 @@ public class SearchHistory extends HistoryBase {
                 } catch (IOException e) {
                     Log.w(TAG, "error closing CSV writer", e);
                 }
+            }
+            if (c != null) {
+                c.close();
             }
         }
     }

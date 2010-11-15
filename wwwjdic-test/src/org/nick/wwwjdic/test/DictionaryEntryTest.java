@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.nick.wwwjdic.DictionaryEntry;
+import org.nick.wwwjdic.history.FavoritesEntryParser;
 
 public class DictionaryEntryTest {
 
@@ -45,47 +46,47 @@ public class DictionaryEntryTest {
     @Test
     public void testEdict() throws Exception {
         System.out.println("Testing EDICT...");
-        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/edict");
+        testEdictFile("/home/nick/android/wwwjdic/wwwjdic-test/dict/edict");
     }
 
     @Test
     public void testEdiclsd() throws Exception {
-        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/ediclsd4");
+        testEdictFile("/home/nick/android/wwwjdic/wwwjdic-test/dict/ediclsd4");
     }
 
     @Test
     public void testLawgledt() throws Exception {
-        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/lawgledt");
+        testEdictFile("/home/nick/android/wwwjdic/wwwjdic-test/dict/lawgledt");
     }
 
     @Test
     public void testCompdic() throws Exception {
-        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/compdic");
+        testEdictFile("/home/nick/android/wwwjdic/wwwjdic-test/dict/compdic");
     }
 
     @Test
     public void testEngscidic() throws Exception {
-        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/engscidic");
+        testEdictFile("/home/nick/android/wwwjdic/wwwjdic-test/dict/engscidic");
     }
 
     @Test
     public void testRiverwater() throws Exception {
-        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/riverwater");
+        testEdictFile("/home/nick/android/wwwjdic/wwwjdic-test/dict/riverwater");
     }
 
     @Test
     public void testBuddhdic() throws Exception {
-        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/Buddhdic_jp_euc.txt");
+        testEdictFile("/home/nick/android/wwwjdic/wwwjdic-test/dict/Buddhdic_jp_euc.txt");
     }
 
     @Test
     public void testFindic() throws Exception {
-        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/findic");
+        testEdictFile("/home/nick/android/wwwjdic/wwwjdic-test/dict/findic");
     }
 
     @Test
     public void testLingdic() throws Exception {
-        testEdictFile("C:/home/nick/android/wwwjdic/wwwjdic-test/dict/lingdic");
+        testEdictFile("/home/nick/android/wwwjdic/wwwjdic-test/dict/lingdic");
     }
 
     private void testEdictFile(String filename) throws Exception {
@@ -113,6 +114,12 @@ public class DictionaryEntryTest {
             assertNotNull(e);
             assertNotNull(e.getWord());
             assertNotNull(e.getTranslationString());
+
+            String[] fields = FavoritesEntryParser.toParsedStringArray(e);
+            assertNotNull(fields);
+            assertEquals(3, fields.length);
+            assertEquals(e.getWord(), fields[0]);
+            assertEquals(e.getReading(), fields[1]);
         }
     }
 }

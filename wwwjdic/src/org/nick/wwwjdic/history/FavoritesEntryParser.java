@@ -34,7 +34,7 @@ public class FavoritesEntryParser {
         return result;
     }
 
-    public static String[] toFieldsStringArray(WwwjdicEntry entry) {
+    public static String[] toParsedStringArray(WwwjdicEntry entry) {
         if (entry.isKanji()) {
             return generateKanjiCsv((KanjiEntry) entry);
         }
