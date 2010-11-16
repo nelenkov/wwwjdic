@@ -174,6 +174,20 @@
         <item>Sweden</item>
         <item>USA</item>
     </string-array>
+     <string-array name="wwwjdic_mirror_coords">
+        <!-- Sydney -->
+        <item>033:51:35/151:12:40</item>
+        <!-- Toronto -->
+        <item>043:42:59/079:20:26</item>
+        <!-- Vienna -->
+        <item>048:12:32/016:22:21</item>
+        <!-- Tokyo -->
+        <item>035:42:20/139:42:54</item>
+        <!-- Stockholm -->
+        <item>059:21:00/018:04:00</item>
+        <!-- New York -->
+        <item>040:43:00/074:00:00</item>
+    </string-array>
     <string-array name="wwwjdic_mirror_urls">
         <item>http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi
         </item>
@@ -413,4 +427,6 @@
     <string name="gdocs_upload_success">Uploaded \'%s\' to Google Docs.</string>
     <string name="gdocs_upload_failure">Error uploading to Google Docs: %s</string>
     <string name="select_google_account">Select a Google account</string>
+    <string name="pref_auto_select_mirror">Mirror auto select</string>
+    <string name="pref_auto_select_mirror_summary">Automatically select closest WWWJDIC mirror.</string>
 </resources>

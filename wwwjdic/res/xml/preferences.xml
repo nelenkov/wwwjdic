@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/pref_wwwjdic">
+      <CheckBoxPreference android:key="pref_auto_select_mirror"
+            android:title="@string/pref_auto_select_mirror"
+            android:summary="@string/pref_auto_select_mirror_summary"
+            android:defaultValue="true" android:disableDependentsState="true"/>
         <ListPreference android:title="@string/pref_wwwjdic_mirror"
             android:key="pref_wwwjdic_mirror_url"
             android:defaultValue="http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi"
             android:entries="@array/wwwjdic_mirror_names"
-            android:entryValues="@array/wwwjdic_mirror_urls" />
+            android:entryValues="@array/wwwjdic_mirror_urls" android:dependency="pref_auto_select_mirror"/>
         <EditTextPreference android:key="pref_wwwjdic_timeout"
             android:title="@string/pref_wwwjdic_timeout"
             android:summary="@string/pref_timeout_summary"
