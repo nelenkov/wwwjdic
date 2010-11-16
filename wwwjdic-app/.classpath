@@ -3,9 +3,17 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="src" path="Wwwjdic"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/Wwwjdic/lib/opencsv-2.2.jar"/>
-	<classpathentry kind="lib" path="/home/nick/android/wwwjdic/wwwjdic/lib/FlurryAgent.jar"/>
+	<classpathentry kind="lib" path="C:/home/nick/android/Wwwjdic/wwwjdic/lib/FlurryAgent.jar"/>
+	<classpathentry kind="src" path="Wwwjdic_src"/>
+	<classpathentry kind="lib" path="/Wwwjdic/lib/google-api-client-escape-1.2.1-alpha.jar"/>
+	<classpathentry kind="lib" path="/Wwwjdic/lib/google-api-client-googleapis-1.2.1-alpha.jar"/>
+	<classpathentry kind="lib" path="/Wwwjdic/lib/google-api-client-http-1.2.1-alpha.jar"/>
+	<classpathentry kind="lib" path="/Wwwjdic/lib/google-api-client-repackaged-com-google-common-base-1.2.1-alpha.jar"/>
+	<classpathentry kind="lib" path="/Wwwjdic/lib/google-api-client-util-1.2.1-alpha.jar"/>
+	<classpathentry kind="lib" path="/Wwwjdic/lib/google-api-client-xml-1.2.1-alpha.jar"/>
+	<classpathentry kind="lib" path="/Wwwjdic/lib/google-api-client-xml-atom-1.2.1-alpha.jar"/>
+	<classpathentry kind="lib" path="/Wwwjdic/lib/google-api-client-apache-1.2.1-alpha.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

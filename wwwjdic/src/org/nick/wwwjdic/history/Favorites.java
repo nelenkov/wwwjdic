@@ -45,6 +45,7 @@ import android.widget.Toast;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
+import com.google.api.client.apache.ApacheHttpTransport;
 import com.google.api.client.googleapis.GoogleHeaders;
 import com.google.api.client.googleapis.GoogleTransport;
 import com.google.api.client.http.HttpRequest;
@@ -87,6 +88,7 @@ public class Favorites extends HistoryBase implements
     private ProgressDialog progressDialog;
 
     public Favorites() {
+        HttpTransport.setLowLevelHttpTransport(ApacheHttpTransport.INSTANCE);
         transport = GoogleTransport.create();
         GoogleHeaders headers = (GoogleHeaders) transport.defaultHeaders;
         headers.setApplicationName(WwwjdicApplication.getUserAgentString());
