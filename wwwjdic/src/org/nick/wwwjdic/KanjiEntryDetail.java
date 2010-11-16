@@ -31,6 +31,11 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
                 Constants.KANJI_ENTRY_KEY);
         wwwjdicEntry = entry;
         isFavorite = getIntent().getBooleanExtra(Constants.IS_FAVORITE, false);
+        boolean kodWidgetClicked = getIntent().getBooleanExtra(
+                Constants.KOD_WIDGET_CLICK, false);
+        if (kodWidgetClicked) {
+            Analytics.event("kodWidgetClicked", this);
+        }
 
         String message = getResources().getString(R.string.details_for);
         setTitle(String.format(message, entry.getKanji()));
