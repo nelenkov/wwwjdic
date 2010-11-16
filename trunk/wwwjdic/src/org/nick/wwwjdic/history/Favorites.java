@@ -281,6 +281,8 @@ public class Favorites extends HistoryBase implements
 
                 deleteTempFile();
 
+                Analytics.event("favoritesGDocsExport", Favorites.this);
+
                 return true;
             } catch (HttpResponseException hre) {
                 Log.d(TAG, "Error uploading to Google docs", hre);
@@ -555,6 +557,8 @@ public class Favorites extends HistoryBase implements
                     getCsvExportFilename(isKanji));
             Writer writer = new FileWriter(exportFile);
             exportToCsv(exportFile.getAbsolutePath(), writer, true);
+
+            Analytics.event("favoritesLocalCsvExport", this);
         } catch (IOException e) {
             String message = getResources().getString(R.string.export_error);
             Toast.makeText(Favorites.this,
@@ -588,8 +592,6 @@ public class Favorites extends HistoryBase implements
 
             writer.flush();
             writer.close();
-
-            Analytics.event("favoritesLocalCsvExport", this);
 
             if (showMessages) {
                 String message = getResources().getString(
