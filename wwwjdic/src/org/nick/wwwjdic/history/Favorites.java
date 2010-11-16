@@ -73,7 +73,7 @@ public class Favorites extends HistoryBase implements
 
     private static final String PREF_ACCOUNT_NAME_KEY = "pref_account_name";
 
-    private static final int DIALOG_ACCOUNTS = 0;
+    private static final int ACCOUNTS_DIALOG_ID = 1;
 
     private static final int EXPORT_LOCAL_BACKUP_IDX = 0;
     private static final int EXPORT_LOCAL_EXPORT_IDX = 1;
@@ -102,12 +102,23 @@ public class Favorites extends HistoryBase implements
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
-        case DIALOG_ACCOUNTS:
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.select_google_account);
+        case CONFIRM_DELETE_DIALOG_ID:
+            return super.onCreateDialog(id);
+        case ACCOUNTS_DIALOG_ID:
             final AccountManager manager = AccountManager.get(this);
             final Account[] accounts = manager.getAccountsByType("com.google");
             final int size = accounts.length;
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            if (size == 0) {
+                Toast t = Toast.makeText(this, R.string.no_google_accounts,
+                        Toast.LENGTH_LONG);
+                t.show();
+
+                return null;
+            }
+            builder.setTitle(R.string.select_google_account);
+
             String[] names = new String[size];
             for (int i = 0; i < size; i++) {
                 names[i] = accounts[i].name;
@@ -145,7 +156,7 @@ public class Favorites extends HistoryBase implements
                 }
             }
         }
-        showDialog(DIALOG_ACCOUNTS);
+        showDialog(ACCOUNTS_DIALOG_ID);
     }
 
     private void gotAccount(final AccountManager manager, final Account account) {
@@ -199,7 +210,7 @@ public class Favorites extends HistoryBase implements
             if (resultCode == RESULT_OK) {
                 gotAccount(false);
             } else {
-                showDialog(DIALOG_ACCOUNTS);
+                showDialog(ACCOUNTS_DIALOG_ID);
             }
             break;
         }
