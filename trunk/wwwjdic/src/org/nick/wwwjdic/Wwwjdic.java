@@ -1,27 +1,17 @@
 package org.nick.wwwjdic;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TabActivity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Window;
 import android.widget.TabHost;
 
 public class Wwwjdic extends TabActivity {
-
-    private static final String TAG = Wwwjdic.class.getSimpleName();
 
     private static final int WHATS_NEW_DIALOG_ID = 1;
     private static final int DONATION_THANKS_DIALOG_ID = 2;
@@ -35,13 +25,8 @@ public class Wwwjdic extends TabActivity {
 
     private static final String PREF_WHATS_NEW_SHOWN = "pref_whats_new_shown";
 
-    private static final String PREF_AUTO_SELECT_MIRROR_KEY = "pref_auto_select_mirror";
-    private static final String PREF_WWWJDIC_URL_KEY = "pref_wwwjdic_mirror_url";
-
     private static final String DONATE_VERSION_PACKAGE = "org.nick.wwwjdic.donate";
     private static final String PREF_DONATION_THANKS_SHOWN = "pref_donation_thanks_shown";
-
-    private LocationManager locationManager;
 
     /** Called when the activity is first created. */
     @Override
@@ -54,68 +39,11 @@ public class Wwwjdic extends TabActivity {
 
         setupTabs();
 
-        if (isAutoSelectMirror()) {
-            setMirrorBasedOnLocation();
-        }
-
         if (!isDonateVersion() || isDonationThanksShown()) {
             showWhatsNew();
         }
 
         showDonationThanks();
-    }
-
-    private boolean isAutoSelectMirror() {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return prefs.getBoolean(PREF_AUTO_SELECT_MIRROR_KEY, true);
-    }
-
-    private void setMirrorBasedOnLocation() {
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location myLocation = locationManager
-                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        if (myLocation == null) {
-            Log.d(TAG, "failed to get cached location, giving up");
-
-            return;
-        }
-
-        Log.d(TAG, "my location: " + myLocation);
-        String[] mirrorCoords = getResources().getStringArray(
-                R.array.wwwjdic_mirror_coords);
-        String[] mirrorNames = getResources().getStringArray(
-                R.array.wwwjdic_mirror_names);
-        String[] mirrorUrls = getResources().getStringArray(
-                R.array.wwwjdic_mirror_urls);
-
-        List<Float> distanceToMirrors = new ArrayList<Float>(
-                mirrorCoords.length);
-        for (int i = 0; i < mirrorCoords.length; i++) {
-            String[] latlng = mirrorCoords[i].split("/");
-            double lat = Location.convert(latlng[0]);
-            double lng = Location.convert(latlng[1]);
-
-            float[] distance = new float[1];
-            Location.distanceBetween(myLocation.getLatitude(), myLocation
-                    .getLongitude(), lat, lng, distance);
-            distanceToMirrors.add(distance[0]);
-            Log.d(TAG, String.format("distance to %s: %f km", mirrorNames[i],
-                    distance[0] / 1000));
-        }
-
-        float minDistance = Collections.min(distanceToMirrors);
-        int mirrorIdx = distanceToMirrors.indexOf(minDistance);
-
-        Log.d(TAG, String.format(
-                "found closest mirror: %s (%s) (distance: %f km)",
-                mirrorUrls[mirrorIdx], mirrorNames[mirrorIdx],
-                minDistance / 1000));
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        prefs.edit().putString(PREF_WWWJDIC_URL_KEY, mirrorUrls[mirrorIdx])
-                .commit();
     }
 
     private void showDonationThanks() {

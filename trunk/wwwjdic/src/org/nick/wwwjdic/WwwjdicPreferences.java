@@ -1,14 +1,19 @@
 package org.nick.wwwjdic;
 
+import java.util.Arrays;
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -19,11 +24,13 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     private static final String TAG = WwwjdicPreferences.class.getSimpleName();
 
-    private CheckBoxPreference useKrPreference;
-
     private static final String PREF_USE_KR_KEY = "pref_kr_use_kanji_recognizer";
+    private static final String PREF_MIRROR_URL_KEY = "pref_wwwjdic_mirror_url";
 
     private static final String KR_PACKAGE = "org.nick.kanjirecognizer";
+
+    private CheckBoxPreference useKrPreference;
+    private ListPreference mirrorPreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +41,9 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
         useKrPreference = (CheckBoxPreference) findPreference(PREF_USE_KR_KEY);
         useKrPreference.setOnPreferenceChangeListener(this);
+        mirrorPreference = (ListPreference) findPreference(PREF_MIRROR_URL_KEY);
+        mirrorPreference.setSummary(mirrorPreference.getEntry());
+        mirrorPreference.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -50,7 +60,24 @@ public class WwwjdicPreferences extends PreferenceActivity implements
             }
         }
 
+        if (PREF_MIRROR_URL_KEY.equals(preference.getKey())) {
+            preference.setSummary(getMirrorName((String) newValue));
+        }
+
         return true;
+    }
+
+    private String getMirrorName(String url) {
+        Resources r = getResources();
+        List<String> mirrorUrls = Arrays.asList(r
+                .getStringArray(R.array.wwwjdic_mirror_urls));
+        String[] mirrorNames = r.getStringArray(R.array.wwwjdic_mirror_names);
+        int idx = mirrorUrls.indexOf(url);
+        if (idx != -1) {
+            return mirrorNames[idx];
+        }
+
+        return "";
     }
 
     private void showInstallKrDialog() {

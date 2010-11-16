@@ -47,7 +47,7 @@
     <string name="error">エラー</string>
     <string name="loading">読み込み中。お待ちください...</string>
     <string name="jis_code">JISコード: </string>
-    <string name="unicode_number">ユニコード番号: </string>
+    <string name="unicode_number">Unicode番号: </string>
     <string name="classical_radical">部首番号: </string>
     <string name="freq_rank">頻度ランク: </string>
     <string name="grade">学習学年: </string>
@@ -243,4 +243,45 @@
     <string name="getting_sod_info">書き順情報取得中...</string>
     <string name="no_sod_data">\'%s\'の書き順情報はありません。</string>
     <string name="getting_sod_data_failed">書き順情報取得は失敗しました。</string>
+    <string-array name="dict_csv_headers">
+        <item>単語</item>
+        <item>読み方</item>
+        <item>単語訳</item>
+    </string-array>
+    <string-array name="kanji_csv_headers">
+        <item>漢字</item>
+        <item>音読み</item>
+        <item>訓読み</item>
+        <item>名乗り</item>
+        <item>部首名</item>
+        
+        <item>部首番号</item>
+        <item>画数</item>
+        <item>部首番号</item>
+        
+        <item>英語訳</item>
+
+        <item>JISコード</item>
+        <item>Unicode番号</item>
+        <item>頻度ランク</item>
+        <item>学習学年</item>
+        <item>日本語能力試験レベル</item>
+        <item>SKIPコード</item>
+        <item>韓国読み</item>
+        <item>標準中国読み</item>
+    </string-array>
+    <string-array name="favorites_export_dialog_items">
+        <item>ローカルバックアップ</item>
+        <item>ローカル CSV</item>
+        <item>Google ドキュメント</item>
+        <item>Anki単語帳</item>
+    </string-array>
+    <string name="favorites_export_dialog_title">お気に入りエックスポート</string>
+    <string name="uploading_to_gdocs">Google ドキュメントにアップロード中...</string>
+    <string name="gdocs_upload_success">\'%s\'を Google ドキュメントにアップロードしました。</string>
+    <string name="gdocs_upload_failure">Google ドキュメントアップロードエラー: %s</string>
+    <string name="select_google_account">Google アカウント選択</string>
+    <string name="no_google_accounts">使用可能なGoogle アカウントはありません。</string>
+    <string name="pref_auto_select_mirror">ミラーサイト自動選択</string>
+    <string name="pref_auto_select_mirror_summary">現在位置に一番近いミラーサイトを自動的に選択します。</string>
 </resources>
