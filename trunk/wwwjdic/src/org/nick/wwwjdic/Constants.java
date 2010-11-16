@@ -34,6 +34,8 @@ public class Constants {
 
     public static final String PREF_TIP_SHOWN = "pref_tip_shown";
 
+    public static final String KOD_WIDGET_CLICK = "org.nick.wwwjdic.kodWidgetClick";
+
     private Constants() {
     }
 

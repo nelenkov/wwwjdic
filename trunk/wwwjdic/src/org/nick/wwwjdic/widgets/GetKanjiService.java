@@ -115,6 +115,7 @@ public class GetKanjiService extends Service {
             Log.d(TAG, "KOD: " + kod);
             Intent intent = new Intent(context, KanjiEntryDetail.class);
             intent.putExtra(Constants.KANJI_ENTRY_KEY, entries.get(0));
+            intent.putExtra(Constants.KOD_WIDGET_CLICK, true);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
