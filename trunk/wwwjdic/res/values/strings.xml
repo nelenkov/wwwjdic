@@ -250,12 +250,6 @@
     <string name="favorites_hist">Favorites/Hist.</string>
     <string name="uses_kanjivg">Uses KanjiVG</string>
     <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
-    <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Added backup URL for kanji recognizer web
-        service (Settings).\n* Added context menu (details/copy/append)
-        to recognition candiates (long press to display).\n* Added usage
-        tips.\n* Changed shortcut name.
-    </string>
     <!--  for cropper -->
     <string name="crop_save_text">Crop</string>
     <string name="crop_discard_text">Discard</string>
