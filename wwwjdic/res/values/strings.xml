@@ -174,7 +174,7 @@
         <item>Sweden</item>
         <item>USA</item>
     </string-array>
-     <string-array name="wwwjdic_mirror_coords">
+    <string-array name="wwwjdic_mirror_coords">
         <!-- Sydney -->
         <item>033:51:35/151:12:40</item>
         <!-- Toronto -->
@@ -400,11 +400,11 @@
         <item>Kunyomi</item>
         <item>Nanori</item>
         <item>Radical name</item>
-        
+
         <item>Radical number</item>
         <item>Stroke count</item>
         <item>Classical radical number</item>
-        
+
         <item>Meaning(s)</item>
 
         <item>JIS code</item>
@@ -431,5 +431,20 @@
     <string name="select_google_account">Select a Google account</string>
     <string name="no_google_accounts">No Google accoutns available.</string>
     <string name="pref_auto_select_mirror">Mirror auto select</string>
-    <string name="pref_auto_select_mirror_summary">Automatically select closest WWWJDIC mirror.</string>
+    <string name="pref_auto_select_mirror_summary">Automatically select closest WWWJDIC mirror.
+    </string>
+    <string name="tips_favorites_export">Press Menu->Export to export your favorites.\n*
+        \'Local backup\': use to import favorites if you
+        re-installed or have a new phone.\n*
+        \'Local CSV\': exports all
+        fields as columns. Use
+        to
+        transfer favorites to a PC or import
+        into other
+        programs. Filter by \'Dictionary\'
+        or \'Kanji\'
+        to enable.\n* \'Google
+        Docs\': format as above. Needs Android 2.0
+        or later.
+    </string>
 </resources>

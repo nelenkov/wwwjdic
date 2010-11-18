@@ -11,7 +11,6 @@ import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.ocr.WeOcrClient;
 
-import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -52,7 +51,6 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     private static final String PREF_WEOCR_URL_KEY = "pref_weocr_url";
     private static final String PREF_WEOCR_TIMEOUT_KEY = "pref_weocr_timeout";
 
-    private static final int KR_USAGE_TIP_DIALOG_ID = 0;
     private static final String KR_USAGE_TIP_DIALOG = "kr_usage";
 
     private static final int OCR_IMAGE_WIDTH = 128;
@@ -95,7 +93,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
         drawView.requestFocus();
 
-        Dialogs.showTipOnce(this, KR_USAGE_TIP_DIALOG_ID, KR_USAGE_TIP_DIALOG);
+        Dialogs.showTipOnce(this, KR_USAGE_TIP_DIALOG, R.string.kr_usage_tip);
     }
 
     private ServiceConnection connection = new ServiceConnection() {
@@ -157,21 +155,6 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         removeStrokeButton = (Button) findViewById(R.id.remove_stroke_button);
         clearButton = (Button) findViewById(R.id.clear_canvas_button);
         lookAheadCb = (CheckBox) findViewById(R.id.lookAheadCb);
-    }
-
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        Dialog dialog = null;
-
-        switch (id) {
-        case KR_USAGE_TIP_DIALOG_ID:
-            dialog = Dialogs.createTipDialog(this, R.string.kr_usage_tip);
-            break;
-        default:
-            dialog = null;
-        }
-
-        return dialog;
     }
 
     public static class RecognizeKanjiHandler extends WsResultHandler {
