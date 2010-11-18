@@ -138,10 +138,6 @@
     <string name="favorites">お気に入り</string>
     <string name="search_history">検索履歴</string>
     <string name="favorites_hist">履歴</string>
-    <string name="whats_new_title">%sの新規機能</string>
-    <string name="whats_new">* 手書き認識 Webサービス代替URL追加(設定画面)。\n*
-        手書き認識候補にコンテキストメニュー(詳細・コピー・連結)追加(長押しで表示)。\n* 使用方法 tips追加.\n*
-        ショートカット名変更。</string>
     <!--  for cropper -->
     <string name="crop_save_text">切り抜く</string>
     <string name="crop_discard_text">キャンセル</string>
