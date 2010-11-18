@@ -10,6 +10,7 @@ import java.util.Date;
 
 import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
+import org.nick.wwwjdic.Dialogs;
 import org.nick.wwwjdic.DictionaryEntryDetail;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
@@ -81,6 +82,8 @@ public class Favorites extends HistoryBase implements
     private static final int EXPORT_GDOCS_IDX = 2;
     private static final int EXPORT_ANKI_IDX = 3;
 
+    private static final String FAVORITES_EXPORT_TIP_DIALOG = "tips_favorites_export";
+
     private HttpTransport transport;
 
     private String authToken;
@@ -99,6 +102,14 @@ public class Favorites extends HistoryBase implements
 
         // for wire debugging
         // Logger.getLogger("com.google.api.client").setLevel(Level.ALL);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Dialogs.showTipOnce(this, FAVORITES_EXPORT_TIP_DIALOG,
+                R.string.tips_favorites_export);
     }
 
     @Override
