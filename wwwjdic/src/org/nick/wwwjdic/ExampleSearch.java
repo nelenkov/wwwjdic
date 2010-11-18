@@ -171,7 +171,6 @@ public class ExampleSearch extends WwwjdicActivityBase implements
         maxNumExamplesText.setEnabled(isEnabled);
         exampleExactMatchCb.setEnabled(isEnabled);
         maxNumExamplesText.setFocusableInTouchMode(isEnabled);
-        exampleExactMatchCb.setFocusableInTouchMode(isEnabled);
 
         exampleSearchInputText.setText("");
         exampleSearchInputText.requestFocus();

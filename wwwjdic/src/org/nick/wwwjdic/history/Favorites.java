@@ -20,8 +20,6 @@ import org.nick.wwwjdic.history.FavoritesItem.FavoriteStatusChangedListener;
 import org.nick.wwwjdic.history.gdocs.DocsUrl;
 import org.nick.wwwjdic.history.gdocs.Namespace;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -84,6 +82,8 @@ public class Favorites extends HistoryBase implements
 
     private static final String FAVORITES_EXPORT_TIP_DIALOG = "tips_favorites_export";
 
+    private static final int ECLAIR_VERSION_CODE = 5;
+
     private HttpTransport transport;
 
     private String authToken;
@@ -91,6 +91,18 @@ public class Favorites extends HistoryBase implements
     private ProgressDialog progressDialog;
 
     public Favorites() {
+        if (isPostEclair()) {
+            initGdocsTransport();
+        }
+    }
+
+    private static boolean isPostEclair() {
+        final int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
+
+        return sdkVersion >= ECLAIR_VERSION_CODE;
+    }
+
+    private void initGdocsTransport() {
         HttpTransport.setLowLevelHttpTransport(ApacheHttpTransport.INSTANCE);
         transport = GoogleTransport.create();
         GoogleHeaders headers = (GoogleHeaders) transport.defaultHeaders;
@@ -118,9 +130,10 @@ public class Favorites extends HistoryBase implements
         case CONFIRM_DELETE_DIALOG_ID:
             return super.onCreateDialog(id);
         case ACCOUNTS_DIALOG_ID:
-            final AccountManager manager = AccountManager.get(this);
-            final Account[] accounts = manager.getAccountsByType("com.google");
-            final int size = accounts.length;
+            final AccountManagerWrapper manager = AccountManagerWrapper
+                    .getInstance(this);
+            final String[] accountNames = manager.getGoogleAccounts();
+            int size = accountNames.length;
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             if (size == 0) {
@@ -130,17 +143,14 @@ public class Favorites extends HistoryBase implements
 
                 return null;
             }
-            builder.setTitle(R.string.select_google_account);
 
-            String[] names = new String[size];
-            for (int i = 0; i < size; i++) {
-                names[i] = accounts[i].name;
-            }
-            builder.setItems(names, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    gotAccount(manager, accounts[which]);
-                }
-            });
+            builder.setTitle(R.string.select_google_account);
+            builder.setItems(accountNames,
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            gotAccount(manager, accountNames[which]);
+                        }
+                    });
             return builder.create();
         default:
             // do nothing
@@ -153,55 +163,63 @@ public class Favorites extends HistoryBase implements
                 .getDefaultSharedPreferences(this);
 
         String accountName = settings.getString(PREF_ACCOUNT_NAME_KEY, null);
+        AccountManagerWrapper manager = AccountManagerWrapper.getInstance(this);
+        String[] accountNames = manager.getGoogleAccounts();
         if (accountName != null) {
-            AccountManager manager = AccountManager.get(this);
-            Account[] accounts = manager.getAccountsByType("com.google");
-            int size = accounts.length;
+            int size = accountNames.length;
             for (int i = 0; i < size; i++) {
-                Account account = accounts[i];
-                if (accountName.equals(account.name)) {
+                if (accountName.equals(accountNames[i])) {
                     if (tokenExpired) {
-                        manager.invalidateAuthToken("com.google",
-                                this.authToken);
+                        manager.invalidateAuthToken(authToken);
                     }
-                    gotAccount(manager, account);
+                    gotAccount(manager, accountNames[i]);
                     return;
                 }
             }
         }
-        showDialog(ACCOUNTS_DIALOG_ID);
+
+        // handle this here to avoid IAE on 2.0
+        // ('Activity#onCreateDialog did not create a dialog for id 1')
+        if (accountNames.length != 0) {
+            showDialog(ACCOUNTS_DIALOG_ID);
+        } else {
+            Toast t = Toast.makeText(this, R.string.no_google_accounts,
+                    Toast.LENGTH_LONG);
+            t.show();
+        }
     }
 
-    private void gotAccount(final AccountManager manager, final Account account) {
+    private void gotAccount(final AccountManagerWrapper manager,
+            final String accountName) {
         SharedPreferences settings = PreferenceManager
                 .getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString(PREF_ACCOUNT_NAME_KEY, account.name);
+        editor.putString(PREF_ACCOUNT_NAME_KEY, accountName);
         editor.commit();
         new Thread() {
 
             @Override
             public void run() {
                 try {
-                    final Bundle bundle = manager.getAuthToken(account,
-                            AUTH_TOKEN_TYPE, true, null, null).getResult();
+                    final Bundle bundle = manager.getAuthToken(accountName,
+                            AUTH_TOKEN_TYPE);
                     runOnUiThread(new Runnable() {
 
                         public void run() {
                             try {
                                 if (bundle
-                                        .containsKey(AccountManager.KEY_INTENT)) {
+                                        .containsKey(AccountManagerWrapper.KEY_INTENT)) {
                                     Intent intent = bundle
-                                            .getParcelable(AccountManager.KEY_INTENT);
+                                            .getParcelable(AccountManagerWrapper.KEY_INTENT);
                                     int flags = intent.getFlags();
                                     flags &= ~Intent.FLAG_ACTIVITY_NEW_TASK;
                                     intent.setFlags(flags);
                                     startActivityForResult(intent,
                                             REQUEST_AUTHENTICATE);
                                 } else if (bundle
-                                        .containsKey(AccountManager.KEY_AUTHTOKEN)) {
+                                        .containsKey(AccountManagerWrapper.KEY_AUTHTOKEN)) {
                                     authenticatedClientLogin(bundle
-                                            .getString(AccountManager.KEY_AUTHTOKEN));
+                                            .getString(AccountManagerWrapper.KEY_AUTHTOKEN));
                                 }
                             } catch (Exception e) {
                                 handleException(e);
@@ -528,9 +546,7 @@ public class Favorites extends HistoryBase implements
             super(context, android.R.layout.select_dialog_item,
                     android.R.id.text1, items);
             this.singleType = singleType;
-            final int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
-            this.isPostEclair = sdkVersion >= Build.VERSION_CODES.ECLAIR;
-
+            this.isPostEclair = isPostEclair();
         }
 
         @Override
