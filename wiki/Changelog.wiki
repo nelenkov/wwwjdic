@@ -1,6 +1,12 @@
 #summary Full changelog
 
 = Changelog =
+ * v1.5 Widget and favorites export
+  * Kanji of the day widget 
+  * Favorites export to local CSV and Google Docs
+  * Automatic mirror selection
+  * Android 2.2 (Froyo) support
+  * Install to SD card support
  * v1.41 UI improvements
   * Added backup URL for kanji recognizer web service.
   * Added context menu (details/copy/append) to recognition candidates.
