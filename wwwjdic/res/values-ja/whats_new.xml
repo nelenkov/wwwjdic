@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">%sの新規機能</string>
-    <string name="whats_new">
-    * 今日の漢字ウィジェット(Home画面の長押しで追加)\n* お気に入りのローカルCSVとGoogleドキュメントエックスポート\n*
-    ミラーサイト自動選択(設定画面でオバーライド可能)\n* Android 2.2 (Froyo) 対応\n*
-    SDカードインストール対応(ウィジェットを無効にします)\n
+    <string name="whats_new">* バグ修正: Excel (2007)がエックスポートされたCSVファイルのエンコーディング (UTF-8)を正しく認識できないのを修正 
     </string>
 </resources>
