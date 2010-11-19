@@ -2,9 +2,12 @@ package org.nick.wwwjdic.history;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Date;
 
@@ -83,6 +86,9 @@ public class Favorites extends HistoryBase implements
     private static final String FAVORITES_EXPORT_TIP_DIALOG = "tips_favorites_export";
 
     private static final int ECLAIR_VERSION_CODE = 5;
+
+    private static final byte[] UTF8_BOM = { (byte) 0xef, (byte) 0xbb,
+            (byte) 0xbf };
 
     private HttpTransport transport;
 
@@ -582,7 +588,9 @@ public class Favorites extends HistoryBase implements
         try {
             File exportFile = new File(WwwjdicApplication.getWwwjdicDir(),
                     getCsvExportFilename(isKanji));
-            Writer writer = new FileWriter(exportFile);
+            writeBom(exportFile);
+
+            Writer writer = new FileWriter(exportFile, true);
             exportToCsv(exportFile.getAbsolutePath(), writer, true);
 
             Analytics.event("favoritesLocalCsvExport", this);
@@ -592,6 +600,14 @@ public class Favorites extends HistoryBase implements
                     String.format(message, e.getMessage()), Toast.LENGTH_SHORT)
                     .show();
         }
+    }
+
+    private void writeBom(File exportFile) throws FileNotFoundException,
+            IOException {
+        OutputStream out = new FileOutputStream(exportFile);
+        out.write(UTF8_BOM);
+        out.flush();
+        out.close();
     }
 
     private void exportToCsv(String exportFile, Writer w, boolean showMessages) {
@@ -664,19 +680,21 @@ public class Favorites extends HistoryBase implements
         try {
             Log.d(TAG, "exporting to Google docs...");
             String filename = getCsvExportFilename(isKanji);
-            File f = File.createTempFile("favorites-gdocs", ".csv",
+            File tempFile = File.createTempFile("favorites-gdocs", ".csv",
                     WwwjdicApplication.getWwwjdicDir());
-            f.deleteOnExit();
-            Log.d(TAG, "temp file: " + f.getAbsolutePath());
+            tempFile.deleteOnExit();
+            Log.d(TAG, "temp file: " + tempFile.getAbsolutePath());
             Log.d(TAG, "document filename: " + filename);
-            Writer writer = new FileWriter(f);
-            exportToCsv(f.getAbsolutePath(), writer, false);
+
+            writeBom(tempFile);
+            Writer writer = new FileWriter(tempFile, true);
+            exportToCsv(tempFile.getAbsolutePath(), writer, false);
 
             uploadData = new UploadData();
-            uploadData.contentLength = f.length();
+            uploadData.contentLength = tempFile.length();
             uploadData.contentType = "text/csv";
             uploadData.filename = filename;
-            uploadData.localFilename = f.getAbsolutePath();
+            uploadData.localFilename = tempFile.getAbsolutePath();
 
             gotAccount(false);
         } catch (IOException e) {
