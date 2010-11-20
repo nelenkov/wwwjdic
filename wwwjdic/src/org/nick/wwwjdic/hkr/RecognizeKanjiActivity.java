@@ -39,7 +39,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     private static final String TAG = RecognizeKanjiActivity.class
             .getSimpleName();
 
-    private static final String KR_DEFAULT_URL = "http://kanji.sljfaq.org/kanji16/kanji-0.016.cgi";
+    private static final String KR_DEFAULT_URL = "http://kanji.sljfaq.org/kanji-0.016.cgi";
 
     private static final String PREF_KR_URL_KEY = "pref_kr_url";
     private static final String PREF_KR_TIMEOUT_KEY = "pref_kr_timeout";
