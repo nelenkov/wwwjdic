@@ -52,11 +52,10 @@
             android:title="@string/pref_kr_use_kanji_recognizer"
             android:summary="@string/pref_kr_use_kanji_recognizer_summary"
             android:defaultValue="false" android:disableDependentsState="true" />
-        <ListPreference android:title="@string/pref_kr_url"
+        <EditTextPreference  android:title="@string/pref_kr_url"
             android:key="pref_kr_url"
-            android:defaultValue="http://kanji.sljfaq.org/kanji16/kanji-0.016.cgi"
-            android:entries="@array/kr_url_names"
-            android:entryValues="@array/kr_urls" 
+            android:defaultValue="http://kanji.sljfaq.org/kanji-0.016.cgi"
+            android:singleLine="true" android:inputType="numberDecimal"
             android:dependency="pref_kr_use_kanji_recognizer"/>    
         <EditTextPreference android:key="pref_kr_timeout"
             android:title="@string/pref_kr_timeout" android:summary="@string/pref_timeout_summary"
