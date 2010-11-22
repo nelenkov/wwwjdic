@@ -34,6 +34,7 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
         boolean kodWidgetClicked = getIntent().getBooleanExtra(
                 Constants.KOD_WIDGET_CLICK, false);
         if (kodWidgetClicked) {
+            Analytics.startSession(this);
             Analytics.event("kodWidgetClicked", this);
         }
 
