@@ -58,6 +58,8 @@ public class GetKanjiService extends Service {
 
     private static final String PRE_END_TAG = "</pre>";
 
+    private static final int NUM_RETRIES = 3;
+
     private final RandomJisGenerator jisGenerator = new RandomJisGenerator();
 
     private final Executor executor = Executors.newSingleThreadExecutor();
@@ -100,8 +102,28 @@ public class GetKanjiService extends Service {
             Log.d(TAG, "KOD JIS: " + jisCode);
             String backdoorCode = generateBackdoorCode(jisCode);
             Log.d(TAG, "backdoor code: " + backdoorCode);
-            String wwwjdicResponse = query(client, getWwwjdicUrl(),
-                    backdoorCode);
+            String wwwjdicResponse = null;
+
+            for (int i = 0; i < NUM_RETRIES; i++) {
+                try {
+                    wwwjdicResponse = query(client, getWwwjdicUrl(),
+                            backdoorCode);
+                    if (wwwjdicResponse != null) {
+                        break;
+                    }
+                } catch (Exception e) {
+                    Log.w(TAG, "Couldn't contact WWWJDIC, will retry", e);
+                }
+            }
+
+            if (wwwjdicResponse == null) {
+                Log.e(TAG, String.format("Failed to get WWWJDIC response "
+                        + "after %d tries, giving up.", NUM_RETRIES));
+                showError(views);
+
+                return views;
+            }
+
             Log.d(TAG, "WWWJDIC response " + wwwjdicResponse);
             List<KanjiEntry> entries = parseResult(wwwjdicResponse);
 
