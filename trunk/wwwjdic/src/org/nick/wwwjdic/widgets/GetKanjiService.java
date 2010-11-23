@@ -112,7 +112,11 @@ public class GetKanjiService extends Service {
                         break;
                     }
                 } catch (Exception e) {
-                    Log.w(TAG, "Couldn't contact WWWJDIC, will retry", e);
+                    if (i < NUM_RETRIES - 1) {
+                        Log.w(TAG, "Couldn't contact WWWJDIC, will retry.", e);
+                    } else {
+                        Log.e(TAG, "Couldn't contact WWWJDIC.", e);
+                    }
                 }
             }
 
