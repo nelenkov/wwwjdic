@@ -3,8 +3,7 @@ package org.nick.wwwjdic;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-public class DictionarySearchTask extends
-        BackdoorSearchTask<DictionaryEntry> {
+public class DictionarySearchTask extends BackdoorSearchTask<DictionaryEntry> {
 
     public DictionarySearchTask(String url, int timeoutSeconds,
             ResultListViewBase<DictionaryEntry> resultListView,
@@ -34,19 +33,31 @@ public class DictionarySearchTask extends
         }
 
         // key type
-        if (criteria.isExactMatch() && !criteria.isCommonWordsOnly()) {
-            buff.append("Q");
-        } else if (criteria.isExactMatch() && criteria.isCommonWordsOnly()) {
-            buff.append("R");
-        } else if (!criteria.isExactMatch() && criteria.isCommonWordsOnly()) {
-            buff.append("P");
-        } else {
-            if (criteria.isRomanizedJapanese()) {
-                // Japanese
-                buff.append("J");
+        if (criteria.isKanjiCompoundSearch()) {
+            if (criteria.isCommonWordsOnly()) {
+                buff.append("P");
             } else {
-                // English
-                buff.append("E");
+                if (criteria.isStartingKanjiCompoundSearch()) {
+                    buff.append("K");
+                } else {
+                    buff.append("L");
+                }
+            }
+        } else {
+            if (criteria.isExactMatch() && !criteria.isCommonWordsOnly()) {
+                buff.append("Q");
+            } else if (criteria.isExactMatch() && criteria.isCommonWordsOnly()) {
+                buff.append("R");
+            } else if (!criteria.isExactMatch() && criteria.isCommonWordsOnly()) {
+                buff.append("P");
+            } else {
+                if (criteria.isRomanizedJapanese()) {
+                    // Japanese
+                    buff.append("J");
+                } else {
+                    // English
+                    buff.append("E");
+                }
             }
         }
         try {
