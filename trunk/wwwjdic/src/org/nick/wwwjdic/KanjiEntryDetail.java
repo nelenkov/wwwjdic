@@ -5,12 +5,16 @@ import java.util.List;
 
 import org.nick.wwwjdic.sod.SodActivity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.method.MovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +22,26 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class KanjiEntryDetail extends DetailActivity implements OnClickListener {
+
+    private static class IntentSpan extends ClickableSpan {
+        private Context context;
+        private Intent intent;
+
+        public IntentSpan(Context context, Intent intent) {
+            this.context = context;
+            this.intent = intent;
+        }
+
+        @Override
+        public void onClick(View widget) {
+            context.startActivity(intent);
+        }
+
+    }
 
     private KanjiEntry entry;
 
@@ -61,9 +82,30 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
 
         Button sodButton = (Button) findViewById(R.id.sod_button);
         sodButton.setOnClickListener(this);
+        sodButton.setNextFocusDownId(R.id.compound_link_starting);
 
-        Button compoundsButton = (Button) findViewById(R.id.compounds_button);
-        compoundsButton.setOnClickListener(this);
+        TextView compoundsLinkStarting = (TextView) findViewById(R.id.compound_link_starting);
+        compoundsLinkStarting.setNextFocusDownId(R.id.compound_link_any);
+        compoundsLinkStarting.setNextFocusUpId(R.id.sod_button);
+        Intent intent = createCompoundSearchIntent(
+                SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_STARTING, false);
+        makeClickable(compoundsLinkStarting, intent);
+
+        TextView compoundsLinkAny = (TextView) findViewById(R.id.compound_link_any);
+        compoundsLinkAny.setNextFocusDownId(R.id.compound_link_common);
+        compoundsLinkAny.setNextFocusUpId(R.id.compound_link_starting);
+        intent = createCompoundSearchIntent(
+                SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_ANY, false);
+        makeClickable(compoundsLinkAny, intent);
+
+        TextView compoundsLinkCommon = (TextView) findViewById(R.id.compound_link_common);
+        compoundsLinkCommon.setNextFocusUpId(R.id.compound_link_any);
+        intent = createCompoundSearchIntent(
+                SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_NONE, true);
+        makeClickable(compoundsLinkCommon, intent);
+
+        ScrollView meaningsScroll = (ScrollView) findViewById(R.id.meaningsScroll);
+        meaningsScroll.setNextFocusUpId(R.id.compound_link_common);
 
         LinearLayout readingLayout = (LinearLayout) findViewById(R.id.readingLayout);
 
@@ -169,6 +211,31 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
 
     }
 
+    private Intent createCompoundSearchIntent(int searchType,
+            boolean commonWordsOnly) {
+        String dictionary = "1";
+        SearchCriteria criteria = SearchCriteria.createForKanjiCompounds(entry
+                .getKanji(), searchType, commonWordsOnly, dictionary);
+        Intent intent = new Intent(KanjiEntryDetail.this,
+                DictionaryResultListView.class);
+        intent.putExtra(Constants.CRITERIA_KEY, criteria);
+        return intent;
+    }
+
+    private void makeClickable(TextView textView, Intent intent) {
+        SpannableString str = SpannableString.valueOf(textView.getText());
+        str.setSpan(new IntentSpan(this, intent), 0, textView.getText()
+                .length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        textView.setText(str);
+        textView.setLinkTextColor(Color.WHITE);
+        MovementMethod m = textView.getMovementMethod();
+        if ((m == null) || !(m instanceof LinkMovementMethod)) {
+            if (textView.getLinksClickable()) {
+                textView.setMovementMethod(LinkMovementMethod.getInstance());
+            }
+        }
+    }
+
     private List<Pair<String, String>> crieateCodesData(KanjiEntry entry) {
         ArrayList<Pair<String, String>> data = new ArrayList<Pair<String, String>>();
         if (entry.getJisCode() != null) {
@@ -255,41 +322,6 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
             intent.putExtra(Constants.KANJI_GLYPH, entry.getKanji());
 
             startActivity(intent);
-            break;
-        case R.id.compounds_button:
-            final CharSequence[] items = { "Starting kanji", "Any position",
-                    "Common words only" };
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Search for compounds for " + entry.getKanji());
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-                    boolean commonWordsOnly = false;
-                    int searchType = SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_NONE;
-                    switch (item) {
-                    case 0:
-                        searchType = SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_STARTING;
-                        break;
-                    case 1:
-                        searchType = SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_ANY;
-                        break;
-                    case 2:
-                        commonWordsOnly = true;
-                        break;
-                    default:
-                        // do nothing
-                    }
-                    SearchCriteria criteria = SearchCriteria
-                            .createForKanjiCompounds(entry.getKanji(),
-                                    searchType, commonWordsOnly, "1");
-                    Intent intent = new Intent(KanjiEntryDetail.this,
-                            DictionaryResultListView.class);
-                    intent.putExtra(Constants.CRITERIA_KEY, criteria);
-                    startActivity(intent);
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
             break;
         default:
             // do nothing

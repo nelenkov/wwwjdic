@@ -64,13 +64,34 @@
     </LinearLayout>
     <TextView android:layout_width="fill_parent"
         android:textColor="#FFF" android:layout_height="wrap_content"
+        android:text="@string/compounds" android:background="#888888"></TextView>
+    <LinearLayout android:id="@+id/compoundSearchLayout"
+        android:orientation="horizontal" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:gravity="center"
+        android:layout_gravity="center" android:layout_marginTop="5px"
+        android:layout_marginBottom="5px">
+        <TextView android:layout_height="fill_parent"
+            android:layout_width="wrap_content" android:id="@+id/compound_link_starting"
+            android:text="@string/compound_search_starting"
+            android:textColorLink="@color/white"
+            android:layout_marginRight="10dp" android:singleLine="true" />
+        <TextView android:layout_height="fill_parent"
+            android:layout_width="wrap_content" android:id="@+id/compound_link_any"
+            android:text="@string/compound_search_any"
+            android:textColorLink="@color/white"
+            android:layout_marginRight="10dp" android:singleLine="true" />
+        <TextView android:layout_height="fill_parent"
+            android:layout_width="wrap_content" android:id="@+id/compound_link_common"
+            android:text="@string/compound_search_common_only"
+            android:textColorLink="@color/white"
+            android:layout_marginRight="10dp" android:singleLine="true" />
+    </LinearLayout>
+    <TextView android:layout_width="fill_parent"
+        android:textColor="#FFF" android:layout_height="wrap_content"
         android:text="@string/english_meanings" android:background="#888888"></TextView>
-     <Button android:id="@+id/compounds_button"
-            android:layout_height="wrap_content" android:layout_width="wrap_content"
-            android:text="Compound search" android:background="@android:drawable/btn_default_small"
-            android:gravity="center" android:layout_gravity="center" />    
-    <ScrollView android:layout_width="fill_parent"
-        android:layout_height="fill_parent" android:paddingTop="4dip">
+    <ScrollView android:id="@+id/meaningsScroll"
+        android:layout_width="fill_parent" android:layout_height="fill_parent"
+        android:paddingTop="4dip">
         <LinearLayout android:id="@+id/meaningsCodesLayout"
             android:orientation="vertical" android:layout_width="fill_parent"
             android:layout_height="fill_parent">
