@@ -294,10 +294,15 @@
         *
         「ローカルバックアップ」: 再インストール、又は新しい端末に
         インストールした時に、お気に入りのインポートに使用できます。\n
-        * 「ローカル CSV」: 全ての表示項目をカラムとしてエックスポートします。
+        *
+        「ローカル CSV」: 全ての表示項目をカラムとしてエックスポートします。
         有効にするには、「辞書」、又は「漢字」でフィルタして下さい。\n
         *
         「Google ドキュメント」:
         フォーマットは同上。要Android 2.0以上。
     </string>
+    <string name="compounds">熟語</string>
+    <string name="compound_search_starting">語頭字</string>
+    <string name="compound_search_any">どこでも</string>
+    <string name="compound_search_common_only">よく使われる言葉のみ</string>
 </resources>

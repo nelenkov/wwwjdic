@@ -421,16 +421,23 @@
     </string>
     <string name="tips_favorites_export">Press Menu->Export to export your favorites.\n*
         \'Local backup\': use to import favorites if you
-        re-installed or have a new phone.\n*
+        re-installed or
+        have a new phone.\n*
         \'Local CSV\': exports all
-        fields as columns. Use
+        fields as columns.
+        Use
         to
         transfer favorites to a PC or import
         into other
-        programs. Filter by \'Dictionary\'
+        programs.
+        Filter by \'Dictionary\'
         or \'Kanji\'
         to enable.\n* \'Google
         Docs\': format as above. Needs Android 2.0
         or later.
     </string>
+    <string name="compounds">Compounds</string>
+    <string name="compound_search_starting">Starting kanji</string>
+    <string name="compound_search_any">Any position</string>
+    <string name="compound_search_common_only">Common words</string>
 </resources>
