@@ -78,6 +78,8 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
             SearchCriteria criteria = (SearchCriteria) query;
             String lookupUrl = String.format("%s?%s", url,
                     generateBackdoorCode(criteria));
+            Log.d(TAG, "WWWJDIC URL: " + lookupUrl);
+
             HttpGet get = new HttpGet(lookupUrl);
 
             String responseStr = httpclient.execute(get, responseHandler,

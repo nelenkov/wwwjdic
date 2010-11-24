@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.nick.wwwjdic.sod.SodActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -59,6 +61,9 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
 
         Button sodButton = (Button) findViewById(R.id.sod_button);
         sodButton.setOnClickListener(this);
+
+        Button compoundsButton = (Button) findViewById(R.id.compounds_button);
+        compoundsButton.setOnClickListener(this);
 
         LinearLayout readingLayout = (LinearLayout) findViewById(R.id.readingLayout);
 
@@ -250,6 +255,41 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
             intent.putExtra(Constants.KANJI_GLYPH, entry.getKanji());
 
             startActivity(intent);
+            break;
+        case R.id.compounds_button:
+            final CharSequence[] items = { "Starting kanji", "Any position",
+                    "Common words only" };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Search for compounds for " + entry.getKanji());
+            builder.setItems(items, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                    boolean commonWordsOnly = false;
+                    int searchType = SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_NONE;
+                    switch (item) {
+                    case 0:
+                        searchType = SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_STARTING;
+                        break;
+                    case 1:
+                        searchType = SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_ANY;
+                        break;
+                    case 2:
+                        commonWordsOnly = true;
+                        break;
+                    default:
+                        // do nothing
+                    }
+                    SearchCriteria criteria = SearchCriteria
+                            .createForKanjiCompounds(entry.getKanji(),
+                                    searchType, commonWordsOnly, "1");
+                    Intent intent = new Intent(KanjiEntryDetail.this,
+                            DictionaryResultListView.class);
+                    intent.putExtra(Constants.CRITERIA_KEY, criteria);
+                    startActivity(intent);
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
             break;
         default:
             // do nothing
