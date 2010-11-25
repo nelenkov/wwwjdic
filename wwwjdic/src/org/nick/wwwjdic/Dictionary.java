@@ -10,9 +10,7 @@ import org.nick.wwwjdic.history.HistoryDbHelper;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,31 +52,6 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         IDX_TO_DICT.put(18, "L");
         IDX_TO_DICT.put(19, "M");
     }
-
-    private static final Map<Integer, String> IDX_TO_CODE = new HashMap<Integer, String>();
-
-    static {
-        // Kanji or reading
-        IDX_TO_CODE.put(0, "J");
-        // Stroke count
-        IDX_TO_CODE.put(1, "C");
-        // Radical number
-        IDX_TO_CODE.put(2, "B");
-        // English meaning
-        IDX_TO_CODE.put(3, "E");
-        // Unicode code (hex)
-        IDX_TO_CODE.put(4, "U");
-        // JIS code
-        IDX_TO_CODE.put(5, "J");
-        // SKIP code
-        IDX_TO_CODE.put(6, "P");
-        // Pinyin reading
-        IDX_TO_CODE.put(7, "Y");
-        // Korean reading
-        IDX_TO_CODE.put(8, "W");
-    }
-
-    private static final String PREF_DEFAULT_DICT_PREF_KEY = "pref_default_dict";
 
     private EditText inputText;
     private CheckBox exactMatchCb;
@@ -125,7 +98,8 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
     }
 
     private void selectDictionary() {
-        dictSpinner.setSelection(getDefaultDictionaryIdx());
+        dictSpinner.setSelection(WwwjdicPreferences
+                .getDefaultDictionaryIdx(this));
     }
 
     @Override
@@ -288,12 +262,4 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         mgr.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
-    private int getDefaultDictionaryIdx() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        String idxStr = preferences.getString(PREF_DEFAULT_DICT_PREF_KEY, "0");
-
-        return Integer.parseInt(idxStr);
-    }
 }
