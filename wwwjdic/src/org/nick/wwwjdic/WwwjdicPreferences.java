@@ -4,8 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -16,6 +18,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.util.Log;
 
@@ -28,6 +31,8 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     private static final String PREF_MIRROR_URL_KEY = "pref_wwwjdic_mirror_url";
 
     private static final String KR_PACKAGE = "org.nick.kanjirecognizer";
+
+    private static final String PREF_DEFAULT_DICT_PREF_KEY = "pref_default_dict";
 
     private CheckBoxPreference useKrPreference;
     private ListPreference mirrorPreference;
@@ -116,5 +121,21 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         } catch (NameNotFoundException e) {
             return false;
         }
+    }
+
+    public static int getDefaultDictionaryIdx(Context context) {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+
+        String idxStr = preferences.getString(PREF_DEFAULT_DICT_PREF_KEY, "0");
+
+        return Integer.parseInt(idxStr);
+    }
+
+    public static String getDefaultDictionary(Context context) {
+        String[] dictionaries = context.getResources().getStringArray(
+                R.array.dictionary_codes_array);
+
+        return dictionaries[getDefaultDictionaryIdx(context)];
     }
 }

@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class KanjiEntryDetail extends DetailActivity implements OnClickListener {
+
+    private static final String TAG = KanjiEntryDetail.class.getSimpleName();
 
     private static class IntentSpan extends ClickableSpan {
         private Context context;
@@ -213,7 +216,8 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
 
     private Intent createCompoundSearchIntent(int searchType,
             boolean commonWordsOnly) {
-        String dictionary = "1";
+        String dictionary = WwwjdicPreferences.getDefaultDictionary(this);
+        Log.d(TAG, "Will look for compounds in dictionary: " + dictionary);
         SearchCriteria criteria = SearchCriteria.createForKanjiCompounds(entry
                 .getKanji(), searchType, commonWordsOnly, dictionary);
         Intent intent = new Intent(KanjiEntryDetail.this,
