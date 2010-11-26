@@ -41,6 +41,9 @@ public class WwwjdicApplication extends Application {
 
     private static String flurryKey;
 
+    private String currentDictionary;
+    private String currentDictionaryName;
+
     @Override
     public void onCreate() {
         version = getVersionName();
@@ -255,6 +258,23 @@ public class WwwjdicApplication extends Application {
 
     private String[] getStrArray(int id) {
         return getResources().getStringArray(id);
+    }
+
+    public synchronized String getCurrentDictionary() {
+        return currentDictionary;
+    }
+
+    public synchronized void setCurrentDictionary(String currentDictionary) {
+        this.currentDictionary = currentDictionary;
+    }
+
+    public synchronized String getCurrentDictionaryName() {
+        return currentDictionaryName;
+    }
+
+    public synchronized void setCurrentDictionaryName(
+            String currentDictionaryName) {
+        this.currentDictionaryName = currentDictionaryName;
     }
 
 }

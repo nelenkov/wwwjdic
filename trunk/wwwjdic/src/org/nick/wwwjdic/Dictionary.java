@@ -16,15 +16,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
-        OnFocusChangeListener, OnCheckedChangeListener {
+        OnFocusChangeListener, OnCheckedChangeListener, OnItemSelectedListener {
 
     private static final String TAG = Dictionary.class.getSimpleName();
 
@@ -74,7 +76,7 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         setupSpinners();
 
         inputText.requestFocus();
-        selectDictionary();
+        selectDictionary(savedInstanceState);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -97,9 +99,16 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         setupDictSummary();
     }
 
-    private void selectDictionary() {
-        dictSpinner.setSelection(WwwjdicPreferences
-                .getDefaultDictionaryIdx(this));
+    private void selectDictionary(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            int idx = savedInstanceState.getInt(
+                    Constants.SELECTED_DICTIONARY_IDX, 0);
+            dictSpinner.setSelection(idx);
+        } else {
+
+            dictSpinner.setSelection(WwwjdicPreferences
+                    .getDefaultDictionaryIdx(this));
+        }
     }
 
     @Override
@@ -108,7 +117,15 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
 
         setupDictSummary();
 
-        selectDictionary();
+        // selectDictionary();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(Constants.SELECTED_DICTIONARY_IDX, dictSpinner
+                .getSelectedItemPosition());
     }
 
     private void findViews() {
@@ -138,6 +155,7 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         adapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dictSpinner.setAdapter(adapter);
+        dictSpinner.setOnItemSelectedListener(this);
     }
 
     private void setupDictSummary() {
@@ -170,13 +188,7 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
 
             try {
                 int dictIdx = dictSpinner.getSelectedItemPosition();
-                String dict = IDX_TO_DICT.get(dictIdx);
-                Log.i(TAG, Integer.toString(dictIdx));
-                Log.i(TAG, dict);
-                if (dict == null) {
-                    // edict
-                    dict = "1";
-                }
+                String dict = getDictionaryFromSelection(dictIdx);
 
                 SearchCriteria criteria = SearchCriteria.createForDictionary(
                         input, exactMatchCb.isChecked(), romanizedJapaneseCb
@@ -199,6 +211,18 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         default:
             // do nothing
         }
+    }
+
+    private String getDictionaryFromSelection(int dictIdx) {
+        String dict = IDX_TO_DICT.get(dictIdx);
+        Log.i(TAG, "dictionary idx: " + Integer.toString(dictIdx));
+        Log.i(TAG, "dictionary: " + dict);
+        if (dict == null) {
+            // edict
+            dict = "1";
+        }
+
+        return dict;
     }
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -260,6 +284,20 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         EditText editText = (EditText) findViewById(R.id.inputText);
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mgr.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int pos,
+            long id) {
+        String dict = getDictionaryFromSelection(pos);
+        String dictName = (String) parent.getSelectedItem();
+        getApp().setCurrentDictionary(dict);
+        getApp().setCurrentDictionaryName(dictName);
+        Log.d(TAG, String.format("current dictionary: %s(%s)", dictName, dict));
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> arg0) {
     }
 
 }
