@@ -216,14 +216,20 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
 
     private Intent createCompoundSearchIntent(int searchType,
             boolean commonWordsOnly) {
-        String dictionary = WwwjdicPreferences.getDefaultDictionary(this);
-        Log.d(TAG, "Will look for compounds in dictionary: " + dictionary);
+        String dictionary = getApp().getCurrentDictionary();
+        Log.d(TAG, String.format(
+                "Will look for compounds in dictionary: %s(%s)", getApp()
+                        .getCurrentDictionaryName(), dictionary));
         SearchCriteria criteria = SearchCriteria.createForKanjiCompounds(entry
                 .getKanji(), searchType, commonWordsOnly, dictionary);
         Intent intent = new Intent(KanjiEntryDetail.this,
                 DictionaryResultListView.class);
         intent.putExtra(Constants.CRITERIA_KEY, criteria);
         return intent;
+    }
+
+    private WwwjdicApplication getApp() {
+        return (WwwjdicApplication) getApplication();
     }
 
     private void makeClickable(TextView textView, Intent intent) {
