@@ -41,8 +41,9 @@ public class WwwjdicApplication extends Application {
 
     private static String flurryKey;
 
-    private String currentDictionary;
-    private String currentDictionaryName;
+    // EDICT by default
+    private String currentDictionary = "1";
+    private String currentDictionaryName = "General";
 
     @Override
     public void onCreate() {
