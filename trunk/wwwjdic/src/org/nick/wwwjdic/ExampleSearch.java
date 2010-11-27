@@ -67,6 +67,15 @@ public class ExampleSearch extends WwwjdicActivityBase implements
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (dbHelper != null) {
+            dbHelper.close();
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 

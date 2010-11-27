@@ -99,6 +99,16 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         setupDictSummary();
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (dbHelper != null) {
+            dbHelper.close();
+        }
+    }
+
     private void selectDictionary(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             int idx = savedInstanceState.getInt(
