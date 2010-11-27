@@ -28,6 +28,8 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     private static final String TAG = WwwjdicPreferences.class.getSimpleName();
 
     private static final String PREF_USE_KR_KEY = "pref_kr_use_kanji_recognizer";
+
+    private static final String PREF_AUTO_SELECT_MIRROR_KEY = "pref_auto_select_mirror";
     private static final String PREF_MIRROR_URL_KEY = "pref_wwwjdic_mirror_url";
 
     private static final String KR_PACKAGE = "org.nick.kanjirecognizer";
@@ -35,6 +37,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     private static final String PREF_DEFAULT_DICT_PREF_KEY = "pref_default_dict";
 
     private CheckBoxPreference useKrPreference;
+    private CheckBoxPreference autoSelectMirrorPreference;
     private ListPreference mirrorPreference;
 
     @Override
@@ -46,6 +49,10 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
         useKrPreference = (CheckBoxPreference) findPreference(PREF_USE_KR_KEY);
         useKrPreference.setOnPreferenceChangeListener(this);
+
+        autoSelectMirrorPreference = (CheckBoxPreference) findPreference(PREF_AUTO_SELECT_MIRROR_KEY);
+        autoSelectMirrorPreference.setOnPreferenceChangeListener(this);
+
         mirrorPreference = (ListPreference) findPreference(PREF_MIRROR_URL_KEY);
         mirrorPreference.setSummary(mirrorPreference.getEntry());
         mirrorPreference.setOnPreferenceChangeListener(this);
@@ -63,6 +70,16 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
                 return true;
             }
+        }
+
+        if (PREF_AUTO_SELECT_MIRROR_KEY.equals(preference.getKey())) {
+            boolean autoSelect = (Boolean) newValue;
+            if (autoSelect) {
+                WwwjdicApplication app = (WwwjdicApplication) getApplication();
+                app.setMirrorBasedOnLocation();
+            }
+
+            return true;
         }
 
         if (PREF_MIRROR_URL_KEY.equals(preference.getKey())) {

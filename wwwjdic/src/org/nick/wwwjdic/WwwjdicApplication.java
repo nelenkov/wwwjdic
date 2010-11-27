@@ -69,12 +69,30 @@ public class WwwjdicApplication extends Application {
         return prefs.getBoolean(PREF_AUTO_SELECT_MIRROR_KEY, true);
     }
 
-    private void setMirrorBasedOnLocation() {
+    public synchronized void setMirrorBasedOnLocation() {
+        Log.d(TAG, "auto selecting mirror...");
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location myLocation = locationManager
-                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        if (myLocation == null) {
-            Log.d(TAG, "failed to get cached location, giving up");
+        Location myLocation = null;
+
+        try {
+            boolean isEnabled = locationManager
+                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            Log.d(TAG, LocationManager.NETWORK_PROVIDER + " enabled: "
+                    + isEnabled);
+            if (!isEnabled) {
+                Log.d(TAG, "provider not enabled, giving up");
+                return;
+            }
+            locationManager
+                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (myLocation == null) {
+                Log.w(TAG, "failed to get cached location, giving up");
+
+                return;
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "error getting location, giving up", e);
 
             return;
         }
