@@ -1,6 +1,16 @@
 #summary Full changelog
 
 = Changelog =
+ * v1.55 Kanji compound search
+  * Added compound search to kanji details
+  * Added update date to widget
+  * Better widget update handling
+  * Use new EU mirror URL
+  * Various bug fixes
+ * v1.52
+  * Updated to use new kanji recognizer URL
+ * v1.51
+  * Bug fix: automatic encoding recognition with Excel 2007
  * v1.5 Widget and favorites export
   * Kanji of the day widget 
   * Favorites export to local CSV and Google Docs
