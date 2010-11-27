@@ -686,7 +686,6 @@ public class Favorites extends HistoryBase implements
             Log.d(TAG, "temp file: " + tempFile.getAbsolutePath());
             Log.d(TAG, "document filename: " + filename);
 
-            writeBom(tempFile);
             Writer writer = new FileWriter(tempFile, true);
             exportToCsv(tempFile.getAbsolutePath(), writer, false);
 
