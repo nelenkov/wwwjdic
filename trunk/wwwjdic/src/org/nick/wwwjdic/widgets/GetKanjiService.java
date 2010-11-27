@@ -62,6 +62,8 @@ public class GetKanjiService extends Service {
 
     private static final int NUM_RETRIES = 3;
 
+    private static final int RETRY_INTERVAL = 500;
+
     private final RandomJisGenerator jisGenerator = new RandomJisGenerator();
 
     private final Executor executor = Executors.newSingleThreadExecutor();
@@ -115,7 +117,10 @@ public class GetKanjiService extends Service {
                     }
                 } catch (Exception e) {
                     if (i < NUM_RETRIES - 1) {
-                        Log.w(TAG, "Couldn't contact WWWJDIC, will retry.", e);
+                        Log.w(TAG, String.format("Couldn't contact "
+                                + "WWWJDIC, will retry after %d ms.",
+                                RETRY_INTERVAL), e);
+                        Thread.sleep(RETRY_INTERVAL);
                     } else {
                         Log.e(TAG, "Couldn't contact WWWJDIC.", e);
                     }
