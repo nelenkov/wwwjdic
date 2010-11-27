@@ -72,7 +72,7 @@ public class WwwjdicApplication extends Application {
                 .getDefaultSharedPreferences(this);
         String krUrl = prefs.getString(PREF_KR_URL_KEY, KR_URL);
         if (krUrl.contains("kanji.cgi")) {
-            Log.d(TAG, "found old KR URL, will overrite with " + KR_URL);
+            Log.d(TAG, "found old KR URL, will overwrite with " + KR_URL);
             prefs.edit().putString(PREF_KR_URL_KEY, KR_URL)
                 .commit();
         }
