@@ -210,9 +210,7 @@
     <string name="ocr">OCR</string>
     <string name="write_kanji">Write kanji</string>
     <string name="hkr_failed">Character recognition failed</string>
-    <string name="ws_hkr_failed">Character recognition failed. If the problem
-        persists, try setting the kanji recognizer URL to \'backup\' in
-        Settings.</string>
+    <string name="ws_hkr_failed">Character recognition failed.</string>
     <string name="sd_file_create_failed">Could not create temp file on SD card.</string>
     <string name="af_failed">A/F failed</string>
     <string name="ocr_failed">OCR failed</string>
