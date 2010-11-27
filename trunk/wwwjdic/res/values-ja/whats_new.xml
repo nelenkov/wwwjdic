@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">%sの新規機能</string>
-    <string name="whats_new">* 新しい手書き認識サーバURL対応</string>
+    <string name="whats_new">* 漢字詳細画面に熟語検索リンクを追加。\n* 更新日をウィジェットに追加。\n* ウィジェット更新改善。\n* 新しいEUミラーサイトURL使用。\n* バグ修正。</string>
 </resources>
