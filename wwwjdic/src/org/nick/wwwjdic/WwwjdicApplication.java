@@ -33,6 +33,9 @@ public class WwwjdicApplication extends Application {
     private static final String PREF_AUTO_SELECT_MIRROR_KEY = "pref_auto_select_mirror";
     private static final String PREF_WWWJDIC_URL_KEY = "pref_wwwjdic_mirror_url";
 
+    private static final String PREF_KR_URL_KEY = "pref_kr_url";
+    private static final String KR_URL = "http://kanji.sljfaq.org/kanji-0.016.cgi";
+
     private ExecutorService executorService;
 
     private LocationManager locationManager;
@@ -60,6 +63,19 @@ public class WwwjdicApplication extends Application {
             setMirrorBasedOnLocation();
         }
 
+        updateKanjiRecognizerUrl();
+
+    }
+
+    private void updateKanjiRecognizerUrl() {
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        String krUrl = prefs.getString(PREF_KR_URL_KEY, KR_URL);
+        if (krUrl.contains("kanji.cgi")) {
+            Log.d(TAG, "found old KR URL, will overrite with " + KR_URL);
+            prefs.edit().putString(PREF_KR_URL_KEY, KR_URL)
+                .commit();
+        }
     }
 
     private boolean isAutoSelectMirror() {
