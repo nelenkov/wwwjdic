@@ -404,9 +404,7 @@
         <item>Local backup</item>
         <item>Local CSV</item>
         <item>Google Docs</item>
-        <!-- 
         <item>Anki deck</item>
-        -->
     </string-array>
     <string name="favorites_export_dialog_title">Export favorites to</string>
     <string name="uploading_to_gdocs">Uploading to Google Docs...</string>

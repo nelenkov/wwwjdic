@@ -533,7 +533,9 @@ public class Favorites extends HistoryBase implements
                     exportToGDocs(isKanji);
                     break;
                 case EXPORT_ANKI_IDX:
-                    throw new IllegalArgumentException("Not implemented");
+                    // throw new IllegalArgumentException("Not implemented");
+                    AnkiGenerator g = new AnkiGenerator(Favorites.this);
+                    g.createAnkiFile("/mnt/sdcard/wwwjdic/test.anki");
                 default:
                     // do noting
                 }
@@ -569,6 +571,8 @@ public class Favorites extends HistoryBase implements
                 return singleType;
             case EXPORT_GDOCS_IDX:
                 return singleType && isPostEclair;
+            case EXPORT_ANKI_IDX:
+                return singleType;
             default:
                 return false;
             }
