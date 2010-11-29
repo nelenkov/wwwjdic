@@ -16,6 +16,7 @@ import java.util.List;
 import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.Dialogs;
+import org.nick.wwwjdic.DictionaryEntry;
 import org.nick.wwwjdic.DictionaryEntryDetail;
 import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.KanjiEntryDetail;
@@ -549,28 +550,53 @@ public class Favorites extends HistoryBase implements
     private void exportToAnkiDeck(boolean isKanji) {
         try {
             AnkiGenerator g = new AnkiGenerator(Favorites.this);
-            List<KanjiEntry> kanjis = new ArrayList<KanjiEntry>();
-            Cursor c = null;
-            try {
-                c = filterCursor();
-                while (c.moveToNext()) {
-                    WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
-                    kanjis.add((KanjiEntry) entry);
-                }
-            } finally {
-                if (c != null) {
-                    c.close();
-                }
-            }
-
             String filename = getCsvExportFilename(isKanji).replace(".csv", "")
                     + ".anki";
-            g.createAnkiFile("/mnt/sdcard/wwwjdic/" + filename, kanjis);
+            int size = 0;
+            if (isKanji) {
+                List<KanjiEntry> kanjis = new ArrayList<KanjiEntry>();
+                Cursor c = null;
+                try {
+                    c = filterCursor();
+                    while (c.moveToNext()) {
+                        WwwjdicEntry entry = HistoryDbHelper
+                                .createWwwjdicEntry(c);
+                        kanjis.add((KanjiEntry) entry);
+                    }
+                } finally {
+                    if (c != null) {
+                        c.close();
+                    }
+                }
+
+                g
+                        .createKanjiAnkiFile("/mnt/sdcard/wwwjdic/" + filename,
+                                kanjis);
+                size = kanjis.size();
+            } else {
+                List<DictionaryEntry> words = new ArrayList<DictionaryEntry>();
+                Cursor c = null;
+                try {
+                    c = filterCursor();
+                    while (c.moveToNext()) {
+                        WwwjdicEntry entry = HistoryDbHelper
+                                .createWwwjdicEntry(c);
+                        words.add((DictionaryEntry) entry);
+                    }
+                } finally {
+                    if (c != null) {
+                        c.close();
+                    }
+                }
+
+                g.createDictAnkiFile("/mnt/sdcard/wwwjdic/" + filename, words);
+                size = words.size();
+            }
 
             String message = getResources().getString(
                     R.string.favorites_exported);
             Toast t = Toast.makeText(Favorites.this, String.format(message,
-                    filename, kanjis.size()), Toast.LENGTH_SHORT);
+                    filename, size), Toast.LENGTH_SHORT);
             t.show();
         } catch (Exception e) {
             String message = getResources().getString(R.string.export_error);

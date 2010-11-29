@@ -8,6 +8,7 @@ import java.security.SecureRandom;
 import java.util.List;
 import java.util.Random;
 
+import org.nick.wwwjdic.DictionaryEntry;
 import org.nick.wwwjdic.KanjiEntry;
 
 import android.content.ContentValues;
@@ -21,8 +22,8 @@ public class AnkiGenerator {
 
     private static final String TAG = AnkiGenerator.class.getSimpleName();
 
-    private static final long MODEL_ID = 4998196432932412600L;
-    private static final long FWD_CARD_MODEL_ID = 8257311625381387448L;
+    private static final long KANJI_MODEL_ID = 4998196432932412600L;
+    private static final long KANJI_FWD_CARD_MODEL_ID = 8257311625381387448L;
 
     private static final long KANJI_FIELD_ID = -4886934269285393224L;
     private static final long ONYOMI_FIELD_ID = 4393069213469613240L;
@@ -35,6 +36,17 @@ public class AnkiGenerator {
     private static final int KUNYOMI_FIELD_ORD = 2;
     private static final int NANORI_FIELD_ORD = 3;
     private static final int MEANING_FIELD_ORD = 4;
+
+    private static final long DICT_MODEL_ID = -1051435290320934353L;
+    private static final long DICT_FWD_CARD_MODEL_ID = -4952737841158526416L;
+
+    private static final long DICT_HEADWORD_FIELD_ID = 7468722094757145135L;
+    private static final long DICT_READING_FIELD_ID = -6512467652926215633L;
+    private static final long DICT_MEANING_FIELD_ID = 8937385955465940432L;
+
+    private static final int DICT_HEADWORD_ORD = 0;
+    private static final int DICT_READING_ORD = 1;
+    private static final int DICT_MEANING_ORD = 2;
 
     private static final String QA_TEMPLATE = "<span class=\"fm3cf7512c968f9cb8\">%s</span><br>";
 
@@ -50,7 +62,7 @@ public class AnkiGenerator {
         }
     }
 
-    public void createAnkiFile(String path, List<KanjiEntry> kanjis) {
+    public void createKanjiAnkiFile(String path, List<KanjiEntry> kanjis) {
         SQLiteDatabase db = null;
 
         try {
@@ -100,30 +112,128 @@ public class AnkiGenerator {
         }
     }
 
+    public void createDictAnkiFile(String path, List<DictionaryEntry> words) {
+        SQLiteDatabase db = null;
+
+        try {
+            db = SQLiteDatabase.openDatabase(path, null,
+                    SQLiteDatabase.CREATE_IF_NECESSARY);
+            db.beginTransaction();
+
+            String schema = readSchema("anki-create.sql");
+            String[] statements = schema.split(";");
+            for (String s : statements) {
+                if (s == null) {
+                    continue;
+                }
+                s = s.trim();
+                Log.d(TAG, "SQL: " + s);
+                if (TextUtils.isEmpty(s) || s.startsWith("--")) {
+                    continue;
+                }
+                db.execSQL(s.trim());
+            }
+
+            schema = readSchema("anki-dict-model.sql");
+            statements = schema.split(";");
+            for (String s : statements) {
+                if (s == null) {
+                    continue;
+                }
+                s = s.trim();
+                Log.d(TAG, "SQL: " + s);
+                if (TextUtils.isEmpty(s) || s.startsWith("--")) {
+                    continue;
+                }
+                db.execSQL(s.trim());
+            }
+
+            for (DictionaryEntry w : words) {
+                addWord(db, w);
+            }
+
+            db.setTransactionSuccessful();
+
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+                db.close();
+            }
+        }
+    }
+
+    private void addWord(SQLiteDatabase db, DictionaryEntry d) {
+        long factId = insertFact(db, DICT_MODEL_ID);
+        String question = generateQuestion(d.getHeadword());
+        String answer = generateDictAnswer(d);
+        insertCard(db, factId, DICT_FWD_CARD_MODEL_ID, question, answer);
+
+        insertField(db, d.getHeadword(), factId, DICT_HEADWORD_FIELD_ID,
+                DICT_HEADWORD_ORD);
+        if (d.getReading() != null) {
+            insertField(db, d.getReading(), factId, DICT_READING_FIELD_ID,
+                    DICT_READING_ORD);
+        }
+        if (d.getMeaningsAsString() != null) {
+            insertField(db, d.getMeaningsAsString(), factId,
+                    DICT_MEANING_FIELD_ID, DICT_MEANING_ORD);
+        }
+    }
+
     private void addKanji(SQLiteDatabase db, KanjiEntry k) {
+        long factId = insertFact(db, KANJI_MODEL_ID);
+        String question = generateQuestion(k.getHeadword());
+        String answer = generateKanjiAnswer(k);
+        insertCard(db, factId, KANJI_FWD_CARD_MODEL_ID, question, answer);
+
+        insertField(db, k.getKanji(), factId, KANJI_FIELD_ID, KANJI_FIELD_ORD);
+        if (k.getOnyomi() != null) {
+            insertField(db, k.getOnyomi(), factId, ONYOMI_FIELD_ID,
+                    ONYOMI_FIELD_ORD);
+        }
+        if (k.getKunyomi() != null) {
+            insertField(db, k.getKunyomi(), factId, KUNYOMI_FIELD_ID,
+                    KUNYOMI_FIELD_ORD);
+        }
+        if (k.getNanori() != null) {
+            insertField(db, k.getNanori(), factId, NANORI_FIELD_ID,
+                    NANORI_FIELD_ORD);
+        }
+        if (k.getMeaningsAsString() != null) {
+            insertField(db, k.getMeaningsAsString(), factId, MEANING_FIELD_ID,
+                    MEANING_FIELD_ORD);
+        }
+    }
+
+    private long insertFact(SQLiteDatabase db, long modelId) {
         ContentValues fact = new ContentValues();
         long factId = generateId();
         fact.put("id", factId);
-        fact.put("modelId", MODEL_ID);
+        fact.put("modelId", modelId);
         long now = System.currentTimeMillis();
         fact.put("created", now);
         fact.put("modified", now);
         fact.put("tags", "");
         fact.put("spaceUntil", 0.0);
-
         db.insert("facts", null, fact);
 
+        return factId;
+    }
+
+    private long insertCard(SQLiteDatabase db, long factId, long cardModelId,
+            String question, String answer) {
         ContentValues card = new ContentValues();
         long cardId = generateId();
+        long now = System.currentTimeMillis();
         card.put("id", cardId);
         card.put("factId", factId);
-        card.put("cardModelId", FWD_CARD_MODEL_ID);
+        card.put("cardModelId", cardModelId);
         card.put("created", now);
         card.put("modified", now);
         card.put("tags", "");
         card.put("ordinal", 0);
-        card.put("question", generateQuestion(k));
-        card.put("answer", generateAnswer(k));
+        card.put("question", question);
+        card.put("answer", answer);
         card.put("priority", 2);
         card.put("interval", 0.0);
         card.put("lastInterval", 0.0);
@@ -156,23 +266,7 @@ public class AnkiGenerator {
         card.put("combinedDue", now);
         db.insert("cards", null, card);
 
-        insertField(db, k.getKanji(), factId, KANJI_FIELD_ID, KANJI_FIELD_ORD);
-        if (k.getOnyomi() != null) {
-            insertField(db, k.getOnyomi(), factId, ONYOMI_FIELD_ID,
-                    ONYOMI_FIELD_ORD);
-        }
-        if (k.getKunyomi() != null) {
-            insertField(db, k.getKunyomi(), factId, KUNYOMI_FIELD_ID,
-                    KUNYOMI_FIELD_ORD);
-        }
-        if (k.getNanori() != null) {
-            insertField(db, k.getNanori(), factId, NANORI_FIELD_ID,
-                    NANORI_FIELD_ORD);
-        }
-        if (k.getMeaningsAsString() != null) {
-            insertField(db, k.getMeaningsAsString(), factId, MEANING_FIELD_ID,
-                    MEANING_FIELD_ORD);
-        }
+        return cardId;
     }
 
     private void insertField(SQLiteDatabase db, String value, long factId,
@@ -186,7 +280,7 @@ public class AnkiGenerator {
         db.insert("fields", null, field);
     }
 
-    private String generateAnswer(KanjiEntry k) {
+    private String generateKanjiAnswer(KanjiEntry k) {
         StringBuffer buff = new StringBuffer();
         if (k.getOnyomi() != null) {
             buff.append(String.format(QA_TEMPLATE, k.getOnyomi()));
@@ -204,9 +298,20 @@ public class AnkiGenerator {
         return buff.toString();
     }
 
-    private String generateQuestion(KanjiEntry k) {
-        return String.format("<span class=\"fmbc2e1f2c968f9cb8\">%s</span>", k
-                .getKanji());
+    private String generateDictAnswer(DictionaryEntry d) {
+        StringBuffer buff = new StringBuffer();
+        if (d.getReading() != null) {
+            buff.append(String.format(QA_TEMPLATE, d.getReading()));
+        }
+        if (d.getMeaningsAsString() != null) {
+            buff.append(String.format(QA_TEMPLATE, d.getMeaningsAsString()));
+        }
+
+        return buff.toString();
+    }
+
+    private String generateQuestion(String question) {
+        return String.format(QA_TEMPLATE, question);
     }
 
     private long generateId() {
