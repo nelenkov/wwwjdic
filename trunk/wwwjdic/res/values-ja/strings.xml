@@ -276,9 +276,7 @@
         <item>ローカルバックアップ</item>
         <item>ローカル CSV</item>
         <item>Google ドキュメント</item>
-        <!-- 
         <item>Anki単語帳</item>
-        -->
     </string-array>
     <string name="favorites_export_dialog_title">お気に入りエックスポート</string>
     <string name="uploading_to_gdocs">Google ドキュメントにアップロード中...</string>
