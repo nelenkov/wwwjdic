@@ -9,12 +9,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.Dialogs;
 import org.nick.wwwjdic.DictionaryEntryDetail;
+import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicApplication;
@@ -533,9 +536,7 @@ public class Favorites extends HistoryBase implements
                     exportToGDocs(isKanji);
                     break;
                 case EXPORT_ANKI_IDX:
-                    // throw new IllegalArgumentException("Not implemented");
-                    AnkiGenerator g = new AnkiGenerator(Favorites.this);
-                    g.createAnkiFile("/mnt/sdcard/wwwjdic/test.anki");
+                    exportToAnkiDeck(isKanji);
                 default:
                     // do noting
                 }
@@ -543,6 +544,40 @@ public class Favorites extends HistoryBase implements
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void exportToAnkiDeck(boolean isKanji) {
+        try {
+            AnkiGenerator g = new AnkiGenerator(Favorites.this);
+            List<KanjiEntry> kanjis = new ArrayList<KanjiEntry>();
+            Cursor c = null;
+            try {
+                c = filterCursor();
+                while (c.moveToNext()) {
+                    WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
+                    kanjis.add((KanjiEntry) entry);
+                }
+            } finally {
+                if (c != null) {
+                    c.close();
+                }
+            }
+
+            String filename = getCsvExportFilename(isKanji).replace(".csv", "")
+                    + ".anki";
+            g.createAnkiFile("/mnt/sdcard/wwwjdic/" + filename, kanjis);
+
+            String message = getResources().getString(
+                    R.string.favorites_exported);
+            Toast t = Toast.makeText(Favorites.this, String.format(message,
+                    filename, kanjis.size()), Toast.LENGTH_SHORT);
+            t.show();
+        } catch (Exception e) {
+            String message = getResources().getString(R.string.export_error);
+            Toast.makeText(Favorites.this,
+                    String.format(message, e.getMessage()), Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 
     private static class ExportItemsAdapter extends ArrayAdapter<String> {
