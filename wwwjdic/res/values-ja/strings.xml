@@ -302,4 +302,7 @@
     <string name="compound_search_starting">語頭字</string>
     <string name="compound_search_any">どこでも</string>
     <string name="compound_search_common_only">よく使われる言葉のみ</string>
+    <string name="exporting_to_anki">お気に入りをAnki単語帳にエックスポートしています...</string>
+    <string name="anki_export_success">お気に入りをAnki単語帳にエックスポートしました: %s.</string>
+    <string name="anki_export_failure">Anki単語帳エックスポートエラー: %s.</string>
 </resources>
