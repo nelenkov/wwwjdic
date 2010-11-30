@@ -17,7 +17,7 @@ A:  Each permission is needed to implement on or more features. Even if you don'
  * android.permission.USE_CREDENTIALS
   * to use an authentication token for Google Docs
  * android.permission.MANAGE_ACCOUNTS
-  * to expire the authentication token-
+  * to mark the authentication token as expired
  * android.permission.ACCESS_COARSE_LOCATION
   * needed to automatically select mirror site based on current location
 
@@ -39,7 +39,5 @@ Or, simply use !OpenOffice, it lets you specify parameters at import time (and g
 == Q: Will there be an offline version? ==
 
 A: Most probably not. Or it will be a completely different application. After all, this one has 'WWW' in its name :) If you need an offline kanji reference, try Kanji Recognizer.  
-
-
 
 
