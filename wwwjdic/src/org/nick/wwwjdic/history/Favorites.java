@@ -549,9 +549,11 @@ public class Favorites extends HistoryBase implements
 
     private void exportToAnkiDeck(boolean isKanji) {
         try {
-            AnkiGenerator g = new AnkiGenerator(Favorites.this);
+            AnkiGenerator generator = new AnkiGenerator(Favorites.this);
             String filename = getCsvExportFilename(isKanji).replace(".csv", "")
                     + ".anki";
+            File exportFile = new File(WwwjdicApplication.getWwwjdicDir(),
+                    filename);
             int size = 0;
             if (isKanji) {
                 List<KanjiEntry> kanjis = new ArrayList<KanjiEntry>();
@@ -569,10 +571,8 @@ public class Favorites extends HistoryBase implements
                     }
                 }
 
-                g
-                        .createKanjiAnkiFile("/mnt/sdcard/wwwjdic/" + filename,
-                                kanjis);
-                size = kanjis.size();
+                size = generator.createKanjiAnkiFile(exportFile
+                        .getAbsolutePath(), kanjis);
             } else {
                 List<DictionaryEntry> words = new ArrayList<DictionaryEntry>();
                 Cursor c = null;
@@ -589,10 +589,11 @@ public class Favorites extends HistoryBase implements
                     }
                 }
 
-                g.createDictAnkiFile("/mnt/sdcard/wwwjdic/" + filename, words);
-                size = words.size();
+                size = generator.createDictAnkiFile(exportFile
+                        .getAbsolutePath(), words);
             }
 
+            Analytics.event("favoritesAnkiExport", this);
             String message = getResources().getString(
                     R.string.favorites_exported);
             Toast t = Toast.makeText(Favorites.this, String.format(message,
