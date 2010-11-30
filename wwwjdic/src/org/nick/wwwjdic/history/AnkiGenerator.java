@@ -22,8 +22,11 @@ public class AnkiGenerator {
 
     private static final String TAG = AnkiGenerator.class.getSimpleName();
 
+    private static final long DECK_ID = 1L;
+
     private static final long KANJI_MODEL_ID = 4998196432932412600L;
     private static final long KANJI_FWD_CARD_MODEL_ID = 8257311625381387448L;
+    private static final int FWD_CARD_ORDINAL = 0;
 
     private static final long KANJI_FIELD_ID = -4886934269285393224L;
     private static final long ONYOMI_FIELD_ID = 4393069213469613240L;
@@ -47,6 +50,16 @@ public class AnkiGenerator {
     private static final int DICT_HEADWORD_ORD = 0;
     private static final int DICT_READING_ORD = 1;
     private static final int DICT_MEANING_ORD = 2;
+
+    // private static final int CARD_TYPE_FAILED = 0;
+    // private static final int CARD_TYPE_REV = 1;
+    private static final int CARD_TYPE_NEW = 2;
+
+    // private static final int CARD_PRIORITY_NONE = 0;
+    // private static final int CARD_PRIORITY_LOW = 1;
+    private static final int CARD_PRIORITY_NORMAL = 2;
+    // private static final int CARD_PRIORITY_MEDIUM = 3;
+    // private static final int CARD_PRIORITY_HIGH = 4;
 
     private static final String QA_TEMPLATE = "<span class=\"fm3cf7512c968f9cb8\">%s</span><br>";
 
@@ -91,6 +104,17 @@ public class AnkiGenerator {
         for (KanjiEntry k : kanjis) {
             addKanji(db, k);
         }
+        // cardCount, factCount, newCount
+        updateDeckCounts(db, kanjis.size());
+    }
+
+    private void updateDeckCounts(SQLiteDatabase db, int count) {
+        ContentValues values = new ContentValues();
+        values.put("cardCount", count);
+        values.put("factCount", count);
+        values.put("newCount", count);
+        db.update("decks", values, "id = ?", new String[] { Long
+                .toString(DECK_ID) });
     }
 
     private void addKanji(SQLiteDatabase db, KanjiEntry k) {
@@ -163,6 +187,8 @@ public class AnkiGenerator {
         for (DictionaryEntry w : words) {
             addWord(db, w);
         }
+        // cardCount, factCount, newCount
+        updateDeckCounts(db, words.size());
     }
 
     private void addWord(SQLiteDatabase db, DictionaryEntry d) {
@@ -188,7 +214,7 @@ public class AnkiGenerator {
         long factId = generateId();
         fact.put("id", factId);
         fact.put("modelId", modelId);
-        long now = System.currentTimeMillis();
+        double now = now();
         fact.put("created", now);
         fact.put("modified", now);
         fact.put("tags", "");
@@ -202,20 +228,20 @@ public class AnkiGenerator {
             String question, String answer) {
         ContentValues card = new ContentValues();
         long cardId = generateId();
-        long now = System.currentTimeMillis();
+        double now = now();
         card.put("id", cardId);
         card.put("factId", factId);
         card.put("cardModelId", cardModelId);
         card.put("created", now);
         card.put("modified", now);
         card.put("tags", "");
-        card.put("ordinal", 0);
+        card.put("ordinal", FWD_CARD_ORDINAL);
         card.put("question", question);
         card.put("answer", answer);
-        card.put("priority", 2);
+        card.put("priority", CARD_PRIORITY_NORMAL);
         card.put("interval", 0.0);
         card.put("lastInterval", 0.0);
-        card.put("due", 0);
+        card.put("due", now);
         card.put("lastDue", 0);
         card.put("factor", 2.5);
         card.put("lastFactor", 2.5);
@@ -237,10 +263,11 @@ public class AnkiGenerator {
         card.put("yesCount", 0);
         card.put("noCount", 0);
         card.put("spaceUntil", 0);
+        // card.put("relativeDelay", 2);
         card.put("relativeDelay", 0);
 
         card.put("isDue", true);
-        card.put("type", 2);
+        card.put("type", CARD_TYPE_NEW);
         card.put("combinedDue", now);
         db.insert("cards", null, card);
 
@@ -332,4 +359,9 @@ public class AnkiGenerator {
 
         return baos.toString("ASCII");
     }
+
+    private static double now() {
+        return System.currentTimeMillis() / 1000.0;
+    }
+
 }
