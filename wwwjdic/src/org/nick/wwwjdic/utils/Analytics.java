@@ -1,4 +1,6 @@
-package org.nick.wwwjdic;
+package org.nick.wwwjdic.utils;
+
+import org.nick.wwwjdic.WwwjdicApplication;
 
 import android.content.Context;
 import android.content.SharedPreferences;

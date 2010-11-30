@@ -2,6 +2,8 @@ package org.nick.wwwjdic;
 
 import java.util.List;
 
+import org.nick.wwwjdic.utils.StringUtils;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.text.SpannableString;

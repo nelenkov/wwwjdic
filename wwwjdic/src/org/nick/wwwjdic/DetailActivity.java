@@ -3,10 +3,12 @@ package org.nick.wwwjdic;
 import java.util.regex.Pattern;
 
 import org.nick.wwwjdic.history.HistoryDbHelper;
+import org.nick.wwwjdic.utils.IntentSpan;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.text.ClipboardManager;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -71,9 +73,9 @@ public class DetailActivity extends Activity implements
             Intent intent) {
         SpannableString str = SpannableString.valueOf(textView.getText());
         str.setSpan(new IntentSpan(this, intent), start, end,
-                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         textView.setText(str);
-        // textView.setLinkTextColor(Color.WHITE);
+        textView.setLinkTextColor(Color.WHITE);
         MovementMethod m = textView.getMovementMethod();
         if ((m == null) || !(m instanceof LinkMovementMethod)) {
             if (textView.getLinksClickable()) {

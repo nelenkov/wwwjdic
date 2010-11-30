@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.nick.wwwjdic.utils.StringUtils;
+
 public class DictionaryEntry extends WwwjdicEntry implements Serializable {
 
     /**

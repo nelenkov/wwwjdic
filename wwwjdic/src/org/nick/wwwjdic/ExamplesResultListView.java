@@ -2,6 +2,8 @@ package org.nick.wwwjdic;
 
 import java.util.List;
 
+import org.nick.wwwjdic.utils.Analytics;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;

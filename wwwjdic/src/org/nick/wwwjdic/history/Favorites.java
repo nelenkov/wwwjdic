@@ -13,9 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
-import org.nick.wwwjdic.Dialogs;
 import org.nick.wwwjdic.DictionaryEntry;
 import org.nick.wwwjdic.DictionaryEntryDetail;
 import org.nick.wwwjdic.KanjiEntry;
@@ -26,6 +24,8 @@ import org.nick.wwwjdic.WwwjdicEntry;
 import org.nick.wwwjdic.history.FavoritesItem.FavoriteStatusChangedListener;
 import org.nick.wwwjdic.history.gdocs.DocsUrl;
 import org.nick.wwwjdic.history.gdocs.Namespace;
+import org.nick.wwwjdic.utils.Analytics;
+import org.nick.wwwjdic.utils.Dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
