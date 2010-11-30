@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.nick.wwwjdic;
+package org.nick.wwwjdic.utils;
 
 import android.content.Context;
 import android.content.Intent;

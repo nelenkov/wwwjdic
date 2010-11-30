@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 import org.nick.wwwjdic.history.HistoryDbHelper;
+import org.nick.wwwjdic.utils.Analytics;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;

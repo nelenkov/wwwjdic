@@ -26,8 +26,8 @@ import org.nick.wwwjdic.GzipStringResponseHandler;
 import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.StringUtils;
 import org.nick.wwwjdic.WwwjdicApplication;
+import org.nick.wwwjdic.utils.StringUtils;
 
 import android.app.PendingIntent;
 import android.app.Service;

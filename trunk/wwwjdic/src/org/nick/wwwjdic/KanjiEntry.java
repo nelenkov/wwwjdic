@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.nick.wwwjdic.utils.StringUtils;
+
 public class KanjiEntry extends WwwjdicEntry implements Serializable {
 
     private static final long serialVersionUID = -2260771889935344623L;

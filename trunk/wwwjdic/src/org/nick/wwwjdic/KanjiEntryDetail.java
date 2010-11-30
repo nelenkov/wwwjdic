@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 import org.nick.wwwjdic.sod.SodActivity;
+import org.nick.wwwjdic.utils.Analytics;
+import org.nick.wwwjdic.utils.Pair;
 
 import android.content.Intent;
 import android.graphics.Color;
