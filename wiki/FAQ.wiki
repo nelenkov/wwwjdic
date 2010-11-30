@@ -1,0 +1,45 @@
+#summary Frequently Asked Questions
+
+= Frequently Asked Questions (FAQ) =
+
+== Q: Are all those permissions really needed? What are they for? ==
+
+A:  Each permission is needed to implement on or more features. Even if you don't use all features, all permissions need to be set at install time, that's how Android works. See below for details.
+
+ * android.permission.INTERNET
+  * needed to access the WWWJDIC site, OCR and kanji recognizer services as well as Google Docs
+ * android.permission.CAMERA
+  * needed to take pictures for OCR
+ * android.permission.WRITE_EXTERNAL_STORAGE
+  * need to write stuff (temporary files, CSV/Anki exports, etc.) to the SD card
+ * android.permission.GET_ACCOUNTS
+  * to list available Google accounts 
+ * android.permission.USE_CREDENTIALS
+  * to use an authentication token for Google Docs
+ * android.permission.MANAGE_ACCOUNTS
+  * to expire the authentication token-
+ * android.permission.ACCESS_COARSE_LOCATION
+  * needed to automatically select mirror site based on current location
+
+== Q: Why is the 'Google Docs' export menu disabled? ==
+
+A: Authentication to Google Docs requires the !AccountManager API, which is only available in post-Eclair devices (Android 2.0 and above). Without it you will need enter your Google account and password, which we don't want :)
+
+== Q: The exported favorites CSV file doesn't work with Excel!? ==
+
+A: CSV files exported with version 1.51 and above should open correctly with Excel 2007 when double-clicked. For earlier versions of Excel, you need to use the text import wizard with the following parameters:
+ * File type: delimited
+ * File origin (encoding): UTF-8
+ * Delimiter: comma
+ * Text qualifier: "
+ * Column data format: text (for all columns)
+
+Or, simply use !OpenOffice, it lets you specify parameters at import time (and guesses most of them correctly, except for encoding). 
+
+== Q: Will there be an offline version? ==
+
+A: Most probably not. Or it will be a completely different application. After all, this one has 'WWW' in its name :) If you need an offline kanji reference, try Kanji Recognizer.  
+
+
+
+
