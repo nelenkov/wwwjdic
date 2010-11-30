@@ -34,15 +34,17 @@ public class FavoritesEntryParser {
         return result;
     }
 
-    public static String[] toParsedStringArray(WwwjdicEntry entry) {
+    public static String[] toParsedStringArray(WwwjdicEntry entry,
+            String meaningsSeparatorChar) {
         if (entry.isKanji()) {
-            return generateKanjiCsv((KanjiEntry) entry);
+            return generateKanjiCsv((KanjiEntry) entry, meaningsSeparatorChar);
         }
 
-        return generateDictCsv((DictionaryEntry) entry);
+        return generateDictCsv((DictionaryEntry) entry, meaningsSeparatorChar);
     }
 
-    private static String[] generateKanjiCsv(KanjiEntry entry) {
+    private static String[] generateKanjiCsv(KanjiEntry entry,
+            String meaningsSeparatorChar) {
         String[] result = new String[KANJI_DETAILS_NUM_FIELDS];
 
         int idx = 0;
@@ -55,7 +57,8 @@ public class FavoritesEntryParser {
         result[idx++] = Integer.toString(entry.getRadicalNumber());
         result[idx++] = Integer.toString(entry.getStrokeCount());
         result[idx++] = toStr(entry.getClassicalRadicalNumber());
-        String meaningStr = StringUtils.join(entry.getMeanings(), "\n", 0);
+        String meaningStr = StringUtils.join(entry.getMeanings(),
+                meaningsSeparatorChar, 0);
         result[idx++] = meaningStr;
 
         result[idx++] = entry.getJisCode();
@@ -75,12 +78,14 @@ public class FavoritesEntryParser {
         return i == null ? null : i.toString();
     }
 
-    private static String[] generateDictCsv(DictionaryEntry entry) {
+    private static String[] generateDictCsv(DictionaryEntry entry,
+            String meaningsSeparatorChar) {
         String[] result = new String[DICT_DETAILS_NUM_FIELDS];
         int idx = 0;
         result[idx++] = entry.getWord();
         result[idx++] = entry.getReading();
-        result[idx++] = StringUtils.join(entry.getMeanings(), "\n", 0);
+        result[idx++] = StringUtils.join(entry.getMeanings(),
+                meaningsSeparatorChar, 0);
 
         return result;
     }

@@ -36,6 +36,8 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     private static final String PREF_DEFAULT_DICT_PREF_KEY = "pref_default_dict";
 
+    private static final String PREF_EXPORT_MEANINGS_SEPARATOR_CHAR = "pref_export_meanings_separator_char";
+
     private CheckBoxPreference useKrPreference;
     private CheckBoxPreference autoSelectMirrorPreference;
     private ListPreference mirrorPreference;
@@ -154,5 +156,12 @@ public class WwwjdicPreferences extends PreferenceActivity implements
                 R.array.dictionary_codes_array);
 
         return dictionaries[getDefaultDictionaryIdx(context)];
+    }
+
+    public static String getMeaningsSeparatorCharacter(Context context) {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+
+        return preferences.getString(PREF_EXPORT_MEANINGS_SEPARATOR_CHAR, "\n");
     }
 }

@@ -305,4 +305,12 @@
     <string name="exporting_to_anki">お気に入りをAnki単語帳にエックスポートしています...</string>
     <string name="anki_export_success">お気に入りをAnki単語帳にエックスポートしました: %s.</string>
     <string name="anki_export_failure">Anki単語帳エックスポートエラー: %s.</string>
+    <string name="pref_export">エックスポート</string>
+    <string name="pref_export_meanings_separator_char">複数訳区切り文字</string>
+    <string name="pref_export_meanings_separator_char_summary">CSV/Ankiにエックスポートするときに、複数単語訳区切りに使用する文字。</string>
+    <string-array name="export_meanings_separator_char_names">
+        <item>改行</item>
+        <item>空白</item>
+        <item>スラッシュ(/)</item>
+    </string-array>
 </resources>

@@ -21,6 +21,7 @@ import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicApplication;
 import org.nick.wwwjdic.WwwjdicEntry;
+import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.history.FavoritesItem.FavoriteStatusChangedListener;
 import org.nick.wwwjdic.history.gdocs.DocsUrl;
 import org.nick.wwwjdic.history.gdocs.Namespace;
@@ -774,8 +775,14 @@ public class Favorites extends HistoryBase implements
             int count = 0;
             while (c.moveToNext()) {
                 WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
-                String[] entryStr = FavoritesEntryParser
-                        .toParsedStringArray(entry);
+                String separatorChar = WwwjdicPreferences
+                        .getMeaningsSeparatorCharacter(this);
+                // single space not allowed in resources?
+                if ("space".equals(separatorChar)) {
+                    separatorChar = " ";
+                }
+                String[] entryStr = FavoritesEntryParser.toParsedStringArray(
+                        entry, separatorChar);
                 writer.writeNext(entryStr);
                 count++;
             }
