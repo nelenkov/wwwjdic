@@ -2,19 +2,14 @@ package org.nick.wwwjdic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 
 import org.nick.wwwjdic.sod.SodActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.method.MovementMethod;
-import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -29,22 +24,6 @@ import android.widget.TextView;
 public class KanjiEntryDetail extends DetailActivity implements OnClickListener {
 
     private static final String TAG = KanjiEntryDetail.class.getSimpleName();
-
-    private static class IntentSpan extends ClickableSpan {
-        private Context context;
-        private Intent intent;
-
-        public IntentSpan(Context context, Intent intent) {
-            this.context = context;
-            this.intent = intent;
-        }
-
-        @Override
-        public void onClick(View widget) {
-            context.startActivity(intent);
-        }
-
-    }
 
     private KanjiEntry entry;
 
@@ -179,6 +158,13 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
                 TextView text = new TextView(this, null,
                         R.style.dict_detail_meaning);
                 text.setText(meaning);
+                Matcher m = CROSS_REF_PATTERN.matcher(meaning);
+                if (m.matches()) {
+                    Intent crossRefIntent = createCrossRefIntent(m.group(1));
+                    int start = m.start(1);
+                    int end = m.end(1);
+                    makeClickable(text, start, end, crossRefIntent);
+                }
                 meaningsCodesLayout.addView(text);
             }
         }
@@ -214,6 +200,13 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
 
     }
 
+    private Intent createCrossRefIntent(String kanji) {
+        SearchCriteria criteria = SearchCriteria.createForKanjiOrReading(kanji);
+        Intent intent = new Intent(this, KanjiResultListView.class);
+        intent.putExtra(Constants.CRITERIA_KEY, criteria);
+        return intent;
+    }
+
     private Intent createCompoundSearchIntent(int searchType,
             boolean commonWordsOnly) {
         String dictionary = getApp().getCurrentDictionary();
@@ -228,22 +221,8 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
         return intent;
     }
 
-    private WwwjdicApplication getApp() {
-        return (WwwjdicApplication) getApplication();
-    }
-
     private void makeClickable(TextView textView, Intent intent) {
-        SpannableString str = SpannableString.valueOf(textView.getText());
-        str.setSpan(new IntentSpan(this, intent), 0, textView.getText()
-                .length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        textView.setText(str);
-        textView.setLinkTextColor(Color.WHITE);
-        MovementMethod m = textView.getMovementMethod();
-        if ((m == null) || !(m instanceof LinkMovementMethod)) {
-            if (textView.getLinksClickable()) {
-                textView.setMovementMethod(LinkMovementMethod.getInstance());
-            }
-        }
+        makeClickable(textView, 0, textView.getText().length(), intent);
     }
 
     private List<Pair<String, String>> crieateCodesData(KanjiEntry entry) {
