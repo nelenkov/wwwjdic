@@ -439,4 +439,18 @@
     <string name="exporting_to_anki">Exporting favorites to Anki deck...</string>
     <string name="anki_export_success">Exported favorites to Anki deck: %s.</string>
     <string name="anki_export_failure">Error exporting to Anki deck: %s.</string>
+    <string name="pref_export">Export</string>
+    <string name="pref_export_meanings_separator_char">Meanings separtor char</string>
+    <string name="pref_export_meanings_separator_char_summary">Character to separate mutiple meanings with when
+        exporting to CSV/Anki.</string>
+    <string-array name="export_meanings_separator_char_names">
+        <item>Newline</item>
+        <item>Space</item>
+        <item>Slash(/)</item>
+    </string-array>
+    <string-array name="export_meanings_separator_chars">
+        <item>\n</item>
+        <item>space</item>
+        <item>/</item>
+    </string-array>
 </resources>
