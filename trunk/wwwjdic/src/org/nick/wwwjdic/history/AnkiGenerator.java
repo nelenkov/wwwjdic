@@ -62,7 +62,7 @@ public class AnkiGenerator {
         }
     }
 
-    public void createKanjiAnkiFile(String path, List<KanjiEntry> kanjis) {
+    public int createKanjiAnkiFile(String path, List<KanjiEntry> kanjis) {
         SQLiteDatabase db = null;
 
         try {
@@ -70,40 +70,15 @@ public class AnkiGenerator {
                     SQLiteDatabase.CREATE_IF_NECESSARY);
             db.beginTransaction();
 
-            String schema = readSchema("anki-create.sql");
-            String[] statements = schema.split(";");
-            for (String s : statements) {
-                if (s == null) {
-                    continue;
-                }
-                s = s.trim();
-                Log.d(TAG, "SQL: " + s);
-                if (TextUtils.isEmpty(s) || s.startsWith("--")) {
-                    continue;
-                }
-                db.execSQL(s.trim());
-            }
+            execSqlFromFile(db, "anki-create-tables.sql");
 
-            schema = readSchema("anki-model.sql");
-            statements = schema.split(";");
-            for (String s : statements) {
-                if (s == null) {
-                    continue;
-                }
-                s = s.trim();
-                Log.d(TAG, "SQL: " + s);
-                if (TextUtils.isEmpty(s) || s.startsWith("--")) {
-                    continue;
-                }
-                db.execSQL(s.trim());
-            }
+            execSqlFromFile(db, "anki-kanji-model.sql");
 
-            for (KanjiEntry k : kanjis) {
-                addKanji(db, k);
-            }
+            addKanjis(kanjis, db);
 
             db.setTransactionSuccessful();
 
+            return kanjis.size();
         } finally {
             if (db != null) {
                 db.endTransaction();
@@ -112,71 +87,9 @@ public class AnkiGenerator {
         }
     }
 
-    public void createDictAnkiFile(String path, List<DictionaryEntry> words) {
-        SQLiteDatabase db = null;
-
-        try {
-            db = SQLiteDatabase.openDatabase(path, null,
-                    SQLiteDatabase.CREATE_IF_NECESSARY);
-            db.beginTransaction();
-
-            String schema = readSchema("anki-create.sql");
-            String[] statements = schema.split(";");
-            for (String s : statements) {
-                if (s == null) {
-                    continue;
-                }
-                s = s.trim();
-                Log.d(TAG, "SQL: " + s);
-                if (TextUtils.isEmpty(s) || s.startsWith("--")) {
-                    continue;
-                }
-                db.execSQL(s.trim());
-            }
-
-            schema = readSchema("anki-dict-model.sql");
-            statements = schema.split(";");
-            for (String s : statements) {
-                if (s == null) {
-                    continue;
-                }
-                s = s.trim();
-                Log.d(TAG, "SQL: " + s);
-                if (TextUtils.isEmpty(s) || s.startsWith("--")) {
-                    continue;
-                }
-                db.execSQL(s.trim());
-            }
-
-            for (DictionaryEntry w : words) {
-                addWord(db, w);
-            }
-
-            db.setTransactionSuccessful();
-
-        } finally {
-            if (db != null) {
-                db.endTransaction();
-                db.close();
-            }
-        }
-    }
-
-    private void addWord(SQLiteDatabase db, DictionaryEntry d) {
-        long factId = insertFact(db, DICT_MODEL_ID);
-        String question = generateQuestion(d.getHeadword());
-        String answer = generateDictAnswer(d);
-        insertCard(db, factId, DICT_FWD_CARD_MODEL_ID, question, answer);
-
-        insertField(db, d.getHeadword(), factId, DICT_HEADWORD_FIELD_ID,
-                DICT_HEADWORD_ORD);
-        if (d.getReading() != null) {
-            insertField(db, d.getReading(), factId, DICT_READING_FIELD_ID,
-                    DICT_READING_ORD);
-        }
-        if (d.getMeaningsAsString() != null) {
-            insertField(db, d.getMeaningsAsString(), factId,
-                    DICT_MEANING_FIELD_ID, DICT_MEANING_ORD);
+    private void addKanjis(List<KanjiEntry> kanjis, SQLiteDatabase db) {
+        for (KanjiEntry k : kanjis) {
+            addKanji(db, k);
         }
     }
 
@@ -202,6 +115,71 @@ public class AnkiGenerator {
         if (k.getMeaningsAsString() != null) {
             insertField(db, k.getMeaningsAsString(), factId, MEANING_FIELD_ID,
                     MEANING_FIELD_ORD);
+        }
+    }
+
+    private void execSqlFromFile(SQLiteDatabase db, String resourceName) {
+        String schema = readSchema(resourceName);
+        String[] statements = schema.split(";");
+        for (String s : statements) {
+            if (s == null) {
+                continue;
+            }
+            s = s.trim();
+            Log.d(TAG, "SQL: " + s);
+            if (TextUtils.isEmpty(s) || s.startsWith("--")) {
+                continue;
+            }
+            db.execSQL(s);
+        }
+    }
+
+    public int createDictAnkiFile(String path, List<DictionaryEntry> words) {
+        SQLiteDatabase db = null;
+
+        try {
+            db = SQLiteDatabase.openDatabase(path, null,
+                    SQLiteDatabase.CREATE_IF_NECESSARY);
+            db.beginTransaction();
+
+            execSqlFromFile(db, "anki-create-tables.sql");
+
+            execSqlFromFile(db, "anki-dict-model.sql");
+
+            addWords(words, db);
+
+            db.setTransactionSuccessful();
+
+            return words.size();
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+                db.close();
+            }
+        }
+    }
+
+    private void addWords(List<DictionaryEntry> words, SQLiteDatabase db) {
+        for (DictionaryEntry w : words) {
+            addWord(db, w);
+        }
+    }
+
+    private void addWord(SQLiteDatabase db, DictionaryEntry d) {
+        long factId = insertFact(db, DICT_MODEL_ID);
+        String question = generateQuestion(d.getHeadword());
+        String answer = generateDictAnswer(d);
+        insertCard(db, factId, DICT_FWD_CARD_MODEL_ID, question, answer);
+
+        insertField(db, d.getHeadword(), factId, DICT_HEADWORD_FIELD_ID,
+                DICT_HEADWORD_ORD);
+        if (d.getReading() != null) {
+            insertField(db, d.getReading(), factId, DICT_READING_FIELD_ID,
+                    DICT_READING_ORD);
+        }
+        if (d.getMeaningsAsString() != null) {
+            insertField(db, d.getMeaningsAsString(), factId,
+                    DICT_MEANING_FIELD_ID, DICT_MEANING_ORD);
         }
     }
 
@@ -237,7 +215,7 @@ public class AnkiGenerator {
         card.put("priority", 2);
         card.put("interval", 0.0);
         card.put("lastInterval", 0.0);
-        card.put("due", now);
+        card.put("due", 0);
         card.put("lastDue", 0);
         card.put("factor", 2.5);
         card.put("lastFactor", 2.5);
