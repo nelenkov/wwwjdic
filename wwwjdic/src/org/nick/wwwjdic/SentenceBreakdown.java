@@ -2,8 +2,6 @@ package org.nick.wwwjdic;
 
 import java.util.List;
 
-import org.nick.wwwjdic.utils.StringUtils;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -44,24 +42,22 @@ public class SentenceBreakdown extends
         public View getView(int position, View convertView, ViewGroup parent) {
             SentenceBreakdownEntry entry = entries.get(position);
 
-            if (convertView == null) {
-                convertView = new SentenceBreakdownEntryView(context);
-            }
-
-            ((SentenceBreakdownEntryView) convertView).populate(entry);
-
-            return convertView;
+            return new SentenceBreakdownEntryView(context, entry);
         }
 
         static class SentenceBreakdownEntryView extends LinearLayout {
+
+            private SentenceBreakdownEntry entry;
 
             private TextView explanationText;
             private TextView wordText;
             private TextView readingText;
             private TextView translationText;
 
-            SentenceBreakdownEntryView(Context context) {
+            SentenceBreakdownEntryView(Context context,
+                    SentenceBreakdownEntry entry) {
                 super(context);
+                this.entry = entry;
 
                 LayoutInflater inflater = LayoutInflater.from(context);
                 inflater.inflate(R.layout.breakdown_item, this);
@@ -70,9 +66,11 @@ public class SentenceBreakdown extends
                 wordText = (TextView) findViewById(R.id.wordText);
                 readingText = (TextView) findViewById(R.id.readingText);
                 translationText = (TextView) findViewById(R.id.translationText);
+
+                populate();
             }
 
-            void populate(SentenceBreakdownEntry entry) {
+            private void populate() {
                 if (!StringUtils.isEmpty(entry.getExplanation())) {
                     explanationText.setText(entry.getExplanation());
                 } else {

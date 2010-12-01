@@ -42,14 +42,14 @@ public abstract class EntityBasedHttpClient {
         return buff.toString().trim();
     }
 
-    protected HttpPost createPost(Object... params) throws IOException {
+    protected HttpPost createPost(Object param) throws IOException {
         HttpPost post = new HttpPost(url);
-        post.setEntity(createEntity(params));
+        post.setEntity(createEntity(param));
 
         return post;
     }
 
-    protected abstract AbstractHttpEntity createEntity(Object... params)
+    protected abstract AbstractHttpEntity createEntity(Object param)
             throws IOException;
 
 }

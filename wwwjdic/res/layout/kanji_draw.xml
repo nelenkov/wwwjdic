@@ -10,28 +10,16 @@
         android:layout_marginLeft="2dip" android:layout_marginRight="2dip">
         <Button android:id="@+id/recognize_button"
             android:layout_height="fill_parent" android:layout_width="0px"
-            android:layout_weight="1" android:text="@string/hkr_abbrev"
-            android:background="@android:drawable/btn_default_small"
-            android:textSize="12dp" />
-        <Button android:id="@+id/ocr_button"
-            android:layout_height="fill_parent" android:layout_width="0px"
-            android:layout_weight="1" android:text="@string/ocr"
-            android:background="@android:drawable/btn_default_small"
-            android:textSize="12dp" />
-        <Button android:id="@+id/remove_stroke_button"
-            android:layout_height="fill_parent" android:layout_width="0px"
-            android:layout_weight="1" android:text="@string/remove_stroke"
-            android:background="@android:drawable/btn_default_small"
-            android:textSize="12dp" />
+            android:layout_weight="1" android:text="@string/recognize" />
         <Button android:id="@+id/clear_canvas_button"
             android:layout_height="fill_parent" android:layout_width="0px"
-            android:layout_weight="1" android:text="@string/clear"
-            android:background="@android:drawable/btn_default_small"
-            android:textSize="12dp" />
-        <CheckBox android:id="@+id/lookAheadCb"
-            android:layout_height="wrap_content" android:layout_width="wrap_content"
-            android:text="@string/look_ahead" android:layout_gravity="center_vertical"
-            android:textSize="12dp" android:checked="false"></CheckBox>
+            android:layout_weight="1" android:text="@string/clear" />
+        <CheckBox android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/lookAheadCb"
+            android:text="@string/look_ahead"
+            android:layout_gravity="center_vertical" 
+            android:textSize="12sp" 
+            android:checked="false"></CheckBox>
     </LinearLayout>
     <org.nick.wwwjdic.hkr.KanjiDrawView
         android:id="@+id/kanji_draw_view" android:layout_width="fill_parent"

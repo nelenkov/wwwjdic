@@ -1,169 +1,23 @@
 package org.nick.wwwjdic;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.res.AssetManager;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Environment;
-import android.preference.PreferenceManager;
-import android.util.Log;
-
-import com.flurry.android.FlurryAgent;
 
 public class WwwjdicApplication extends Application {
 
-    private static final String TAG = WwwjdicApplication.class.getSimpleName();
-
-    private static final String WWWJDIC_DIR = "wwwjdic";
-
-    private static final String PREF_AUTO_SELECT_MIRROR_KEY = "pref_auto_select_mirror";
-    private static final String PREF_WWWJDIC_URL_KEY = "pref_wwwjdic_mirror_url";
-
-    private static final String PREF_KR_URL_KEY = "pref_kr_url";
-    private static final String KR_URL = "http://kanji.sljfaq.org/kanji-0.016.cgi";
-
     private ExecutorService executorService;
 
-    private LocationManager locationManager;
-
     private static String version;
-
-    private static String flurryKey;
-
-    // EDICT by default
-    private String currentDictionary = "1";
-    private String currentDictionaryName = "General";
 
     @Override
     public void onCreate() {
         version = getVersionName();
 
-        flurryKey = readKey();
-        FlurryAgent.setCaptureUncaughtExceptions(false);
-
-        createWwwjdicDirIfNecessary();
-
         initRadicals();
-
-        if (isAutoSelectMirror()) {
-            setMirrorBasedOnLocation();
-        }
-
-        updateKanjiRecognizerUrl();
-
-    }
-
-    private void updateKanjiRecognizerUrl() {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        String krUrl = prefs.getString(PREF_KR_URL_KEY, KR_URL);
-        if (krUrl.contains("kanji.cgi")) {
-            Log.d(TAG, "found old KR URL, will overwrite with " + KR_URL);
-            prefs.edit().putString(PREF_KR_URL_KEY, KR_URL)
-                .commit();
-        }
-    }
-
-    private boolean isAutoSelectMirror() {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return prefs.getBoolean(PREF_AUTO_SELECT_MIRROR_KEY, true);
-    }
-
-    public synchronized void setMirrorBasedOnLocation() {
-        Log.d(TAG, "auto selecting mirror...");
-
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location myLocation = null;
-
-        try {
-            boolean isEnabled = locationManager
-                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-            Log.d(TAG, LocationManager.NETWORK_PROVIDER + " enabled: "
-                    + isEnabled);
-            if (!isEnabled) {
-                Log.d(TAG, "provider not enabled, giving up");
-                return;
-            }
-            locationManager
-                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if (myLocation == null) {
-                Log.w(TAG, "failed to get cached location, giving up");
-
-                return;
-            }
-        } catch (Exception e) {
-            Log.w(TAG, "error getting location, giving up", e);
-
-            return;
-        }
-
-        Log.d(TAG, "my location: " + myLocation);
-        String[] mirrorCoords = getResources().getStringArray(
-                R.array.wwwjdic_mirror_coords);
-        String[] mirrorNames = getResources().getStringArray(
-                R.array.wwwjdic_mirror_names);
-        String[] mirrorUrls = getResources().getStringArray(
-                R.array.wwwjdic_mirror_urls);
-
-        List<Float> distanceToMirrors = new ArrayList<Float>(
-                mirrorCoords.length);
-        for (int i = 0; i < mirrorCoords.length; i++) {
-            String[] latlng = mirrorCoords[i].split("/");
-            double lat = Location.convert(latlng[0]);
-            double lng = Location.convert(latlng[1]);
-
-            float[] distance = new float[1];
-            Location.distanceBetween(myLocation.getLatitude(), myLocation
-                    .getLongitude(), lat, lng, distance);
-            distanceToMirrors.add(distance[0]);
-            Log.d(TAG, String.format("distance to %s: %f km", mirrorNames[i],
-                    distance[0] / 1000));
-        }
-
-        float minDistance = Collections.min(distanceToMirrors);
-        int mirrorIdx = distanceToMirrors.indexOf(minDistance);
-
-        Log.d(TAG, String.format(
-                "found closest mirror: %s (%s) (distance: %f km)",
-                mirrorUrls[mirrorIdx], mirrorNames[mirrorIdx],
-                minDistance / 1000));
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        prefs.edit().putString(PREF_WWWJDIC_URL_KEY, mirrorUrls[mirrorIdx])
-                .commit();
-    }
-
-    private void createWwwjdicDirIfNecessary() {
-        File wwwjdicDir = getWwwjdicDir();
-        if (!wwwjdicDir.exists()) {
-            boolean success = wwwjdicDir.mkdir();
-            if (success) {
-                Log.d(TAG, "successfully created "
-                        + wwwjdicDir.getAbsolutePath());
-            } else {
-                Log.d(TAG, "failed to create " + wwwjdicDir.getAbsolutePath());
-            }
-        }
-    }
-
-    public static File getWwwjdicDir() {
-        return new File(Environment.getExternalStorageDirectory(), WWWJDIC_DIR);
     }
 
     private String getVersionName() {
@@ -175,39 +29,6 @@ public class WwwjdicApplication extends Application {
         } catch (NameNotFoundException e) {
             return "";
         }
-    }
-
-    private String readKey() {
-        AssetManager assetManager = getAssets();
-
-        InputStream in = null;
-        try {
-            in = assetManager.open("keys");
-
-            return readTextFile(in);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException ignored) {
-                }
-            }
-        }
-
-    }
-
-    private String readTextFile(InputStream in) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte buff[] = new byte[1024];
-
-        int len = -1;
-        while ((len = in.read(buff)) != -1) {
-            baos.write(buff, 0, len);
-        }
-
-        return baos.toString("ASCII");
     }
 
     public WwwjdicApplication() {
@@ -224,10 +45,6 @@ public class WwwjdicApplication extends Application {
 
     public static String getUserAgentString() {
         return "Android-WWWJDIC/" + getVersion();
-    }
-
-    public static String getFlurryKey() {
-        return flurryKey;
     }
 
     private void initRadicals() {
@@ -293,23 +110,6 @@ public class WwwjdicApplication extends Application {
 
     private String[] getStrArray(int id) {
         return getResources().getStringArray(id);
-    }
-
-    public synchronized String getCurrentDictionary() {
-        return currentDictionary;
-    }
-
-    public synchronized void setCurrentDictionary(String currentDictionary) {
-        this.currentDictionary = currentDictionary;
-    }
-
-    public synchronized String getCurrentDictionaryName() {
-        return currentDictionaryName;
-    }
-
-    public synchronized void setCurrentDictionaryName(
-            String currentDictionaryName) {
-        this.currentDictionaryName = currentDictionaryName;
     }
 
 }

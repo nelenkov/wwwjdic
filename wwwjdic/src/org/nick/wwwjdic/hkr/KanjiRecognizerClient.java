@@ -36,7 +36,6 @@ public class KanjiRecognizerClient extends EntityBasedHttpClient {
 
         for (Stroke s : strokes) {
             buff.append(s.toBase36Points());
-
             buff.append("\n");
         }
         buff.append("\n");
@@ -97,8 +96,7 @@ public class KanjiRecognizerClient extends EntityBasedHttpClient {
     }
 
     @Override
-    protected AbstractHttpEntity createEntity(Object... params)
-            throws IOException {
-        return new KrEntity((String) params[0]);
+    protected AbstractHttpEntity createEntity(Object param) throws IOException {
+        return new KrEntity((String) param);
     }
 }

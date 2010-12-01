@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Anki export.\n* Cross references in dictionary details.</string>
-</resources>

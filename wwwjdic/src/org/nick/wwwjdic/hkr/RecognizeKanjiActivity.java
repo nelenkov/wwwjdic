@@ -3,27 +3,14 @@ package org.nick.wwwjdic.hkr;
 import java.util.Arrays;
 import java.util.List;
 
-import org.nick.kanjirecognizer.hkr.CharacterRecognizer;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
-import org.nick.wwwjdic.ocr.WeOcrClient;
-import org.nick.wwwjdic.utils.Analytics;
-import org.nick.wwwjdic.utils.Dialogs;
 
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -39,41 +26,20 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     private static final String TAG = RecognizeKanjiActivity.class
             .getSimpleName();
 
-    private static final String KR_DEFAULT_URL = "http://kanji.sljfaq.org/kanji-0.016.cgi";
+    private static final String KR_DEFAULT_URL = "http://kanji.sljfaq.org/kanji16/kanji-0.016.cgi";
 
     private static final String PREF_KR_URL_KEY = "pref_kr_url";
     private static final String PREF_KR_TIMEOUT_KEY = "pref_kr_timeout";
     private static final String PREF_KR_ANNOTATE = "pref_kr_annotate";
     private static final String PREF_KR_ANNOTATE_MIDWAY = "pref_kr_annotate_midway";
-    private static final String PREF_KR_USE_KANJI_RECOGNIZER_KEY = "pref_kr_use_kanji_recognizer";
-
-    private static final String WEOCR_DEFAULT_URL = "http://maggie.ocrgrid.org/cgi-bin/weocr/nhocr.cgi";
-    private static final String PREF_WEOCR_URL_KEY = "pref_weocr_url";
-    private static final String PREF_WEOCR_TIMEOUT_KEY = "pref_weocr_timeout";
-
-    private static final String KR_USAGE_TIP_DIALOG = "kr_usage";
-
-    private static final int OCR_IMAGE_WIDTH = 128;
-    private static final int NUM_OCR_CANDIDATES = 20;
-
-    private static final int NUM_KR_CANDIDATES = 10;
 
     private static final int HKR_RESULT = 1;
 
-    private static final int HKR_RESULT_TYPE_WS = 0;
-    private static final int HKR_RESULT_TYPE_OCR = 1;
-    private static final int HKR_RESULT_TYPE_KR = 2;
-
-    private Button recognizeButton;
-    private Button ocrButton;
-    private Button removeStrokeButton;
     private Button clearButton;
+    private Button recognizeButton;
     private CheckBox lookAheadCb;
 
     private KanjiDrawView drawView;
-
-    private CharacterRecognizer recognizer;
-    private boolean bound;
 
     @Override
     protected void activityOnCreate(Bundle savedInstanceState) {
@@ -83,77 +49,20 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
         findViews();
 
-        recognizeButton.setOnClickListener(this);
-        ocrButton.setOnClickListener(this);
-        removeStrokeButton.setOnClickListener(this);
         clearButton.setOnClickListener(this);
+        recognizeButton.setOnClickListener(this);
 
         drawView.setAnnotateStrokes(isAnnoateStrokes());
         drawView.setAnnotateStrokesMidway(isAnnotateStrokesMidway());
 
         drawView.requestFocus();
-
-        Dialogs.showTipOnce(this, KR_USAGE_TIP_DIALOG, R.string.kr_usage_tip);
-    }
-
-    private ServiceConnection connection = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            recognizer = CharacterRecognizer.Stub.asInterface(service);
-            bound = true;
-        }
-
-        public void onServiceDisconnected(ComponentName className) {
-            recognizer = null;
-            bound = false;
-        }
-    };
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        Analytics.startSession(this);
-
-        if (isUseKanjiRecognizer() && !bound) {
-            boolean success = bindService(new Intent(
-                    "org.nick.kanjirecognizer.hkr.RECOGNIZE_KANJI"),
-                    connection, Context.BIND_AUTO_CREATE);
-            if (success) {
-                Log.d(TAG, "successfully bound to KR service");
-                lookAheadCb.setEnabled(false);
-            } else {
-                Log.d(TAG, "could not bind to KR service");
-            }
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        Analytics.endSession(this);
-
-        if (bound) {
-            bound = false;
-            unbindService(connection);
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        drawView.setAnnotateStrokes(isAnnoateStrokes());
-        drawView.setAnnotateStrokesMidway(isAnnotateStrokesMidway());
     }
 
     private void findViews() {
         drawView = (KanjiDrawView) this.findViewById(R.id.kanji_draw_view);
 
-        recognizeButton = (Button) findViewById(R.id.recognize_button);
-        ocrButton = (Button) findViewById(R.id.ocr_button);
-        removeStrokeButton = (Button) findViewById(R.id.remove_stroke_button);
         clearButton = (Button) findViewById(R.id.clear_canvas_button);
+        recognizeButton = (Button) findViewById(R.id.recognize_button);
         lookAheadCb = (CheckBox) findViewById(R.id.lookAheadCb);
     }
 
@@ -184,15 +93,9 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                     String[] results = (String[]) msg.obj;
                     krActivity.sendToDictionary(results);
                 } else {
-                    if (msg.arg2 == HKR_RESULT_TYPE_WS) {
-                        Toast t = Toast.makeText(krActivity,
-                                R.string.ws_hkr_failed, Toast.LENGTH_LONG);
-                        t.show();
-                    } else {
-                        Toast t = Toast.makeText(krActivity,
-                                R.string.hkr_failed, Toast.LENGTH_SHORT);
-                        t.show();
-                    }
+                    Toast t = Toast.makeText(krActivity, R.string.hkr_failed,
+                            Toast.LENGTH_SHORT);
+                    t.show();
                 }
                 break;
             default:
@@ -226,14 +129,12 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                         .recognize(strokes, isUseLookahead());
                 Log.i(TAG, "go KR result " + Arrays.asList(results));
 
-                Message msg = handler.obtainMessage(HKR_RESULT, 1,
-                        HKR_RESULT_TYPE_WS);
+                Message msg = handler.obtainMessage(HKR_RESULT, 1, 0);
                 msg.obj = results;
                 handler.sendMessage(msg);
             } catch (Exception e) {
                 Log.e("TAG", "Character recognition failed", e);
-                Message msg = handler.obtainMessage(HKR_RESULT, 0,
-                        HKR_RESULT_TYPE_WS);
+                Message msg = handler.obtainMessage(HKR_RESULT, 0, 0);
                 handler.sendMessage(msg);
             }
         }
@@ -269,13 +170,6 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         return preferences.getBoolean(PREF_KR_ANNOTATE, true);
     }
 
-    private boolean isUseKanjiRecognizer() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return preferences.getBoolean(PREF_KR_USE_KANJI_RECOGNIZER_KEY, false);
-    }
-
     private boolean isUseLookahead() {
         return lookAheadCb.isChecked();
     }
@@ -283,111 +177,17 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.recognize_button:
-            recognizeKanji();
-            break;
-        case R.id.ocr_button:
-            ocrKanji();
-            break;
-        case R.id.remove_stroke_button:
-            drawView.removeLastStroke();
-            break;
         case R.id.clear_canvas_button:
             clear();
+
+            break;
+        case R.id.recognize_button:
+            recognizeKanji();
+
             break;
         default:
             // do nothing
         }
-    }
-
-    private void ocrKanji() {
-        Bitmap bitmap = drawingToBitmap();
-        OcrTask task = new OcrTask(bitmap, handler);
-        String message = getResources().getString(R.string.doing_hkr);
-        submitWsTask(task, message);
-
-        Analytics.event("recognizeKanjiOcr", this);
-    }
-
-    class OcrTask implements Runnable {
-
-        private Bitmap bitmap;
-        private Handler handler;
-
-        public OcrTask(Bitmap b, Handler h) {
-            bitmap = b;
-            handler = h;
-        }
-
-        @Override
-        public void run() {
-            try {
-                WeOcrClient client = new WeOcrClient(getWeocrUrl(),
-                        getWeocrTimeout());
-                String[] candidates = client.sendCharacterOcrRequest(bitmap,
-                        NUM_OCR_CANDIDATES);
-
-                if (candidates != null) {
-                    Message msg = handler.obtainMessage(HKR_RESULT, 1,
-                            HKR_RESULT_TYPE_OCR);
-                    msg.obj = candidates;
-                    handler.sendMessage(msg);
-                } else {
-                    Log.d("TAG", "OCR failed: null returned");
-                    Message msg = handler.obtainMessage(HKR_RESULT, 0,
-                            HKR_RESULT_TYPE_OCR);
-                    handler.sendMessage(msg);
-                }
-            } catch (Exception e) {
-                Log.e("TAG", "OCR failed", e);
-                Message msg = handler.obtainMessage(HKR_RESULT, 0,
-                        HKR_RESULT_TYPE_OCR);
-                handler.sendMessage(msg);
-            }
-        }
-    }
-
-    private int getWeocrTimeout() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        String timeoutStr = preferences.getString(PREF_WEOCR_TIMEOUT_KEY, "10");
-
-        return Integer.parseInt(timeoutStr) * 1000;
-    }
-
-    private String getWeocrUrl() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return preferences.getString(PREF_WEOCR_URL_KEY, WEOCR_DEFAULT_URL);
-    }
-
-    private Bitmap drawingToBitmap() {
-        Bitmap b = Bitmap.createBitmap(drawView.getWidth(),
-                drawView.getWidth(), Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
-
-        boolean annotate = drawView.isAnnotateStrokes();
-        drawView.setAnnotateStrokes(false);
-        drawView.setBackgroundColor(0xff888888);
-        drawView.setStrokePaintColor(Color.BLACK);
-
-        drawView.draw(c);
-
-        drawView.setAnnotateStrokes(annotate);
-        drawView.setBackgroundColor(Color.BLACK);
-        drawView.setStrokePaintColor(Color.WHITE);
-
-        int width = drawView.getWidth();
-        int newWidth = OCR_IMAGE_WIDTH;
-        float scale = ((float) newWidth) / width;
-        Matrix matrix = new Matrix();
-        matrix.postScale(scale, scale);
-        c.scale(scale, scale);
-        Bitmap resized = Bitmap.createBitmap(b, 0, 0, width, width, matrix,
-                true);
-        return resized;
     }
 
     private void clear() {
@@ -396,67 +196,9 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
     private void recognizeKanji() {
         List<Stroke> strokes = drawView.getStrokes();
-
-        if (isUseKanjiRecognizer()) {
-            if (recognizer == null) {
-                Toast t = Toast.makeText(this, R.string.kr_not_initialized,
-                        Toast.LENGTH_SHORT);
-                t.show();
-                recognizeWs(strokes);
-            } else {
-                reconizeKanjiRecognizer(strokes);
-            }
-        } else {
-            recognizeWs(strokes);
-        }
-    }
-
-    private void recognizeWs(List<Stroke> strokes) {
-        Analytics.event("recognizeKanji", this);
-
         HkrTask task = new HkrTask(strokes, handler);
         String message = getResources().getString(R.string.doing_hkr);
         submitWsTask(task, message);
-    }
-
-    private void reconizeKanjiRecognizer(final List<Stroke> strokes) {
-        Analytics.event("recognizeKanjiKr", this);
-
-        Runnable krTask = new Runnable() {
-            public void run() {
-                try {
-                    recognizer.startRecognition(drawView.getWidth(), drawView
-                            .getHeight());
-                    int strokeNum = 0;
-                    for (Stroke s : strokes) {
-                        for (PointF p : s.getPoints()) {
-                            recognizer
-                                    .addPoint(strokeNum, (int) p.x, (int) p.y);
-                        }
-                        strokeNum++;
-                    }
-
-                    String[] candidates = recognizer
-                            .recognize(NUM_KR_CANDIDATES);
-                    if (candidates != null) {
-                        Message msg = handler.obtainMessage(HKR_RESULT, 1,
-                                HKR_RESULT_TYPE_KR);
-                        msg.obj = candidates;
-                        handler.sendMessage(msg);
-                    } else {
-                        Message msg = handler.obtainMessage(HKR_RESULT, 0,
-                                HKR_RESULT_TYPE_KR);
-                        handler.sendMessage(msg);
-                    }
-                } catch (Exception e) {
-                    Log.d(TAG, "error calling recognizer", e);
-                    Message msg = handler.obtainMessage(HKR_RESULT, 0,
-                            HKR_RESULT_TYPE_KR);
-                    handler.sendMessage(msg);
-                }
-            }
-        };
-        submitWsTask(krTask, getResources().getString(R.string.doing_hkr));
     }
 
     public void sendToDictionary(String[] results) {

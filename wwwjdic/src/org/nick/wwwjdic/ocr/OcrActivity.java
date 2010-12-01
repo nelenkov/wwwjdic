@@ -7,15 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.nick.wwwjdic.Constants;
-import org.nick.wwwjdic.DictionaryResultListView;
-import org.nick.wwwjdic.ExamplesResultListView;
-import org.nick.wwwjdic.KanjiResultListView;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.SearchCriteria;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.ocr.crop.CropImage;
-import org.nick.wwwjdic.utils.Analytics;
 
 import android.content.Context;
 import android.content.Intent;
@@ -71,10 +67,6 @@ public class OcrActivity extends WebServiceBackedActivity implements
     private static final String PREF_WEOCR_URL_KEY = "pref_weocr_url";
     private static final String PREF_WEOCR_TIMEOUT_KEY = "pref_weocr_timeout";
 
-    private static final String PREF_DIRECT_SEARCH_KEY = "pref_ocr_direct_search";
-
-    private static final String IMAGE_CAPTURE_URI_KEY = "ocr.imageCaptureUri";
-
     private Camera camera;
     private Size previewSize;
     private Size pictureSize;
@@ -127,32 +119,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
         flashToggle = (ToggleButton) findViewById(R.id.auto_flash_toggle);
         flashToggle.setOnCheckedChangeListener(this);
 
-        if (icicle != null) {
-            imageCaptureUri = icicle.getParcelable(IMAGE_CAPTURE_URI_KEY);
-        }
-
         surfaceView.requestFocus();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putParcelable(IMAGE_CAPTURE_URI_KEY, imageCaptureUri);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        Analytics.startSession(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        Analytics.endSession(this);
     }
 
     private void toggleSearchButtons(boolean enabled) {
@@ -260,7 +227,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
             try {
                 WeOcrClient client = new WeOcrClient(getWeocrUrl(),
                         getWeocrTimeout());
-                String ocredText = client.sendLineOcrRequest(bitmap);
+                String ocredText = client.sendOcrRequest(bitmap);
                 Log.d(TAG, "OCR result: " + ocredText);
 
                 if (ocredText != null && !"".equals(ocredText)) {
@@ -292,7 +259,6 @@ public class OcrActivity extends WebServiceBackedActivity implements
             return super.onKeyDown(keyCode, event);
         }
         if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
-            Analytics.event("ocrTake", this);
             requestAutoFocus();
         }
 
@@ -362,8 +328,6 @@ public class OcrActivity extends WebServiceBackedActivity implements
                         dumpBitmap(blackAndWhiteBitmap, "cropped.jpg");
                     }
 
-                    Analytics.event("ocr", this);
-
                     OcrTask task = new OcrTask(blackAndWhiteBitmap, handler);
                     String message = getResources().getString(
                             R.string.doing_ocr);
@@ -384,13 +348,6 @@ public class OcrActivity extends WebServiceBackedActivity implements
                 .getDefaultSharedPreferences(this);
 
         return preferences.getBoolean(PREF_DUMP_CROPPED_IMAGES_KEY, false);
-    }
-
-    private boolean isDirectSearch() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return preferences.getBoolean(PREF_DIRECT_SEARCH_KEY, false);
     }
 
     private int getWeocrTimeout() {
@@ -452,18 +409,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-        Log.d(TAG, String.format("surface changed: w=%d; h=%d)", w, h));
-
         if (holder != surfaceHolder) {
-            return;
-        }
-
-        // it seems surfaceChanged is sometimes called twice:
-        // once with SCREEN_ORIENTATION_PORTRAIT and once with
-        // SCREEN_ORIENTATION_LANDSCAPE. At least on a Sapphire with
-        // CyanogenMod. Calling setPreviewSize with wrong width and
-        // height leads to a FC, so skip it.
-        if (w < h) {
             return;
         }
 
@@ -474,26 +420,18 @@ public class OcrActivity extends WebServiceBackedActivity implements
         try {
             Camera.Parameters p = camera.getParameters();
             if (previewSize != null) {
-                Log.d(TAG, String.format("previewSize: w=%d; h=%d",
-                        previewSize.width, previewSize.height));
                 p.setPreviewSize(previewSize.width, previewSize.height);
             } else {
                 int previewWidth = (w >> 3) << 3;
                 int previewHeight = (h >> 3) << 3;
-                Log.d(TAG, String.format("previewSize: w=%d; h=%d",
-                        previewWidth, previewHeight));
                 p.setPreviewSize(previewWidth, previewHeight);
             }
 
             if (pictureSize != null) {
-                Log.d(TAG, String.format("pictureSize: w=%d; h=%d",
-                        pictureSize.width, pictureSize.height));
                 p.setPictureSize(pictureSize.width, pictureSize.height);
             } else {
                 int pictureWidth = (w >> 3) << 3;
                 int pictureHeight = (h >> 3) << 3;
-                Log.d(TAG, String.format("pictureSize: w=%d; h=%d",
-                        pictureWidth, pictureHeight));
                 p.setPictureSize(pictureWidth, pictureHeight);
             }
 
@@ -540,7 +478,6 @@ public class OcrActivity extends WebServiceBackedActivity implements
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
-        Log.d(TAG, "surfaceCreated");
         camera = Camera.open();
 
         Camera.Parameters params = camera.getParameters();
@@ -646,49 +583,26 @@ public class OcrActivity extends WebServiceBackedActivity implements
         TextView t = (TextView) findViewById(R.id.ocrredText);
         String key = t.getText().toString();
 
-        boolean isDirectSearch = isDirectSearch();
-        SearchCriteria criteria = null;
-        Intent intent = new Intent(this, Wwwjdic.class);
         Bundle extras = new Bundle();
+        extras.putString(Constants.SEARCH_TEXT_KEY, key);
 
         switch (v.getId()) {
         case R.id.send_to_dict:
-            if (isDirectSearch) {
-                criteria = SearchCriteria.createForDictionaryDefault(key);
-                intent = new Intent(this, DictionaryResultListView.class);
-            } else {
-                extras.putInt(Constants.SEARCH_TYPE,
-                        SearchCriteria.CRITERIA_TYPE_DICT);
-            }
+            extras.putInt(Constants.SEARCH_TYPE,
+                    SearchCriteria.CRITERIA_TYPE_DICT);
             break;
         case R.id.send_to_kanjidict:
-            if (isDirectSearch) {
-                criteria = SearchCriteria.createForKanjiOrReading(key);
-                intent = new Intent(this, KanjiResultListView.class);
-            } else {
-                extras.putInt(Constants.SEARCH_TYPE,
-                        SearchCriteria.CRITERIA_TYPE_KANJI);
-            }
+            extras.putInt(Constants.SEARCH_TYPE,
+                    SearchCriteria.CRITERIA_TYPE_KANJI);
             break;
         case R.id.send_to_example_search:
-            if (isDirectSearch) {
-                criteria = SearchCriteria.createForExampleSearchDefault(key);
-                intent = new Intent(this, ExamplesResultListView.class);
-            } else {
-                extras.putInt(Constants.SEARCH_TYPE,
-                        SearchCriteria.CRITERIA_TYPE_EXAMPLES);
-            }
+            extras.putInt(Constants.SEARCH_TYPE,
+                    SearchCriteria.CRITERIA_TYPE_EXAMPLES);
             break;
         default:
-            // do nothing
         }
 
-        if (isDirectSearch) {
-            extras.putSerializable(Constants.CRITERIA_KEY, criteria);
-        } else {
-            extras.putString(Constants.SEARCH_TEXT_KEY, key);
-        }
-
+        Intent intent = new Intent(this, Wwwjdic.class);
         intent.putExtras(extras);
 
         startActivity(intent);
@@ -696,7 +610,6 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        Analytics.event("ocrTouch", this);
         requestAutoFocus();
 
         return false;
