@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="whats_new_title">What\'s new in %s</string>
+    <string name="whats_new">* Added compound search to kanji details view.\n* Added update date to widget.\n* Better widget update handling.\n* Use new EU mirror URL.\n* Various bugfixes.</string>
+</resources>
