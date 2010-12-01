@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="whats_new_title">What\'s new in %s</string>
+    <string name="whats_new">* Updated to use new kanji recognizer URL</string>
+</resources>
