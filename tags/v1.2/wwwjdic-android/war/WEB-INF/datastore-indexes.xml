@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datastore-indexes autoGenerate="true">
+    <datastore-index kind="Stroke" ancestor="true"
+        source="auto">
+        <property name="number" direction="asc" />
+    </datastore-index>
+</datastore-indexes>
