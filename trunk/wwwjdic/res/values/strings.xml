@@ -246,7 +246,7 @@
     <string name="favorites">Favorites</string>
     <string name="search_history">Search history</string>
     <string name="favorites_hist">Favorites/Hist.</string>
-    <string name="uses_kanjivg">Uses KanjiVG</string>
+    <string name="uses_kanjivg">Uses KanjiVG data, (C) 2009/2010 Ulrich Apel</string>
     <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
     <!--  for cropper -->
     <string name="crop_save_text">Crop</string>
@@ -453,4 +453,5 @@
         <item>space</item>
         <item>/</item>
     </string-array>
+    <string name="faq_link"><a href="http://code.google.com/p/wwwjdic/wiki/FAQ">FAQ</a></string>
 </resources>
