@@ -2,31 +2,23 @@ package org.nick.wwwjdic.history;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
+import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
-import org.nick.wwwjdic.DictionaryEntry;
+import org.nick.wwwjdic.Dialogs;
 import org.nick.wwwjdic.DictionaryEntryDetail;
-import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicApplication;
 import org.nick.wwwjdic.WwwjdicEntry;
-import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.history.FavoritesItem.FavoriteStatusChangedListener;
 import org.nick.wwwjdic.history.gdocs.DocsUrl;
 import org.nick.wwwjdic.history.gdocs.Namespace;
-import org.nick.wwwjdic.utils.Analytics;
-import org.nick.wwwjdic.utils.Dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -91,9 +83,6 @@ public class Favorites extends HistoryBase implements
     private static final String FAVORITES_EXPORT_TIP_DIALOG = "tips_favorites_export";
 
     private static final int ECLAIR_VERSION_CODE = 5;
-
-    private static final byte[] UTF8_BOM = { (byte) 0xef, (byte) 0xbb,
-            (byte) 0xbf };
 
     private HttpTransport transport;
 
@@ -538,8 +527,7 @@ public class Favorites extends HistoryBase implements
                     exportToGDocs(isKanji);
                     break;
                 case EXPORT_ANKI_IDX:
-                    exportToAnkiDeckAsync(isKanji);
-                    break;
+                    throw new IllegalArgumentException("Not implemented");
                 default:
                     // do noting
                 }
@@ -547,146 +535,6 @@ public class Favorites extends HistoryBase implements
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    private void exportToAnkiDeckAsync(boolean isKanji) {
-        AnkiExportTask task = new AnkiExportTask();
-        task.execute(isKanji);
-    }
-
-    private class AnkiExportTask extends AsyncTask<Boolean, Object, Boolean> {
-
-        private Throwable error;
-        private String exportFilename;
-
-        AnkiExportTask() {
-        }
-
-        @Override
-        protected void onPreExecute() {
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-
-            }
-            progressDialog = new ProgressDialog(Favorites.this);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setMessage(getString(R.string.exporting_to_anki));
-            progressDialog.setCancelable(true);
-            progressDialog.setButton(ProgressDialog.BUTTON_NEUTRAL,
-                    getString(R.string.cancel), new OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            cancel(true);
-                        }
-                    });
-            progressDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(Boolean... params) {
-            try {
-                boolean isKanji = params[0];
-                exportFilename = exportToAnkiDeck(isKanji);
-
-                return true;
-            } catch (Exception e) {
-                error = e;
-                Log.d(TAG, "Error exporting favorites to Anki", e);
-                deleteIncompleteFile();
-
-                return false;
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-
-            deleteIncompleteFile();
-        }
-
-        private void deleteIncompleteFile() {
-            Log.d(TAG, "Anki export cancelled, deleting incomplete files...");
-            if (exportFilename == null) {
-                return;
-            }
-            File f = new File(exportFilename);
-            boolean success = f.delete();
-            if (success) {
-                Log.d(TAG, "successfully deleted " + f.getAbsolutePath());
-            } else {
-                Log.d(TAG, "failed to delet " + f.getAbsolutePath());
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-
-            Resources r = getResources();
-            String template = result ? r
-                    .getString(R.string.anki_export_success) : r
-                    .getString(R.string.anki_export_failure);
-            String message = result ? String.format(template, exportFilename)
-                    : String.format(template, error.getMessage());
-            Toast t = Toast
-                    .makeText(Favorites.this, message, Toast.LENGTH_LONG);
-            t.show();
-        }
-    }
-
-    private String exportToAnkiDeck(boolean isKanji) {
-        AnkiGenerator generator = new AnkiGenerator(Favorites.this);
-        String filename = getCsvExportFilename(isKanji).replace(".csv", "")
-                + ".anki";
-        File exportFile = new File(WwwjdicApplication.getWwwjdicDir(), filename);
-        Log.d(TAG, "exporting favorites to Anki: "
-                + exportFile.getAbsolutePath());
-
-        int size = 0;
-        if (isKanji) {
-            List<KanjiEntry> kanjis = new ArrayList<KanjiEntry>();
-            Cursor c = null;
-            try {
-                c = filterCursor();
-                while (c.moveToNext()) {
-                    WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
-                    kanjis.add((KanjiEntry) entry);
-                }
-            } finally {
-                if (c != null) {
-                    c.close();
-                }
-            }
-
-            size = generator.createKanjiAnkiFile(exportFile.getAbsolutePath(),
-                    kanjis);
-        } else {
-            List<DictionaryEntry> words = new ArrayList<DictionaryEntry>();
-            Cursor c = null;
-            try {
-                c = filterCursor();
-                while (c.moveToNext()) {
-                    WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
-                    words.add((DictionaryEntry) entry);
-                }
-            } finally {
-                if (c != null) {
-                    c.close();
-                }
-            }
-
-            size = generator.createDictAnkiFile(exportFile.getAbsolutePath(),
-                    words);
-        }
-
-        Analytics.event("favoritesAnkiExport", this);
-        Log.d(TAG, String.format("Exported %d entries to %s", size, exportFile
-                .getAbsolutePath()));
-
-        return exportFile.getAbsolutePath();
     }
 
     private static class ExportItemsAdapter extends ArrayAdapter<String> {
@@ -715,8 +563,6 @@ public class Favorites extends HistoryBase implements
                 return singleType;
             case EXPORT_GDOCS_IDX:
                 return singleType && isPostEclair;
-            case EXPORT_ANKI_IDX:
-                return singleType;
             default:
                 return false;
             }
@@ -736,9 +582,7 @@ public class Favorites extends HistoryBase implements
         try {
             File exportFile = new File(WwwjdicApplication.getWwwjdicDir(),
                     getCsvExportFilename(isKanji));
-            writeBom(exportFile);
-
-            Writer writer = new FileWriter(exportFile, true);
+            Writer writer = new FileWriter(exportFile);
             exportToCsv(exportFile.getAbsolutePath(), writer, true);
 
             Analytics.event("favoritesLocalCsvExport", this);
@@ -748,14 +592,6 @@ public class Favorites extends HistoryBase implements
                     String.format(message, e.getMessage()), Toast.LENGTH_SHORT)
                     .show();
         }
-    }
-
-    private void writeBom(File exportFile) throws FileNotFoundException,
-            IOException {
-        OutputStream out = new FileOutputStream(exportFile);
-        out.write(UTF8_BOM);
-        out.flush();
-        out.close();
     }
 
     private void exportToCsv(String exportFile, Writer w, boolean showMessages) {
@@ -775,14 +611,8 @@ public class Favorites extends HistoryBase implements
             int count = 0;
             while (c.moveToNext()) {
                 WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
-                String separatorChar = WwwjdicPreferences
-                        .getMeaningsSeparatorCharacter(this);
-                // single space not allowed in resources?
-                if ("space".equals(separatorChar)) {
-                    separatorChar = " ";
-                }
-                String[] entryStr = FavoritesEntryParser.toParsedStringArray(
-                        entry, separatorChar);
+                String[] entryStr = FavoritesEntryParser
+                        .toParsedStringArray(entry);
                 writer.writeNext(entryStr);
                 count++;
             }
@@ -834,20 +664,19 @@ public class Favorites extends HistoryBase implements
         try {
             Log.d(TAG, "exporting to Google docs...");
             String filename = getCsvExportFilename(isKanji);
-            File tempFile = File.createTempFile("favorites-gdocs", ".csv",
+            File f = File.createTempFile("favorites-gdocs", ".csv",
                     WwwjdicApplication.getWwwjdicDir());
-            tempFile.deleteOnExit();
-            Log.d(TAG, "temp file: " + tempFile.getAbsolutePath());
+            f.deleteOnExit();
+            Log.d(TAG, "temp file: " + f.getAbsolutePath());
             Log.d(TAG, "document filename: " + filename);
-
-            Writer writer = new FileWriter(tempFile, true);
-            exportToCsv(tempFile.getAbsolutePath(), writer, false);
+            Writer writer = new FileWriter(f);
+            exportToCsv(f.getAbsolutePath(), writer, false);
 
             uploadData = new UploadData();
-            uploadData.contentLength = tempFile.length();
+            uploadData.contentLength = f.length();
             uploadData.contentType = "text/csv";
             uploadData.filename = filename;
-            uploadData.localFilename = tempFile.getAbsolutePath();
+            uploadData.localFilename = f.getAbsolutePath();
 
             gotAccount(false);
         } catch (IOException e) {

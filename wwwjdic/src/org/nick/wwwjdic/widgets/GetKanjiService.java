@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -26,8 +25,8 @@ import org.nick.wwwjdic.GzipStringResponseHandler;
 import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.StringUtils;
 import org.nick.wwwjdic.WwwjdicApplication;
-import org.nick.wwwjdic.utils.StringUtils;
 
 import android.app.PendingIntent;
 import android.app.Service;
@@ -38,7 +37,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -59,10 +57,6 @@ public class GetKanjiService extends Service {
             .compile("^</pre>.*$");
 
     private static final String PRE_END_TAG = "</pre>";
-
-    private static final int NUM_RETRIES = 3;
-
-    private static final int RETRY_INTERVAL = 500;
 
     private final RandomJisGenerator jisGenerator = new RandomJisGenerator();
 
@@ -106,35 +100,8 @@ public class GetKanjiService extends Service {
             Log.d(TAG, "KOD JIS: " + jisCode);
             String backdoorCode = generateBackdoorCode(jisCode);
             Log.d(TAG, "backdoor code: " + backdoorCode);
-            String wwwjdicResponse = null;
-
-            for (int i = 0; i < NUM_RETRIES; i++) {
-                try {
-                    wwwjdicResponse = query(client, getWwwjdicUrl(),
-                            backdoorCode);
-                    if (wwwjdicResponse != null) {
-                        break;
-                    }
-                } catch (Exception e) {
-                    if (i < NUM_RETRIES - 1) {
-                        Log.w(TAG, String.format("Couldn't contact "
-                                + "WWWJDIC, will retry after %d ms.",
-                                RETRY_INTERVAL), e);
-                        Thread.sleep(RETRY_INTERVAL);
-                    } else {
-                        Log.e(TAG, "Couldn't contact WWWJDIC.", e);
-                    }
-                }
-            }
-
-            if (wwwjdicResponse == null) {
-                Log.e(TAG, String.format("Failed to get WWWJDIC response "
-                        + "after %d tries, giving up.", NUM_RETRIES));
-                showError(views);
-
-                return views;
-            }
-
+            String wwwjdicResponse = query(client, getWwwjdicUrl(),
+                    backdoorCode);
             Log.d(TAG, "WWWJDIC response " + wwwjdicResponse);
             List<KanjiEntry> entries = parseResult(wwwjdicResponse);
 
@@ -154,8 +121,6 @@ public class GetKanjiService extends Service {
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
                     intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-            String dateStr = DateFormat.getDateFormat(this).format(new Date());
-            views.setTextViewText(R.id.kod_date_text, dateStr);
             views.setTextViewText(R.id.kod_text, kod);
             views.setOnClickPendingIntent(R.id.kod_text, pendingIntent);
             clearLoading(views);
@@ -178,7 +143,6 @@ public class GetKanjiService extends Service {
                 R.string.error));
         views.setViewVisibility(R.id.kod_text, View.GONE);
         views.setViewVisibility(R.id.kod_footer_text, View.GONE);
-        views.setViewVisibility(R.id.kod_date_text, View.GONE);
     }
 
     private void showLoading(RemoteViews views) {
@@ -187,14 +151,12 @@ public class GetKanjiService extends Service {
         views.setViewVisibility(R.id.kod_message_text, View.VISIBLE);
         views.setViewVisibility(R.id.kod_text, View.GONE);
         views.setViewVisibility(R.id.kod_footer_text, View.GONE);
-        views.setViewVisibility(R.id.kod_date_text, View.GONE);
     }
 
     private void clearLoading(RemoteViews views) {
         views.setViewVisibility(R.id.kod_message_text, View.GONE);
         views.setViewVisibility(R.id.kod_text, View.VISIBLE);
         views.setViewVisibility(R.id.kod_footer_text, View.VISIBLE);
-        views.setViewVisibility(R.id.kod_date_text, View.VISIBLE);
     }
 
     private HttpClient createHttpClient(String url, int timeoutMillis) {

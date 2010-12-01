@@ -4,12 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.nick.kanjirecognizer.hkr.CharacterRecognizer;
+import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
+import org.nick.wwwjdic.Dialogs;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.ocr.WeOcrClient;
-import org.nick.wwwjdic.utils.Analytics;
-import org.nick.wwwjdic.utils.Dialogs;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -39,7 +39,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     private static final String TAG = RecognizeKanjiActivity.class
             .getSimpleName();
 
-    private static final String KR_DEFAULT_URL = "http://kanji.sljfaq.org/kanji-0.016.cgi";
+    private static final String KR_DEFAULT_URL = "http://kanji.sljfaq.org/kanji16/kanji-0.016.cgi";
 
     private static final String PREF_KR_URL_KEY = "pref_kr_url";
     private static final String PREF_KR_TIMEOUT_KEY = "pref_kr_timeout";

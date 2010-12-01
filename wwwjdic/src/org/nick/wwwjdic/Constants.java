@@ -36,8 +36,6 @@ public class Constants {
 
     public static final String KOD_WIDGET_CLICK = "org.nick.wwwjdic.kodWidgetClick";
 
-    public static final String SELECTED_DICTIONARY_IDX = "org.nick.wwwjdic.selectedDict";
-
     private Constants() {
     }
 

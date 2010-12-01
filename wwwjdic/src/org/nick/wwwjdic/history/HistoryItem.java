@@ -4,7 +4,7 @@ import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.Radical;
 import org.nick.wwwjdic.Radicals;
 import org.nick.wwwjdic.SearchCriteria;
-import org.nick.wwwjdic.utils.StringUtils;
+import org.nick.wwwjdic.StringUtils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
