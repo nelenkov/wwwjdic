@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="whats_new_title">What\'s new in %s</string>
+    <string name="whats_new">* Kanji of the day widget (long press on home
+        screen to add)\n* Favorites export to local CSV and Google
+        Docs\n* Automatic mirror selection (overridable in Settings)\n*
+        Android 2.2 (Froyo) support\n* Move to SD card support (will disable widget)
+    </string>
+</resources>
