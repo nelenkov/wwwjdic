@@ -1,46 +1,46 @@
 #summary Full changelog
 
 = Changelog =
- * v1.55 Kanji compound search
+ * v1.55 (2010/11/27)  Kanji compound search
   * Added compound search to kanji details
   * Added update date to widget
   * Better widget update handling
   * Use new EU mirror URL
   * Various bug fixes
- * v1.52
+ * v1.52 (2010/11/21) 
   * Updated to use new kanji recognizer URL
- * v1.51
+ * v1.51 (2010/11/18) 
   * Bug fix: automatic encoding recognition with Excel 2007
- * v1.5 Widget and favorites export
+ * v1.5 (2010/11/17)  Widget and favorites export
   * Kanji of the day widget 
   * Favorites export to local CSV and Google Docs
   * Automatic mirror selection
   * Android 2.2 (Froyo) support
   * Install to SD card support
- * v1.41 UI improvements
+ * v1.41 (2010/11/03)  UI improvements
   * Added backup URL for kanji recognizer web service.
   * Added context menu (details/copy/append) to recognition candidates.
   * Added usage tips.
   * Changed shortcut name.
- * v1.4 Japanese sentence translation support
+ * v1.4 (2010/09/03)  Japanese sentence translation support
   * Short Japanese sentence translation (word breakdown) support.
   * Added default dictionary setting.
   * Display kanji nanori readings.
   * Display kanji radical name readings.
   * Display multiple pinyin/Korean readings properly.
   * New (smaller) icon.
- * v1.31 Bugfixes
+ * v1.31 (2010/08/15)  Bugfixes
   * Kanji Recognizer binding bugfixes
- * v1.3 Kanji Recognizer integration
+ * v1.3 (2010/08/15)  Kanji Recognizer integration
   * Offline kanji recognition via the Kanji Recognizer app
   * Links to history/favorites in each tab
   * Added 'delete stroke' button to kanji draw view
- * v1.21 Bug fixes
+ * v1.21 (2010/07/29)  Bug fixes
   * fixed crash on CyanogenMod 5 DS (Issue 12)
   * better OCR paremeters (auto instead of line)
   * Replaced about dialog with activity (for better scrolling)
   * set size limits to number input fields
- * v1.2 History import/export, handwritten recognition improvments
+ * v1.2 (2010/07/23)  History import/export, handwritten recognition improvments
   * Direct search option for OCR (Issue 15)
   * History/favorites filtering
   * History/favorites CSV import/export
@@ -49,10 +49,10 @@
   * Fixed OCR crash (Issue 16)
   * Layout adjustments (Issue 14)
   * Collect anonymous usage data using Flurry Analytics
- * v1.1 Japanese localization
+ * v1.1 (2010/07/04)  Japanese localization
   * layout adjustments
   * bugfixes
- * v1.0 Example search
+ * v1.0 (2010/07/02)  Example search
   * new example search tab
    * please use 'exact match' for short English words
   * 'Ex.' button in dictionary detail view to find examples for current word
@@ -64,10 +64,10 @@
    * break down
    * look up all kanji
    * copy English/Japanese 
- * v0.91 Better OCR preview size/picture size handling
+ * v0.91 (2010/06/25)  Better OCR preview size/picture size handling
   * fixes crash on !MyTouch Slide and HTC Legend, (Issue 8)
   * OCR cropping no longer depends on the default Camera app, (Issue 9)
- * v0.9 Stroke order diagrams and search history/favorites
+ * v0.9 (2010/06/18)  Stroke order diagrams and search history/favorites
   * Animated stroke order diagrams using [http://kanjivg.tagaini.net KanjiVG] data
    * use 'Stroke order' button in kanji detail view
    * served off Google App Engine, so first access may be a little slow
@@ -77,12 +77,12 @@
    * use star icon in detail view to add to favorites
   * Dictionary/kanji headword copy
    * long press on headword in detail view to copy
- * v0.81 Bugfix release. Improved handwritten kanji annotation.
+ * v0.81 (2010/05/28)  Bugfix release. Improved handwritten kanji annotation.
   * tested on Froyo
   * fixes (Issue 6)
   * added options to control kanji annotation
   * ensure annotation numbers are inside drawing area
- * v0.8 Hand written kanji recognition.
+ * v0.8 (2010/05/18)  Hand written kanji recognition.
   * Hand written character recognition using the kanji recognizer at [http://kanji.sljfaq.org/kanji16/draw-canvas.html kanji.sljfaq.org]
    * The kanji recognizer is still experimental and may change/break at any time. (I will likely release an updates version if it does, though).
    * If it gets too much traffic from this app, access may be throttled/blocked without notice. Please be gentle :)
@@ -90,18 +90,18 @@
   * support flash for OCR
     * Touch the flash icon to enable
     * Works only on Android versions that let you control the flash (Eclair). Disabled for all others.
- * v0.7 Added settings. Bug fixes.
+ * v0.7 (2010/05/10)  Added settings. Bug fixes.
   * Select WWWJDIC mirror. Use the one closest to your location for better response times.
   * Select WeOCR server. Use the backup server only if the main one is offline.
   * Specify HTTP timeout
   * Option to dump cropped image to sdcard
- * v0.6 OCR support using [http://weocr.ocrgrid.org/ WeOCR]. Tested on Nexus One.
+ * v0.6 (2010/05/02)  OCR support using [http://weocr.ocrgrid.org/ WeOCR]. Tested on Nexus One.
   * ~~OCR depends (for now) on the default Camera/Gallery app. If you phone doesn't have it, OCR will not work.~~ : fixed in 0.91
   * Capture tested on HTC Magic and Nexus One. If it doesn't work on your device, report it (include logcat).
   * OCR is backed by [http://code.google.com/p/nhocr/ nhocr], so it's only as good as nhocr is. Check their site for current limitations. The good news is that it will get better as nhocr does :)
   * Try to take a close up (as much as your autofocus allows) for better results.
- * v0.5 Minor update. Display radical in kanji detail. Proper scrolling for entries with many meanings.
- * v0.4 Added radical table and (optional) stroke count to kanji lookup. Select 'Radical number' as search type to enable. The top number is the radical number, the bottom one -- stroke count (see screenshot).
- * v0.3 Support all WWWJDIC languages (French, Russian, Swedish, Hungarian, Spanish, Dutch, Slovenian)
- * v0.2 New icon
- * v0.1 Initial release
+ * v0.5 (2010/03/29)  Minor update. Display radical in kanji detail. Proper scrolling for entries with many meanings.
+ * v0.4 (2010/03/19)  Added radical table and (optional) stroke count to kanji lookup. Select 'Radical number' as search type to enable. The top number is the radical number, the bottom one -- stroke count (see screenshot).
+ * v0.3 (2010/03/15)  Support all WWWJDIC languages (French, Russian, Swedish, Hungarian, Spanish, Dutch, Slovenian)
+ * v0.2 (2010/03/13)  New icon
+ * v0.1 (2010/03/12)  Initial release
