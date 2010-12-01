@@ -126,9 +126,12 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     }
 
     private boolean isKrInstalled() {
+        Log.d(TAG, "Checking for Kanji Recognizer...");
         PackageManager pm = getPackageManager();
         try {
             PackageInfo pi = pm.getPackageInfo(KR_PACKAGE, 0);
+            Log.d(TAG, String.format("Found KR: %s, version %s(%d)",
+                    pi.packageName, pi.versionName, pi.versionCode));
             if (pi.versionCode < 2) {
                 Log.d(TAG, String.format(
                         "Kanji recognizer %s is installed, but we need 1.1",
@@ -136,8 +139,16 @@ public class WwwjdicPreferences extends PreferenceActivity implements
                 return false;
             }
 
-            return pm.checkSignatures("org.nick.wwwjdic", pi.packageName) == PackageManager.SIGNATURE_MATCH;
+            String myPackageName = getApplication().getPackageName();
+            Log.d(TAG, String.format("Checking for signature match: "
+                    + "my package = %s, KR package = %s", myPackageName,
+                    pi.packageName));
+            boolean result = pm.checkSignatures(myPackageName, pi.packageName) == PackageManager.SIGNATURE_MATCH;
+            Log.d(TAG, "signature match: " + result);
+
+            return result;
         } catch (NameNotFoundException e) {
+            Log.w(TAG, "Kanji Recognizer not found", e);
             return false;
         }
     }
