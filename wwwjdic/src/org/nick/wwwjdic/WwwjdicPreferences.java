@@ -36,8 +36,6 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     private static final String PREF_DEFAULT_DICT_PREF_KEY = "pref_default_dict";
 
-    private static final String PREF_EXPORT_MEANINGS_SEPARATOR_CHAR = "pref_export_meanings_separator_char";
-
     private CheckBoxPreference useKrPreference;
     private CheckBoxPreference autoSelectMirrorPreference;
     private ListPreference mirrorPreference;
@@ -126,12 +124,9 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     }
 
     private boolean isKrInstalled() {
-        Log.d(TAG, "Checking for Kanji Recognizer...");
         PackageManager pm = getPackageManager();
         try {
             PackageInfo pi = pm.getPackageInfo(KR_PACKAGE, 0);
-            Log.d(TAG, String.format("Found KR: %s, version %s(%d)",
-                    pi.packageName, pi.versionName, pi.versionCode));
             if (pi.versionCode < 2) {
                 Log.d(TAG, String.format(
                         "Kanji recognizer %s is installed, but we need 1.1",
@@ -139,16 +134,8 @@ public class WwwjdicPreferences extends PreferenceActivity implements
                 return false;
             }
 
-            String myPackageName = getApplication().getPackageName();
-            Log.d(TAG, String.format("Checking for signature match: "
-                    + "my package = %s, KR package = %s", myPackageName,
-                    pi.packageName));
-            boolean result = pm.checkSignatures(myPackageName, pi.packageName) == PackageManager.SIGNATURE_MATCH;
-            Log.d(TAG, "signature match: " + result);
-
-            return result;
+            return pm.checkSignatures("org.nick.wwwjdic", pi.packageName) == PackageManager.SIGNATURE_MATCH;
         } catch (NameNotFoundException e) {
-            Log.w(TAG, "Kanji Recognizer not found", e);
             return false;
         }
     }
@@ -167,12 +154,5 @@ public class WwwjdicPreferences extends PreferenceActivity implements
                 R.array.dictionary_codes_array);
 
         return dictionaries[getDefaultDictionaryIdx(context)];
-    }
-
-    public static String getMeaningsSeparatorCharacter(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
-
-        return preferences.getString(PREF_EXPORT_MEANINGS_SEPARATOR_CHAR, "\n");
     }
 }

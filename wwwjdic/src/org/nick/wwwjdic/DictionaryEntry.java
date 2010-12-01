@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.nick.wwwjdic.utils.StringUtils;
-
 public class DictionaryEntry extends WwwjdicEntry implements Serializable {
 
     /**
@@ -77,10 +75,6 @@ public class DictionaryEntry extends WwwjdicEntry implements Serializable {
 
     public String getTranslationString() {
         return tranlsationString;
-    }
-
-    public String getMeaningsAsString() {
-        return StringUtils.join(getMeanings(), "/", 0);
     }
 
     @Override

@@ -1,8 +1,4 @@
-package org.nick.wwwjdic.utils;
-
-import org.nick.wwwjdic.Constants;
-import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.R.string;
+package org.nick.wwwjdic;
 
 import android.app.Activity;
 import android.app.AlertDialog;

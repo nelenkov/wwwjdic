@@ -4,12 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.nick.kanjirecognizer.hkr.CharacterRecognizer;
+import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
+import org.nick.wwwjdic.Dialogs;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.ocr.WeOcrClient;
-import org.nick.wwwjdic.utils.Analytics;
-import org.nick.wwwjdic.utils.Dialogs;
 
 import android.content.ComponentName;
 import android.content.Context;
