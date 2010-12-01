@@ -7,28 +7,26 @@ import java.util.concurrent.RejectedExecutionException;
 
 import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
 import org.nick.wwwjdic.history.HistoryDbHelper;
-import org.nick.wwwjdic.utils.Analytics;
-import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
-        OnFocusChangeListener, OnCheckedChangeListener, OnItemSelectedListener {
+        OnFocusChangeListener, OnCheckedChangeListener {
 
     private static final String TAG = Dictionary.class.getSimpleName();
 
@@ -57,6 +55,31 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         IDX_TO_DICT.put(19, "M");
     }
 
+    private static final Map<Integer, String> IDX_TO_CODE = new HashMap<Integer, String>();
+
+    static {
+        // Kanji or reading
+        IDX_TO_CODE.put(0, "J");
+        // Stroke count
+        IDX_TO_CODE.put(1, "C");
+        // Radical number
+        IDX_TO_CODE.put(2, "B");
+        // English meaning
+        IDX_TO_CODE.put(3, "E");
+        // Unicode code (hex)
+        IDX_TO_CODE.put(4, "U");
+        // JIS code
+        IDX_TO_CODE.put(5, "J");
+        // SKIP code
+        IDX_TO_CODE.put(6, "P");
+        // Pinyin reading
+        IDX_TO_CODE.put(7, "Y");
+        // Korean reading
+        IDX_TO_CODE.put(8, "W");
+    }
+
+    private static final String PREF_DEFAULT_DICT_PREF_KEY = "pref_default_dict";
+
     private EditText inputText;
     private CheckBox exactMatchCb;
     private CheckBox commonWordsCb;
@@ -78,7 +101,7 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         setupSpinners();
 
         inputText.requestFocus();
-        selectDictionary(savedInstanceState);
+        selectDictionary();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -101,26 +124,8 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         setupDictSummary();
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (dbHelper != null) {
-            dbHelper.close();
-        }
-    }
-
-    private void selectDictionary(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            int idx = savedInstanceState.getInt(
-                    Constants.SELECTED_DICTIONARY_IDX, 0);
-            dictSpinner.setSelection(idx);
-        } else {
-
-            dictSpinner.setSelection(WwwjdicPreferences
-                    .getDefaultDictionaryIdx(this));
-        }
+    private void selectDictionary() {
+        dictSpinner.setSelection(getDefaultDictionaryIdx());
     }
 
     @Override
@@ -129,15 +134,7 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
 
         setupDictSummary();
 
-        // selectDictionary();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putInt(Constants.SELECTED_DICTIONARY_IDX, dictSpinner
-                .getSelectedItemPosition());
+        selectDictionary();
     }
 
     private void findViews() {
@@ -167,7 +164,6 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         adapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dictSpinner.setAdapter(adapter);
-        dictSpinner.setOnItemSelectedListener(this);
     }
 
     private void setupDictSummary() {
@@ -200,7 +196,13 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
 
             try {
                 int dictIdx = dictSpinner.getSelectedItemPosition();
-                String dict = getDictionaryFromSelection(dictIdx);
+                String dict = IDX_TO_DICT.get(dictIdx);
+                Log.i(TAG, Integer.toString(dictIdx));
+                Log.i(TAG, dict);
+                if (dict == null) {
+                    // edict
+                    dict = "1";
+                }
 
                 SearchCriteria criteria = SearchCriteria.createForDictionary(
                         input, exactMatchCb.isChecked(), romanizedJapaneseCb
@@ -223,18 +225,6 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         default:
             // do nothing
         }
-    }
-
-    private String getDictionaryFromSelection(int dictIdx) {
-        String dict = IDX_TO_DICT.get(dictIdx);
-        Log.i(TAG, "dictionary idx: " + Integer.toString(dictIdx));
-        Log.i(TAG, "dictionary: " + dict);
-        if (dict == null) {
-            // edict
-            dict = "1";
-        }
-
-        return dict;
     }
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -298,18 +288,12 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         mgr.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int pos,
-            long id) {
-        String dict = getDictionaryFromSelection(pos);
-        String dictName = (String) parent.getSelectedItem();
-        getApp().setCurrentDictionary(dict);
-        getApp().setCurrentDictionaryName(dictName);
-        Log.d(TAG, String.format("current dictionary: %s(%s)", dictName, dict));
-    }
+    private int getDefaultDictionaryIdx() {
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
 
-    @Override
-    public void onNothingSelected(AdapterView<?> arg0) {
-    }
+        String idxStr = preferences.getString(PREF_DEFAULT_DICT_PREF_KEY, "0");
 
+        return Integer.parseInt(idxStr);
+    }
 }

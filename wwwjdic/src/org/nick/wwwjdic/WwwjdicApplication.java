@@ -33,9 +33,6 @@ public class WwwjdicApplication extends Application {
     private static final String PREF_AUTO_SELECT_MIRROR_KEY = "pref_auto_select_mirror";
     private static final String PREF_WWWJDIC_URL_KEY = "pref_wwwjdic_mirror_url";
 
-    private static final String PREF_KR_URL_KEY = "pref_kr_url";
-    private static final String KR_URL = "http://kanji.sljfaq.org/kanji-0.016.cgi";
-
     private ExecutorService executorService;
 
     private LocationManager locationManager;
@@ -43,10 +40,6 @@ public class WwwjdicApplication extends Application {
     private static String version;
 
     private static String flurryKey;
-
-    // EDICT by default
-    private String currentDictionary = "1";
-    private String currentDictionaryName = "General";
 
     @Override
     public void onCreate() {
@@ -63,19 +56,6 @@ public class WwwjdicApplication extends Application {
             setMirrorBasedOnLocation();
         }
 
-        updateKanjiRecognizerUrl();
-
-    }
-
-    private void updateKanjiRecognizerUrl() {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        String krUrl = prefs.getString(PREF_KR_URL_KEY, KR_URL);
-        if (krUrl.contains("kanji.cgi")) {
-            Log.d(TAG, "found old KR URL, will overwrite with " + KR_URL);
-            prefs.edit().putString(PREF_KR_URL_KEY, KR_URL)
-                .commit();
-        }
     }
 
     private boolean isAutoSelectMirror() {
@@ -85,30 +65,12 @@ public class WwwjdicApplication extends Application {
         return prefs.getBoolean(PREF_AUTO_SELECT_MIRROR_KEY, true);
     }
 
-    public synchronized void setMirrorBasedOnLocation() {
-        Log.d(TAG, "auto selecting mirror...");
-
+    private void setMirrorBasedOnLocation() {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location myLocation = null;
-
-        try {
-            boolean isEnabled = locationManager
-                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-            Log.d(TAG, LocationManager.NETWORK_PROVIDER + " enabled: "
-                    + isEnabled);
-            if (!isEnabled) {
-                Log.d(TAG, "provider not enabled, giving up");
-                return;
-            }
-            locationManager
-                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if (myLocation == null) {
-                Log.w(TAG, "failed to get cached location, giving up");
-
-                return;
-            }
-        } catch (Exception e) {
-            Log.w(TAG, "error getting location, giving up", e);
+        Location myLocation = locationManager
+                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if (myLocation == null) {
+            Log.d(TAG, "failed to get cached location, giving up");
 
             return;
         }
@@ -293,23 +255,6 @@ public class WwwjdicApplication extends Application {
 
     private String[] getStrArray(int id) {
         return getResources().getStringArray(id);
-    }
-
-    public synchronized String getCurrentDictionary() {
-        return currentDictionary;
-    }
-
-    public synchronized void setCurrentDictionary(String currentDictionary) {
-        this.currentDictionary = currentDictionary;
-    }
-
-    public synchronized String getCurrentDictionaryName() {
-        return currentDictionaryName;
-    }
-
-    public synchronized void setCurrentDictionaryName(
-            String currentDictionaryName) {
-        this.currentDictionaryName = currentDictionaryName;
     }
 
 }

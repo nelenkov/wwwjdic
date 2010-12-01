@@ -1,4 +1,4 @@
-package org.nick.wwwjdic.utils;
+package org.nick.wwwjdic;
 
 import java.util.List;
 

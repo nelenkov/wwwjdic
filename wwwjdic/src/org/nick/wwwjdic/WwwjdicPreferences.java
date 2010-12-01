@@ -4,10 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -18,7 +16,6 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.util.Log;
 
@@ -28,18 +25,11 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     private static final String TAG = WwwjdicPreferences.class.getSimpleName();
 
     private static final String PREF_USE_KR_KEY = "pref_kr_use_kanji_recognizer";
-
-    private static final String PREF_AUTO_SELECT_MIRROR_KEY = "pref_auto_select_mirror";
     private static final String PREF_MIRROR_URL_KEY = "pref_wwwjdic_mirror_url";
 
     private static final String KR_PACKAGE = "org.nick.kanjirecognizer";
 
-    private static final String PREF_DEFAULT_DICT_PREF_KEY = "pref_default_dict";
-
-    private static final String PREF_EXPORT_MEANINGS_SEPARATOR_CHAR = "pref_export_meanings_separator_char";
-
     private CheckBoxPreference useKrPreference;
-    private CheckBoxPreference autoSelectMirrorPreference;
     private ListPreference mirrorPreference;
 
     @Override
@@ -51,10 +41,6 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
         useKrPreference = (CheckBoxPreference) findPreference(PREF_USE_KR_KEY);
         useKrPreference.setOnPreferenceChangeListener(this);
-
-        autoSelectMirrorPreference = (CheckBoxPreference) findPreference(PREF_AUTO_SELECT_MIRROR_KEY);
-        autoSelectMirrorPreference.setOnPreferenceChangeListener(this);
-
         mirrorPreference = (ListPreference) findPreference(PREF_MIRROR_URL_KEY);
         mirrorPreference.setSummary(mirrorPreference.getEntry());
         mirrorPreference.setOnPreferenceChangeListener(this);
@@ -72,16 +58,6 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
                 return true;
             }
-        }
-
-        if (PREF_AUTO_SELECT_MIRROR_KEY.equals(preference.getKey())) {
-            boolean autoSelect = (Boolean) newValue;
-            if (autoSelect) {
-                WwwjdicApplication app = (WwwjdicApplication) getApplication();
-                app.setMirrorBasedOnLocation();
-            }
-
-            return true;
         }
 
         if (PREF_MIRROR_URL_KEY.equals(preference.getKey())) {
@@ -126,12 +102,9 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     }
 
     private boolean isKrInstalled() {
-        Log.d(TAG, "Checking for Kanji Recognizer...");
         PackageManager pm = getPackageManager();
         try {
             PackageInfo pi = pm.getPackageInfo(KR_PACKAGE, 0);
-            Log.d(TAG, String.format("Found KR: %s, version %s(%d)",
-                    pi.packageName, pi.versionName, pi.versionCode));
             if (pi.versionCode < 2) {
                 Log.d(TAG, String.format(
                         "Kanji recognizer %s is installed, but we need 1.1",
@@ -139,40 +112,9 @@ public class WwwjdicPreferences extends PreferenceActivity implements
                 return false;
             }
 
-            String myPackageName = getApplication().getPackageName();
-            Log.d(TAG, String.format("Checking for signature match: "
-                    + "my package = %s, KR package = %s", myPackageName,
-                    pi.packageName));
-            boolean result = pm.checkSignatures(myPackageName, pi.packageName) == PackageManager.SIGNATURE_MATCH;
-            Log.d(TAG, "signature match: " + result);
-
-            return result;
+            return pm.checkSignatures("org.nick.wwwjdic", pi.packageName) == PackageManager.SIGNATURE_MATCH;
         } catch (NameNotFoundException e) {
-            Log.w(TAG, "Kanji Recognizer not found", e);
             return false;
         }
-    }
-
-    public static int getDefaultDictionaryIdx(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
-
-        String idxStr = preferences.getString(PREF_DEFAULT_DICT_PREF_KEY, "0");
-
-        return Integer.parseInt(idxStr);
-    }
-
-    public static String getDefaultDictionary(Context context) {
-        String[] dictionaries = context.getResources().getStringArray(
-                R.array.dictionary_codes_array);
-
-        return dictionaries[getDefaultDictionaryIdx(context)];
-    }
-
-    public static String getMeaningsSeparatorCharacter(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
-
-        return preferences.getString(PREF_EXPORT_MEANINGS_SEPARATOR_CHAR, "\n");
     }
 }

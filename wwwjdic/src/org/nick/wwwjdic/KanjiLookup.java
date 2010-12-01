@@ -7,8 +7,6 @@ import java.util.concurrent.RejectedExecutionException;
 
 import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
 import org.nick.wwwjdic.history.HistoryDbHelper;
-import org.nick.wwwjdic.utils.Analytics;
-import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -99,15 +97,6 @@ public class KanjiLookup extends WwwjdicActivityBase implements
         dbHelper = new HistoryDbHelper(this);
 
         setupKanjiSummary();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (dbHelper != null) {
-            dbHelper.close();
-        }
     }
 
     @Override

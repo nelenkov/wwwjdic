@@ -192,7 +192,7 @@
         <item>http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi
         </item>
         <item>http://ryouko.imsb.nrc.ca/cgi-bin/wwwjdic</item>
-        <item>http://jp.celltica.com/cgi-bin/wwwjdic</item>
+        <item>http://jp.msmobiles.com/cgi-bin/wwwjdic</item>
         <item>http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi</item>
         <item>http://wwwjdic.sys5.se/cgi-bin/wwwjdic.cgi</item>
         <item>http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic</item>
@@ -210,7 +210,9 @@
     <string name="ocr">OCR</string>
     <string name="write_kanji">Write kanji</string>
     <string name="hkr_failed">Character recognition failed</string>
-    <string name="ws_hkr_failed">Character recognition failed.</string>
+    <string name="ws_hkr_failed">Character recognition failed. If the problem
+        persists, try setting the kanji recognizer URL to \'backup\' in
+        Settings.</string>
     <string name="sd_file_create_failed">Could not create temp file on SD card.</string>
     <string name="af_failed">A/F failed</string>
     <string name="ocr_failed">OCR failed</string>
@@ -404,7 +406,9 @@
         <item>Local backup</item>
         <item>Local CSV</item>
         <item>Google Docs</item>
+        <!-- 
         <item>Anki deck</item>
+        -->
     </string-array>
     <string name="favorites_export_dialog_title">Export favorites to</string>
     <string name="uploading_to_gdocs">Uploading to Google Docs...</string>
@@ -417,40 +421,16 @@
     </string>
     <string name="tips_favorites_export">Press Menu->Export to export your favorites.\n*
         \'Local backup\': use to import favorites if you
-        re-installed or
-        have a new phone.\n*
+        re-installed or have a new phone.\n*
         \'Local CSV\': exports all
-        fields as columns.
-        Use
+        fields as columns. Use
         to
         transfer favorites to a PC or import
         into other
-        programs.
-        Filter by \'Dictionary\'
+        programs. Filter by \'Dictionary\'
         or \'Kanji\'
         to enable.\n* \'Google
         Docs\': format as above. Needs Android 2.0
         or later.
     </string>
-    <string name="compounds">Compounds</string>
-    <string name="compound_search_starting">Starting kanji</string>
-    <string name="compound_search_any">Any position</string>
-    <string name="compound_search_common_only">Common words</string>
-    <string name="exporting_to_anki">Exporting favorites to Anki deck...</string>
-    <string name="anki_export_success">Exported favorites to Anki deck: %s.</string>
-    <string name="anki_export_failure">Error exporting to Anki deck: %s.</string>
-    <string name="pref_export">Export</string>
-    <string name="pref_export_meanings_separator_char">Meanings separtor char</string>
-    <string name="pref_export_meanings_separator_char_summary">Character to separate mutiple meanings with when
-        exporting to CSV/Anki.</string>
-    <string-array name="export_meanings_separator_char_names">
-        <item>Newline</item>
-        <item>Space</item>
-        <item>Slash(/)</item>
-    </string-array>
-    <string-array name="export_meanings_separator_chars">
-        <item>\n</item>
-        <item>space</item>
-        <item>/</item>
-    </string-array>
 </resources>
