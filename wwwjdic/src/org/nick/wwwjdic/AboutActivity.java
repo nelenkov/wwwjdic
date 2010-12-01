@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -21,6 +22,9 @@ public class AboutActivity extends Activity implements OnClickListener {
 
         TextView versionText = (TextView) findViewById(R.id.versionText);
         versionText.setText("version " + WwwjdicApplication.getVersion());
+
+        TextView faqText = (TextView) findViewById(R.id.faqText);
+        faqText.setMovementMethod(LinkMovementMethod.getInstance());
 
         Button buyDonateButton = (Button) findViewById(R.id.buy_donate);
         if (!isDonateVersion()) {

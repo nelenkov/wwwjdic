@@ -18,6 +18,11 @@
             android:layout_marginBottom="4dip" android:gravity="center_horizontal"
             android:layout_gravity="center_horizontal"></TextView>
         <TextView android:layout_width="wrap_content"
+            android:id="@+id/faqText" android:layout_height="fill_parent"
+            android:text="@string/faq_link" android:textColor="#FFF"
+            android:layout_marginBottom="4dip" android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"></TextView>     
+        <TextView android:layout_width="wrap_content"
             android:layout_height="fill_parent" android:text="@string/buy_donate_version"
             android:textColor="#FFF" android:layout_marginBottom="4dip"
             android:gravity="center_horizontal" android:layout_gravity="center_horizontal"></TextView>
