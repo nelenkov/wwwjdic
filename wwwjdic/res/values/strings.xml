@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WWWJDIC for Android</string>
-    <string name="app_name_short">WWWJDIC</string>
     <string name="translationError">Error</string>
     <string-array name="dictionary_codes_array">
         <item>1</item>
@@ -24,28 +23,6 @@
         <item>K</item>
         <item>L</item>
         <item>M</item>
-    </string-array>
-    <string-array name="dictionary_idxs_array">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
     </string-array>
     <string-array name="dictionaries_array">
         <item>General</item>
@@ -147,8 +124,7 @@
     <string name="ocr_hint2">* Crop a rectangular area (single line) on the
         next
         screen and press \'Save\' to OCR.</string>
-    <string name="ocr_hint3">* Press あ/漢/文 to send text to dictionary screen.
-    </string>
+    <string name="ocr_hint3">* Press あ/漢/文 to send text to dictionary screen.</string>
     <string name="pref_ocr">OCR settings</string>
     <string name="pref_weocr_server">WeOCR server</string>
     <string name="pref_weocr_server_summary">Don\'t use the backup server if the main one
@@ -174,25 +150,11 @@
         <item>Sweden</item>
         <item>USA</item>
     </string-array>
-    <string-array name="wwwjdic_mirror_coords">
-        <!-- Sydney -->
-        <item>033:51:35/151:12:40</item>
-        <!-- Toronto -->
-        <item>043:42:59/079:20:26</item>
-        <!-- Vienna -->
-        <item>048:12:32/016:22:21</item>
-        <!-- Tokyo -->
-        <item>035:42:20/139:42:54</item>
-        <!-- Stockholm -->
-        <item>059:21:00/018:04:00</item>
-        <!-- New York -->
-        <item>040:43:00/074:00:00</item>
-    </string-array>
     <string-array name="wwwjdic_mirror_urls">
         <item>http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi
         </item>
         <item>http://ryouko.imsb.nrc.ca/cgi-bin/wwwjdic</item>
-        <item>http://jp.celltica.com/cgi-bin/wwwjdic</item>
+        <item>http://jp.msmobiles.com/cgi-bin/wwwjdic</item>
         <item>http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi</item>
         <item>http://wwwjdic.sys5.se/cgi-bin/wwwjdic.cgi</item>
         <item>http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic</item>
@@ -203,14 +165,10 @@
     <string name="pref_kr">Kanji recognizer settings</string>
     <string name="pref_kr_url">Kanji recognizer URL</string>
     <string name="pref_kr_timeout">Kanji recognizer timeout</string>
-    <string name="pref_kr_use_kanji_recognizer">Use Kanji Recognizer</string>
-    <string name="pref_kr_use_kanji_recognizer_summary">Use the Kanji Recognizer app for handwriting
-        recognition.</string>
     <string name="settings">Settings</string>
     <string name="ocr">OCR</string>
     <string name="write_kanji">Write kanji</string>
     <string name="hkr_failed">Character recognition failed</string>
-    <string name="ws_hkr_failed">Character recognition failed.</string>
     <string name="sd_file_create_failed">Could not create temp file on SD card.</string>
     <string name="af_failed">A/F failed</string>
     <string name="ocr_failed">OCR failed</string>
@@ -222,7 +180,6 @@
     <string name="kanji_kan">漢</string>
     <string name="look_ahead">Look\nahead</string>
     <string name="hkr">Hand written kanji recognition</string>
-    <string name="hkr_abbrev">HKR</string>
     <string name="pref_kr_annotate">Annotate strokes</string>
     <string name="pref_kr_annotate_midway">Annotate midway</string>
     <string name="pref_kr_annotate_midway_summary">When checked, stroke numbers are shown near the
@@ -248,14 +205,16 @@
     <string name="favorites_hist">Favorites/Hist.</string>
     <string name="uses_kanjivg">Uses KanjiVG</string>
     <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
+    <string name="whats_new_title">What\'s new in %s</string>
+    <string name="whats_new">* Japanese localization\n* layout adjustments\n</string>
     <!--  for cropper -->
     <string name="crop_save_text">Crop</string>
     <string name="crop_discard_text">Discard</string>
     <string name="runningFaceDetection">Please wait\u2026</string>
-    <string name="example_search">Examples/Transl.</string>
+    <string name="example_search">Example Search</string>
     <string name="kanji_bun">文</string>
-    <string name="max_num_examples">Max\nexamples:</string>
-    <string name="exact_match">Exact match \n(Eng. only)</string>
+    <string name="max_num_examples">Max number of examples:</string>
+    <string name="exact_match">Exact match (Eng. only)</string> 
     <string name="enter_eng_or_jap">Enter English or Japanese</string>
     <string name="enter_kanji_search_key">Enter kanji search key</string>
     <string name="break_down_jap">Break down Japanese</string>
@@ -277,180 +236,12 @@
     <string name="results_for">%d result(s) for \'%s\'</string>
     <string name="examples_for">%d example(s) for \'%s\'</string>
     <string name="sod_for">Stroke order diagram for \'%s\'</string>
-    <string name="doing_ocr">OCR in progress...</string>
+    <string name="doing_ocr">Doing OCR...</string>
     <string name="candidates">%d candidate(s)</string>
-    <string name="doing_hkr">Processing...</string>
+    <string name="doing_hkr">Doing character recognition...</string>
     <string name="strokes_short">strokes</string>
     <string name="common_short">comm.</string>
     <string name="exact_short">ex.</string>
     <string name="romanized_short">rom.</string>
     <string name="max_results_short">max results: %d</string>
-    <string name="pref_ocr_direct_search">Direct search</string>
-    <string name="pref_ocr_direct_search_summary">When checked OCR-ed text is not sent to
-        dictionary screen for editing before search.</string>
-    <string name="import_items">Import</string>
-    <string name="export_items">Export</string>
-    <string name="favorites_exported">Favorites exported to %s (%d item(s))</string>
-    <string name="favorites_imported">Favorites imported from %s (%d item(s))</string>
-    <string name="history_exported">Search history exported to %s (%d item(s))
-    </string>
-    <string name="history_imported">Search history imported from %s (%d item(s))
-    </string>
-    <string name="filter">Filter</string>
-    <string name="select_filter_type">Select type:</string>
-    <string-array name="filter_types_history">
-        <item>All</item>
-        <item>(あ) Dictionary</item>
-        <item>(漢) Kanji</item>
-        <item>(文) Examples</item>
-    </string-array>
-    <string-array name="filter_types_favorites">
-        <item>All</item>
-        <item>(あ) Dictionary</item>
-        <item>(漢) Kanji</item>
-    </string-array>
-    <string name="cancel">Cancel</string>
-    <string name="file_not_found">%s not found.</string>
-    <string name="import_error">Import error: %s.</string>
-    <string name="export_error">Export error: %s.</string>
-    <string name="overwrite_file">%s already exists. Overwrite?</string>
-    <string name="import_and_overwrite">Import and overwrite existing items?</string>
-    <string name="pref_analytics">Analytics</string>
-    <string name="pref_enable_analytics">Enable analytics</string>
-    <string name="pref_analytics_summary">Send anonymous usage statistics to
-        help make
-        WWWJDIC a better app.</string>
-    <string name="uses_analytics">Uses Flurry Analytics to collect anonymous usage
-        statistics (can be disabled in settings).</string>
-    <string name="favorties_summary">Favorites (%d)</string>
-    <string name="history_summary">Search History (%d)</string>
-    <string name="remove_stroke">Del stroke</string>
-    <string name="kr_not_initialized">Kanji Recogninzer not properly initialized.
-        Falling back to WS-based recognition.</string>
-    <string name="install_kr">To enable this option you need to install the
-        Kanji Recognizer (v.1.1 or above) application first. Start it at
-        least once after installing, so that it can download the
-        recognition model.
-        Would you like to install it now? (no ads are
-        displayed when used from WWWJDIC)
-    </string>
-    <string name="select_mode">Select mode:</string>
-    <string name="enter_japanese_text">Enter Japanese text</string>
-    <string name="mode">Mode:</string>
-    <string-array name="sentence_modes">
-        <item>Example search</item>
-        <item>Sentence translation</item>
-    </string-array>
-    <string name="translate">Translate</string>
-    <string name="nanori_label">Nanori: </string>
-    <string name="radical_name_label">Radical name: </string>
-    <string name="pref_default_dict">Default dictionary</string>
-    <string name="buy_donate_version">If you find this application useful, please
-        consider buying the donate version.</string>
-    <string name="donate_version">Donate version</string>
-    <string name="donation_thanks_title">Thank you</string>
-    <string name="donation_thanks">Thank you for buying the donate version!\nTo
-        import your search history and favorites, use the CSV export
-        feature of the free version (press the menu button in
-        the
-        favorites/history screen), and then import the resulting
-        files.\nFree and donation version can co-exist, but it is
-        advisable to uninstall the free version after importing.
-    </string>
-    <string name="kanji_details">Kanji details</string>
-    <string name="appended_to_clipboard">\'%s\' appended to clipboard</string>
-    <string name="append">Append to clipboard</string>
-    <string name="tip">Tip</string>
-    <string name="kr_usage_tip">* The \'HKR\'(\'Hand-written Kanji
-        Recognition\') button offers best accuracy, but proper stroke
-        order is required.\n* The \'OCR\' (\'Optical Character
-        Recognition\') button will try to recognize the character
-        you\'ve drawn as an image. Stroke order doesn\'t matter, but
-        recognition is less accurate.</string>
-    <string name="kanji_of_the_day">Kanji of the Day</string>
-    <string name="kanji_of_the_day_jp">今日の漢字</string>
-    <string name="widget_loading">Loading...</string>
-    <string name="getting_sod_info">Getting SOD info...</string>
-    <string name="no_sod_data">No SOD data for \'%s\'</string>
-    <string name="getting_sod_data_failed">Getting SOD data failed</string>
-    <string-array name="dict_csv_headers">
-        <item>Headword</item>
-        <item>Reading(s)</item>
-        <item>Translation(s)</item>
-    </string-array>
-    <string-array name="kanji_csv_headers">
-        <item>Kanji</item>
-        <item>Onyomi</item>
-        <item>Kunyomi</item>
-        <item>Nanori</item>
-        <item>Radical name</item>
-
-        <item>Radical number</item>
-        <item>Stroke count</item>
-        <item>Classical radical number</item>
-
-        <item>Meaning(s)</item>
-
-        <item>JIS code</item>
-        <item>Unicode number</item>
-        <item>Frequecy rank</item>
-        <item>Grade</item>
-        <item>JLPT level</item>
-        <item>SKIP code</item>
-        <item>Korean reading</item>
-        <item>Pinyin</item>
-    </string-array>
-    <string-array name="favorites_export_dialog_items">
-        <item>Local backup</item>
-        <item>Local CSV</item>
-        <item>Google Docs</item>
-        <item>Anki deck</item>
-    </string-array>
-    <string name="favorites_export_dialog_title">Export favorites to</string>
-    <string name="uploading_to_gdocs">Uploading to Google Docs...</string>
-    <string name="gdocs_upload_success">Uploaded \'%s\' to Google Docs.</string>
-    <string name="gdocs_upload_failure">Error uploading to Google Docs: %s</string>
-    <string name="select_google_account">Select a Google account</string>
-    <string name="no_google_accounts">No Google accoutns available.</string>
-    <string name="pref_auto_select_mirror">Mirror auto select</string>
-    <string name="pref_auto_select_mirror_summary">Automatically select closest WWWJDIC mirror.
-    </string>
-    <string name="tips_favorites_export">Press Menu->Export to export your favorites.\n*
-        \'Local backup\': use to import favorites if you
-        re-installed or
-        have a new phone.\n*
-        \'Local CSV\': exports all
-        fields as columns.
-        Use
-        to
-        transfer favorites to a PC or import
-        into other
-        programs.
-        Filter by \'Dictionary\'
-        or \'Kanji\'
-        to enable.\n* \'Google
-        Docs\': format as above. Needs Android 2.0
-        or later.
-    </string>
-    <string name="compounds">Compounds</string>
-    <string name="compound_search_starting">Starting kanji</string>
-    <string name="compound_search_any">Any position</string>
-    <string name="compound_search_common_only">Common words</string>
-    <string name="exporting_to_anki">Exporting favorites to Anki deck...</string>
-    <string name="anki_export_success">Exported favorites to Anki deck: %s.</string>
-    <string name="anki_export_failure">Error exporting to Anki deck: %s.</string>
-    <string name="pref_export">Export</string>
-    <string name="pref_export_meanings_separator_char">Meanings separtor char</string>
-    <string name="pref_export_meanings_separator_char_summary">Character to separate mutiple meanings with when
-        exporting to CSV/Anki.</string>
-    <string-array name="export_meanings_separator_char_names">
-        <item>Newline</item>
-        <item>Space</item>
-        <item>Slash(/)</item>
-    </string-array>
-    <string-array name="export_meanings_separator_chars">
-        <item>\n</item>
-        <item>space</item>
-        <item>/</item>
-    </string-array>
 </resources>

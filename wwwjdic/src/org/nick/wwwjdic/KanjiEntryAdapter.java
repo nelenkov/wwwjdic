@@ -36,16 +36,16 @@ public class KanjiEntryAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         KanjiEntry entry = entries.get(position);
 
-        return new KanjiEntryView(context, entry);
+        return new KanjiEntryListView(context, entry);
     }
 
-    private static final class KanjiEntryView extends LinearLayout {
+    private static final class KanjiEntryListView extends LinearLayout {
         private TextView entryText;
         private TextView onyomiText;
         private TextView kunyomiText;
         private TextView translationText;
 
-        public KanjiEntryView(Context context, KanjiEntry entry) {
+        public KanjiEntryListView(Context context, KanjiEntry entry) {
             super(context);
             setOrientation(LinearLayout.HORIZONTAL);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

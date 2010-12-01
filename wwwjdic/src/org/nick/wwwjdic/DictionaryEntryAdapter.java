@@ -2,8 +2,6 @@ package org.nick.wwwjdic;
 
 import java.util.List;
 
-import org.nick.wwwjdic.utils.StringUtils;
-
 import android.content.Context;
 import android.text.TextUtils.TruncateAt;
 import android.view.View;
@@ -37,15 +35,15 @@ public class DictionaryEntryAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         DictionaryEntry entry = entries.get(position);
 
-        return new DictionaryEntryView(context, entry);
+        return new DictionaryEntryListView(context, entry);
     }
 
-    private final class DictionaryEntryView extends LinearLayout {
+    private final class DictionaryEntryListView extends LinearLayout {
         private TextView entryText;
         private TextView readingText;
         private TextView translationText;
 
-        public DictionaryEntryView(Context context, DictionaryEntry entry) {
+        public DictionaryEntryListView(Context context, DictionaryEntry entry) {
             super(context);
             setOrientation(LinearLayout.VERTICAL);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

@@ -7,7 +7,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 import org.nick.wwwjdic.history.HistoryDbHelper;
-import org.nick.wwwjdic.utils.Analytics;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -17,12 +16,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 public abstract class ResultListViewBase<T> extends ListActivity implements
         ResultListView<T> {
-
-    private static final String TAG = ResultListViewBase.class.getSimpleName();
 
     private static final String DEFAULT_WWWJDIC_URL = "http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi";
 
@@ -41,20 +37,6 @@ public abstract class ResultListViewBase<T> extends ListActivity implements
     protected ResultListViewBase() {
         guiThread = new Handler();
         db = new HistoryDbHelper(this);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        Analytics.startSession(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        Analytics.endSession(this);
     }
 
     @Override
@@ -127,7 +109,6 @@ public abstract class ResultListViewBase<T> extends ListActivity implements
     protected void extractSearchCriteria() {
         criteria = (SearchCriteria) getIntent().getSerializableExtra(
                 Constants.CRITERIA_KEY);
-        Log.d(TAG, "query string: " + criteria.getQueryString());
     }
 
     protected String getWwwjdicUrl() {

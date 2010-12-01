@@ -5,49 +5,35 @@ import java.util.List;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PointF;
 
 public class Stroke {
 
     private static final int ANNOTATION_OFFSET = 15;
 
-    private static final float TOUCH_TOLERANCE = 4;
-
     private List<PointF> points = new ArrayList<PointF>();
-
-    private Path path = new Path();
-    private PointF lastPoint;
 
     public Stroke() {
     }
 
     public void addPoint(PointF p) {
-        if (points.isEmpty()) {
-            path.reset();
-            path.moveTo(p.x, p.y);
-            lastPoint = new PointF(p.x, p.y);
-        } else {
-            float dx = Math.abs(p.x - lastPoint.x);
-            float dy = Math.abs(p.y - lastPoint.y);
-            if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-                path.quadTo(lastPoint.x, lastPoint.y, (p.x + lastPoint.x) / 2,
-                        (p.y + lastPoint.y) / 2);
-                lastPoint = new PointF(p.x, p.y);
-            }
-        }
-
         points.add(p);
     }
 
     public void clear() {
         points.clear();
-        path.reset();
     }
 
     public void draw(final Canvas canvas, final Paint paint) {
-        path.lineTo(lastPoint.x, lastPoint.y);
-        canvas.drawPath(path, paint);
+        PointF lastPoint = null;
+
+        for (PointF p : points) {
+            if (lastPoint != null) {
+                canvas.drawLine(lastPoint.x, lastPoint.y, p.x, p.y, paint);
+            }
+
+            lastPoint = p;
+        }
     }
 
     public void annotate(final Canvas canvas, final Paint paint, int strokeNum) {
@@ -128,10 +114,6 @@ public class Stroke {
         canvas.drawText(strokeNumStr, x + xOffset, y + yOffset, paint);
     }
 
-    public List<PointF> getPoints() {
-        return points;
-    }
-
     public String toBase36Points() {
         StringBuffer buff = new StringBuffer();
 
@@ -141,22 +123,6 @@ public class Stroke {
             pointStr += toBase36(x);
             int y = (int) points.get(i).y;
             pointStr += toBase36(y);
-
-            buff.append(pointStr);
-        }
-
-        return buff.toString();
-    }
-
-    public String toPoints() {
-        StringBuffer buff = new StringBuffer();
-
-        for (int i = 0; i < points.size(); i++) {
-            String pointStr = "";
-            int x = (int) points.get(i).x;
-            pointStr += " " + x;
-            int y = (int) points.get(i).y;
-            pointStr += " " + y;
 
             buff.append(pointStr);
         }

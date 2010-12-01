@@ -12,10 +12,9 @@ import org.apache.http.protocol.HttpContext;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.GzipStringResponseHandler;
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.StringUtils;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.WwwjdicApplication;
-import org.nick.wwwjdic.utils.Analytics;
-import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -57,14 +56,15 @@ public class SodActivity extends WebServiceBackedActivity implements
                             sodActivity.drawSod(strokes);
                         }
                     } else {
-                        Toast t = Toast.makeText(sodActivity, String.format(
-                                sodActivity.getString(R.string.no_sod_data),
-                                sodActivity.getKanji()), Toast.LENGTH_SHORT);
+                        Toast t = Toast.makeText(sodActivity,
+                                String.format("No SOD data for '%s'",
+                                        sodActivity.getKanji()),
+                                Toast.LENGTH_SHORT);
                         t.show();
                     }
                 } else {
                     Toast t = Toast.makeText(sodActivity,
-                            R.string.getting_sod_data_failed, Toast.LENGTH_SHORT);
+                            "Getting SOD data failed", Toast.LENGTH_SHORT);
                     t.show();
                 }
                 break;
@@ -125,20 +125,6 @@ public class SodActivity extends WebServiceBackedActivity implements
         setTitle(String.format(message, kanji));
 
         drawSod();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        Analytics.startSession(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        Analytics.endSession(this);
     }
 
     public void drawSod(List<StrokePath> strokes) {
@@ -288,26 +274,20 @@ public class SodActivity extends WebServiceBackedActivity implements
     }
 
     private void drawSod() {
-        Analytics.event("drawSod", this);
-
         if (strokes == null) {
             Runnable getStrokesTask = new GetStrokePathTask(unicodeNumber,
                     false, httpClient, handler);
-            submitWsTask(getStrokesTask, getResources().getString(
-                    R.string.getting_sod_info));
+            submitWsTask(getStrokesTask, "Getting SOD info...");
         } else {
             drawSod(strokes);
         }
     }
 
     private void animate() {
-        Analytics.event("animateSod", this);
-
         if (strokes == null) {
             Runnable getStrokesTask = new GetStrokePathTask(unicodeNumber,
                     true, httpClient, handler);
-            submitWsTask(getStrokesTask, getResources().getString(
-                    R.string.getting_sod_info));
+            submitWsTask(getStrokesTask, "Getting SOD info...");
         } else {
             animate(strokes);
         }

@@ -2,8 +2,6 @@ package org.nick.wwwjdic;
 
 import java.util.List;
 
-import org.nick.wwwjdic.utils.Analytics;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -65,33 +63,32 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
         public View getView(int position, View convertView, ViewGroup parent) {
             ExampleSentence entry = entries.get(position);
 
-            if (convertView == null) {
-                convertView = new ExampleSentenceView(context);
-            }
-
-            ((ExampleSentenceView) convertView).populate(entry, queryString);
-
-            return convertView;
+            return new ExampleSentenceView(context, entry, queryString);
         }
 
         static class ExampleSentenceView extends LinearLayout {
 
             private static final int HILIGHT_COLOR = 0xff427ad7;
+            private ExampleSentence sentence;
 
             private TextView japaneseSentenceText;
             private TextView englishSentenceText;
 
-            ExampleSentenceView(Context context) {
+            ExampleSentenceView(Context context, ExampleSentence sentence,
+                    String queryString) {
                 super(context);
+                this.sentence = sentence;
 
                 LayoutInflater inflater = LayoutInflater.from(context);
                 inflater.inflate(R.layout.example_sentence_item, this);
 
                 japaneseSentenceText = (TextView) findViewById(R.id.japaneseSentenceText);
                 englishSentenceText = (TextView) findViewById(R.id.englishSentenceText);
+
+                populate(queryString);
             }
 
-            void populate(ExampleSentence sentence, String queryString) {
+            private void populate(String queryString) {
                 SpannableString english = markQueryString(
                         sentence.getEnglish(), queryString, true);
                 SpannableString japanese = markQueryString(sentence
@@ -195,8 +192,6 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
     }
 
     private void breakDown(long id) {
-        Analytics.event("sentenceBreakdown", this);
-
         Intent intent = new Intent(this, SentenceBreakdown.class);
         intent.putExtra(Constants.SENTENCE, getCurrentSentence(id)
                 .getJapanese());
