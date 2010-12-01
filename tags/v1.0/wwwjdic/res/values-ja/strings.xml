@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="translationError">エラー</string>
+    <string-array name="dictionaries_array">
+        <item>一般</item>
+        <item>人地名</item>
+        <item>コンピュータ・通信</item>
+        <item>生命科学</item>
+        <item>法務</item>
+        <item>金融</item>
+        <item>仏教</item>
+        <item>雑用</item>
+        <item>技術・科学</item>
+        <item>言語学</item>
+        <item>河川・水資源</item>
+        <item>自動車産業</item>
+        <item>日本語--ドイツ語</item>
+        <item>日本語--フランス語</item>
+        <item>日本語--ロシア語</item>
+        <item>日本語--スウェーデン語</item>
+        <item>日本語--ハンガリー語</item>
+        <item>日本語--スペイン語</item>
+        <item>日本語--オランダ語</item>
+        <item>日本語--スロベニア語</item>
+    </string-array>
+    <string-array name="kanji_search_types_array">
+        <item>漢字・読み</item>
+        <item>画数</item>
+        <item>部首番号</item>
+        <item>英語訳</item>
+        <item>ユニコード番号 (16進)</item>
+        <item>JISコード (16進)</item>
+        <item>SKIPコード</item>
+        <item>標準中国語読み</item>
+        <item>韓国語読み</item>
+    </string-array>
+    <string name="about_bugtracking">詳細情報・変更履歴・バグ報告</string>
+    <string name="select_dictionary">辞書選択:</string>
+    <string name="stroke_count">画数:  </string>
+    <string name="radical_number">部首番号: </string>
+    <string name="english_meanings">英語訳</string>
+    <string name="radical_strokes">部首・画数</string>
+    <string name="codes_more">コードなど</string>
+    <string name="translation">単語訳</string>
+    <string name="select_search_type">検索モード選択:</string>
+    <string name="search">検索</string>
+    <string name="error">エラー</string>
+    <string name="loading">読み込み中。お待ちください...</string>
+    <string name="jis_code">JISコード: </string>
+    <string name="unicode_number">ユニコード番号: </string>
+    <string name="classical_radical">部首番号: </string>
+    <string name="freq_rank">頻度ランク: </string>
+    <string name="grade">学習学年: </string>
+    <string name="jlpt_level">日本語能力試験レベル: </string>
+    <string name="skip_code">SKIPコード: </string>
+    <string name="korean_reading">韓国語読み: </string>
+    <string name="pinyn">標準中国読み: </string>
+    <string name="more">その他...</string>
+    <string name="dictionary_label">辞書:</string>
+    <string name="dictionary">辞書検索</string>
+    <string name="kanji_lookup">漢字検索</string>
+    <string name="about">情報</string>
+    <string name="min">最小</string>
+    <string name="max">最大</string>
+    <string name="strokes">画数: </string>
+    <string name="select">選択...</string>
+    <string name="radical">部首: </string>
+    <string name="timeout_error_message">タイムアウトが発生しました。ネットワーク接続を確認してください。</string>
+    <string name="socket_error_message">WWWJDICに接続できませんでした。ネットワーク接続を確認してください。</string>
+    <string name="generic_error_message">予期せぬエラーが発生しました。バグ報告をお願いします。</string>
+    <string name="ocr_hint1">* ガイドラインにあわせて、センターボタン、又は画面タップでとります。</string>
+    <string name="ocr_hint2">* 次の画面で長方形(1行分)を切り抜いて、「切り抜く」ボタンで OCRを開始します。
+    </string>
+    <string name="ocr_hint3">* 「あ/漢/文」を押して、OCRした文字列を辞書画面に送ります。</string>
+    <string name="pref_ocr">OCR設定</string>
+    <string name="pref_weocr_server">WeOCRサーバ</string>
+    <string name="pref_weocr_server_summary">メインサーバ
+        が一時的に利用できない場合のみに、代替サーバをご利用ください。常用利用は避けてください。</string>
+    <string-array name="weocr_mirror_names">
+        <item>maggie (メイン)</item>
+        <item>jimbocho (代替)</item>
+    </string-array>
+    <string name="pref_weocr_timeout">WeOCRタイムアウト</string>
+    <string name="pref_timeout_summary">[秒]</string>
+    <string name="pref_wwwjdic">WWWJDIC設定</string>
+    <string name="pref_wwwjdic_mirror">WWWJDICミラーサイト</string>
+    <string-array name="wwwjdic_mirror_names">
+        <item>オーストラリア</item>
+        <item>カナダ</item>
+        <item>EU</item>
+        <item>日本</item>
+        <item>スウェーデン</item>
+        <item>アメリカ</item>
+    </string-array>
+    <string name="pref_wwwjdic_timeout">WWWJDICタイムアウト</string>
+    <string name="pref_ocr_dump_cropped_images">切り抜き画像保存</string>
+    <string name="pref_ocr_dump_cropped_images_summary">/sdcard/wwwjdicに保存する (デバッグ用)</string>
+    <string name="pref_kr">手書き認識設定</string>
+    <string name="pref_kr_url">手書き認識サーバURL</string>
+    <string name="pref_kr_timeout">手書き認識タイムアウト</string>
+    <string name="settings">設定</string>
+    <string name="write_kanji">手書き認識</string>
+    <string name="hkr_failed">手書き認識失敗</string>
+    <string name="sd_file_create_failed">SDカードに一時ファイルを作成できませんでした</string>
+    <string name="af_failed">A/F失敗</string>
+    <string name="ocr_failed">OCR失敗</string>
+    <string name="cancelled">キャンセルされました</string>
+    <string name="recognize">認識</string>
+    <string name="clear">クリア</string>
+    <string name="hiragana_a">あ</string>
+    <string name="kanji_kan">漢</string>
+    <string name="look_ahead">スマート\nマッチ</string>
+    <string name="hkr">手書き認識</string>
+    <string name="pref_kr_annotate">画番号表示</string>
+    <string name="pref_kr_annotate_midway">画番号真中表示</string>
+    <string name="pref_kr_annotate_midway_summary">チェックされている場合は、画番号を画の真中あたりに表示します。チェックされていない場合は,
+        画の開始あたりに表示します。</string>
+    <string name="pref_sod">書き順設定</string>
+    <string name="pref_sod_server_timeout">SODサーバタイムアウト</string>
+    <string name="pref_sod_animation_delay">アニメーションディレイ </string>
+    <string name="pref_sod_animation_delay_summary">[ミリ秒]</string>
+    <string name="draw">書き順</string>
+    <string name="animate">動画</string>
+    <string name="no_history">履歴はありません</string>
+    <string name="stroke_order">書き順</string>
+    <string name="no_favorites">お気に入りはありません</string>
+    <string name="delete_all">全て削除</string>
+    <string name="look_up">検索</string>
+    <string name="copy">コピー</string>
+    <string name="delete">削除</string>
+    <string name="delete_all_iteims">全て削除?</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+    <string name="favorites">お気に入り</string>
+    <string name="search_history">検索履歴</string>
+    <string name="favorites_hist">履歴</string>
+    <string name="whats_new_title">%sの新規機能</string>
+    <string name="whats_new">
+        * 例文検索\n
+        * 「例文検索」タブ追加\n
+        (短い英単語を検索する場合は、「完全一致」をチェックしてください)\n
+        * 詳細ビューに「例」ボタン追加\n
+        (1漢字単語の場合は無効になっています)\n
+        * 例文分析\n
+        * 例文をクリックして、分析・翻訳します\n
+        * ロングクリック漢字検索・例文コピー
+    </string>
+    <!--  for cropper -->
+    <string name="crop_save_text">切り抜く</string>
+    <string name="crop_discard_text">キャンセル</string>
+    <string name="runningFaceDetection">お待ちください\u2026</string>
+    <string name="example_search">例文検索</string>
+    <string name="kanji_bun">文</string>
+    <string name="max_num_examples">例文最大数:</string>
+    <string name="exact_match">完全一致 (英語のみ)</string>
+    <string name="enter_eng_or_jap">英語または日本語</string>
+    <string name="enter_kanji_search_key">漢字検索キー</string>
+    <string name="break_down_jap">日本語文分析</string>
+    <string name="look_up_all_kanji">全ての漢字を検索</string>
+    <string name="copy_jp">日本語文コピー</string>
+    <string name="copy_eng">英語文コピー</string>
+    <string name="sentence_breakdown">例文分析</string>
+    <string name="sentence_words">単語</string>
+    <string name="no_results">検索結果はありません</string>
+    <string name="searching">検索中...</string>
+    <string name="common_words">一般的な\n単語限定</string>
+    <string name="exact_match_nl">完全一致</string>
+    <string name="romanized_jap">ローマ字検索</string>
+    <string name="search_type">検索モード:</string>
+    <string name="ex">例</string>
+    <string name="select_radical">部首選択</string>
+    <string name="copied_to_clipboard">「%s」をコピーしました</string>
+    <string name="details_for">「%s」の詳細</string>
+    <string name="results_for">該当件数: %d件 (「%s」で検索)</string>
+    <string name="examples_for">例文件数: %d件 (「%s」で検索)</string>
+    <string name="sod_for">「%s」の書き順</string>
+    <string name="doing_ocr">OCR処理中...</string>
+    <string name="results">候補: %d件</string>
+    <string name="doing_hkr">手書き認識処理中...</string>
+    <string name="strokes_short">画数</string>
+    <string name="common_short">一般</string>
+    <string name="exact_short">完全</string>
+    <string name="romanized_short">ローマ字</string>
+    <string name="max_results_short">最大: %d件</string>
+</resources>

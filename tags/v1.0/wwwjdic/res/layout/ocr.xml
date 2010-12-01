@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+    <SurfaceView android:layout_width="fill_parent"
+        android:id="@+id/capture_surface" android:layout_height="fill_parent" />
+    <org.nick.wwwjdic.ocr.GuideView
+        android:id="@+id/guide_view" android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+    <TextView android:text="" android:id="@+id/ocrredText"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:paddingTop="8dip" android:paddingLeft="8dip"></TextView>
+    <LinearLayout android:id="@+id/flash_button_group"
+        android:layout_height="wrap_content" android:layout_width="wrap_content"
+        android:visibility="visible" android:orientation="vertical"
+        android:layout_gravity="right|top" android:layout_marginLeft="4dip">
+        <ToggleButton android:id="@+id/auto_flash_toggle"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:background="@drawable/ic_flash" android:textOn=""
+            android:textOff="" />
+    </LinearLayout>
+    <LinearLayout android:id="@+id/button_group"
+        android:layout_height="wrap_content" android:layout_width="wrap_content"
+        android:visibility="visible" android:orientation="vertical"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="4dip">
+        <Button android:id="@+id/send_to_dict"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:paddingBottom="14dip" android:paddingTop="14dip"
+            android:paddingLeft="8dip" android:paddingRight="8dip"
+            android:text="@string/hiragana_a" android:textSize="32sp" />
+        <Button android:id="@+id/send_to_kanjidict"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:paddingBottom="14dip" android:paddingTop="14dip"
+            android:paddingLeft="8dip" android:paddingRight="8dip"
+            android:text="@string/kanji_kan" android:textSize="32sp" />
+        <Button android:id="@+id/send_to_example_search"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:paddingBottom="14dip" android:paddingTop="14dip"
+            android:paddingLeft="8dip" android:paddingRight="8dip"
+            android:text="@string/kanji_bun" android:textSize="32sp" />
+    </LinearLayout>
+    <LinearLayout android:id="@+id/hint_group"
+        android:layout_height="wrap_content" android:layout_width="fill_parent"
+        android:orientation="vertical" android:layout_gravity="center|bottom"
+        android:paddingBottom="4dip" android:paddingLeft="2dip"
+        android:paddingRight="2dip" android:paddingTop="4dip"
+        android:visibility="visible" android:background="#80888888">
+        <TextView android:id="@+id/hint1_text"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:paddingLeft="8dip" android:text="@string/ocr_hint1"
+            android:textSize="12sp" />
+        <TextView android:id="@+id/hint2_text"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:paddingLeft="8dip" android:text="@string/ocr_hint2"
+            android:textSize="12sp" />
+        <TextView android:id="@+id/hint3_text"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:paddingLeft="8dip" android:text="@string/ocr_hint3"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</FrameLayout>

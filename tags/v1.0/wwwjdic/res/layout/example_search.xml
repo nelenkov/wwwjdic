@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/exampleSearchTab" android:orientation="vertical"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:padding="15dip" android:layout_gravity="top"
+    android:minHeight="200px">
+    <EditText android:layout_height="wrap_content"
+        android:layout_width="fill_parent" android:id="@+id/exampleInputText"
+        android:inputType="text" android:lines="1" android:hint="@string/enter_eng_or_jap"/>
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:orientation="horizontal"
+        android:id="@+id/optionsLayout" android:layout_gravity="center_horizontal">
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="wrap_content" android:textColor="#ffff"
+            android:textSize="12sp" android:text="@string/max_num_examples"
+            android:layout_gravity="center_vertical" />
+        <EditText android:layout_height="wrap_content"
+            android:layout_width="wrap_content" android:id="@+id/maxExamplesInput"
+            android:lines="1" android:inputType="numberDecimal"
+            android:textSize="12sp" android:hint="@string/max"
+            android:text="20" android:layout_gravity="center_vertical"></EditText>
+        <CheckBox android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/exampleExactMatchCb"
+            android:text="@string/exact_match" android:textSize="12sp"
+            android:layout_marginLeft="4dip" android:layout_gravity="center_vertical"></CheckBox>
+    </LinearLayout>
+    <Button android:layout_height="wrap_content" android:id="@+id/exampleSearchButton"
+        android:layout_width="fill_parent" android:text="@string/search"></Button>
+</LinearLayout>
