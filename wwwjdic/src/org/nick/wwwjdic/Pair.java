@@ -1,4 +1,4 @@
-package org.nick.wwwjdic.utils;
+package org.nick.wwwjdic;
 
 public class Pair<T, U> {
 

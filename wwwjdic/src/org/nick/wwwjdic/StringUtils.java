@@ -1,4 +1,4 @@
-package org.nick.wwwjdic.utils;
+package org.nick.wwwjdic;
 
 import java.util.List;
 
@@ -46,9 +46,5 @@ public class StringUtils {
         }
 
         return false;
-    }
-
-    public static boolean isNotEmpty(String str) {
-        return !isEmpty(str);
     }
 }

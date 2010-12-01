@@ -20,10 +20,6 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
     public static final int CRITERIA_TYPE_KANJI = 1;
     public static final int CRITERIA_TYPE_EXAMPLES = 2;
 
-    public static final int KANJI_COMPOUND_SEARCH_TYPE_NONE = 0;
-    public static final int KANJI_COMPOUND_SEARCH_TYPE_STARTING = 1;
-    public static final int KANJI_COMPOUND_SEARCH_TYPE_ANY = 2;
-
     private Long id;
 
     private final int type;
@@ -32,7 +28,6 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
     private boolean isKanjiLookup;
     private boolean isRomanizedJapanese;
     private boolean isCommonWordsOnly;
-    private int kanjiCompoundSearchType;
     private String dictionary;
     private String kanjiSearchType;
     private Integer minStrokeCount;
@@ -44,8 +39,7 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
             boolean isCommonWordsOnly, String dictionary) {
         return new SearchCriteria(CRITERIA_TYPE_DICT, queryString,
                 isExactMatch, false, isRomanized, isCommonWordsOnly,
-                KANJI_COMPOUND_SEARCH_TYPE_NONE, dictionary, null, null, null,
-                null);
+                dictionary, null, null, null, null);
     }
 
     public static SearchCriteria createForDictionaryDefault(String queryString) {
@@ -53,38 +47,29 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
                 DICTIONARY_CODE_GENERAL);
     }
 
-    public static SearchCriteria createForKanjiCompounds(String queryString,
-            int compoundSearchType, boolean isCommonWordsOnly, String dictionary) {
-        return new SearchCriteria(CRITERIA_TYPE_DICT, queryString, false,
-                false, false, isCommonWordsOnly, compoundSearchType,
-                dictionary, null, null, null, null);
-    }
-
     public static SearchCriteria createForKanji(String queryString,
             String searchType) {
         return new SearchCriteria(CRITERIA_TYPE_KANJI, queryString, false,
-                true, true, false, KANJI_COMPOUND_SEARCH_TYPE_NONE, null,
-                searchType, null, null, null);
+                true, true, false, null, searchType, null, null, null);
     }
 
     public static SearchCriteria createForKanjiOrReading(String queryString) {
         return new SearchCriteria(CRITERIA_TYPE_KANJI, queryString, false,
-                true, true, false, KANJI_COMPOUND_SEARCH_TYPE_NONE, null,
-                KANJI_TEXT_LOOKUP_CODE, null, null, null);
+                true, true, false, null, KANJI_TEXT_LOOKUP_CODE, null, null,
+                null);
     }
 
     public static SearchCriteria createWithStrokeCount(String queryString,
             String searchType, Integer minStrokeCount, Integer maxStrokeCount) {
         return new SearchCriteria(CRITERIA_TYPE_KANJI, queryString, false,
-                true, true, false, KANJI_COMPOUND_SEARCH_TYPE_NONE, null,
-                searchType, minStrokeCount, maxStrokeCount, null);
+                true, true, false, null, searchType, minStrokeCount,
+                maxStrokeCount, null);
     }
 
     public static SearchCriteria createForExampleSearch(String queryString,
             boolean isExactMatch, int numMaxResults) {
         return new SearchCriteria(CRITERIA_TYPE_EXAMPLES, queryString,
-                isExactMatch, false, false, false,
-                KANJI_COMPOUND_SEARCH_TYPE_NONE, null, null, null, null,
+                isExactMatch, false, false, false, null, null, null, null,
                 numMaxResults);
     }
 
@@ -95,8 +80,8 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
 
     private SearchCriteria(int type, String queryString, boolean isExactMatch,
             boolean isKanjiLookup, boolean isRomanizedJapanese,
-            boolean isCommonWordsOnly, int kanjiCompoundSearchType,
-            String dictionary, String kanjiSearchType, Integer minStrokeCount,
+            boolean isCommonWordsOnly, String dictionary,
+            String kanjiSearchType, Integer minStrokeCount,
             Integer maxStrokeCount, Integer numMaxResults) {
         super(queryString);
         this.type = type;
@@ -105,7 +90,6 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
         this.isKanjiLookup = isKanjiLookup;
         this.isRomanizedJapanese = isRomanizedJapanese;
         this.isCommonWordsOnly = isCommonWordsOnly;
-        this.kanjiCompoundSearchType = kanjiCompoundSearchType;
         this.dictionary = dictionary;
         this.kanjiSearchType = kanjiSearchType;
         this.minStrokeCount = minStrokeCount;
@@ -183,18 +167,6 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
 
     public int getType() {
         return type;
-    }
-
-    public boolean isKanjiCompoundSearch() {
-        return kanjiCompoundSearchType != KANJI_COMPOUND_SEARCH_TYPE_NONE;
-    }
-
-    public int getKanjiCompoundSearchType() {
-        return kanjiCompoundSearchType;
-    }
-
-    public boolean isStartingKanjiCompoundSearch() {
-        return kanjiCompoundSearchType == KANJI_COMPOUND_SEARCH_TYPE_STARTING;
     }
 
 }

@@ -8,6 +8,9 @@
             android:layout_width="fill_parent" android:layout_height="wrap_content" />
         <FrameLayout android:id="@android:id/tabcontent"
             android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <include layout="@layout/dict_lookup" />
+            <include layout="@layout/kanji_lookup" />
+            <include layout="@layout/example_search" />
         </FrameLayout>
     </LinearLayout>
 </TabHost>

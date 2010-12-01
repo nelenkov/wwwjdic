@@ -1,7 +1,7 @@
 package org.nick.wwwjdic.history;
 
 import org.nick.wwwjdic.SearchCriteria;
-import org.nick.wwwjdic.utils.StringUtils;
+import org.nick.wwwjdic.StringUtils;
 
 public class SearchCriteriaParser {
 
