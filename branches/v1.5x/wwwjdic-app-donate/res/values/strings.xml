@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WWWJDIC for Android Donate</string>
+    <string name="about_text">WWWJDIC for Android (donate version), 2010
+    </string>
+    <string name="donate_thanks">Thank you for supporting this project and buying
+        the donate version.</string>
+</resources>
