@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/pref_wwwjdic">
-        <CheckBoxPreference android:key="pref_auto_select_mirror"
-            android:title="@string/pref_auto_select_mirror"
-            android:summary="@string/pref_auto_select_mirror_summary"
-            android:defaultValue="true" android:disableDependentsState="true" />
         <ListPreference android:title="@string/pref_wwwjdic_mirror"
             android:key="pref_wwwjdic_mirror_url"
             android:defaultValue="http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi"
             android:entries="@array/wwwjdic_mirror_names"
-            android:entryValues="@array/wwwjdic_mirror_urls"
-            android:dependency="pref_auto_select_mirror" />
+            android:entryValues="@array/wwwjdic_mirror_urls" />
         <EditTextPreference android:key="pref_wwwjdic_timeout"
             android:title="@string/pref_wwwjdic_timeout"
             android:summary="@string/pref_timeout_summary"
             android:singleLine="true" android:inputType="numberDecimal"
             android:defaultValue="15" android:maxLength="4" />
-        <ListPreference android:title="@string/pref_default_dict"
-            android:key="pref_default_dict" android:defaultValue="0"
+         <ListPreference android:title="@string/pref_default_dict"
+            android:key="pref_default_dict"
+            android:defaultValue="0"
             android:entries="@array/dictionaries_array"
-            android:entryValues="@array/dictionary_idxs_array" />
+            android:entryValues="@array/dictionary_idxs_array" />    
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_ocr">
         <ListPreference android:key="pref_weocr_url"
@@ -52,10 +48,12 @@
             android:title="@string/pref_kr_use_kanji_recognizer"
             android:summary="@string/pref_kr_use_kanji_recognizer_summary"
             android:defaultValue="false" android:disableDependentsState="true" />
-        <EditTextPreference android:title="@string/pref_kr_url"
-            android:key="pref_kr_url" android:defaultValue="http://kanji.sljfaq.org/kanji-0.016.cgi"
-            android:singleLine="true" android:inputType="numberDecimal"
-            android:dependency="pref_kr_use_kanji_recognizer" />
+        <ListPreference android:title="@string/pref_kr_url"
+            android:key="pref_kr_url"
+            android:defaultValue="http://kanji.sljfaq.org/kanji16/kanji-0.016.cgi"
+            android:entries="@array/kr_url_names"
+            android:entryValues="@array/kr_urls" 
+            android:dependency="pref_kr_use_kanji_recognizer"/>    
         <EditTextPreference android:key="pref_kr_timeout"
             android:title="@string/pref_kr_timeout" android:summary="@string/pref_timeout_summary"
             android:singleLine="true" android:inputType="numberDecimal"
@@ -86,13 +84,5 @@
             android:title="@string/pref_enable_analytics"
             android:summary="@string/pref_analytics_summary"
             android:defaultValue="true" android:disableDependentsState="false" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_export">
-        <ListPreference android:title="@string/pref_export_meanings_separator_char"
-            android:key="pref_export_meanings_separator_char"
-            android:summary="@string/pref_export_meanings_separator_char_summary"
-            android:defaultValue="\n"
-            android:entries="@array/export_meanings_separator_char_names"
-            android:entryValues="@array/export_meanings_separator_chars" />
     </PreferenceCategory>
 </PreferenceScreen>

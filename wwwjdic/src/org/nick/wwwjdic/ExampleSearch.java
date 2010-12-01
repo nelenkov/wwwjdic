@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
 import org.nick.wwwjdic.history.HistoryDbHelper;
-import org.nick.wwwjdic.utils.Analytics;
-import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -66,15 +64,6 @@ public class ExampleSearch extends WwwjdicActivityBase implements
         dbHelper = new HistoryDbHelper(this);
 
         setupExamplesSummary();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (dbHelper != null) {
-            dbHelper.close();
-        }
     }
 
     @Override
@@ -182,6 +171,7 @@ public class ExampleSearch extends WwwjdicActivityBase implements
         maxNumExamplesText.setEnabled(isEnabled);
         exampleExactMatchCb.setEnabled(isEnabled);
         maxNumExamplesText.setFocusableInTouchMode(isEnabled);
+        exampleExactMatchCb.setFocusableInTouchMode(isEnabled);
 
         exampleSearchInputText.setText("");
         exampleSearchInputText.requestFocus();

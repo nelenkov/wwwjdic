@@ -174,25 +174,11 @@
         <item>Sweden</item>
         <item>USA</item>
     </string-array>
-    <string-array name="wwwjdic_mirror_coords">
-        <!-- Sydney -->
-        <item>033:51:35/151:12:40</item>
-        <!-- Toronto -->
-        <item>043:42:59/079:20:26</item>
-        <!-- Vienna -->
-        <item>048:12:32/016:22:21</item>
-        <!-- Tokyo -->
-        <item>035:42:20/139:42:54</item>
-        <!-- Stockholm -->
-        <item>059:21:00/018:04:00</item>
-        <!-- New York -->
-        <item>040:43:00/074:00:00</item>
-    </string-array>
     <string-array name="wwwjdic_mirror_urls">
         <item>http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi
         </item>
         <item>http://ryouko.imsb.nrc.ca/cgi-bin/wwwjdic</item>
-        <item>http://jp.celltica.com/cgi-bin/wwwjdic</item>
+        <item>http://jp.msmobiles.com/cgi-bin/wwwjdic</item>
         <item>http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi</item>
         <item>http://wwwjdic.sys5.se/cgi-bin/wwwjdic.cgi</item>
         <item>http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic</item>
@@ -210,7 +196,7 @@
     <string name="ocr">OCR</string>
     <string name="write_kanji">Write kanji</string>
     <string name="hkr_failed">Character recognition failed</string>
-    <string name="ws_hkr_failed">Character recognition failed.</string>
+    <string name="ws_hkr_failed">Character recognition failed. If the problem persists, try setting the kanji recognizer URL to \'backup\' in Settings.</string>
     <string name="sd_file_create_failed">Could not create temp file on SD card.</string>
     <string name="af_failed">A/F failed</string>
     <string name="ocr_failed">OCR failed</string>
@@ -248,6 +234,9 @@
     <string name="favorites_hist">Favorites/Hist.</string>
     <string name="uses_kanjivg">Uses KanjiVG</string>
     <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
+    <string name="whats_new_title">What\'s new in %s</string>
+    <string name="whats_new">* Added backup URL for kanji recognizer web service (Settings).\n* Added context menu (details/copy/append) to recognition candiates (long press to display).\n* Added usage tips.\n* Changed shortcut name.
+    </string>
     <!--  for cropper -->
     <string name="crop_save_text">Crop</string>
     <string name="crop_discard_text">Discard</string>
@@ -328,11 +317,8 @@
     <string name="kr_not_initialized">Kanji Recogninzer not properly initialized.
         Falling back to WS-based recognition.</string>
     <string name="install_kr">To enable this option you need to install the
-        Kanji Recognizer (v.1.1 or above) application first. Start it at
-        least once after installing, so that it can download the
-        recognition model.
-        Would you like to install it now? (no ads are
-        displayed when used from WWWJDIC)
+        Kanji Recognizer (v.1.1 or above) application first. Start it at least once after installing, so that it can download the recognition model.
+        Would you like to install it now? (no ads are displayed when used from WWWJDIC)
     </string>
     <string name="select_mode">Select mode:</string>
     <string name="enter_japanese_text">Enter Japanese text</string>
@@ -360,97 +346,14 @@
     <string name="kanji_details">Kanji details</string>
     <string name="appended_to_clipboard">\'%s\' appended to clipboard</string>
     <string name="append">Append to clipboard</string>
+    <string-array name="kr_url_names">
+        <item>default</item>
+        <item>backup</item>
+    </string-array>
+    <string-array name="kr_urls">
+        <item>http://kanji.sljfaq.org/kanji16/kanji-0.016.cgi</item>
+        <item>http://kanji.sljfaq.org/kanji.cgi</item>
+    </string-array>
     <string name="tip">Tip</string>
-    <string name="kr_usage_tip">* The \'HKR\'(\'Hand-written Kanji
-        Recognition\') button offers best accuracy, but proper stroke
-        order is required.\n* The \'OCR\' (\'Optical Character
-        Recognition\') button will try to recognize the character
-        you\'ve drawn as an image. Stroke order doesn\'t matter, but
-        recognition is less accurate.</string>
-    <string name="kanji_of_the_day">Kanji of the Day</string>
-    <string name="kanji_of_the_day_jp">今日の漢字</string>
-    <string name="widget_loading">Loading...</string>
-    <string name="getting_sod_info">Getting SOD info...</string>
-    <string name="no_sod_data">No SOD data for \'%s\'</string>
-    <string name="getting_sod_data_failed">Getting SOD data failed</string>
-    <string-array name="dict_csv_headers">
-        <item>Headword</item>
-        <item>Reading(s)</item>
-        <item>Translation(s)</item>
-    </string-array>
-    <string-array name="kanji_csv_headers">
-        <item>Kanji</item>
-        <item>Onyomi</item>
-        <item>Kunyomi</item>
-        <item>Nanori</item>
-        <item>Radical name</item>
-
-        <item>Radical number</item>
-        <item>Stroke count</item>
-        <item>Classical radical number</item>
-
-        <item>Meaning(s)</item>
-
-        <item>JIS code</item>
-        <item>Unicode number</item>
-        <item>Frequecy rank</item>
-        <item>Grade</item>
-        <item>JLPT level</item>
-        <item>SKIP code</item>
-        <item>Korean reading</item>
-        <item>Pinyin</item>
-    </string-array>
-    <string-array name="favorites_export_dialog_items">
-        <item>Local backup</item>
-        <item>Local CSV</item>
-        <item>Google Docs</item>
-        <item>Anki deck</item>
-    </string-array>
-    <string name="favorites_export_dialog_title">Export favorites to</string>
-    <string name="uploading_to_gdocs">Uploading to Google Docs...</string>
-    <string name="gdocs_upload_success">Uploaded \'%s\' to Google Docs.</string>
-    <string name="gdocs_upload_failure">Error uploading to Google Docs: %s</string>
-    <string name="select_google_account">Select a Google account</string>
-    <string name="no_google_accounts">No Google accoutns available.</string>
-    <string name="pref_auto_select_mirror">Mirror auto select</string>
-    <string name="pref_auto_select_mirror_summary">Automatically select closest WWWJDIC mirror.
-    </string>
-    <string name="tips_favorites_export">Press Menu->Export to export your favorites.\n*
-        \'Local backup\': use to import favorites if you
-        re-installed or
-        have a new phone.\n*
-        \'Local CSV\': exports all
-        fields as columns.
-        Use
-        to
-        transfer favorites to a PC or import
-        into other
-        programs.
-        Filter by \'Dictionary\'
-        or \'Kanji\'
-        to enable.\n* \'Google
-        Docs\': format as above. Needs Android 2.0
-        or later.
-    </string>
-    <string name="compounds">Compounds</string>
-    <string name="compound_search_starting">Starting kanji</string>
-    <string name="compound_search_any">Any position</string>
-    <string name="compound_search_common_only">Common words</string>
-    <string name="exporting_to_anki">Exporting favorites to Anki deck...</string>
-    <string name="anki_export_success">Exported favorites to Anki deck: %s.</string>
-    <string name="anki_export_failure">Error exporting to Anki deck: %s.</string>
-    <string name="pref_export">Export</string>
-    <string name="pref_export_meanings_separator_char">Meanings separtor char</string>
-    <string name="pref_export_meanings_separator_char_summary">Character to separate mutiple meanings with when
-        exporting to CSV/Anki.</string>
-    <string-array name="export_meanings_separator_char_names">
-        <item>Newline</item>
-        <item>Space</item>
-        <item>Slash(/)</item>
-    </string-array>
-    <string-array name="export_meanings_separator_chars">
-        <item>\n</item>
-        <item>space</item>
-        <item>/</item>
-    </string-array>
+    <string name="kr_usage_tip">* The \'HKR\'(\'Hand-written Kanji Recognition\') button offers best accuracy, but proper stroke order is required.\n* The \'OCR\' (\'Optical Character Recognition\') button will try to recognize the character you\'ve drawn as an image. Stroke order doesn\'t matter, but recognition is less accurate.</string>
 </resources>

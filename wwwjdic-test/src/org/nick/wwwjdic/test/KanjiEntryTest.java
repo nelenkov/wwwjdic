@@ -12,11 +12,10 @@ import java.util.List;
 
 import org.junit.Test;
 import org.nick.wwwjdic.KanjiEntry;
-import org.nick.wwwjdic.history.FavoritesEntryParser;
 
 public class KanjiEntryTest {
 
-    private static final String KANJIDIC_PATH = "/home/nick/android/wwwjdic/wwwjdic-test/dict/kanjidic";
+    private static final String KANJIDIC_PATH = "C:/home/nick/android/wwwjdic/wwwjdic-test/dict/kanjidic";
 
     @Test
     public void testParse() {
@@ -24,36 +23,22 @@ public class KanjiEntryTest {
         KanjiEntry entry = KanjiEntry.parseKanjidic(kanjidicStr);
         assertNotNull(entry);
 
-        String[] fields = FavoritesEntryParser.toParsedStringArray(entry);
         assertEquals("ˆá", entry.getKanji());
-        assertEquals("ˆá", fields[0]);
         assertNull(entry.getClassicalRadicalNumber());
         assertEquals(344, entry.getFrequncyeRank().intValue());
-        assertEquals("344", fields[11]);
         assertEquals(8, entry.getGrade().intValue());
-        assertEquals("8", fields[12]);
         assertEquals("3063", entry.getJisCode());
-        assertEquals("3063", fields[9]);
         assertEquals(2, entry.getJlptLevel().intValue());
-        assertEquals("2", fields[13]);
         assertEquals("wi", entry.getKoreanReading());
-        assertEquals("wi", fields[15]);
         assertEquals("wei2", entry.getPinyin());
-        assertEquals("wei2", fields[16]);
         assertEquals(162, entry.getRadicalNumber());
-        assertEquals("162", fields[5]);
         assertEquals("3-3-10", entry.getSkipCode());
-        assertEquals("3-3-10", fields[14]);
         assertEquals(13, entry.getStrokeCount());
-        assertEquals("13", fields[6]);
         assertEquals("9055", entry.getUnicodeNumber());
-        assertEquals("9055", fields[10]);
 
         assertEquals("ƒC ‚¿‚ª.‚¤ ‚¿‚ª.‚¢ ‚¿‚ª.‚¦‚é -‚¿‚ª.‚¦‚é ‚½‚ª.‚¤ ‚½‚ª.‚¦‚é", entry.getReading());
         assertEquals("ƒC", entry.getOnyomi());
-        assertEquals("ƒC", fields[1]);
         assertEquals("‚¿‚ª.‚¤ ‚¿‚ª.‚¢ ‚¿‚ª.‚¦‚é -‚¿‚ª.‚¦‚é ‚½‚ª.‚¤ ‚½‚ª.‚¦‚é", entry.getKunyomi());
-        assertEquals("‚¿‚ª.‚¤ ‚¿‚ª.‚¢ ‚¿‚ª.‚¦‚é -‚¿‚ª.‚¦‚é ‚½‚ª.‚¤ ‚½‚ª.‚¦‚é", fields[2]);
         assertEquals(2, entry.getMeanings().size());
         assertEquals("difference", entry.getMeanings().get(0));
         assertEquals("differ", entry.getMeanings().get(1));
@@ -273,9 +258,6 @@ public class KanjiEntryTest {
             assertNotNull(entry.getKanji());
             assertNotNull(entry.getReading());
             // assertFalse(entry.getMeanings().isEmpty());
-            String[] fields = FavoritesEntryParser.toParsedStringArray(entry);
-            assertNotNull(fields);
-            assertEquals(17, fields.length);
         }
 
     }

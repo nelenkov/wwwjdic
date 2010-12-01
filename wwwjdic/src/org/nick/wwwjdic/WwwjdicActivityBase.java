@@ -72,8 +72,4 @@ public class WwwjdicActivityBase extends Activity {
         return super.onMenuItemSelected(featureId, item);
     }
 
-    protected WwwjdicApplication getApp() {
-        return (WwwjdicApplication) getApplication();
-    }
-
 }

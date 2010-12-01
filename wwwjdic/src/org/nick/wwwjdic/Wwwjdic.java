@@ -1,7 +1,5 @@
 package org.nick.wwwjdic;
 
-import org.nick.wwwjdic.utils.Analytics;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TabActivity;
