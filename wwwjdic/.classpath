@@ -6,6 +6,5 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/opencsv"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Flurry"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/gdocs-wwwjdic"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.utils.Analytics;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -47,7 +47,7 @@ public abstract class HistoryBase extends ListActivity {
     private static final int MENU_ITEM_IMPORT = 5;
     private static final int MENU_ITEM_FILTER = 6;
 
-    protected static final int CONFIRM_DELETE_DIALOG_ID = 0;
+    private static final int CONFIRM_DELETE_DIALOG_ID = 0;
 
     public static final int FILTER_ALL = -1;
     public static final int FILTER_DICT = 0;
@@ -131,9 +131,7 @@ public abstract class HistoryBase extends ListActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         final boolean hasItems = getListAdapter().getCount() > 0;
-        File backupFile = new File(getImportExportFilename());
 
-        menu.getItem(IMPORT_ITEM_IDX).setEnabled(backupFile.exists());
         menu.getItem(EXPORT_ITEM_IDX).setEnabled(hasItems);
         menu.getItem(DELETE_ALL_ITEM_IDX).setEnabled(hasItems);
 
@@ -337,7 +335,7 @@ public abstract class HistoryBase extends ListActivity {
         Dialog dialog = null;
 
         switch (id) {
-        case CONFIRM_DELETE_DIALOG_ID:
+        case 0:
             dialog = createConfirmDeleteDialog();
             break;
         default:
