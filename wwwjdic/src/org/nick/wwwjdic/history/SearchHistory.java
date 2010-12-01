@@ -4,13 +4,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.DictionaryResultListView;
 import org.nick.wwwjdic.ExamplesResultListView;
 import org.nick.wwwjdic.KanjiResultListView;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.SearchCriteria;
-import org.nick.wwwjdic.utils.Analytics;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -114,9 +114,9 @@ public class SearchHistory extends HistoryBase {
     @Override
     protected void doExport(String filename) {
         CSVWriter writer = null;
-        Cursor c = null;
+
         try {
-            c = filterCursor();
+            Cursor c = filterCursor();
 
             writer = new CSVWriter(new FileWriter(filename));
 
@@ -149,9 +149,6 @@ public class SearchHistory extends HistoryBase {
                 } catch (IOException e) {
                     Log.w(TAG, "error closing CSV writer", e);
                 }
-            }
-            if (c != null) {
-                c.close();
             }
         }
     }

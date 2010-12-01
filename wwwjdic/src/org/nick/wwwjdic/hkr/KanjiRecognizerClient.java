@@ -36,7 +36,6 @@ public class KanjiRecognizerClient extends EntityBasedHttpClient {
 
         for (Stroke s : strokes) {
             buff.append(s.toBase36Points());
-
             buff.append("\n");
         }
         buff.append("\n");
