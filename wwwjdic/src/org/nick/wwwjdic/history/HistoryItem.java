@@ -1,10 +1,12 @@
 package org.nick.wwwjdic.history;
 
+import java.util.regex.Pattern;
+
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.Radical;
 import org.nick.wwwjdic.Radicals;
 import org.nick.wwwjdic.SearchCriteria;
-import org.nick.wwwjdic.utils.StringUtils;
+import org.nick.wwwjdic.StringUtils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,6 +18,10 @@ public class HistoryItem extends LinearLayout {
     private TextView searchTypeText;
     private TextView searchKeyText;
     private TextView criteriaDetailsText;
+
+    private static final Pattern HEX_PATTERN = Pattern
+            .compile("[0-9a-fA-F]{4}");
+    private static final int JIS_IDX = 5;
 
     HistoryItem(Context context) {
         super(context);
@@ -55,9 +61,7 @@ public class HistoryItem extends LinearLayout {
         StringBuffer buff = new StringBuffer();
 
         if (criteria.getType() == SearchCriteria.CRITERIA_TYPE_KANJI) {
-            String kanjiSearchName = HistoryUtils.lookupKanjiSearchName(
-                    criteria.getKanjiSearchType(), criteria.getQueryString(),
-                    getContext());
+            String kanjiSearchName = lookupKanjiSearchName(criteria);
 
             buff.append(kanjiSearchName);
             if (criteria.hasStrokes()) {
@@ -74,8 +78,7 @@ public class HistoryItem extends LinearLayout {
             }
         } else {
             if (criteria.getType() == SearchCriteria.CRITERIA_TYPE_DICT) {
-                String dictName = HistoryUtils.lookupDictionaryName(criteria,
-                        getContext());
+                String dictName = lookupDictionaryName(criteria);
 
                 buff.append(dictName);
             }
@@ -125,6 +128,64 @@ public class HistoryItem extends LinearLayout {
         }
 
         return result;
+    }
+
+    private String lookupDictionaryName(SearchCriteria criteria) {
+        String dictCode = criteria.getDictionary();
+        String dictName = dictCode;
+
+        String[] dictCodes = getResources().getStringArray(
+                R.array.dictionary_codes_array);
+        String[] dictNames = getResources().getStringArray(
+                R.array.dictionaries_array);
+        int idx = linearSearch(dictCode, dictCodes);
+
+        if (idx != -1 && idx < dictNames.length - 1) {
+            dictName = dictNames[idx];
+        }
+        return dictName;
+    }
+
+    private String lookupKanjiSearchName(SearchCriteria criteria) {
+        String kanjiSearchCode = criteria.getKanjiSearchType();
+        String kanjiSearchName = kanjiSearchCode;
+
+        String[] searchCodes = getResources().getStringArray(
+                R.array.kanji_search_codes_array);
+        String[] searchNames = getResources().getStringArray(
+                R.array.kanji_search_types_array);
+        int idx = linearSearch(kanjiSearchCode, searchCodes);
+
+        if (idx != -1 && idx < searchNames.length) {
+            kanjiSearchName = searchNames[idx];
+        }
+
+        // ugly, but no other way(?) to differentiate between reading search and
+        // JIS code search
+        if (isJisSearch(criteria)) {
+            kanjiSearchName = searchNames[JIS_IDX];
+        }
+
+        return kanjiSearchName;
+    }
+
+    private boolean isJisSearch(SearchCriteria criteria) {
+        if (!"J".equals(criteria.getKanjiSearchType())) {
+            return false;
+        }
+
+        return HEX_PATTERN.matcher(criteria.getQueryString()).matches();
+    }
+
+    private int linearSearch(String key, String[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            String code = arr[i];
+            if (code.equals(key)) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
 }

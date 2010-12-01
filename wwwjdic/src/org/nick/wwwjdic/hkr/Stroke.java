@@ -31,7 +31,8 @@ public class Stroke {
             float dx = Math.abs(p.x - lastPoint.x);
             float dy = Math.abs(p.y - lastPoint.y);
             if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-                path.quadTo(lastPoint.x, lastPoint.y, (p.x + lastPoint.x) / 2,
+                path.quadTo(lastPoint.x, lastPoint.y,
+                        (p.x + lastPoint.x) / 2,
                         (p.y + lastPoint.y) / 2);
                 lastPoint = new PointF(p.x, p.y);
             }
@@ -128,10 +129,6 @@ public class Stroke {
         canvas.drawText(strokeNumStr, x + xOffset, y + yOffset, paint);
     }
 
-    public List<PointF> getPoints() {
-        return points;
-    }
-
     public String toBase36Points() {
         StringBuffer buff = new StringBuffer();
 
@@ -141,22 +138,6 @@ public class Stroke {
             pointStr += toBase36(x);
             int y = (int) points.get(i).y;
             pointStr += toBase36(y);
-
-            buff.append(pointStr);
-        }
-
-        return buff.toString();
-    }
-
-    public String toPoints() {
-        StringBuffer buff = new StringBuffer();
-
-        for (int i = 0; i < points.size(); i++) {
-            String pointStr = "";
-            int x = (int) points.get(i).x;
-            pointStr += " " + x;
-            int y = (int) points.get(i).y;
-            pointStr += " " + y;
 
             buff.append(pointStr);
         }

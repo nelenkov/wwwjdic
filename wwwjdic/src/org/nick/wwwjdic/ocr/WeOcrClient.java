@@ -19,6 +19,8 @@ public class WeOcrClient extends EntityBasedHttpClient {
 
     private static final String TAG = WeOcrClient.class.getSimpleName();
 
+    private static final String ECLASS_CHAR = "character";
+
     public WeOcrClient(String endpoint, int timeout) {
         super(endpoint, timeout);
     }
@@ -54,8 +56,7 @@ public class WeOcrClient extends EntityBasedHttpClient {
     public String[] sendCharacterOcrRequest(Bitmap img, int numCandidates)
             throws IOException {
         Log.i(TAG, "Sending OCR request to " + url);
-        HttpPost post = createPost(img, OcrFormEntity.ECLASS_CHAR,
-                numCandidates);
+        HttpPost post = createPost(img, ECLASS_CHAR, numCandidates);
 
         BufferedReader reader = null;
         try {

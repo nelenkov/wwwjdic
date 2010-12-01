@@ -13,13 +13,6 @@ import android.graphics.Bitmap.CompressFormat;
 
 public class OcrFormEntity extends AbstractHttpEntity {
 
-    public static final String ECLASS_AUTO = "auto";
-    public static final String ECLASS_PAGE = "page";
-    public static final String ECLASS_TEXT_BLOCK = "text_block";
-    public static final String ECLASS_TEXT_LINE = "text_line";
-    public static final String ECLASS_WORD = "word";
-    public static final String ECLASS_CHAR = "character";
-
     private static final String BOUNDARY = "--------------abcdefghijklmnopqrstu";
     private static final String CONTENT_TYPE = "multipart/form-data; boundary="
             + BOUNDARY;
@@ -68,7 +61,7 @@ public class OcrFormEntity extends AbstractHttpEntity {
     }
 
     public OcrFormEntity(Bitmap img) throws IOException {
-        this(img, IMG_QUALITY, ECLASS_AUTO, null);
+        this(img, IMG_QUALITY, "text_line", null);
     }
 
     @Override

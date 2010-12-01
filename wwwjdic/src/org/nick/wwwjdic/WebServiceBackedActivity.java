@@ -48,15 +48,10 @@ public abstract class WebServiceBackedActivity extends Activity {
             activeWsRequest.cancel(true);
         }
 
-        activityOnDestroy();
-
         super.onDestroy();
     }
 
     protected abstract void activityOnCreate(Bundle savedInstanceState);
-
-    protected void activityOnDestroy() {
-    }
 
     protected abstract WsResultHandler createHandler();
 

@@ -8,21 +8,16 @@ import java.util.regex.Pattern;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
-import org.nick.wwwjdic.utils.StringUtils;
 
 import android.util.Log;
 
 public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
-
-    private static final String TAG = BackdoorSearchTask.class.getSimpleName();
 
     protected static final Pattern PRE_START_PATTERN = Pattern
             .compile("^<pre>.*$");
 
     protected static final Pattern PRE_END_PATTERN = Pattern
             .compile("^</pre>.*$");
-
-    protected static final String PRE_END_TAG = "</pre>";
 
     public BackdoorSearchTask(String url, int timeoutSeconds,
             ResultListView<T> resultListView, SearchCriteria criteria) {
@@ -52,19 +47,8 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
             }
 
             if (isInPre) {
-                boolean hasEndPre = false;
-                // some entries have </pre> on the same line
-                if (line.contains(PRE_END_TAG)) {
-                    hasEndPre = true;
-                    line = line.replaceAll(PRE_END_TAG, "");
-                }
-                Log.d(TAG, "dic entry line: " + line);
                 T entry = parseEntry(line);
                 result.add(entry);
-
-                if (hasEndPre) {
-                    break;
-                }
             }
         }
 
@@ -79,8 +63,6 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
             SearchCriteria criteria = (SearchCriteria) query;
             String lookupUrl = String.format("%s?%s", url,
                     generateBackdoorCode(criteria));
-            Log.d(TAG, "WWWJDIC URL: " + lookupUrl);
-
             HttpGet get = new HttpGet(lookupUrl);
 
             String responseStr = httpclient.execute(get, responseHandler,
