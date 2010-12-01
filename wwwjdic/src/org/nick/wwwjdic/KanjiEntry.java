@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.nick.wwwjdic.utils.StringUtils;
-
 public class KanjiEntry extends WwwjdicEntry implements Serializable {
 
     private static final long serialVersionUID = -2260771889935344623L;
@@ -37,9 +35,6 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
     private static final Pattern KATAKANA_PATTERN = Pattern.compile(
             "\\p{InKatakana}+", Pattern.COMMENTS);
 
-    private static final String NANORI_TAG = "T1";
-    private static final String RADICAL_NAME_TAG = "T2";
-
     private String kanji;
 
     private String jisCode;
@@ -55,8 +50,6 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
     private String reading;
     private String onyomi;
     private String kunyomi;
-    private String nanori;
-    private String radicalName;
 
     private String koreanReading;
     private String pinyin;
@@ -112,22 +105,11 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
                 case SKIP_CODE:
                     result.skipCode = parseStrCode(field);
                     break;
-                // there can be multiple readings
                 case KOREAN_READING_CODE:
-                    if (StringUtils.isEmpty(result.koreanReading)) {
-                        result.koreanReading = parseStrCode(field);
-                    } else {
-                        result.koreanReading += " ";
-                        result.koreanReading += parseStrCode(field);
-                    }
+                    result.koreanReading = parseStrCode(field);
                     break;
                 case PINYIN_CODE:
-                    if (StringUtils.isEmpty(result.pinyin)) {
-                        result.pinyin = parseStrCode(field);
-                    } else {
-                        result.pinyin += " ";
-                        result.pinyin += parseStrCode(field);
-                    }
+                    result.pinyin = parseStrCode(field);
                     break;
                 default:
                     // ignore
@@ -155,7 +137,6 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
                 } else {
                     // no meaning? take the rest as reading
                     result.reading = readingAndMeanings;
-                    result.parseReading();
                     break;
                 }
             }
@@ -168,11 +149,7 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
         String[] readingFields = reading.split(" ");
         StringBuffer onyomiBuff = new StringBuffer();
         StringBuffer kunyomiBuff = new StringBuffer();
-        StringBuffer nanoriBuff = new StringBuffer();
-        StringBuffer radicalNameBuff = new StringBuffer();
 
-        boolean foundNanori = false;
-        boolean foundRadicalName = false;
         for (String r : readingFields) {
             Matcher m = KATAKANA_PATTERN.matcher(r);
             if (m.matches()) {
@@ -182,41 +159,13 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
 
             m = HIRAGANA_PATTERN.matcher(Character.toString(r.charAt(0)));
             if (m.matches()) {
-                if (foundNanori) {
-                    nanoriBuff.append(r.trim());
-                    nanoriBuff.append(" ");
-                } else if (foundRadicalName) {
-                    radicalNameBuff.append(r.trim());
-                    radicalNameBuff.append(" ");
-                } else {
-                    kunyomiBuff.append(r.trim());
-                    kunyomiBuff.append(" ");
-                }
-            }
-
-            if (NANORI_TAG.equals(r)) {
-                foundNanori = true;
-                foundRadicalName = false;
-            }
-            if (RADICAL_NAME_TAG.equals(r)) {
-                foundNanori = false;
-                foundRadicalName = true;
+                kunyomiBuff.append(r.trim());
+                kunyomiBuff.append(" ");
             }
         }
 
         onyomi = onyomiBuff.toString().trim();
         kunyomi = kunyomiBuff.toString().trim();
-        nanori = nanoriBuff.toString().trim();
-        radicalName = radicalNameBuff.toString().trim();
-        reading = reading.replaceAll(" " + NANORI_TAG, "");
-        reading = reading.replaceAll(" " + RADICAL_NAME_TAG, "");
-
-        if (!StringUtils.isEmpty(koreanReading)) {
-            koreanReading = koreanReading.trim();
-        }
-        if (!StringUtils.isEmpty(pinyin)) {
-            pinyin = pinyin.trim();
-        }
     }
 
     private static Integer parseIntCode(String field) {
@@ -285,14 +234,6 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
 
     public String getKunyomi() {
         return kunyomi;
-    }
-
-    public String getNanori() {
-        return nanori;
-    }
-
-    public String getRadicalName() {
-        return radicalName;
     }
 
     public List<String> getMeanings() {

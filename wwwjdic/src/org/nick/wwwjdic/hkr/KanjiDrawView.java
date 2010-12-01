@@ -142,22 +142,13 @@ public class KanjiDrawView extends View {
         }
     }
 
-    public List<Stroke> getStrokes() {
-        return strokes;
-    }
-
-    public void removeLastStroke() {
-        if (strokes.isEmpty()) {
-            return;
-        }
-
-        strokes.remove(strokes.size() - 1);
-        invalidate();
-    }
-
     public void clear() {
         strokes.clear();
         invalidate();
+    }
+
+    public List<Stroke> getStrokes() {
+        return strokes;
     }
 
     public OnStrokesChangedListener getOnStrokesChangedListener() {
