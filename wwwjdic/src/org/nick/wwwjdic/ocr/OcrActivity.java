@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.DictionaryResultListView;
 import org.nick.wwwjdic.ExamplesResultListView;
@@ -15,7 +16,6 @@ import org.nick.wwwjdic.SearchCriteria;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.ocr.crop.CropImage;
-import org.nick.wwwjdic.utils.Analytics;
 
 import android.content.Context;
 import android.content.Intent;

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">%sの新規機能</string>
-    <string name="whats_new">* 漢字詳細画面に熟語検索リンクを追加。\n* 更新日をウィジェットに追加。\n* ウィジェット更新改善。\n* 新しいEUミラーサイトURL使用。\n* バグ修正。</string>
+    <string name="whats_new">
+    * 今日の漢字ウィジェット(Home画面の長押しで追加)\n* お気に入りのローカルCSVとGoogleドキュメントエックスポート\n*
+    ミラーサイト自動選択(設定画面でオバーライド可能)\n* Android 2.2 (Froyo) 対応\n*
+    SDカードインストール対応(ウィジェットを無効にします)\n
+    </string>
 </resources>

@@ -103,7 +103,8 @@
     <string name="settings">設定</string>
     <string name="write_kanji">手書き認識</string>
     <string name="hkr_failed">手書き認識失敗</string>
-    <string name="ws_hkr_failed">手書き認識失敗。</string>
+    <string name="ws_hkr_failed">手書き認識失敗。問題が継続する場合は、設定画面で手書き認識サーバURLを「代替」に設定してみてください。
+    </string>
     <string name="sd_file_create_failed">SDカードに一時ファイルを作成できませんでした</string>
     <string name="af_failed">A/F失敗</string>
     <string name="ocr_failed">OCR失敗</string>
@@ -276,7 +277,9 @@
         <item>ローカルバックアップ</item>
         <item>ローカル CSV</item>
         <item>Google ドキュメント</item>
+        <!-- 
         <item>Anki単語帳</item>
+        -->
     </string-array>
     <string name="favorites_export_dialog_title">お気に入りエックスポート</string>
     <string name="uploading_to_gdocs">Google ドキュメントにアップロード中...</string>
@@ -291,26 +294,10 @@
         *
         「ローカルバックアップ」: 再インストール、又は新しい端末に
         インストールした時に、お気に入りのインポートに使用できます。\n
-        *
-        「ローカル CSV」: 全ての表示項目をカラムとしてエックスポートします。
+        * 「ローカル CSV」: 全ての表示項目をカラムとしてエックスポートします。
         有効にするには、「辞書」、又は「漢字」でフィルタして下さい。\n
         *
         「Google ドキュメント」:
         フォーマットは同上。要Android 2.0以上。
     </string>
-    <string name="compounds">熟語</string>
-    <string name="compound_search_starting">語頭字</string>
-    <string name="compound_search_any">どこでも</string>
-    <string name="compound_search_common_only">よく使われる言葉のみ</string>
-    <string name="exporting_to_anki">お気に入りをAnki単語帳にエックスポートしています...</string>
-    <string name="anki_export_success">お気に入りをAnki単語帳にエックスポートしました: %s.</string>
-    <string name="anki_export_failure">Anki単語帳エックスポートエラー: %s.</string>
-    <string name="pref_export">エックスポート</string>
-    <string name="pref_export_meanings_separator_char">複数訳区切り文字</string>
-    <string name="pref_export_meanings_separator_char_summary">CSV/Ankiにエックスポートするときに、複数単語訳区切りに使用する文字。</string>
-    <string-array name="export_meanings_separator_char_names">
-        <item>改行</item>
-        <item>空白</item>
-        <item>スラッシュ(/)</item>
-    </string-array>
 </resources>

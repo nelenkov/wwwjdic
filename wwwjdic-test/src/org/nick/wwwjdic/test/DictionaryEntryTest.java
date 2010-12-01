@@ -50,12 +50,6 @@ public class DictionaryEntryTest {
     }
 
     @Test
-    public void testEdict2() throws Exception {
-        System.out.println("Testing EDICT2...");
-        testEdictFile("/home/nick/android/wwwjdic/wwwjdic-test/dict/edict2");
-    }
-
-    @Test
     public void testEdiclsd() throws Exception {
         testEdictFile("/home/nick/android/wwwjdic/wwwjdic-test/dict/ediclsd4");
     }

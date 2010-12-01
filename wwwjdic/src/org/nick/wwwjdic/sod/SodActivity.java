@@ -9,13 +9,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
+import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.GzipStringResponseHandler;
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.StringUtils;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.WwwjdicApplication;
-import org.nick.wwwjdic.utils.Analytics;
-import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.SharedPreferences;
 import android.os.Build;

@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+import org.nick.wwwjdic.Analytics;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.utils.Analytics;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
