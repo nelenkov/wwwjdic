@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
 import org.nick.wwwjdic.history.HistoryDbHelper;
-import org.nick.wwwjdic.utils.Analytics;
-import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Intent;
 import android.os.Bundle;

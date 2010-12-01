@@ -1,10 +1,7 @@
 package org.nick.wwwjdic;
 
-import java.util.regex.Matcher;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -14,9 +11,6 @@ import android.widget.TextView;
 
 public class DictionaryEntryDetail extends DetailActivity implements
         OnClickListener {
-
-    private static final String TAG = DictionaryEntryDetail.class
-            .getSimpleName();
 
     private static final String COMMON_USAGE_MARKER = "(P)";
 
@@ -62,13 +56,6 @@ public class DictionaryEntryDetail extends DetailActivity implements
             TextView text = new TextView(this, null,
                     R.style.dict_detail_meaning);
             text.setText(meaning);
-            Matcher m = CROSS_REF_PATTERN.matcher(meaning);
-            if (m.matches()) {
-                Intent intent = createCrossRefIntent(m.group(1));
-                int start = m.start(1);
-                int end = m.end(1);
-                makeClickable(text, start, end, intent);
-            }
             meaningsLayout.addView(text);
         }
 
@@ -82,19 +69,6 @@ public class DictionaryEntryDetail extends DetailActivity implements
 
         exampleSearchKey = extractSearchKey();
         disableExampleSearchIfSingleKanji();
-    }
-
-    private Intent createCrossRefIntent(String word) {
-        String dictionary = getApp().getCurrentDictionary();
-        Log.d(TAG, String.format(
-                "Will look for compounds in dictionary: %s(%s)", getApp()
-                        .getCurrentDictionaryName(), dictionary));
-        SearchCriteria criteria = SearchCriteria.createForDictionary(word,
-                true, false, false, dictionary);
-        Intent intent = new Intent(DictionaryEntryDetail.this,
-                DictionaryResultListView.class);
-        intent.putExtra(Constants.CRITERIA_KEY, criteria);
-        return intent;
     }
 
     private void disableExampleSearchIfSingleKanji() {
