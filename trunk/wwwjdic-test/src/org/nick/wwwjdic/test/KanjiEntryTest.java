@@ -24,7 +24,7 @@ public class KanjiEntryTest {
         KanjiEntry entry = KanjiEntry.parseKanjidic(kanjidicStr);
         assertNotNull(entry);
 
-        String[] fields = FavoritesEntryParser.toParsedStringArray(entry);
+        String[] fields = FavoritesEntryParser.toParsedStringArray(entry, "\n");
         assertEquals("ˆá", entry.getKanji());
         assertEquals("ˆá", fields[0]);
         assertNull(entry.getClassicalRadicalNumber());
@@ -273,7 +273,8 @@ public class KanjiEntryTest {
             assertNotNull(entry.getKanji());
             assertNotNull(entry.getReading());
             // assertFalse(entry.getMeanings().isEmpty());
-            String[] fields = FavoritesEntryParser.toParsedStringArray(entry);
+            String[] fields = FavoritesEntryParser.toParsedStringArray(entry,
+                    "\n");
             assertNotNull(fields);
             assertEquals(17, fields.length);
         }

@@ -121,7 +121,7 @@ public class DictionaryEntryTest {
             assertNotNull(e.getWord());
             assertNotNull(e.getTranslationString());
 
-            String[] fields = FavoritesEntryParser.toParsedStringArray(e);
+            String[] fields = FavoritesEntryParser.toParsedStringArray(e, "\n");
             assertNotNull(fields);
             assertEquals(3, fields.length);
             assertEquals(e.getWord(), fields[0]);
