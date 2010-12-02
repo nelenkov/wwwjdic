@@ -482,8 +482,8 @@ public class Favorites extends HistoryBase implements
 
             @Override
             protected void onPostExecute(Void v) {
-                getParent().setProgressBarIndeterminateVisibility(false);
                 refresh();
+                getParent().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }

@@ -96,8 +96,8 @@ public class SearchHistory extends HistoryBase {
 
             @Override
             protected void onPostExecute(Boolean result) {
-                getParent().setProgressBarIndeterminateVisibility(false);
                 refresh();
+                getParent().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -239,7 +239,6 @@ public class SearchHistory extends HistoryBase {
 
     @Override
     protected void doImport(final String importFile) {
-
         new AsyncTask<Void, Void, Boolean>() {
             Exception exception;
             int count = 0;
