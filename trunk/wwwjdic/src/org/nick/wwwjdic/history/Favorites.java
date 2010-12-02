@@ -991,7 +991,6 @@ public class Favorites extends HistoryBase implements
                     }
 
                     String[] record = null;
-                    int count = 0;
                     while ((record = reader.readNext()) != null) {
                         WwwjdicEntry entry = FavoritesEntryParser
                                 .fromStringArray(record);

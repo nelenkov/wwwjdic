@@ -87,6 +87,7 @@ public class SearchHistory extends HistoryBase {
                 } catch (Exception e) {
                     Log.e(TAG, "Error deleting history", e);
                     exception = e;
+
                     return false;
                 } finally {
                     db.endTransaction();
