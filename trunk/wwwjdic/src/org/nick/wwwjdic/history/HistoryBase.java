@@ -377,6 +377,8 @@ public abstract class HistoryBase extends ListActivity {
         return dialog;
     }
 
+    // since the adapter is already bound, refresh() has to unfortunately be
+    // called on the UI thread
     protected void refresh() {
         Cursor cursor = getCursor();
         cursor.requery();
