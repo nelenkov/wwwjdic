@@ -55,7 +55,7 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
 
     private static final String FAVORITES_TABLE_NAME = "favorites";
 
-    private static final String[] HISTORY_ALL_COLUMNS = { ID, TIME,
+    public static final String[] HISTORY_ALL_COLUMNS = { ID, TIME,
             HISTORY_QUERY_STRING, HISTORY_IS_EXACT_MATCH, HISTORY_SEARCH_TYPE,
             HISTORY_IS_ROMANIZED_JAPANESE, HISTORY_IS_COMMON_WORDS_ONLY,
             HISTORY_DICTIONARY, HISTORY_KANJI_SEARCH_TYPE,
@@ -78,7 +78,7 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
             + "is_common_words_only integer, dictionary text, kanji_search_type text, "
             + "min_stroke_count integer, max_stroke_count integer, max_results integer);";
 
-    private static final String[] FAVORITES_ALL_COLUMNS = { ID, TIME,
+    public static final String[] FAVORITES_ALL_COLUMNS = { ID, TIME,
             FAVORITES_IS_KANJI, FAVORITES_HEADWORD, FAVORITES_DICT_STR };
 
     private static final String FAVORITES_TABLE_CREATE = "create table "

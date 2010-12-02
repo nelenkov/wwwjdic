@@ -6,6 +6,7 @@ import org.nick.wwwjdic.R;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 
@@ -15,6 +16,9 @@ public class FavoritesAndHistory extends TabActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
         setContentView(R.layout.favorites_history);
 
         Intent intent = getIntent();
