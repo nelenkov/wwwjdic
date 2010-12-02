@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -89,6 +90,9 @@ public class AnkiGenerator {
 
             addKanjis(kanjis, db);
 
+            // should we set it or just leave it as -1?
+            setUtcOffset(db);
+
             db.setTransactionSuccessful();
 
             return kanjis.size();
@@ -106,6 +110,21 @@ public class AnkiGenerator {
         }
         // cardCount, factCount, newCount
         updateDeckCounts(db, kanjis.size());
+    }
+
+    private void setUtcOffset(SQLiteDatabase db) {
+        Calendar cal = Calendar.getInstance();
+        // align with Python's time.timezone:
+        // The offset of the local (non-DST) timezone, in seconds west of UTC
+        // (negative in most of Western Europe, positive in the US, zero in the
+        // UK).
+        int calUtcOffsetSecs = -1 * cal.get(Calendar.ZONE_OFFSET) / 1000;
+        // 4am?
+        int utcOffset = calUtcOffsetSecs + 60 * 60 * 4;
+        ContentValues values = new ContentValues();
+        values.put("utcOffset", utcOffset);
+        db.update("decks", values, "id = ?", new String[] { Long
+                .toString(DECK_ID) });
     }
 
     private void updateDeckCounts(SQLiteDatabase db, int count) {
@@ -171,6 +190,9 @@ public class AnkiGenerator {
             execSqlFromFile(db, "anki-dict-model.sql");
 
             addWords(words, db);
+
+            // should we set it or just leave it as -1?
+            setUtcOffset(db);
 
             db.setTransactionSuccessful();
 
