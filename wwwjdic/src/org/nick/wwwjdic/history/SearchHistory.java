@@ -14,6 +14,8 @@ import org.nick.wwwjdic.utils.Analytics;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
@@ -27,28 +29,76 @@ public class SearchHistory extends HistoryBase {
     private static final String EXPORT_FILENAME = "wwwjdic/search-history.csv";
 
     protected void setupAdapter() {
-        Cursor cursor = filterCursor();
+        MatrixCursor cursor = new MatrixCursor(
+                HistoryDbHelper.HISTORY_ALL_COLUMNS, 0);
         startManagingCursor(cursor);
         SearchHistoryAdapter adapter = new SearchHistoryAdapter(this, cursor);
+        setListAdapter(adapter);
+
+        new AsyncTask<Void, Void, Cursor>() {
+            @Override
+            protected void onPreExecute() {
+                getParent().setProgressBarIndeterminateVisibility(true);
+            }
+
+            @Override
+            protected Cursor doInBackground(Void... arg0) {
+                return filterCursor();
+            }
+
+            @Override
+            protected void onPostExecute(Cursor cursor) {
+                resetAdapter(cursor);
+                getParent().setProgressBarIndeterminateVisibility(false);
+            }
+        }.execute();
+    }
+
+    protected void resetAdapter(Cursor c) {
+        startManagingCursor(c);
+        SearchHistoryAdapter adapter = new SearchHistoryAdapter(
+                SearchHistory.this, c);
         setListAdapter(adapter);
     }
 
     @Override
     protected void deleteAll() {
-        Cursor c = filterCursor();
+        new AsyncTask<Void, Void, Boolean>() {
+            Exception exception;
 
-        db.beginTransaction();
-        try {
-            while (c.moveToNext()) {
-                int id = c.getInt(c.getColumnIndex("_id"));
-                db.deleteHistoryItem(id);
+            @Override
+            protected void onPreExecute() {
+                getParent().setProgressBarIndeterminateVisibility(true);
             }
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-        }
 
-        refresh();
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                Cursor c = filterCursor();
+
+                db.beginTransaction();
+                try {
+                    while (c.moveToNext()) {
+                        int id = c.getInt(c.getColumnIndex("_id"));
+                        db.deleteHistoryItem(id);
+                    }
+                    db.setTransactionSuccessful();
+
+                    return true;
+                } catch (Exception e) {
+                    Log.e(TAG, "Error deleting history", e);
+                    exception = e;
+                    return false;
+                } finally {
+                    db.endTransaction();
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                getParent().setProgressBarIndeterminateVisibility(false);
+                refresh();
+            }
+        }.execute();
     }
 
     @Override
@@ -112,100 +162,160 @@ public class SearchHistory extends HistoryBase {
     }
 
     @Override
-    protected void doExport(String filename) {
-        CSVWriter writer = null;
-        Cursor c = null;
-        try {
-            c = filterCursor();
-
-            writer = new CSVWriter(new FileWriter(filename));
-
+    protected void doExport(final String filename) {
+        new AsyncTask<Void, Void, Boolean>() {
+            Exception exception;
             int count = 0;
-            while (c.moveToNext()) {
-                long time = c.getLong(c.getColumnIndex("time"));
-                SearchCriteria criteria = HistoryDbHelper.createCriteria(c);
-                String[] criteriaStr = SearchCriteriaParser.toStringArray(
-                        criteria, time);
-                writer.writeNext(criteriaStr);
-                count++;
+
+            @Override
+            protected void onPreExecute() {
+                getParent().setProgressBarIndeterminateVisibility(true);
             }
 
-            Analytics.event("historyExport", this);
-
-            String message = getResources()
-                    .getString(R.string.history_exported);
-            Toast t = Toast.makeText(this, String.format(message, filename,
-                    count), Toast.LENGTH_SHORT);
-            t.show();
-        } catch (IOException e) {
-            Log.e(TAG, "error exporting history", e);
-            String message = getResources().getString(R.string.export_error);
-            Toast.makeText(this, String.format(message, e.getMessage()),
-                    Toast.LENGTH_SHORT).show();
-        } finally {
-            if (writer != null) {
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                CSVWriter writer = null;
+                Cursor c = null;
                 try {
-                    writer.close();
+                    c = filterCursor();
+
+                    writer = new CSVWriter(new FileWriter(filename));
+
+                    while (c.moveToNext()) {
+                        long time = c.getLong(c.getColumnIndex("time"));
+                        SearchCriteria criteria = HistoryDbHelper
+                                .createCriteria(c);
+                        String[] criteriaStr = SearchCriteriaParser
+                                .toStringArray(criteria, time);
+                        writer.writeNext(criteriaStr);
+                        count++;
+                    }
+
+                    Analytics.event("historyExport", SearchHistory.this);
+
+                    return true;
+
                 } catch (IOException e) {
-                    Log.w(TAG, "error closing CSV writer", e);
+                    Log.e(TAG, "error exporting history", e);
+                    exception = e;
+
+                    return false;
+                } finally {
+                    if (writer != null) {
+                        try {
+                            writer.close();
+                        } catch (IOException e) {
+                            Log.w(TAG, "error closing CSV writer", e);
+                        }
+                    }
+                    if (c != null) {
+                        c.close();
+                    }
                 }
             }
-            if (c != null) {
-                c.close();
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if (result) {
+                    String message = getResources().getString(
+                            R.string.history_exported);
+                    Toast t = Toast.makeText(SearchHistory.this, String.format(
+                            message, filename, count), Toast.LENGTH_SHORT);
+                    t.show();
+                } else {
+                    String message = getResources().getString(
+                            R.string.export_error);
+                    String errMessage = exception == null ? "Error" : exception
+                            .getMessage();
+                    Toast.makeText(SearchHistory.this,
+                            String.format(message, errMessage),
+                            Toast.LENGTH_SHORT).show();
+                }
+                getParent().setProgressBarIndeterminateVisibility(false);
             }
-        }
+        }.execute();
     }
 
     @Override
-    protected void doImport(String importFile) {
-        CSVReader reader = null;
+    protected void doImport(final String importFile) {
 
-        db.beginTransaction();
-        try {
-            db.deleteAllHistory();
-
-            reader = openImportFile(importFile);
-            if (reader == null) {
-                return;
-            }
-
-            String[] record = null;
+        new AsyncTask<Void, Void, Boolean>() {
+            Exception exception;
             int count = 0;
-            while ((record = reader.readNext()) != null) {
-                SearchCriteria criteria = SearchCriteriaParser
-                        .fromStringArray(record);
-                long time = Long
-                        .parseLong(record[SearchCriteriaParser.TIME_IDX]);
-                db.addSearchCriteria(criteria, time);
-                count++;
+
+            @Override
+            protected void onPreExecute() {
+                getParent().setProgressBarIndeterminateVisibility(true);
             }
-            db.setTransactionSuccessful();
 
-            refresh();
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                CSVReader reader = null;
 
-            Analytics.event("historyImport", this);
-
-            String message = getResources()
-                    .getString(R.string.history_imported);
-            Toast t = Toast.makeText(this, String.format(message, importFile,
-                    count), Toast.LENGTH_SHORT);
-            t.show();
-        } catch (IOException e) {
-            Log.e(TAG, "error importing history", e);
-            String message = getResources().getString(R.string.import_error);
-            Toast.makeText(this, String.format(message, e.getMessage()),
-                    Toast.LENGTH_SHORT).show();
-        } finally {
-            if (reader != null) {
+                db.beginTransaction();
                 try {
-                    reader.close();
+                    db.deleteAllHistory();
+
+                    reader = openImportFile(importFile);
+                    if (reader == null) {
+                        return false;
+                    }
+
+                    String[] record = null;
+                    while ((record = reader.readNext()) != null) {
+                        SearchCriteria criteria = SearchCriteriaParser
+                                .fromStringArray(record);
+                        long time = Long
+                                .parseLong(record[SearchCriteriaParser.TIME_IDX]);
+                        db.addSearchCriteria(criteria, time);
+                        count++;
+                    }
+                    db.setTransactionSuccessful();
+
+                    Analytics.event("historyImport", SearchHistory.this);
+
+                    return true;
                 } catch (IOException e) {
-                    Log.w(TAG, "error closing CSV reader", e);
+                    Log.e(TAG, "error importing history", e);
+                    exception = e;
+
+                    return false;
+                } finally {
+                    if (reader != null) {
+                        try {
+                            reader.close();
+                        } catch (IOException e) {
+                            Log.w(TAG, "error closing CSV reader", e);
+                        }
+
+                    }
+                    db.endTransaction();
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if (result) {
+                    String message = getResources().getString(
+                            R.string.history_imported);
+                    Toast t = Toast.makeText(SearchHistory.this, String.format(
+                            message, importFile, count), Toast.LENGTH_SHORT);
+                    t.show();
+                } else {
+                    String message = getResources().getString(
+                            R.string.import_error);
+                    String errMessage = exception == null ? "Error" : exception
+                            .getMessage();
+                    Toast.makeText(SearchHistory.this,
+                            String.format(message, errMessage),
+                            Toast.LENGTH_SHORT).show();
                 }
 
+                refresh();
+
+                getParent().setProgressBarIndeterminateVisibility(false);
             }
-            db.endTransaction();
-        }
+        }.execute();
     }
 
     @Override

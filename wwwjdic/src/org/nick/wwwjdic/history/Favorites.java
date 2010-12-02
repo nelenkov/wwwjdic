@@ -2,12 +2,9 @@ package org.nick.wwwjdic.history;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +35,7 @@ import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -91,9 +89,6 @@ public class Favorites extends HistoryBase implements
     private static final String FAVORITES_EXPORT_TIP_DIALOG = "tips_favorites_export";
 
     private static final int ECLAIR_VERSION_CODE = 5;
-
-    private static final byte[] UTF8_BOM = { (byte) 0xef, (byte) 0xbb,
-            (byte) 0xbf };
 
     private HttpTransport transport;
 
@@ -426,28 +421,71 @@ public class Favorites extends HistoryBase implements
     }
 
     protected void setupAdapter() {
-        Cursor cursor = filterCursor();
+        MatrixCursor cursor = new MatrixCursor(
+                HistoryDbHelper.FAVORITES_ALL_COLUMNS, 0);
         startManagingCursor(cursor);
-        FavoritesAdapter adapter = new FavoritesAdapter(this, cursor, this);
+        FavoritesAdapter adapter = new FavoritesAdapter(Favorites.this, cursor,
+                Favorites.this);
+        setListAdapter(adapter);
+
+        new AsyncTask<Void, Void, Cursor>() {
+            @Override
+            protected void onPreExecute() {
+                getParent().setProgressBarIndeterminateVisibility(true);
+            }
+
+            @Override
+            protected Cursor doInBackground(Void... arg0) {
+                return filterCursor();
+            }
+
+            @Override
+            protected void onPostExecute(Cursor cursor) {
+                resetAdapter(cursor);
+                getParent().setProgressBarIndeterminateVisibility(false);
+            }
+        }.execute();
+    }
+
+    protected void resetAdapter(Cursor cursor) {
+        startManagingCursor(cursor);
+        FavoritesAdapter adapter = new FavoritesAdapter(Favorites.this, cursor,
+                Favorites.this);
         setListAdapter(adapter);
     }
 
     @Override
     protected void deleteAll() {
-        Cursor c = filterCursor();
-
-        db.beginTransaction();
-        try {
-            while (c.moveToNext()) {
-                int id = c.getInt(c.getColumnIndex("_id"));
-                db.deleteFavorite(id);
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected void onPreExecute() {
+                getParent().setProgressBarIndeterminateVisibility(true);
             }
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-        }
 
-        refresh();
+            @Override
+            protected Void doInBackground(Void... arg0) {
+                Cursor c = filterCursor();
+
+                db.beginTransaction();
+                try {
+                    while (c.moveToNext()) {
+                        int id = c.getInt(c.getColumnIndex("_id"));
+                        db.deleteFavorite(id);
+                    }
+                    db.setTransactionSuccessful();
+
+                    return null;
+                } finally {
+                    db.endTransaction();
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Void v) {
+                getParent().setProgressBarIndeterminateVisibility(false);
+                refresh();
+            }
+        }.execute();
     }
 
     @Override
@@ -750,14 +788,6 @@ public class Favorites extends HistoryBase implements
         }
     }
 
-    private void writeBom(File exportFile) throws FileNotFoundException,
-            IOException {
-        OutputStream out = new FileOutputStream(exportFile);
-        out.write(UTF8_BOM);
-        out.flush();
-        out.close();
-    }
-
     private void exportToCsv(String exportFile, Writer w, boolean showMessages) {
         CSVWriter writer = null;
         Cursor c = null;
@@ -860,103 +890,161 @@ public class Favorites extends HistoryBase implements
 
     @Override
     protected void doExport(final String exportFile) {
-        CSVWriter writer = null;
-        Cursor c = null;
-
-        try {
-            c = filterCursor();
-            writer = new CSVWriter(new FileWriter(exportFile));
-
+        new AsyncTask<Void, Void, Boolean>() {
+            Exception exception;
             int count = 0;
-            while (c.moveToNext()) {
-                WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
-                long time = c.getLong(c.getColumnIndex("time"));
-                String[] entryStr = FavoritesEntryParser.toStringArray(entry,
-                        time);
-                writer.writeNext(entryStr);
-                count++;
+
+            @Override
+            protected void onPreExecute() {
+                getParent().setProgressBarIndeterminateVisibility(true);
             }
 
-            writer.flush();
-            writer.close();
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                CSVWriter writer = null;
+                Cursor c = null;
 
-            Analytics.event("favoritesExport", this);
-
-            String message = getResources().getString(
-                    R.string.favorites_exported);
-            Toast t = Toast.makeText(Favorites.this, String.format(message,
-                    exportFile, count), Toast.LENGTH_SHORT);
-            t.show();
-
-        } catch (IOException e) {
-            String message = getResources().getString(R.string.export_error);
-            Toast.makeText(Favorites.this,
-                    String.format(message, e.getMessage()), Toast.LENGTH_SHORT)
-                    .show();
-        } finally {
-            if (writer != null) {
                 try {
+                    c = filterCursor();
+                    writer = new CSVWriter(new FileWriter(exportFile));
+
+                    while (c.moveToNext()) {
+                        WwwjdicEntry entry = HistoryDbHelper
+                                .createWwwjdicEntry(c);
+                        long time = c.getLong(c.getColumnIndex("time"));
+                        String[] entryStr = FavoritesEntryParser.toStringArray(
+                                entry, time);
+                        writer.writeNext(entryStr);
+                        count++;
+                    }
+
+                    writer.flush();
                     writer.close();
+
+                    Analytics.event("favoritesExport", Favorites.this);
+
+                    return true;
                 } catch (IOException e) {
-                    Log.w(TAG, "error closing CSV writer", e);
+                    Log.e(TAG, "error exporting to file", e);
+                    exception = e;
+
+                    return false;
+                } finally {
+                    if (writer != null) {
+                        try {
+                            writer.close();
+                        } catch (IOException e) {
+                            Log.w(TAG, "error closing CSV writer", e);
+                        }
+                    }
+                    if (c != null) {
+                        c.close();
+                    }
                 }
             }
-            if (c != null) {
-                c.close();
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if (result) {
+                    String message = getResources().getString(
+                            R.string.favorites_exported);
+                    Toast t = Toast.makeText(Favorites.this, String.format(
+                            message, exportFile, count), Toast.LENGTH_SHORT);
+                    t.show();
+                } else {
+                    String message = getResources().getString(
+                            R.string.export_error);
+                    String errMessage = exception == null ? "Error" : exception
+                            .getMessage();
+                    Toast.makeText(Favorites.this,
+                            String.format(message, errMessage),
+                            Toast.LENGTH_SHORT).show();
+                }
+
+                getParent().setProgressBarIndeterminateVisibility(false);
             }
-        }
+        }.execute();
     }
 
     @Override
-    protected void doImport(String importFile) {
-        CSVReader reader = null;
-
-        db.beginTransaction();
-        try {
-            db.deleteAllFavorites();
-
-            reader = new CSVReader(new FileReader(importFile));
-            if (reader == null) {
-                return;
-            }
-
-            String[] record = null;
+    protected void doImport(final String importFile) {
+        new AsyncTask<Void, Void, Boolean>() {
+            Exception exception;
             int count = 0;
-            while ((record = reader.readNext()) != null) {
-                WwwjdicEntry entry = FavoritesEntryParser
-                        .fromStringArray(record);
-                long time = Long
-                        .parseLong(record[FavoritesEntryParser.TIME_IDX]);
-                db.addFavorite(entry, time);
-                count++;
+
+            @Override
+            protected void onPreExecute() {
+                getParent().setProgressBarIndeterminateVisibility(true);
             }
-            db.setTransactionSuccessful();
 
-            refresh();
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                CSVReader reader = null;
 
-            Analytics.event("favoritesImport", this);
-
-            String message = getResources().getString(
-                    R.string.favorites_imported);
-            Toast t = Toast.makeText(this, String.format(message, importFile,
-                    count), Toast.LENGTH_SHORT);
-            t.show();
-        } catch (IOException e) {
-            Log.e(TAG, "error importing favorites", e);
-            String message = getResources().getString(R.string.import_error);
-            Toast.makeText(this, String.format(message, e.getMessage()),
-                    Toast.LENGTH_SHORT).show();
-        } finally {
-            if (reader != null) {
+                db.beginTransaction();
                 try {
-                    reader.close();
+                    db.deleteAllFavorites();
+
+                    reader = new CSVReader(new FileReader(importFile));
+                    if (reader == null) {
+                        return false;
+                    }
+
+                    String[] record = null;
+                    int count = 0;
+                    while ((record = reader.readNext()) != null) {
+                        WwwjdicEntry entry = FavoritesEntryParser
+                                .fromStringArray(record);
+                        long time = Long
+                                .parseLong(record[FavoritesEntryParser.TIME_IDX]);
+                        db.addFavorite(entry, time);
+                        count++;
+                    }
+                    db.setTransactionSuccessful();
+
+                    Analytics.event("favoritesImport", Favorites.this);
+
+                    return true;
                 } catch (IOException e) {
-                    Log.w(TAG, "error closing CSV reader", e);
+                    Log.e(TAG, "error importing favorites", e);
+                    exception = e;
+
+                    return false;
+                } finally {
+                    if (reader != null) {
+                        try {
+                            reader.close();
+                        } catch (IOException e) {
+                            Log.w(TAG, "error closing CSV reader", e);
+                        }
+                    }
+                    db.endTransaction();
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if (result) {
+                    String message = getResources().getString(
+                            R.string.favorites_imported);
+                    Toast t = Toast.makeText(Favorites.this, String.format(
+                            message, importFile, count), Toast.LENGTH_SHORT);
+                    t.show();
+                } else {
+                    String message = getResources().getString(
+                            R.string.import_error);
+                    String errMessage = exception == null ? "Error" : exception
+                            .getMessage();
+                    Toast.makeText(Favorites.this,
+                            String.format(message, errMessage),
+                            Toast.LENGTH_SHORT).show();
                 }
 
+                refresh();
+
+                getParent().setProgressBarIndeterminateVisibility(false);
             }
-            db.endTransaction();
-        }
+        }.execute();
     }
 
     @Override

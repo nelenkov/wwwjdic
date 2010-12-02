@@ -2,7 +2,10 @@ package org.nick.wwwjdic.history;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
@@ -23,6 +26,7 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
@@ -54,6 +58,9 @@ public abstract class HistoryBase extends ListActivity {
     public static final int FILTER_KANJI = 1;
     public static final int FILTER_EXAMPLES = 2;
 
+    private static final byte[] UTF8_BOM = { (byte) 0xef, (byte) 0xbb,
+            (byte) 0xbf };
+
     protected HistoryDbHelper db;
 
     protected ClipboardManager clipboardManager;
@@ -67,6 +74,8 @@ public abstract class HistoryBase extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
@@ -103,6 +112,8 @@ public abstract class HistoryBase extends ListActivity {
     protected abstract int getContentView();
 
     protected abstract void setupAdapter();
+
+    protected abstract void resetAdapter(Cursor c);
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -397,6 +408,14 @@ public abstract class HistoryBase extends ListActivity {
         }
 
         return new CSVReader(new FileReader(importFile));
+    }
+
+    protected void writeBom(File exportFile) throws FileNotFoundException,
+            IOException {
+        OutputStream out = new FileOutputStream(exportFile);
+        out.write(UTF8_BOM);
+        out.flush();
+        out.close();
     }
 
 }
