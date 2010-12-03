@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Anki export.\n* Cross references in dictionary details.</string>
+    <string name="whats_new">* Favorites Anki export.\n* Cross references in dictionary details.\n* Added multiple meanings separator character setting (CSV export).\n* History/Favorites performance optimizations.\n* Added link to FAQ in About.</string>
 </resources>
