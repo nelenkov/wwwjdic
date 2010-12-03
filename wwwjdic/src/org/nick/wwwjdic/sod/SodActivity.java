@@ -14,15 +14,14 @@ import org.nick.wwwjdic.GzipStringResponseHandler;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.WwwjdicApplication;
+import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.StringUtils;
 
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -64,7 +63,8 @@ public class SodActivity extends WebServiceBackedActivity implements
                     }
                 } else {
                     Toast t = Toast.makeText(sodActivity,
-                            R.string.getting_sod_data_failed, Toast.LENGTH_SHORT);
+                            R.string.getting_sod_data_failed,
+                            Toast.LENGTH_SHORT);
                     t.show();
                 }
                 break;
@@ -85,9 +85,6 @@ public class SodActivity extends WebServiceBackedActivity implements
     private static final int REDRAW_SOD_MSG = 2;
 
     private static final String STROKE_PATH_LOOKUP_URL = "http://wwwjdic-android.appspot.com/kanji/";
-
-    private static final String PREF_SOD_ANIMATION_DELAY = "pref_sod_animation_delay";
-    private static final String PREF_SOD_TIMEOUT = "pref_sod_server_timeout";
 
     private static final String NOT_FOUND_STATUS = "not found";
 
@@ -159,7 +156,8 @@ public class SodActivity extends WebServiceBackedActivity implements
         this.strokes = new ArrayList<StrokePath>(strokes);
 
         strokeOrderView.setAnnotateStrokes(false);
-        final int animationDelay = getStrokeAnimationDelay();
+        final int animationDelay = WwwjdicPreferences
+                .getStrokeAnimationDelay(this);
 
         Runnable animationTask = new Runnable() {
             public void run() {
@@ -188,7 +186,7 @@ public class SodActivity extends WebServiceBackedActivity implements
     private HttpClient createHttpClient() {
         HttpClient result = new DefaultHttpClient();
         HttpParams httpParams = result.getParams();
-        int timeout = getSodServerTimeout();
+        int timeout = WwwjdicPreferences.getSodServerTimeout(this);
         HttpConnectionParams.setConnectionTimeout(httpParams, timeout);
         HttpConnectionParams.setSoTimeout(httpParams, timeout);
 
@@ -218,25 +216,6 @@ public class SodActivity extends WebServiceBackedActivity implements
         default:
             // do nothing
         }
-    }
-
-    private int getStrokeAnimationDelay() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        String delayStr = preferences
-                .getString(PREF_SOD_ANIMATION_DELAY, "700");
-
-        return Integer.parseInt(delayStr);
-    }
-
-    private int getSodServerTimeout() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        String delayStr = preferences.getString(PREF_SOD_TIMEOUT, "30");
-
-        return Integer.parseInt(delayStr) * 1000;
     }
 
     class GetStrokePathTask implements Runnable {

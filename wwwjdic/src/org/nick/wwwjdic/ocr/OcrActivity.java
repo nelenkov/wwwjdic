@@ -14,6 +14,7 @@ import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.SearchCriteria;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.Wwwjdic;
+import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.ocr.crop.CropImage;
 import org.nick.wwwjdic.utils.Analytics;
 
@@ -60,18 +61,10 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
     private static final String TAG = OcrActivity.class.getSimpleName();
 
-    private static final String WEOCR_DEFAULT_URL = "http://maggie.ocrgrid.org/cgi-bin/weocr/nhocr.cgi";
-
     // kind of arbitrary, but OCR seems to work fine with this, and we need to
     // keep picture size small for faster recognition
     private static final int MIN_PIXELS = 320 * 480;
     private static final int MAX_PIXELS = 640 * 480;
-
-    private static final String PREF_DUMP_CROPPED_IMAGES_KEY = "pref_ocr_dump_cropped_images";
-    private static final String PREF_WEOCR_URL_KEY = "pref_weocr_url";
-    private static final String PREF_WEOCR_TIMEOUT_KEY = "pref_weocr_timeout";
-
-    private static final String PREF_DIRECT_SEARCH_KEY = "pref_ocr_direct_search";
 
     private static final String IMAGE_CAPTURE_URI_KEY = "ocr.imageCaptureUri";
 
@@ -258,8 +251,9 @@ public class OcrActivity extends WebServiceBackedActivity implements
         @Override
         public void run() {
             try {
-                WeOcrClient client = new WeOcrClient(getWeocrUrl(),
-                        getWeocrTimeout());
+                WeOcrClient client = new WeOcrClient(WwwjdicPreferences
+                        .getWeocrUrl(OcrActivity.this), WwwjdicPreferences
+                        .getWeocrTimeout(OcrActivity.this));
                 String ocredText = client.sendLineOcrRequest(bitmap);
                 Log.d(TAG, "OCR result: " + ocredText);
 
@@ -352,13 +346,13 @@ public class OcrActivity extends WebServiceBackedActivity implements
                 Bitmap cropped = (Bitmap) data.getExtras()
                         .getParcelable("data");
                 try {
-                    if (isDumpCroppedImages()) {
+                    if (WwwjdicPreferences.isDumpCroppedImages(this)) {
                         dumpBitmap(cropped, "cropped-color.jpg");
                     }
 
                     Bitmap blackAndWhiteBitmap = convertToGrayscale(cropped);
 
-                    if (isDumpCroppedImages()) {
+                    if (WwwjdicPreferences.isDumpCroppedImages(this)) {
                         dumpBitmap(blackAndWhiteBitmap, "cropped.jpg");
                     }
 
@@ -377,36 +371,6 @@ public class OcrActivity extends WebServiceBackedActivity implements
                 t.show();
             }
         }
-    }
-
-    private boolean isDumpCroppedImages() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return preferences.getBoolean(PREF_DUMP_CROPPED_IMAGES_KEY, false);
-    }
-
-    private boolean isDirectSearch() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return preferences.getBoolean(PREF_DIRECT_SEARCH_KEY, false);
-    }
-
-    private int getWeocrTimeout() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        String timeoutStr = preferences.getString(PREF_WEOCR_TIMEOUT_KEY, "10");
-
-        return Integer.parseInt(timeoutStr) * 1000;
-    }
-
-    private String getWeocrUrl() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return preferences.getString(PREF_WEOCR_URL_KEY, WEOCR_DEFAULT_URL);
     }
 
     private Bitmap convertToGrayscale(Bitmap bitmap) {
@@ -646,7 +610,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
         TextView t = (TextView) findViewById(R.id.ocrredText);
         String key = t.getText().toString();
 
-        boolean isDirectSearch = isDirectSearch();
+        boolean isDirectSearch = WwwjdicPreferences.isDirectSearch(this);
         SearchCriteria criteria = null;
         Intent intent = new Intent(this, Wwwjdic.class);
         Bundle extras = new Bundle();

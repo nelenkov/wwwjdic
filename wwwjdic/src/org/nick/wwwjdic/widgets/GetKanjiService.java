@@ -27,6 +27,7 @@ import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicApplication;
+import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.utils.StringUtils;
 
 import android.app.PendingIntent;
@@ -35,9 +36,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -46,11 +45,6 @@ import android.widget.RemoteViews;
 public class GetKanjiService extends Service {
 
     private static final String TAG = GetKanjiService.class.getSimpleName();
-
-    private static final String DEFAULT_WWWJDIC_URL = "http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi";
-
-    private static final String PREF_WWWJDIC_URL_KEY = "pref_wwwjdic_mirror_url";
-    private static final String PREF_WWWJDIC_TIMEOUT_KEY = "pref_wwwjdic_timeout";
 
     private static final Pattern PRE_START_PATTERN = Pattern
             .compile("^<pre>.*$");
@@ -100,8 +94,9 @@ public class GetKanjiService extends Service {
                     R.layout.kod_widget);
             showLoading(views);
 
-            HttpClient client = createHttpClient(getWwwjdicUrl(),
-                    getHttpTimeoutSeconds() * 1000);
+            HttpClient client = createHttpClient(WwwjdicPreferences
+                    .getWwwjdicUrl(this), WwwjdicPreferences
+                    .getWwwjdicTimeoutSeconds(this) * 1000);
             String jisCode = jisGenerator.generate();
             Log.d(TAG, "KOD JIS: " + jisCode);
             String backdoorCode = generateBackdoorCode(jisCode);
@@ -110,8 +105,8 @@ public class GetKanjiService extends Service {
 
             for (int i = 0; i < NUM_RETRIES; i++) {
                 try {
-                    wwwjdicResponse = query(client, getWwwjdicUrl(),
-                            backdoorCode);
+                    wwwjdicResponse = query(client, WwwjdicPreferences
+                            .getWwwjdicUrl(this), backdoorCode);
                     if (wwwjdicResponse != null) {
                         break;
                     }
@@ -289,20 +284,4 @@ public class GetKanjiService extends Service {
         return buff.toString();
     }
 
-    private String getWwwjdicUrl() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return preferences.getString(PREF_WWWJDIC_URL_KEY, DEFAULT_WWWJDIC_URL);
-    }
-
-    private int getHttpTimeoutSeconds() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        String timeoutStr = preferences.getString(PREF_WWWJDIC_TIMEOUT_KEY,
-                "10");
-
-        return Integer.parseInt(timeoutStr);
-    }
 }
