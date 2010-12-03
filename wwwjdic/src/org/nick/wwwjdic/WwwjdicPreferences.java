@@ -41,6 +41,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     private CheckBoxPreference useKrPreference;
     private CheckBoxPreference autoSelectMirrorPreference;
     private ListPreference mirrorPreference;
+    private ListPreference defaultDictPreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,10 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         mirrorPreference = (ListPreference) findPreference(PREF_MIRROR_URL_KEY);
         mirrorPreference.setSummary(mirrorPreference.getEntry());
         mirrorPreference.setOnPreferenceChangeListener(this);
+
+        defaultDictPreference = (ListPreference) findPreference(PREF_DEFAULT_DICT_PREF_KEY);
+        defaultDictPreference.setSummary(defaultDictPreference.getEntry());
+        defaultDictPreference.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -86,6 +91,11 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
         if (PREF_MIRROR_URL_KEY.equals(preference.getKey())) {
             preference.setSummary(getMirrorName((String) newValue));
+        }
+
+        if (PREF_DEFAULT_DICT_PREF_KEY.equals(preference.getKey())) {
+            preference.setSummary(getDictionaryName(Integer
+                    .valueOf((String) newValue)));
         }
 
         return true;
@@ -167,6 +177,17 @@ public class WwwjdicPreferences extends PreferenceActivity implements
                 R.array.dictionary_codes_array);
 
         return dictionaries[getDefaultDictionaryIdx(context)];
+    }
+
+    private String getDictionaryName(int dictIdx) {
+        String[] dictionaryNames = getResources().getStringArray(
+                R.array.dictionaries_array);
+
+        if (dictIdx >= 0 && dictIdx < dictionaryNames.length) {
+            return dictionaryNames[dictIdx];
+        }
+
+        return "";
     }
 
     public static String getMeaningsSeparatorCharacter(Context context) {
