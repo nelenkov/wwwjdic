@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="whats_new_title">%sの新規機能</string>
+    <string name="whats_new">* お気に入りのAnki単語帳エックスポート。\n* 単語詳細画面に他の単語へのクロスレファレンスに対応。\n* CSVエックスポート用の複数訳区切り文字設定追加。\n* 検索履歴・お気に入りパフォーマンス改善。\n* 情報画面にFAQへのリンクを追加。</string>
+</resources>
