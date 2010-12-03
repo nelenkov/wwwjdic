@@ -182,6 +182,16 @@ public class Favorites extends HistoryBase implements
         if (accountNames.length != 0) {
             showDialog(ACCOUNTS_DIALOG_ID);
         } else {
+            // clean up temporary file
+            if (uploadData != null) {
+                if (uploadData.localFilename != null) {
+                    File f = new File(uploadData.localFilename);
+                    f.delete();
+                }
+                uploadData = null;
+            }
+
+            Log.w(TAG, "No suitable Google accounts found");
             Toast t = Toast.makeText(this, R.string.no_google_accounts,
                     Toast.LENGTH_LONG);
             t.show();
@@ -760,25 +770,65 @@ public class Favorites extends HistoryBase implements
 
     }
 
-    private void exportLocalCsv(boolean isKanji) {
-        try {
-            File exportFile = new File(WwwjdicApplication.getWwwjdicDir(),
-                    getCsvExportFilename(isKanji));
-            writeBom(exportFile);
+    private void exportLocalCsv(final boolean isKanji) {
+        new AsyncTask<Void, Void, Boolean>() {
+            Exception exception;
+            int count = 0;
+            String exportFilename;
 
-            Writer writer = new FileWriter(exportFile, true);
-            exportToCsv(exportFile.getAbsolutePath(), writer, true);
+            @Override
+            protected void onPreExecute() {
+                getParent().setProgressBarIndeterminateVisibility(true);
+            }
 
-            Analytics.event("favoritesLocalCsvExport", this);
-        } catch (IOException e) {
-            String message = getResources().getString(R.string.export_error);
-            Toast.makeText(Favorites.this,
-                    String.format(message, e.getMessage()), Toast.LENGTH_SHORT)
-                    .show();
-        }
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                try {
+                    File exportFile = new File(WwwjdicApplication
+                            .getWwwjdicDir(), getCsvExportFilename(isKanji));
+                    writeBom(exportFile);
+
+                    Writer writer = new FileWriter(exportFile, true);
+                    exportFilename = exportFile.getAbsolutePath();
+                    count = exportToCsv(exportFile.getAbsolutePath(), writer,
+                            false);
+
+                    Analytics.event("favoritesLocalCsvExport", Favorites.this);
+
+                    return true;
+                } catch (Exception e) {
+                    Log.e(TAG, "error exporting favorites", e);
+                    exception = e;
+
+                    return false;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if (result) {
+                    String message = getResources().getString(
+                            R.string.favorites_exported);
+                    Toast t = Toast
+                            .makeText(Favorites.this, String.format(message,
+                                    exportFilename, count), Toast.LENGTH_SHORT);
+                    t.show();
+                } else {
+                    String message = getResources().getString(
+                            R.string.export_error);
+                    String errMessage = exception == null ? "Error" : exception
+                            .getMessage();
+                    Toast.makeText(Favorites.this,
+                            String.format(message, errMessage),
+                            Toast.LENGTH_SHORT).show();
+                }
+
+                getParent().setProgressBarIndeterminateVisibility(false);
+            }
+        }.execute();
     }
 
-    private void exportToCsv(String exportFile, Writer w, boolean showMessages) {
+    private int exportToCsv(String exportFile, Writer w, boolean showMessages) {
         CSVWriter writer = null;
         Cursor c = null;
         try {
@@ -818,6 +868,8 @@ public class Favorites extends HistoryBase implements
                 t.show();
             }
 
+            return count;
+
         } catch (IOException e) {
             Log.d(TAG, "error exporting to CSV", e);
             if (showMessages) {
@@ -827,6 +879,8 @@ public class Favorites extends HistoryBase implements
                         String.format(message, e.getMessage()),
                         Toast.LENGTH_SHORT).show();
             }
+
+            return 0;
         } finally {
             if (writer != null) {
                 try {
@@ -850,32 +904,70 @@ public class Favorites extends HistoryBase implements
                 CSV_EXPORT_FILENAME_EXT);
     }
 
-    private void exportToGDocs(boolean isKanji) {
-        try {
-            Log.d(TAG, "exporting to Google docs...");
-            String filename = getCsvExportFilename(isKanji);
-            File tempFile = File.createTempFile("favorites-gdocs", ".csv",
-                    WwwjdicApplication.getWwwjdicDir());
-            tempFile.deleteOnExit();
-            Log.d(TAG, "temp file: " + tempFile.getAbsolutePath());
-            Log.d(TAG, "document filename: " + filename);
-
-            Writer writer = new FileWriter(tempFile, true);
-            exportToCsv(tempFile.getAbsolutePath(), writer, false);
-
-            uploadData = new UploadData();
-            uploadData.contentLength = tempFile.length();
-            uploadData.contentType = "text/csv";
-            uploadData.filename = filename;
-            uploadData.localFilename = tempFile.getAbsolutePath();
-
-            gotAccount(false);
-        } catch (IOException e) {
-            String message = getResources().getString(R.string.export_error);
-            Toast.makeText(Favorites.this,
-                    String.format(message, e.getMessage()), Toast.LENGTH_SHORT)
-                    .show();
+    private void exportToGDocs(final boolean isKanji) {
+        AccountManagerWrapper manager = AccountManagerWrapper.getInstance(this);
+        String[] accountNames = manager.getGoogleAccounts();
+        if (accountNames.length == 0) {
+            Log.w(TAG, "No suitable Google accounts found");
+            Toast t = Toast.makeText(this, R.string.no_google_accounts,
+                    Toast.LENGTH_LONG);
+            t.show();
+            return;
         }
+
+        new AsyncTask<Void, Void, Boolean>() {
+            Exception exception;
+
+            @Override
+            protected void onPreExecute() {
+                getParent().setProgressBarIndeterminateVisibility(true);
+            }
+
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                try {
+                    Log.d(TAG, "exporting to Google docs...");
+                    String filename = getCsvExportFilename(isKanji);
+                    File tempFile = File.createTempFile("favorites-gdocs",
+                            ".csv", WwwjdicApplication.getWwwjdicDir());
+                    tempFile.deleteOnExit();
+                    Log.d(TAG, "temp file: " + tempFile.getAbsolutePath());
+                    Log.d(TAG, "document filename: " + filename);
+
+                    Writer writer = new FileWriter(tempFile, true);
+                    exportToCsv(tempFile.getAbsolutePath(), writer, false);
+
+                    uploadData = new UploadData();
+                    uploadData.contentLength = tempFile.length();
+                    uploadData.contentType = "text/csv";
+                    uploadData.filename = filename;
+                    uploadData.localFilename = tempFile.getAbsolutePath();
+
+                    return true;
+                } catch (Exception e) {
+                    Log.e(TAG, "error creating temporary favorites file", e);
+                    exception = e;
+
+                    return false;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if (result) {
+                    gotAccount(false);
+                } else {
+                    String message = getResources().getString(
+                            R.string.export_error);
+                    String errMessage = exception == null ? "Error" : exception
+                            .getMessage();
+                    Toast.makeText(Favorites.this,
+                            String.format(message, errMessage),
+                            Toast.LENGTH_SHORT).show();
+                }
+                getParent().setProgressBarIndeterminateVisibility(false);
+            }
+        }.execute();
     }
 
     @Override
