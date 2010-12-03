@@ -1,6 +1,12 @@
 #summary Full changelog
 
 = Changelog =
+ * v1.6 (2010/12/03) Favorites Anki export
+  * Favorites Anki export.
+  * Cross references in dictionary details.
+  * Added multiple meanings separator character setting (for CSV export).
+  * History/Favorites performance optimizations.
+  * Added link to FAQ in About.
  * v1.55 (2010/11/27)  Kanji compound search
   * Added compound search to kanji details
   * Added update date to widget
