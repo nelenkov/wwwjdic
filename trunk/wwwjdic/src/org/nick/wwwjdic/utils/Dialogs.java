@@ -1,15 +1,12 @@
 package org.nick.wwwjdic.utils;
 
-import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.R.string;
+import org.nick.wwwjdic.WwwjdicPreferences;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 public class Dialogs {
 
@@ -27,12 +24,9 @@ public class Dialogs {
 
     public static void showTipOnce(Activity activity, String tipKey,
             int messageId) {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(activity);
-        String key = Constants.PREF_TIP_SHOWN + "_" + tipKey;
-        boolean tipShown = prefs.getBoolean(key, false);
+        boolean tipShown = WwwjdicPreferences.isTipShown(activity, tipKey);
         if (!tipShown) {
-            prefs.edit().putBoolean(key, true).commit();
+            WwwjdicPreferences.setTipShown(activity, tipKey);
 
             Dialog dialog = createTipDialog(activity, messageId);
             dialog.show();

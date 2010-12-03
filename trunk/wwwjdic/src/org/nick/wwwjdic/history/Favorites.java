@@ -31,7 +31,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -40,7 +39,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -76,8 +74,6 @@ public class Favorites extends HistoryBase implements
     private static final String GDATA_VERSION = "3";
 
     private static final int REQUEST_AUTHENTICATE = 0;
-
-    private static final String PREF_ACCOUNT_NAME_KEY = "pref_account_name";
 
     private static final int ACCOUNTS_DIALOG_ID = 1;
 
@@ -165,10 +161,7 @@ public class Favorites extends HistoryBase implements
     }
 
     private void gotAccount(boolean tokenExpired) {
-        SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        String accountName = settings.getString(PREF_ACCOUNT_NAME_KEY, null);
+        String accountName = WwwjdicPreferences.getGoogleAcountName(this);
         AccountManagerWrapper manager = AccountManagerWrapper.getInstance(this);
         String[] accountNames = manager.getGoogleAccounts();
         if (accountName != null) {
@@ -197,11 +190,8 @@ public class Favorites extends HistoryBase implements
 
     private void gotAccount(final AccountManagerWrapper manager,
             final String accountName) {
-        SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(PREF_ACCOUNT_NAME_KEY, accountName);
-        editor.commit();
+        WwwjdicPreferences.setGoogleAccountName(this, accountName);
+
         new Thread() {
 
             @Override

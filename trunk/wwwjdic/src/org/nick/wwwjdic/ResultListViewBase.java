@@ -14,20 +14,13 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 public abstract class ResultListViewBase<T> extends ListActivity implements
         ResultListView<T> {
 
     private static final String TAG = ResultListViewBase.class.getSimpleName();
-
-    private static final String DEFAULT_WWWJDIC_URL = "http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi";
-
-    private static final String PREF_WWWJDIC_URL_KEY = "pref_wwwjdic_mirror_url";
-    private static final String PREF_WWWJDIC_TIMEOUT_KEY = "pref_wwwjdic_timeout";
 
     protected SearchCriteria criteria;
 
@@ -131,20 +124,11 @@ public abstract class ResultListViewBase<T> extends ListActivity implements
     }
 
     protected String getWwwjdicUrl() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return preferences.getString(PREF_WWWJDIC_URL_KEY, DEFAULT_WWWJDIC_URL);
+        return WwwjdicPreferences.getWwwjdicUrl(this);
     }
 
     protected int getHttpTimeoutSeconds() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        String timeoutStr = preferences.getString(PREF_WWWJDIC_TIMEOUT_KEY,
-                "10");
-
-        return Integer.parseInt(timeoutStr);
+        return WwwjdicPreferences.getWwwjdicTimeoutSeconds(this);
     }
 
     protected void dismissProgressDialog() {

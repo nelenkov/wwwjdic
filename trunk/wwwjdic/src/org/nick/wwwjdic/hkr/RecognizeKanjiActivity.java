@@ -7,6 +7,7 @@ import org.nick.kanjirecognizer.hkr.CharacterRecognizer;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
+import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.ocr.WeOcrClient;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Dialogs;
@@ -15,7 +16,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,18 +37,6 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
     private static final String TAG = RecognizeKanjiActivity.class
             .getSimpleName();
-
-    private static final String KR_DEFAULT_URL = "http://kanji.sljfaq.org/kanji-0.016.cgi";
-
-    private static final String PREF_KR_URL_KEY = "pref_kr_url";
-    private static final String PREF_KR_TIMEOUT_KEY = "pref_kr_timeout";
-    private static final String PREF_KR_ANNOTATE = "pref_kr_annotate";
-    private static final String PREF_KR_ANNOTATE_MIDWAY = "pref_kr_annotate_midway";
-    private static final String PREF_KR_USE_KANJI_RECOGNIZER_KEY = "pref_kr_use_kanji_recognizer";
-
-    private static final String WEOCR_DEFAULT_URL = "http://maggie.ocrgrid.org/cgi-bin/weocr/nhocr.cgi";
-    private static final String PREF_WEOCR_URL_KEY = "pref_weocr_url";
-    private static final String PREF_WEOCR_TIMEOUT_KEY = "pref_weocr_timeout";
 
     private static final String KR_USAGE_TIP_DIALOG = "kr_usage";
 
@@ -88,8 +75,9 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         removeStrokeButton.setOnClickListener(this);
         clearButton.setOnClickListener(this);
 
-        drawView.setAnnotateStrokes(isAnnoateStrokes());
-        drawView.setAnnotateStrokesMidway(isAnnotateStrokesMidway());
+        drawView.setAnnotateStrokes(WwwjdicPreferences.isAnnoateStrokes(this));
+        drawView.setAnnotateStrokesMidway(WwwjdicPreferences
+                .isAnnotateStrokesMidway(this));
 
         drawView.requestFocus();
 
@@ -114,7 +102,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
         Analytics.startSession(this);
 
-        if (isUseKanjiRecognizer() && !bound) {
+        if (WwwjdicPreferences.isUseKanjiRecognizer(this) && !bound) {
             boolean success = bindService(new Intent(
                     "org.nick.kanjirecognizer.hkr.RECOGNIZE_KANJI"),
                     connection, Context.BIND_AUTO_CREATE);
@@ -143,8 +131,9 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     protected void onResume() {
         super.onResume();
 
-        drawView.setAnnotateStrokes(isAnnoateStrokes());
-        drawView.setAnnotateStrokesMidway(isAnnotateStrokesMidway());
+        drawView.setAnnotateStrokes(WwwjdicPreferences.isAnnoateStrokes(this));
+        drawView.setAnnotateStrokesMidway(WwwjdicPreferences
+                .isAnnotateStrokesMidway(this));
     }
 
     private void findViews() {
@@ -221,7 +210,10 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         public void run() {
             try {
                 KanjiRecognizerClient krClient = new KanjiRecognizerClient(
-                        getKrUrl(), getKrTimeout());
+                        WwwjdicPreferences
+                                .getKrUrl(RecognizeKanjiActivity.this),
+                        WwwjdicPreferences
+                                .getKrTimeout(RecognizeKanjiActivity.this));
                 String[] results = krClient
                         .recognize(strokes, isUseLookahead());
                 Log.i(TAG, "go KR result " + Arrays.asList(results));
@@ -237,43 +229,6 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                 handler.sendMessage(msg);
             }
         }
-    }
-
-    private int getKrTimeout() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        String timeoutStr = preferences.getString(PREF_KR_TIMEOUT_KEY, "10");
-
-        return Integer.parseInt(timeoutStr) * 1000;
-    }
-
-    private String getKrUrl() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return preferences.getString(PREF_KR_URL_KEY, KR_DEFAULT_URL);
-    }
-
-    private boolean isAnnotateStrokesMidway() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return preferences.getBoolean(PREF_KR_ANNOTATE_MIDWAY, false);
-    }
-
-    private boolean isAnnoateStrokes() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return preferences.getBoolean(PREF_KR_ANNOTATE, true);
-    }
-
-    private boolean isUseKanjiRecognizer() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return preferences.getBoolean(PREF_KR_USE_KANJI_RECOGNIZER_KEY, false);
     }
 
     private boolean isUseLookahead() {
@@ -322,8 +277,10 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         @Override
         public void run() {
             try {
-                WeOcrClient client = new WeOcrClient(getWeocrUrl(),
-                        getWeocrTimeout());
+                WeOcrClient client = new WeOcrClient(WwwjdicPreferences
+                        .getWeocrUrl(RecognizeKanjiActivity.this),
+                        WwwjdicPreferences
+                                .getWeocrTimeout(RecognizeKanjiActivity.this));
                 String[] candidates = client.sendCharacterOcrRequest(bitmap,
                         NUM_OCR_CANDIDATES);
 
@@ -345,22 +302,6 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                 handler.sendMessage(msg);
             }
         }
-    }
-
-    private int getWeocrTimeout() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        String timeoutStr = preferences.getString(PREF_WEOCR_TIMEOUT_KEY, "10");
-
-        return Integer.parseInt(timeoutStr) * 1000;
-    }
-
-    private String getWeocrUrl() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return preferences.getString(PREF_WEOCR_URL_KEY, WEOCR_DEFAULT_URL);
     }
 
     private Bitmap drawingToBitmap() {
@@ -397,7 +338,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     private void recognizeKanji() {
         List<Stroke> strokes = drawView.getStrokes();
 
-        if (isUseKanjiRecognizer()) {
+        if (WwwjdicPreferences.isUseKanjiRecognizer(this)) {
             if (recognizer == null) {
                 Toast t = Toast.makeText(this, R.string.kr_not_initialized,
                         Toast.LENGTH_SHORT);

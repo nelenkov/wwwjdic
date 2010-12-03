@@ -7,9 +7,7 @@ import android.app.Dialog;
 import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Window;
 import android.widget.TabHost;
 
@@ -25,10 +23,7 @@ public class Wwwjdic extends TabActivity {
     private static final int EXAMPLE_SEARRCH_TAB_IDX = 2;
     private static final String EXAMPLE_SEARCH_TAB = "exampleSearchTab";
 
-    private static final String PREF_WHATS_NEW_SHOWN = "pref_whats_new_shown";
-
     private static final String DONATE_VERSION_PACKAGE = "org.nick.wwwjdic.donate";
-    private static final String PREF_DONATION_THANKS_SHOWN = "pref_donation_thanks_shown";
 
     /** Called when the activity is first created. */
     @Override
@@ -41,7 +36,8 @@ public class Wwwjdic extends TabActivity {
 
         setupTabs();
 
-        if (!isDonateVersion() || isDonationThanksShown()) {
+        if (!isDonateVersion()
+                || WwwjdicPreferences.isDonationThanksShown(this)) {
             showWhatsNew();
         }
 
@@ -53,21 +49,11 @@ public class Wwwjdic extends TabActivity {
             return;
         }
 
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        String key = PREF_DONATION_THANKS_SHOWN;
-        boolean thanksShown = prefs.getBoolean(key, false);
+        boolean thanksShown = WwwjdicPreferences.isDonationThanksShown(this);
         if (!thanksShown) {
-            prefs.edit().putBoolean(key, true).commit();
+            WwwjdicPreferences.setDonationThanksShown(this);
             showDialog(DONATION_THANKS_DIALOG_ID);
         }
-    }
-
-    private boolean isDonationThanksShown() {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        return prefs.getBoolean(PREF_DONATION_THANKS_SHOWN, false);
     }
 
     private boolean isDonateVersion() {
@@ -96,12 +82,10 @@ public class Wwwjdic extends TabActivity {
     }
 
     private void showWhatsNew() {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        String key = PREF_WHATS_NEW_SHOWN + "_" + getVersionName();
-        boolean whatsNewShown = prefs.getBoolean(key, false);
+        boolean whatsNewShown = WwwjdicPreferences.isWhatsNewShown(this,
+                getVersionName());
         if (!whatsNewShown) {
-            prefs.edit().putBoolean(key, true).commit();
+            WwwjdicPreferences.setWhantsNewShown(this, getVersionName());
             showDialog(WHATS_NEW_DIALOG_ID);
         }
     }

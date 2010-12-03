@@ -30,12 +30,6 @@ public class WwwjdicApplication extends Application {
 
     private static final String WWWJDIC_DIR = "wwwjdic";
 
-    private static final String PREF_AUTO_SELECT_MIRROR_KEY = "pref_auto_select_mirror";
-    private static final String PREF_WWWJDIC_URL_KEY = "pref_wwwjdic_mirror_url";
-
-    private static final String PREF_KR_URL_KEY = "pref_kr_url";
-    private static final String KR_URL = "http://kanji.sljfaq.org/kanji-0.016.cgi";
-
     private ExecutorService executorService;
 
     private LocationManager locationManager;
@@ -70,11 +64,13 @@ public class WwwjdicApplication extends Application {
     private void updateKanjiRecognizerUrl() {
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(this);
-        String krUrl = prefs.getString(PREF_KR_URL_KEY, KR_URL);
+        String krUrl = prefs.getString(WwwjdicPreferences.PREF_KR_URL_KEY,
+                WwwjdicPreferences.KR_DEFAULT_URL);
         if (krUrl.contains("kanji.cgi")) {
-            Log.d(TAG, "found old KR URL, will overwrite with " + KR_URL);
-            prefs.edit().putString(PREF_KR_URL_KEY, KR_URL)
-                .commit();
+            Log.d(TAG, "found old KR URL, will overwrite with "
+                    + WwwjdicPreferences.KR_DEFAULT_URL);
+            prefs.edit().putString(WwwjdicPreferences.PREF_KR_URL_KEY,
+                    WwwjdicPreferences.KR_DEFAULT_URL).commit();
         }
     }
 
@@ -82,7 +78,8 @@ public class WwwjdicApplication extends Application {
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(this);
 
-        return prefs.getBoolean(PREF_AUTO_SELECT_MIRROR_KEY, true);
+        return prefs.getBoolean(WwwjdicPreferences.PREF_AUTO_SELECT_MIRROR_KEY,
+                true);
     }
 
     public synchronized void setMirrorBasedOnLocation() {
@@ -145,8 +142,8 @@ public class WwwjdicApplication extends Application {
                 minDistance / 1000));
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(this);
-        prefs.edit().putString(PREF_WWWJDIC_URL_KEY, mirrorUrls[mirrorIdx])
-                .commit();
+        prefs.edit().putString(WwwjdicPreferences.PREF_WWWJDIC_MIRROR_URL_KEY,
+                mirrorUrls[mirrorIdx]).commit();
     }
 
     private void createWwwjdicDirIfNecessary() {
