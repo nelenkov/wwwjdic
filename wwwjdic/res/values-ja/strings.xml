@@ -163,8 +163,8 @@
     <string name="select_radical">部首選択</string>
     <string name="copied_to_clipboard">「%s」をコピーしました</string>
     <string name="details_for">「%s」の詳細</string>
-    <string name="results_for">該当件数: %d件 (「%s」で検索)</string>
-    <string name="examples_for">例文件数: %d件 (「%s」で検索)</string>
+    <string name="results_for">該当件数: %1$d件 (「%2$s」で検索)</string>
+    <string name="examples_for">例文件数: %1$d件 (「%2$s」で検索)</string>
     <string name="sod_for">「%s」の書き順</string>
     <string name="doing_ocr">OCR処理中...</string>
     <string name="candidates">候補: %d件</string>
@@ -179,10 +179,10 @@
     </string>
     <string name="import_items">インポート</string>
     <string name="export_items">エクスポート</string>
-    <string name="favorites_exported">お気に入りを%sにエックスポートしました (%d件)</string>
-    <string name="favorites_imported">お気に入りを%sからインポートしました (%d件)</string>
-    <string name="history_exported">検索履歴を%sにエックスポートしました (%d件)</string>
-    <string name="history_imported">検索履歴を%sからインポートしました (%d件)</string>
+    <string name="favorites_exported">お気に入りを%1$sにエックスポートしました (%2$d件)</string>
+    <string name="favorites_imported">お気に入りを%1$sからインポートしました (%2$d件)</string>
+    <string name="history_exported">検索履歴を%1$sにエックスポートしました (%2$d件)</string>
+    <string name="history_imported">検索履歴を%1$sからインポートしました (%2$d件)</string>
     <string name="filter">フィルタ</string>
     <string name="select_filter_type">種別選択:</string>
     <string-array name="filter_types_history">
