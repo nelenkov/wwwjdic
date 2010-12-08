@@ -6,7 +6,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/Wwwjdic/lib/opencsv-2.2.jar"/>
 	<classpathentry kind="lib" path="C:/home/nick/android/Wwwjdic/wwwjdic/lib/FlurryAgent.jar"/>
-	<classpathentry kind="src" path="Wwwjdic_src"/>
 	<classpathentry kind="lib" path="/Wwwjdic/lib/google-api-client-escape-1.2.1-alpha.jar"/>
 	<classpathentry kind="lib" path="/Wwwjdic/lib/google-api-client-googleapis-1.2.1-alpha.jar"/>
 	<classpathentry kind="lib" path="/Wwwjdic/lib/google-api-client-http-1.2.1-alpha.jar"/>
