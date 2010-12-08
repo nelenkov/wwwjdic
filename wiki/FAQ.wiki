@@ -40,4 +40,6 @@ Or, simply use !OpenOffice, it lets you specify parameters at import time (and g
 
 A: Most probably not. Or it will be a completely different application. After all, this one has 'WWW' in its name :) If you need an offline kanji reference, try Kanji Recognizer.  
 
+== Q: Why can't I find the widget? ==
 
+A: If you moved the app to the SD card, the widget cannot be used. Unfortunately that's how Android works. You are not alone, other people are complaining too:  see [http://code.google.com/p/android/issues/detail?id=8555 Issue 8555] :)
