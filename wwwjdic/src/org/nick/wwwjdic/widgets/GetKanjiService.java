@@ -171,25 +171,19 @@ public class GetKanjiService extends Service {
         views.setViewVisibility(R.id.kod_message_text, View.VISIBLE);
         views.setTextViewText(R.id.kod_message_text, getResources().getString(
                 R.string.error));
-        views.setViewVisibility(R.id.kod_text, View.GONE);
-        views.setViewVisibility(R.id.kod_footer_text, View.GONE);
-        views.setViewVisibility(R.id.kod_date_text, View.GONE);
+        views.setViewVisibility(R.id.widget, View.GONE);
     }
 
     private void showLoading(RemoteViews views) {
         views.setTextViewText(R.id.kod_message_text, getResources().getString(
                 R.string.widget_loading));
         views.setViewVisibility(R.id.kod_message_text, View.VISIBLE);
-        views.setViewVisibility(R.id.kod_text, View.GONE);
-        views.setViewVisibility(R.id.kod_footer_text, View.GONE);
-        views.setViewVisibility(R.id.kod_date_text, View.GONE);
+        views.setViewVisibility(R.id.widget, View.GONE);
     }
 
     private void clearLoading(RemoteViews views) {
         views.setViewVisibility(R.id.kod_message_text, View.GONE);
-        views.setViewVisibility(R.id.kod_text, View.VISIBLE);
-        views.setViewVisibility(R.id.kod_footer_text, View.VISIBLE);
-        views.setViewVisibility(R.id.kod_date_text, View.VISIBLE);
+        views.setViewVisibility(R.id.widget, View.VISIBLE);
     }
 
     private HttpClient createHttpClient(String url, int timeoutMillis) {
