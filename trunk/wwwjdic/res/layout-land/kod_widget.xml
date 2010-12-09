@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content"
     android:gravity="center" 
+    android:measureAllChildren="true"
     android:background="@drawable/appwidget_bg">
-    <LinearLayout android:id="@+id/btn"
-        android:layout_width="0dip" 
-        android:layout_weight="1"
+    <TextView android:id="@+id/kod_message_text"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:textColor="@color/yellow" 
+        android:gravity="center"
+        android:text="@string/widget_loading"
+        style="@style/kod_loading">
+    </TextView> 
+    <LinearLayout android:id="@+id/widget"
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"
         android:background="@drawable/appwidget_button"
         android:clickable="true" 
         android:focusable="true"
-        android:orientation="vertical">
-        <TextView android:id="@+id/kod_message_text"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:textColor="@color/yellow" 
-            android:gravity="center"
-            android:text="@string/widget_loading"
-            style="@style/kod_loading">
-        </TextView> 
+        android:orientation="vertical"
+        android:visibility="gone">
         <TextView android:id="@+id/kod_date_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="top|center"
             android:textColor="@color/yellow" 
             android:textStyle="bold"
             android:textSize="9sp"
             android:includeFontPadding="false"
-            android:paddingTop="3dip"
-            android:visibility="gone"></TextView> 
+            android:paddingTop="3dip"></TextView> 
         <TextView android:id="@+id/kod_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -38,18 +38,16 @@
             android:textStyle="bold"
             android:textSize="16sp" 
             android:text="E"
-            android:includeFontPadding="false"
-            android:visibility="gone"></TextView>
+            android:includeFontPadding="false"></TextView>
         <TextView android:id="@+id/kod_footer_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/yellow" 
-            android:gravity="center"
+            android:gravity="bottom|center"
             android:textStyle="bold"
             android:textSize="9sp"
             android:text="@string/kanji_of_the_day_jp"
             android:includeFontPadding="false"
-            android:paddingBottom="3dip"
-            android:visibility="gone"></TextView>    
+            android:paddingBottom="3dip"></TextView>    
     </LinearLayout>
-</LinearLayout>
+</FrameLayout>
