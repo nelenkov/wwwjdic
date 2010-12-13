@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:gravity="center" 
     android:measureAllChildren="true"
-    android:background="@drawable/appwidget_bg">
+    android:background="@drawable/proba">
   <TextView android:id="@+id/kod_message_text"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -15,7 +15,7 @@
         style="@style/kod_loading"
         android:visibility="visible">
     </TextView> 
-    <LinearLayout android:id="@+id/widget"
+    <RelativeLayout android:id="@+id/widget"
         android:layout_width="fill_parent" 
         android:layout_height="fill_parent"
         android:background="@drawable/appwidget_button"
@@ -31,16 +31,18 @@
             android:textStyle="bold"
             android:textSize="9sp"
             android:includeFontPadding="false"
-            android:paddingTop="3dip"/>
+            android:paddingTop="3dip"
+            android:layout_alignParentTop="true"/>
         <TextView android:id="@+id/kod_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/white" 
             android:textStyle="bold"
-            android:textSize="38sp" 
+            android:textSize="48sp" 
             android:text="E"
-            android:includeFontPadding="false"></TextView>
+            android:includeFontPadding="false"
+            android:layout_below="@id/kod_date_text"/>
         <TextView android:id="@+id/kod_footer_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -50,6 +52,7 @@
             android:textSize="9sp"
             android:text="@string/kanji_of_the_day_jp"
             android:includeFontPadding="false"
-            android:paddingBottom="3dip"></TextView>    
-    </LinearLayout>
+            android:paddingBottom="3dip"
+            android:layout_alignParentBottom="true"></TextView>    
+    </RelativeLayout>
 </FrameLayout>
