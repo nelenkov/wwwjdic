@@ -181,7 +181,7 @@ public class WwwjdicApplication extends Application {
         try {
             in = assetManager.open("keys");
 
-            return readTextFile(in);
+            return readTextFile(in).trim();
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
