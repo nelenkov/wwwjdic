@@ -67,6 +67,9 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     public static final String PREF_TIP_SHOWN = "pref_tip_shown";
 
+    public static final String PREF_KOD_LEVEL1_ONLY_KEY = "pref kod_level_one_only";
+    public static final String PREF_KOD_SHOW_READING_KEY = "pref_kod_show_reading";
+
     private CheckBoxPreference useKrPreference;
     private CheckBoxPreference autoSelectMirrorPreference;
     private ListPreference mirrorPreference;
@@ -397,4 +400,37 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         String key = PREF_TIP_SHOWN + "_" + tipKey;
         prefs.edit().putBoolean(key, true).commit();
     }
+
+    private static void saveBooleanPref(Context context, String key,
+            boolean value) {
+        SharedPreferences.Editor prefs = PreferenceManager
+                .getDefaultSharedPreferences(context).edit();
+        prefs.putBoolean(key, value);
+        prefs.commit();
+    }
+
+    private static boolean getBooleanPref(Context context, String key,
+            boolean defValue) {
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(context);
+
+        return prefs.getBoolean(key, defValue);
+    }
+
+    public static void setKodLevelOneOnly(Context context, boolean levelOneOnly) {
+        saveBooleanPref(context, PREF_KOD_LEVEL1_ONLY_KEY, levelOneOnly);
+    }
+
+    public static void setKodShowReading(Context context, boolean showReading) {
+        saveBooleanPref(context, PREF_KOD_SHOW_READING_KEY, showReading);
+    }
+
+    public static boolean isKodLevelOneOnly(Context context) {
+        return getBooleanPref(context, PREF_KOD_LEVEL1_ONLY_KEY, false);
+    }
+
+    public static boolean isKodShowReading(Context context) {
+        return getBooleanPref(context, PREF_KOD_SHOW_READING_KEY, false);
+    }
+
 }

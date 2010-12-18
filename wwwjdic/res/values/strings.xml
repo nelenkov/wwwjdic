@@ -453,4 +453,7 @@
         <item>/</item>
     </string-array>
     <string name="faq_link"><a href="http://code.google.com/p/wwwjdic/wiki/FAQ">FAQ</a></string>
+    <string name="kod_widget_configuration">Kanji of the day widget configuration</string>
+    <string name="limit_to_frequently_used_kanji">Limit to frequently used kanji</string>
+    <string name="display_reading_and_meaning">Display reading and meaning</string>
 </resources>

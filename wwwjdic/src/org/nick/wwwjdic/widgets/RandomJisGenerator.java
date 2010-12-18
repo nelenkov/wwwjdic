@@ -19,13 +19,27 @@ public class RandomJisGenerator {
     private static final int KANJI_END_LINE = 83;
     private static final int NUM_KANJI_LAST_LINE = 6;
 
+    private static final int LEVEL1_START_LINE = 16;
+    private static final int LEVEL1_END_LINE = 47;
+
     private static final int OFFSET = 33;
 
     private Random random = new Random();
 
     public String generate() {
-        int line = random.nextInt(KANJI_END_LINE - KANJI_START_LINE + 1)
-                + KANJI_START_LINE;
+        return generate(false);
+    }
+
+    public String generate(boolean limitToLevelOne) {
+        int startLine = KANJI_START_LINE;
+        int endLine = KANJI_END_LINE;
+
+        if (limitToLevelOne) {
+            startLine = LEVEL1_START_LINE;
+            endLine = LEVEL1_END_LINE;
+        }
+        int line = random.nextInt(endLine - startLine + 1) + startLine;
+
         int column = 0;
         if (line != KANJI_END_LINE) {
             column = random.nextInt(JIS_GRID_SIZE);

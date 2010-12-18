@@ -313,4 +313,7 @@
         <item>空白</item>
         <item>スラッシュ(/)</item>
     </string-array>
+    <string name="kod_widget_configuration">今日の漢字ウィジェット設定</string>
+    <string name="limit_to_frequently_used_kanji">よく使われる漢字のみ</string>
+    <string name="display_reading_and_meaning">読みと英語訳を表示する</string>
 </resources>
