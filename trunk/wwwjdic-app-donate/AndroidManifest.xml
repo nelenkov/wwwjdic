@@ -53,6 +53,13 @@
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name="org.nick.wwwjdic.sod.SodActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
+            
+        <activity android:name="org.nick.wwwjdic.widgets.KodWidgetConfigure" 
+            android:label="@string/kod_widget_configuration">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
 
         <receiver android:name="org.nick.wwwjdic.widgets.KodWidgetProvider"
             android:label="@string/kanji_of_the_day">

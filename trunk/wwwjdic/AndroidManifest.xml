@@ -51,6 +51,11 @@
         <activity android:name=".history.FavoritesAndHistory"></activity>
         <activity android:name=".sod.SodActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
+        <activity android:name=".widget.KodWidgetConfigure">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>    
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>

@@ -97,7 +97,8 @@ public class GetKanjiService extends Service {
             HttpClient client = createHttpClient(WwwjdicPreferences
                     .getWwwjdicUrl(this), WwwjdicPreferences
                     .getWwwjdicTimeoutSeconds(this) * 1000);
-            String jisCode = jisGenerator.generate();
+            String jisCode = jisGenerator.generate(WwwjdicPreferences
+                    .isKodLevelOneOnly(context));
             Log.d(TAG, "KOD JIS: " + jisCode);
             String backdoorCode = generateBackdoorCode(jisCode);
             Log.d(TAG, "backdoor code: " + backdoorCode);
