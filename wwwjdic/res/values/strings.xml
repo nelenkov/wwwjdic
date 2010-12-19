@@ -189,7 +189,8 @@
         <item>040:43:00/074:00:00</item>
     </string-array>
     <string-array name="wwwjdic_mirror_urls">
-        <item>http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi</item>
+        <item>http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi
+        </item>
         <item>http://ryouko.imsb.nrc.ca/cgi-bin/wwwjdic</item>
         <item>http://jp.celltica.com/cgi-bin/wwwjdic</item>
         <item>http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi</item>
@@ -245,7 +246,8 @@
     <string name="favorites">Favorites</string>
     <string name="search_history">Search history</string>
     <string name="favorites_hist">Favorites/Hist.</string>
-    <string name="uses_kanjivg">Uses KanjiVG data, (C) 2009/2010 Ulrich Apel</string>
+    <string name="uses_kanjivg">Uses KanjiVG data, (C) 2009/2010 Ulrich Apel
+    </string>
     <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
     <!--  for cropper -->
     <string name="crop_save_text">Crop</string>
@@ -273,7 +275,8 @@
     <string name="select_radical">Select radical</string>
     <string name="copied_to_clipboard">\'%s\' copied to clipboard</string>
     <string name="details_for">Details for \'%s\'</string>
-    <string name="results_for" >%1$d result(s) for \'%1$s\'</string>
+    <string name="results_for">%1$d result(s) for \'%1$s\'
+    </string>
     <string name="examples_for">%1$d example(s) for \'%1$s\'</string>
     <string name="sod_for">Stroke order diagram for \'%s\'</string>
     <string name="doing_ocr">OCR in progress...</string>
@@ -289,8 +292,10 @@
         dictionary screen for editing before search.</string>
     <string name="import_items">Import</string>
     <string name="export_items">Export</string>
-    <string name="favorites_exported">Favorites exported to %1$s (%1$d item(s))</string>
-    <string name="favorites_imported">Favorites imported from %1$s (%1$d item(s))</string>
+    <string name="favorites_exported">Favorites exported to %1$s (%1$d item(s))
+    </string>
+    <string name="favorites_imported">Favorites imported from %1$s (%1$d item(s))
+    </string>
     <string name="history_exported">Search history exported to %1$s (%1$d item(s))
     </string>
     <string name="history_imported">Search history imported from %1$s (%1$d item(s))
@@ -452,8 +457,23 @@
         <item>space</item>
         <item>/</item>
     </string-array>
-    <string name="faq_link"><a href="http://code.google.com/p/wwwjdic/wiki/FAQ">FAQ</a></string>
+    <string name="faq_link">
+        <a href="http://code.google.com/p/wwwjdic/wiki/FAQ">FAQ</a>
+    </string>
     <string name="kod_widget_configuration">Kanji of the day widget configuration</string>
     <string name="limit_to_frequently_used_kanji">Limit to frequently used kanji</string>
     <string name="display_reading_and_meaning">Display reading and meaning</string>
+    <string-array name="kod_update_times">
+        <item>24 hours</item>
+        <item>12 hours</item>
+        <item>6 hours</item>
+        <item>2 minutes</item>
+    </string-array>
+    <string name="widget_update_interval">Widget update interval</string>
+    <string name="update_interval">Update interval:</string>
+    <string name="kod_configure_message">Select display and update options for the kanji
+        of the day
+        widget below. Options are global, so all widgets will
+        be
+        affected.</string>
 </resources>

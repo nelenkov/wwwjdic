@@ -20,6 +20,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 public class WwwjdicPreferences extends PreferenceActivity implements
@@ -69,6 +70,9 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     public static final String PREF_KOD_LEVEL1_ONLY_KEY = "pref kod_level_one_only";
     public static final String PREF_KOD_SHOW_READING_KEY = "pref_kod_show_reading";
+    public static final String PREF_KOD_UPDATE_INTERAVL_KEY = "pref_kod_update_interval";
+
+    public static final long KOD_DEFAULT_UPDATE_INTERVAL = 24 * DateUtils.HOUR_IN_MILLIS;
 
     private CheckBoxPreference useKrPreference;
     private CheckBoxPreference autoSelectMirrorPreference;
@@ -196,8 +200,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     }
 
     public static int getDefaultDictionaryIdx(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences preferences = getPrefs(context);
 
         String idxStr = preferences.getString(PREF_DEFAULT_DICT_PREF_KEY, "0");
 
@@ -223,23 +226,20 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     }
 
     public static String getMeaningsSeparatorCharacter(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences preferences = getPrefs(context);
 
         return preferences.getString(PREF_EXPORT_MEANINGS_SEPARATOR_CHAR, "\n");
     }
 
     public static String getWwwjdicUrl(Context context) {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences prefs = getPrefs(context);
 
         return prefs
                 .getString(PREF_WWWJDIC_MIRROR_URL_KEY, DEFAULT_WWWJDIC_URL);
     }
 
     public static int getWwwjdicTimeoutSeconds(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences preferences = getPrefs(context);
 
         String timeoutStr = preferences.getString(PREF_WWWJDIC_TIMEOUT_KEY,
                 "10");
@@ -248,8 +248,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     }
 
     public static int getKrTimeout(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences preferences = getPrefs(context);
 
         String timeoutStr = preferences.getString(PREF_KR_TIMEOUT_KEY, "10");
 
@@ -257,36 +256,31 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     }
 
     public static String getKrUrl(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences preferences = getPrefs(context);
 
         return preferences.getString(PREF_KR_URL_KEY, KR_DEFAULT_URL);
     }
 
     public static boolean isAnnotateStrokesMidway(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences preferences = getPrefs(context);
 
         return preferences.getBoolean(PREF_KR_ANNOTATE_MIDWAY, false);
     }
 
     public static boolean isAnnoateStrokes(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences preferences = getPrefs(context);
 
         return preferences.getBoolean(PREF_KR_ANNOTATE, true);
     }
 
     public static boolean isUseKanjiRecognizer(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences preferences = getPrefs(context);
 
         return preferences.getBoolean(PREF_KR_USE_KANJI_RECOGNIZER_KEY, false);
     }
 
     public static int getWeocrTimeout(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences preferences = getPrefs(context);
 
         String timeoutStr = preferences.getString(PREF_WEOCR_TIMEOUT_KEY, "10");
 
@@ -294,29 +288,25 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     }
 
     public static String getWeocrUrl(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences preferences = getPrefs(context);
 
         return preferences.getString(PREF_WEOCR_URL_KEY, WEOCR_DEFAULT_URL);
     }
 
     public static boolean isDumpCroppedImages(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences preferences = getPrefs(context);
 
         return preferences.getBoolean(PREF_DUMP_CROPPED_IMAGES_KEY, false);
     }
 
     public static boolean isDirectSearch(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences preferences = getPrefs(context);
 
         return preferences.getBoolean(PREF_DIRECT_SEARCH_KEY, false);
     }
 
     public static int getStrokeAnimationDelay(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences preferences = getPrefs(context);
 
         String delayStr = preferences
                 .getString(PREF_SOD_ANIMATION_DELAY, "700");
@@ -325,8 +315,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     }
 
     public static int getSodServerTimeout(Context context) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences preferences = getPrefs(context);
 
         String delayStr = preferences.getString(PREF_SOD_TIMEOUT, "30");
 
@@ -334,44 +323,38 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     }
 
     public static String getGoogleAcountName(Context context) {
-        SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences settings = getPrefs(context);
 
         return settings.getString(PREF_ACCOUNT_NAME_KEY, null);
     }
 
     public static synchronized void setGoogleAccountName(Context context,
             String accountName) {
-        SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences settings = getPrefs(context);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(PREF_ACCOUNT_NAME_KEY, accountName);
         editor.commit();
     }
 
     public static boolean isAnalyticsEnabled(Context ctx) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(ctx);
+        SharedPreferences preferences = getPrefs(ctx);
 
         return preferences.getBoolean(PREF_ENABLE_ANALYTICS_KEY, true);
     }
 
     public static boolean isDonationThanksShown(Context context) {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences prefs = getPrefs(context);
 
         return prefs.getBoolean(PREF_DONATION_THANKS_SHOWN, false);
     }
 
     public static synchronized void setDonationThanksShown(Context context) {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences prefs = getPrefs(context);
         prefs.edit().putBoolean(PREF_DONATION_THANKS_SHOWN, true).commit();
     }
 
     public static boolean isWhatsNewShown(Context context, String versionName) {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences prefs = getPrefs(context);
         String key = WwwjdicPreferences.PREF_WHATS_NEW_SHOWN + "_"
                 + versionName;
         return prefs.getBoolean(key, false);
@@ -379,42 +362,49 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     public static synchronized void setWhantsNewShown(Context context,
             String versionName) {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences prefs = getPrefs(context);
         String key = WwwjdicPreferences.PREF_WHATS_NEW_SHOWN + "_"
                 + versionName;
         prefs.edit().putBoolean(key, true).commit();
     }
 
     public static boolean isTipShown(Context context, String tipKey) {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences prefs = getPrefs(context);
         String key = PREF_TIP_SHOWN + "_" + tipKey;
 
         return prefs.getBoolean(key, false);
     }
 
     public static void setTipShown(Context context, String tipKey) {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences prefs = getPrefs(context);
         String key = PREF_TIP_SHOWN + "_" + tipKey;
         prefs.edit().putBoolean(key, true).commit();
     }
 
     private static void saveBooleanPref(Context context, String key,
             boolean value) {
-        SharedPreferences.Editor prefs = PreferenceManager
+        SharedPreferences.Editor editor = getPrefsEditor(context);
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
+
+    private static SharedPreferences.Editor getPrefsEditor(Context context) {
+        SharedPreferences.Editor editor = PreferenceManager
                 .getDefaultSharedPreferences(context).edit();
-        prefs.putBoolean(key, value);
-        prefs.commit();
+        return editor;
     }
 
     private static boolean getBooleanPref(Context context, String key,
             boolean defValue) {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(context);
+        SharedPreferences prefs = getPrefs(context);
 
         return prefs.getBoolean(key, defValue);
+    }
+
+    private static SharedPreferences getPrefs(Context context) {
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        return prefs;
     }
 
     public static void setKodLevelOneOnly(Context context, boolean levelOneOnly) {
@@ -433,4 +423,15 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         return getBooleanPref(context, PREF_KOD_SHOW_READING_KEY, false);
     }
 
+    public static void setKodUpdateInterval(Context context,
+            long updateIntervalMillis) {
+        SharedPreferences.Editor editor = getPrefsEditor(context);
+        editor.putLong(PREF_KOD_UPDATE_INTERAVL_KEY, updateIntervalMillis);
+        editor.commit();
+    }
+
+    public static long getKodUpdateInterval(Context context) {
+        return getPrefs(context).getLong(PREF_KOD_UPDATE_INTERAVL_KEY,
+                KOD_DEFAULT_UPDATE_INTERVAL);
+    }
 }
