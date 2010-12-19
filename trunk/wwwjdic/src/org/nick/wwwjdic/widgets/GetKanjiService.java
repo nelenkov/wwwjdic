@@ -30,6 +30,7 @@ import org.nick.wwwjdic.WwwjdicApplication;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.utils.StringUtils;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
@@ -38,6 +39,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.text.format.DateFormat;
+import android.text.format.DateUtils;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -82,8 +85,33 @@ public class GetKanjiService extends Service {
                     .getInstance(GetKanjiService.this);
             manager.updateAppWidget(thisWidget, updateViews);
 
+            scheduleNextUpdate();
+
             stopSelf();
         }
+    }
+
+    private void scheduleNextUpdate() {
+        Time time = new Time();
+        long updateIntervalMillis = WwwjdicPreferences
+                .getKodUpdateInterval(this);
+        time.set(System.currentTimeMillis() + updateIntervalMillis);
+
+        long nextUpdate = time.toMillis(false);
+        long nowMillis = System.currentTimeMillis();
+
+        long deltaMinutes = (nextUpdate - nowMillis)
+                / DateUtils.MINUTE_IN_MILLIS;
+        Log.d(TAG, "Requesting next update at " + nextUpdate + ", in "
+                + deltaMinutes + " min");
+
+        Intent updateIntent = new Intent(this, GetKanjiService.class);
+
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0,
+                updateIntent, 0);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, nextUpdate, pendingIntent);
     }
 
     private RemoteViews buildUpdate(Context context) {

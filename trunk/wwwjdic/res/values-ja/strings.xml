@@ -316,4 +316,14 @@
     <string name="kod_widget_configuration">今日の漢字ウィジェット設定</string>
     <string name="limit_to_frequently_used_kanji">よく使われる漢字のみ</string>
     <string name="display_reading_and_meaning">読みと英語訳を表示する</string>
+    <string-array name="kod_update_times">
+        <item>24時間</item>
+        <item>12時間</item>
+        <item>6時間</item>
+        <item>2分</item>
+    </string-array>
+    <string name="widget_update_interval">ウィジェット更新間隔</string>
+    <string name="update_interval">更新間隔:</string>
+    <string name="kod_configure_message">今日の漢字ウィジェットの表示と更新に関するオプションを選択してください。オプションはグロバールなので、すべてのウィジェットに適用されます。
+    </string>
 </resources>
