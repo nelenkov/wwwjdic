@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:gravity="center" 
     android:measureAllChildren="true"
-    android:background="@drawable/proba">
+    android:background="@drawable/appwidget_bg">
     <TextView android:id="@+id/kod_message_text"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

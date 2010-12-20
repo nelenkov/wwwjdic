@@ -168,7 +168,8 @@ public class GetKanjiService extends Service {
                 return views;
             }
 
-            String kod = entries.get(0).getHeadword();
+            KanjiEntry entry = entries.get(0);
+            String kod = entry.getHeadword();
             Log.d(TAG, "KOD: " + kod);
             Intent intent = new Intent(context, KanjiEntryDetail.class);
             intent.putExtra(Constants.KANJI_ENTRY_KEY, entries.get(0));
@@ -181,6 +182,17 @@ public class GetKanjiService extends Service {
             String dateStr = DateFormat.getDateFormat(this).format(new Date());
             views.setTextViewText(R.id.kod_date_text, dateStr);
             views.setTextViewText(R.id.kod_text, kod);
+            if (WwwjdicPreferences.isKodShowReading(this)) {
+                views.setViewVisibility(R.id.kod_reading, View.VISIBLE);
+                views.setTextViewText(R.id.kod_reading, entry.getReading());
+                views.setViewVisibility(R.id.kod_meaning, View.VISIBLE);
+                views.setTextViewText(R.id.kod_meaning, entry
+                        .getMeaningsAsString());
+            } else {
+                views.setViewVisibility(R.id.kod_reading, View.GONE);
+                views.setViewVisibility(R.id.kod_meaning, View.GONE);
+            }
+
             views.setOnClickPendingIntent(R.id.kod_text, pendingIntent);
             clearLoading(views);
 
