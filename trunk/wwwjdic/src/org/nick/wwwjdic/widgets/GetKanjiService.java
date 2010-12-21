@@ -102,8 +102,8 @@ public class GetKanjiService extends Service {
 
         long deltaMinutes = (nextUpdate - nowMillis)
                 / DateUtils.MINUTE_IN_MILLIS;
-        Log.d(TAG, "Requesting next update at " + nextUpdate + ", in "
-                + deltaMinutes + " min");
+        Log.d(TAG, "Requesting next update at " + time + ", in " + deltaMinutes
+                + " min");
 
         Intent updateIntent = new Intent(this, GetKanjiService.class);
 
@@ -125,10 +125,11 @@ public class GetKanjiService extends Service {
             HttpClient client = createHttpClient(WwwjdicPreferences
                     .getWwwjdicUrl(this), WwwjdicPreferences
                     .getWwwjdicTimeoutSeconds(this) * 1000);
-            String jisCode = jisGenerator.generate(WwwjdicPreferences
-                    .isKodLevelOneOnly(context));
-            Log.d(TAG, "KOD JIS: " + jisCode);
-            String backdoorCode = generateBackdoorCode(jisCode);
+            String unicodeCp = jisGenerator
+                    .generateAsUnicodeCp(WwwjdicPreferences
+                            .isKodLevelOneOnly(context));
+            Log.d(TAG, "KOD Unicode CP: " + unicodeCp);
+            String backdoorCode = generateBackdoorCode(unicodeCp);
             Log.d(TAG, "backdoor code: " + backdoorCode);
             String wwwjdicResponse = null;
 
@@ -308,8 +309,8 @@ public class GetKanjiService extends Service {
         buff.append("Z");
         // code
         buff.append("K");
-        // JIS
-        buff.append("J");
+        // Unicode
+        buff.append("U");
         try {
             buff.append(URLEncoder.encode(jisCode, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
