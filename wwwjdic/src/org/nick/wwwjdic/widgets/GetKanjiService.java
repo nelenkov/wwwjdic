@@ -118,8 +118,15 @@ public class GetKanjiService extends Service {
         RemoteViews views = null;
 
         try {
-            views = new RemoteViews(context.getPackageName(),
-                    R.layout.kod_widget);
+            boolean showReadingAndMeaning = WwwjdicPreferences
+                    .isKodShowReading(this);
+            if (showReadingAndMeaning) {
+                views = new RemoteViews(context.getPackageName(),
+                        R.layout.kod_widget_details);
+            } else {
+                views = new RemoteViews(context.getPackageName(),
+                        R.layout.kod_widget);
+            }
             showLoading(views);
 
             HttpClient client = createHttpClient(WwwjdicPreferences
@@ -183,18 +190,13 @@ public class GetKanjiService extends Service {
             String dateStr = DateFormat.getDateFormat(this).format(new Date());
             views.setTextViewText(R.id.kod_date_text, dateStr);
             views.setTextViewText(R.id.kod_text, kod);
-            if (WwwjdicPreferences.isKodShowReading(this)) {
-                views.setViewVisibility(R.id.kod_reading, View.VISIBLE);
+            if (showReadingAndMeaning) {
                 views.setTextViewText(R.id.kod_reading, entry.getReading());
-                views.setViewVisibility(R.id.kod_meaning, View.VISIBLE);
                 views.setTextViewText(R.id.kod_meaning, entry
                         .getMeaningsAsString());
-            } else {
-                views.setViewVisibility(R.id.kod_reading, View.GONE);
-                views.setViewVisibility(R.id.kod_meaning, View.GONE);
             }
 
-            views.setOnClickPendingIntent(R.id.kod_text, pendingIntent);
+            views.setOnClickPendingIntent(R.id.widget, pendingIntent);
             clearLoading(views);
 
             return views;
