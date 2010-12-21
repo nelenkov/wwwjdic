@@ -23,13 +23,12 @@ public class RandomJisGenerator {
     // 0x7426 -> 0x5406 -> 8406
 
     private static final int JIS_GRID_SIZE = 94;
-    // zero based
+
     private static final int KANJI_START_LINE = 16;
     private static final int KANJI_END_LINE = 84;
     private static final int NUM_KANJI_LAST_LINE = 6;
 
-    // zero based
-    private static final int LEVEL1_START_LINE = 14;
+    private static final int LEVEL1_START_LINE = 16;
     private static final int LEVEL1_END_LINE = 47;
     private static final int LEVEL1_END_LINE_NUM_KANJI = 51;
 
