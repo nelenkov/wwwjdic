@@ -1,36 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" 
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:gravity="center" 
     android:measureAllChildren="true"
-    android:background="@drawable/appwidget_bg">
+    android:clickable="true" 
+    android:focusable="true"
+    android:background="@drawable/appwidget_dark_bg_clickable">
     <TextView android:id="@+id/kod_message_text"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:textColor="@color/yellow" 
         android:gravity="center"
+        android:textColor="@color/yellow" 
         android:text="@string/widget_loading"
         style="@style/kod_loading">
     </TextView> 
     <RelativeLayout android:id="@+id/widget"
         android:layout_width="fill_parent" 
         android:layout_height="wrap_content"
-        android:background="@drawable/appwidget_button"
+        android:orientation="vertical"
         android:clickable="true" 
         android:focusable="true"
-        android:orientation="vertical"
+        android:background="@drawable/appwidget_button"
         android:visibility="gone">
         <TextView android:id="@+id/kod_header_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="top|center"
+            android:gravity="center"
             android:textColor="@color/yellow" 
             android:textStyle="bold"
             android:textSize="9sp"
-             android:text="@string/kanji_of_the_day_jp"
+            android:text="@string/kanji_of_the_day_jp"
             android:includeFontPadding="false"
-            android:paddingTop="3dip"
+            android:layout_marginTop="2dp"
             android:layout_alignParentTop="true"/> 
         <TextView android:id="@+id/kod_text"
             android:layout_width="fill_parent"
@@ -38,7 +40,7 @@
             android:gravity="center"
             android:textColor="@color/white" 
             android:textStyle="bold"
-            android:textSize="28sp" 
+            android:textSize="26sp" 
             android:text="E"
             android:includeFontPadding="false"
             android:layout_below="@id/kod_header_text"/>
@@ -46,12 +48,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/yellow" 
-            android:gravity="bottom|center"
+            android:gravity="center"
             android:textStyle="bold"
             android:textSize="9sp"
             android:text="@string/kanji_of_the_day_jp"
             android:includeFontPadding="false"
-            android:paddingBottom="3dip" 
+            android:layout_marginBottom="2dp" 
             android:layout_alignParentBottom="true"/>    
     </RelativeLayout>
 </FrameLayout>
