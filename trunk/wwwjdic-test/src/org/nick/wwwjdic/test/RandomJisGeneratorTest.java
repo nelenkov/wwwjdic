@@ -8,12 +8,12 @@ public class RandomJisGeneratorTest {
     @Test
     public void testGenerate() {
         RandomJisGenerator g = new RandomJisGenerator();
-        String[] jisCodes = new String[10];
-        for (int i = 0; i < jisCodes.length; i++) {
-            jisCodes[i] = g.generate();
+        String[] unicodeCps = new String[10];
+        for (int i = 0; i < unicodeCps.length; i++) {
+            unicodeCps[i] = g.generateAsUnicodeCp(true);
         }
-        for (String jis : jisCodes) {
-            System.out.println(jis);
+        for (String cp : unicodeCps) {
+            System.out.println(cp);
         }
     }
 }
