@@ -275,9 +275,9 @@
     <string name="select_radical">Select radical</string>
     <string name="copied_to_clipboard">\'%s\' copied to clipboard</string>
     <string name="details_for">Details for \'%s\'</string>
-    <string name="results_for">%1$d result(s) for \'%1$s\'
+    <string name="results_for">%1$d result(s) for \'%2$s\'
     </string>
-    <string name="examples_for">%1$d example(s) for \'%1$s\'</string>
+    <string name="examples_for">%1$d example(s) for \'%2$s\'</string>
     <string name="sod_for">Stroke order diagram for \'%s\'</string>
     <string name="doing_ocr">OCR in progress...</string>
     <string name="candidates">%d candidate(s)</string>
@@ -292,13 +292,13 @@
         dictionary screen for editing before search.</string>
     <string name="import_items">Import</string>
     <string name="export_items">Export</string>
-    <string name="favorites_exported">Favorites exported to %1$s (%1$d item(s))
+    <string name="favorites_exported">Favorites exported to %1$s (%2$d item(s))
     </string>
-    <string name="favorites_imported">Favorites imported from %1$s (%1$d item(s))
+    <string name="favorites_imported">Favorites imported from %1$s (%2$d item(s))
     </string>
-    <string name="history_exported">Search history exported to %1$s (%1$d item(s))
+    <string name="history_exported">Search history exported to %1$s (%2$d item(s))
     </string>
-    <string name="history_imported">Search history imported from %1$s (%1$d item(s))
+    <string name="history_imported">Search history imported from %1$s (%2$d item(s))
     </string>
     <string name="filter">Filter</string>
     <string name="select_filter_type">Select type:</string>

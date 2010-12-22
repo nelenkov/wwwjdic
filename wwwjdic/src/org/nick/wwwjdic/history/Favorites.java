@@ -353,7 +353,7 @@ public class Favorites extends HistoryBase implements
         }
 
         private void deleteTempFile() {
-            Log.d(TAG, "Google docs upload cancelled, deleting temp files...");
+            Log.d(TAG, "deleting temp files...");
             File f = new File(uploadData.localFilename);
             boolean success = f.delete();
             if (success) {
