@@ -64,6 +64,16 @@ public class Stroke {
             annotationGap = 5;
         }
 
+        if (annotationGap <= points.size()) {
+            float x = points.get(0).x;
+            float y = points.get(0).y;
+            String strokeNumStr = Integer.toString(strokeNum);
+            canvas.drawText(strokeNumStr, x + ANNOTATION_OFFSET, y
+                    + ANNOTATION_OFFSET, paint);
+
+            return;
+        }
+
         float dx = points.get(annotationGap).x - firstPoint.x;
         float dy = points.get(annotationGap).y - firstPoint.y;
         double length = Math.sqrt(dx * dx + dy * dy);
@@ -109,6 +119,16 @@ public class Stroke {
         float yOffset = ANNOTATION_OFFSET;
 
         int midwayPointIdx = points.size() / 2 - 1;
+        if (midwayPointIdx + 2 <= points.size()) {
+            float x = points.get(0).x;
+            float y = points.get(0).y;
+            String strokeNumStr = Integer.toString(strokeNum);
+            canvas.drawText(strokeNumStr, x + ANNOTATION_OFFSET, y
+                    + ANNOTATION_OFFSET, paint);
+
+            return;
+        }
+
         float x = points.get(midwayPointIdx).x;
         float y = points.get(midwayPointIdx).y;
 
