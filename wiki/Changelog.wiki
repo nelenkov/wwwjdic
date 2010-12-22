@@ -1,6 +1,14 @@
 #summary Full changelog
 
 = Changelog =
+ * v1.61 (2010/12/22) Widget improvements
+  * Added configuration for widget
+   * Option to display only frequently used kanji
+   * Option to display reading/meaning
+   * Configurable update time
+  * New widget layout/background.
+  * Fast scroll in search results
+  * Bug fixes.
  * v1.6 (2010/12/03) Favorites Anki export
   * Favorites Anki export.
   * Cross references in dictionary details.
