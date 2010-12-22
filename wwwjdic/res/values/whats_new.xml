@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Favorites Anki export.\n* Cross references in dictionary details.\n* Added multiple meanings separator character setting (CSV export).\n* History/Favorites performance optimizations.\n* Added link to FAQ in About.</string>
+    <string name="whats_new">* Added configuration for widget. Remove and re-add to configure.\n * Option to display only frequently used kanji.\n * Option to display reading/meaning\n * Configurable update time.\n* New widget layout/background.\n* Fast scroll in search results.\n* Bug fixes.</string>
 </resources>
