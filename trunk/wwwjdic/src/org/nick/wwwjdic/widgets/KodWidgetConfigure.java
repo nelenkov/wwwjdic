@@ -119,7 +119,6 @@ public class KodWidgetConfigure extends Activity implements OnClickListener {
         default:
             // do nothing
         }
-
     }
 
 }

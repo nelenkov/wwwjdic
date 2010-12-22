@@ -77,17 +77,19 @@ public class GetKanjiService extends Service {
 
     private class GetKanjiTask implements Runnable {
         public void run() {
-            RemoteViews updateViews = buildUpdate(GetKanjiService.this);
+            try {
+                RemoteViews updateViews = buildUpdate(GetKanjiService.this);
 
-            ComponentName thisWidget = new ComponentName(GetKanjiService.this,
-                    KodWidgetProvider.class);
-            AppWidgetManager manager = AppWidgetManager
-                    .getInstance(GetKanjiService.this);
-            manager.updateAppWidget(thisWidget, updateViews);
+                ComponentName thisWidget = new ComponentName(
+                        GetKanjiService.this, KodWidgetProvider.class);
+                AppWidgetManager manager = AppWidgetManager
+                        .getInstance(GetKanjiService.this);
+                manager.updateAppWidget(thisWidget, updateViews);
+            } finally {
+                scheduleNextUpdate();
 
-            scheduleNextUpdate();
-
-            stopSelf();
+                stopSelf();
+            }
         }
     }
 
@@ -111,7 +113,7 @@ public class GetKanjiService extends Service {
                 updateIntent, 0);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, nextUpdate, pendingIntent);
+        alarmManager.set(AlarmManager.RTC, nextUpdate, pendingIntent);
     }
 
     private RemoteViews buildUpdate(Context context) {

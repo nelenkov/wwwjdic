@@ -1,7 +1,10 @@
 package org.nick.wwwjdic.widgets;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -32,4 +35,33 @@ public class KodWidgetProvider extends AppWidgetProvider {
         }
     }
 
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        Log.d(TAG, "onDeleted");
+
+        AppWidgetManager manager = AppWidgetManager.getInstance(context);
+        ComponentName thisWidget = new ComponentName(context,
+                KodWidgetProvider.class);
+        int[] thisWidgetIds = manager.getAppWidgetIds(thisWidget);
+        Log.d(TAG, "widget IDs: " + thisWidgetIds.length);
+
+        if (thisWidgetIds.length == 0) {
+            Log.d(TAG, "we are the last widget, cleaning up");
+
+            Log.d(TAG, "stopping update service...");
+            boolean stopped = context.stopService(new Intent(context,
+                    GetKanjiService.class));
+            Log.d(TAG, "stopped: " + stopped);
+
+            Log.d(TAG, "cancelling update timer...");
+            AlarmManager alarmManager = (AlarmManager) context
+                    .getSystemService(Context.ALARM_SERVICE);
+            Intent updateIntent = new Intent(context, GetKanjiService.class);
+            PendingIntent pendingIntent = PendingIntent.getService(context, 0,
+                    updateIntent, 0);
+            alarmManager.cancel(pendingIntent);
+
+            Log.d(TAG, "done");
+        }
+    }
 }
