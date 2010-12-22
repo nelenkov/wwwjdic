@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="C:/home/nick/android/Wwwjdic/wwwjdic/lib/google-api-client-util-1.2.1-alpha.jar"/>
 	<classpathentry kind="lib" path="C:/home/nick/android/Wwwjdic/wwwjdic/lib/google-api-client-xml-1.2.1-alpha.jar"/>
 	<classpathentry kind="lib" path="C:/home/nick/android/Wwwjdic/wwwjdic/lib/google-api-client-xml-atom-1.2.1-alpha.jar"/>
+	<classpathentry kind="src" path="Wwwjdic_src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
