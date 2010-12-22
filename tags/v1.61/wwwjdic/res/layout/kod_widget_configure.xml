@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <TextView android:text="@string/kod_configure_message"
+        android:id="@+id/kod_configure_message" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:layout_margin="5dp"></TextView>
+    <CheckBox android:id="@+id/kod_level1_only_cb"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="@string/limit_to_frequently_used_kanji"
+        android:layout_marginBottom="5dp"></CheckBox>
+    <CheckBox android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:id="@+id/kod_show_reading_cb"
+        android:text="@string/display_reading_and_meaning"></CheckBox>
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:layout_marginLeft="5dp"
+        android:layout_marginBottom="20dp">
+        <TextView android:id="@+id/update_interval_label"
+            android:text="@string/update_interval" android:layout_width="wrap_content"
+            android:textSize="16sp" android:textColor="#FFFF"
+            android:layout_height="wrap_content" android:layout_gravity="center_vertical"></TextView>
+        <Spinner android:id="@+id/kod_update_interval_spinner"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:entries="@array/kod_update_times" android:prompt="@string/widget_update_interval"
+            android:layout_marginLeft="5dp"></Spinner>
+    </LinearLayout>
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:layout_gravity="center"
+        android:layout_marginLeft="5dp" android:layout_marginRight="5dp">
+        <Button android:layout_width="0px" android:layout_weight="1"
+            android:layout_height="wrap_content" android:id="@+id/kod_configure_ok_button"
+            android:text="@string/ok"></Button>
+        <Button android:layout_width="0px" android:layout_weight="1"
+            android:layout_height="wrap_content" android:id="@+id/kod_configure_cancel_button"
+            android:text="@string/cancel" android:layout_gravity="center"></Button>
+    </LinearLayout>
+</LinearLayout>
