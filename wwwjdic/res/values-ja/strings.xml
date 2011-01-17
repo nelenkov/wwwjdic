@@ -320,7 +320,7 @@
         <item>24時間</item>
         <item>12時間</item>
         <item>6時間</item>
-        <!-- item>2分</item-->
+        <item>2分</item>
     </string-array>
     <string name="widget_update_interval">ウィジェット更新間隔</string>
     <string name="update_interval">更新間隔:</string>
