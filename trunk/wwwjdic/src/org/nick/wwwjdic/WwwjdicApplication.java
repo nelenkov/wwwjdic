@@ -20,6 +20,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.Settings.Secure;
 import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
@@ -59,6 +60,9 @@ public class WwwjdicApplication extends Application {
 
         updateKanjiRecognizerUrl();
 
+        String android_id = Secure.getString(getContentResolver(),
+                Secure.ANDROID_ID);
+        Log.d(TAG, "*************id: " + android_id);
     }
 
     private void updateKanjiRecognizerUrl() {
@@ -69,8 +73,9 @@ public class WwwjdicApplication extends Application {
         if (krUrl.contains("kanji.cgi")) {
             Log.d(TAG, "found old KR URL, will overwrite with "
                     + WwwjdicPreferences.KR_DEFAULT_URL);
-            prefs.edit().putString(WwwjdicPreferences.PREF_KR_URL_KEY,
-                    WwwjdicPreferences.KR_DEFAULT_URL).commit();
+            prefs.edit()
+                    .putString(WwwjdicPreferences.PREF_KR_URL_KEY,
+                            WwwjdicPreferences.KR_DEFAULT_URL).commit();
         }
     }
 
@@ -126,8 +131,8 @@ public class WwwjdicApplication extends Application {
             double lng = Location.convert(latlng[1]);
 
             float[] distance = new float[1];
-            Location.distanceBetween(myLocation.getLatitude(), myLocation
-                    .getLongitude(), lat, lng, distance);
+            Location.distanceBetween(myLocation.getLatitude(),
+                    myLocation.getLongitude(), lat, lng, distance);
             distanceToMirrors.add(distance[0]);
             Log.d(TAG, String.format("distance to %s: %f km", mirrorNames[i],
                     distance[0] / 1000));
@@ -142,8 +147,9 @@ public class WwwjdicApplication extends Application {
                 minDistance / 1000));
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(this);
-        prefs.edit().putString(WwwjdicPreferences.PREF_WWWJDIC_MIRROR_URL_KEY,
-                mirrorUrls[mirrorIdx]).commit();
+        prefs.edit()
+                .putString(WwwjdicPreferences.PREF_WWWJDIC_MIRROR_URL_KEY,
+                        mirrorUrls[mirrorIdx]).commit();
     }
 
     private void createWwwjdicDirIfNecessary() {
@@ -151,8 +157,8 @@ public class WwwjdicApplication extends Application {
         if (!wwwjdicDir.exists()) {
             boolean success = wwwjdicDir.mkdir();
             if (success) {
-                Log.d(TAG, "successfully created "
-                        + wwwjdicDir.getAbsolutePath());
+                Log.d(TAG,
+                        "successfully created " + wwwjdicDir.getAbsolutePath());
             } else {
                 Log.d(TAG, "failed to create " + wwwjdicDir.getAbsolutePath());
             }

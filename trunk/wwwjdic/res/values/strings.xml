@@ -467,7 +467,7 @@
         <item>24 hours</item>
         <item>12 hours</item>
         <item>6 hours</item>
-        <!-- item>2 minutes</item-->
+        <item>2 minutes</item>
     </string-array>
     <string name="widget_update_interval">Widget update interval</string>
     <string name="update_interval">Update interval:</string>
