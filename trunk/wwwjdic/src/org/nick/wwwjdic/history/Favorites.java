@@ -30,8 +30,8 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -380,8 +380,8 @@ public class Favorites extends HistoryBase implements
                     .getString(R.string.gdocs_upload_success) : r
                     .getString(R.string.gdocs_upload_failure);
             String message = result ? String.format(template,
-                    uploadData.filename) : String.format(template, error
-                    .getMessage());
+                    uploadData.filename) : String.format(template,
+                    error.getMessage());
             Toast t = Toast
                     .makeText(Favorites.this, message, Toast.LENGTH_LONG);
             uploadData = null;
@@ -680,8 +680,8 @@ public class Favorites extends HistoryBase implements
         String filename = getCsvExportFilename(isKanji).replace(".csv", "")
                 + ".anki";
         File exportFile = new File(WwwjdicApplication.getWwwjdicDir(), filename);
-        Log.d(TAG, "exporting favorites to Anki: "
-                + exportFile.getAbsolutePath());
+        Log.d(TAG,
+                "exporting favorites to Anki: " + exportFile.getAbsolutePath());
 
         int size = 0;
         if (isKanji) {
@@ -721,8 +721,9 @@ public class Favorites extends HistoryBase implements
         }
 
         Analytics.event("favoritesAnkiExport", this);
-        Log.d(TAG, String.format("Exported %d entries to %s", size, exportFile
-                .getAbsolutePath()));
+        Log.d(TAG,
+                String.format("Exported %d entries to %s", size,
+                        exportFile.getAbsolutePath()));
 
         return exportFile.getAbsolutePath();
     }
@@ -784,8 +785,9 @@ public class Favorites extends HistoryBase implements
             @Override
             protected Boolean doInBackground(Void... params) {
                 try {
-                    File exportFile = new File(WwwjdicApplication
-                            .getWwwjdicDir(), getCsvExportFilename(isKanji));
+                    File exportFile = new File(
+                            WwwjdicApplication.getWwwjdicDir(),
+                            getCsvExportFilename(isKanji));
                     writeBom(exportFile);
 
                     Writer writer = new FileWriter(exportFile, true);
@@ -809,9 +811,9 @@ public class Favorites extends HistoryBase implements
                 if (result) {
                     String message = getResources().getString(
                             R.string.favorites_exported);
-                    Toast t = Toast
-                            .makeText(Favorites.this, String.format(message,
-                                    exportFilename, count), Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(Favorites.this,
+                            String.format(message, exportFilename, count),
+                            Toast.LENGTH_SHORT);
                     t.show();
                 } else {
                     String message = getResources().getString(
@@ -863,8 +865,9 @@ public class Favorites extends HistoryBase implements
             if (showMessages) {
                 String message = getResources().getString(
                         R.string.favorites_exported);
-                Toast t = Toast.makeText(Favorites.this, String.format(message,
-                        exportFile, count), Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(Favorites.this,
+                        String.format(message, exportFile, count),
+                        Toast.LENGTH_SHORT);
                 t.show();
             }
 
@@ -1030,8 +1033,9 @@ public class Favorites extends HistoryBase implements
                 if (result) {
                     String message = getResources().getString(
                             R.string.favorites_exported);
-                    Toast t = Toast.makeText(Favorites.this, String.format(
-                            message, exportFile, count), Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(Favorites.this,
+                            String.format(message, exportFile, count),
+                            Toast.LENGTH_SHORT);
                     t.show();
                 } else {
                     String message = getResources().getString(
@@ -1068,9 +1072,6 @@ public class Favorites extends HistoryBase implements
                     db.deleteAllFavorites();
 
                     reader = new CSVReader(new FileReader(importFile));
-                    if (reader == null) {
-                        return false;
-                    }
 
                     String[] record = null;
                     while ((record = reader.readNext()) != null) {
@@ -1108,8 +1109,9 @@ public class Favorites extends HistoryBase implements
                 if (result) {
                     String message = getResources().getString(
                             R.string.favorites_imported);
-                    Toast t = Toast.makeText(Favorites.this, String.format(
-                            message, importFile, count), Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(Favorites.this,
+                            String.format(message, importFile, count),
+                            Toast.LENGTH_SHORT);
                     t.show();
                 } else {
                     String message = getResources().getString(
