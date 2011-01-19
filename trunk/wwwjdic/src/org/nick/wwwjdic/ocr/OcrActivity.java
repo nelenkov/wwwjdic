@@ -23,13 +23,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
-import android.graphics.Bitmap.CompressFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.net.Uri;
@@ -44,16 +44,16 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class OcrActivity extends WebServiceBackedActivity implements
         SurfaceHolder.Callback, OnClickListener, OnTouchListener,
@@ -170,9 +170,11 @@ public class OcrActivity extends WebServiceBackedActivity implements
                     getContentResolver().openOutputStream(imageCaptureUri),
                     handler);
             camera.takePicture(null, null, captureCb);
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            throw new RuntimeException(e);
+            Toast t = Toast.makeText(OcrActivity.this,
+                    R.string.image_capture_failed, Toast.LENGTH_SHORT);
+            t.show();
         }
     }
 
@@ -251,9 +253,9 @@ public class OcrActivity extends WebServiceBackedActivity implements
         @Override
         public void run() {
             try {
-                WeOcrClient client = new WeOcrClient(WwwjdicPreferences
-                        .getWeocrUrl(OcrActivity.this), WwwjdicPreferences
-                        .getWeocrTimeout(OcrActivity.this));
+                WeOcrClient client = new WeOcrClient(
+                        WwwjdicPreferences.getWeocrUrl(OcrActivity.this),
+                        WwwjdicPreferences.getWeocrTimeout(OcrActivity.this));
                 String ocredText = client.sendLineOcrRequest(bitmap);
                 Log.d(TAG, "OCR result: " + ocredText);
 
@@ -380,8 +382,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
         ColorMatrixColorFilter cmcf = new ColorMatrixColorFilter(colorMatrix);
         paint.setColorFilter(cmcf);
 
-        Bitmap result = Bitmap.createBitmap(bitmap.getWidth(), bitmap
-                .getHeight(), Bitmap.Config.RGB_565);
+        Bitmap result = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.RGB_565);
 
         Canvas drawingCanvas = new Canvas(result);
         Rect src = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
@@ -405,8 +407,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
             File imageFile = new File(wwwjdicDir, filename);
 
-            FileOutputStream out = new FileOutputStream(imageFile
-                    .getAbsolutePath());
+            FileOutputStream out = new FileOutputStream(
+                    imageFile.getAbsolutePath());
             bitmap.compress(CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
