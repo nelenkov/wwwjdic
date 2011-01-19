@@ -19,13 +19,13 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         OnFocusChangeListener, OnCheckedChangeListener, OnItemSelectedListener {
@@ -99,8 +99,15 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         dbHelper = new HistoryDbHelper(this);
 
         setupDictSummary();
-    }
 
+        // delay focus request a bit, otherwise may fail
+        // Cf. http://code.google.com/p/android/issues/detail?id=2705
+        inputText.post(new Runnable() {
+            public void run() {
+                inputText.requestFocus();
+            }
+        });
+    }
 
     @Override
     protected void onDestroy() {
@@ -294,6 +301,7 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
 
     private void showKeyboard() {
         EditText editText = (EditText) findViewById(R.id.inputText);
+        editText.requestFocus();
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mgr.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
