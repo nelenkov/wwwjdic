@@ -17,9 +17,9 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.text.format.DateUtils;
 import android.util.Log;
 
@@ -120,6 +120,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
             if (autoSelect) {
                 WwwjdicApplication app = (WwwjdicApplication) getApplication();
                 app.setMirrorBasedOnLocation();
+                mirrorPreference.setSummary(getMirrorName(getWwwjdicUrl(this)));
             }
 
             return true;
@@ -152,7 +153,8 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     private void showInstallKrDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.install_kr).setCancelable(false)
+        builder.setMessage(R.string.install_kr)
+                .setCancelable(false)
                 .setPositiveButton(R.string.yes,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -161,7 +163,8 @@ public class WwwjdicPreferences extends PreferenceActivity implements
                                                 + KR_PACKAGE));
                                 startActivity(intent);
                             }
-                        }).setNegativeButton(R.string.no,
+                        })
+                .setNegativeButton(R.string.no,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
