@@ -106,6 +106,7 @@
     <string name="ws_hkr_failed">手書き認識失敗。</string>
     <string name="sd_file_create_failed">SDカードに一時ファイルを作成できませんでした</string>
     <string name="af_failed">A/F失敗</string>
+    <string name="image_capture_failed">画像取得失敗</string>
     <string name="ocr_failed">OCR失敗</string>
     <string name="cancelled">キャンセルされました</string>
     <string name="recognize">認識</string>
