@@ -20,7 +20,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.provider.Settings.Secure;
 import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
@@ -60,9 +59,6 @@ public class WwwjdicApplication extends Application {
 
         updateKanjiRecognizerUrl();
 
-        String android_id = Secure.getString(getContentResolver(),
-                Secure.ANDROID_ID);
-        Log.d(TAG, "*************id: " + android_id);
     }
 
     private void updateKanjiRecognizerUrl() {
@@ -102,7 +98,7 @@ public class WwwjdicApplication extends Application {
                 Log.d(TAG, "provider not enabled, giving up");
                 return;
             }
-            locationManager
+            myLocation = locationManager
                     .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if (myLocation == null) {
                 Log.w(TAG, "failed to get cached location, giving up");
