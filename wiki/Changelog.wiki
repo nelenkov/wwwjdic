@@ -1,6 +1,10 @@
 #summary Full changelog
 
 = Changelog =
+ * v1.62 (2011/02/01) Bug fixes
+  * Temporarily replaced Australia mirror(currently offline) with Japan one.
+  * Fixed mirror auto select.
+  * Various bug fixes.
  * v1.61 (2010/12/22) Widget improvements
   * Added configuration for widget
    * Option to display only frequently used kanji
