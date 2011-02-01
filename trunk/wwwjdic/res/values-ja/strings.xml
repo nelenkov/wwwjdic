@@ -85,7 +85,7 @@
     <string name="pref_wwwjdic">WWWJDIC設定</string>
     <string name="pref_wwwjdic_mirror">WWWJDICミラーサイト</string>
     <string-array name="wwwjdic_mirror_names">
-        <item>オーストラリア</item>
+        <item>オーストラリア-->日本(臨時)</item>
         <item>カナダ</item>
         <item>EU</item>
         <item>日本</item>

@@ -241,6 +241,13 @@ public class WwwjdicPreferences extends PreferenceActivity implements
                 .getString(PREF_WWWJDIC_MIRROR_URL_KEY, DEFAULT_WWWJDIC_URL);
     }
 
+    public static void setWwwjdicUrl(String url, Context context) {
+        SharedPreferences.Editor editor = getPrefsEditor(context);
+
+        editor.putString(PREF_WWWJDIC_MIRROR_URL_KEY, url);
+        editor.commit();
+    }
+
     public static int getWwwjdicTimeoutSeconds(Context context) {
         SharedPreferences preferences = getPrefs(context);
 
