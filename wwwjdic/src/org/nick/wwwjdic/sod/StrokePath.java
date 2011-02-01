@@ -14,10 +14,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.PointF;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.graphics.Path.FillType;
+import android.graphics.PathMeasure;
+import android.graphics.PointF;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.util.Xml;
 
@@ -122,7 +125,68 @@ public class StrokePath {
         }
 
         path.transform(matrix);
+
         canvas.drawPath(path, strokePaint);
+    }
+
+    private void walkPath(final Canvas canvas, Path path) {
+        PathMeasure pm = new PathMeasure(path, false);
+        float length = pm.getLength();
+        Path segment = new Path();
+        float start = 0;
+        float delta = 10;
+
+        final List<Path> segments = new ArrayList<Path>();
+        while (start <= length) {
+            float end = start + delta;
+            if (end > length) {
+                end = length;
+            }
+            pm.getSegment(start, end, segment, true);
+            segments.add(segment);
+            start += delta;
+        }
+
+        // for (Path s : segments) {
+        // canvas.drawPath(s, strokePaint);
+        // }
+
+        final Handler h = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                case 10:
+                    int last = msg.arg1;
+                    for (int i = 0; i <= last; i++) {
+                        Path s = segments.get(i);
+                        canvas.save();
+                        canvas.drawPath(s, strokePaint);
+                        canvas.restore();
+                    }
+                    break;
+                default:
+                    super.handleMessage(msg);
+                }
+            }
+        };
+
+        Runnable animationTask = new Runnable() {
+            public void run() {
+                for (int i = 0; i < segments.size(); i++) {
+                    Message msg = h.obtainMessage(10);
+                    msg.arg1 = i;
+                    h.sendMessage(msg);
+
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        Log.e(TAG, e.getMessage(), e);
+                    }
+                }
+            }
+        };
+        Thread t = new Thread(animationTask);
+        t.start();
     }
 
     private PointF calcAbsolute(PointF currentPoint, PointF p) {
