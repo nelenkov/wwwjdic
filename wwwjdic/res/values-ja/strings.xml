@@ -65,9 +65,9 @@
     <string name="strokes">画数: </string>
     <string name="select">選択...</string>
     <string name="radical">部首: </string>
-    <string name="timeout_error_message">タイムアウトが発生しました。ネットワーク接続を確認してください。</string>
-    <string name="socket_error_message">WWWJDICに接続できませんでした。ネットワーク接続を確認してください。</string>
-    <string name="generic_error_message">予期せぬエラーが発生しました。バグ報告をお願いします。</string>
+    <string name="timeout_error_message">タイムアウトが発生しました。ネットワーク接続を確認してください。問題が継続する場合は、設定画面で別のWWWJDICミラーサイトを選択してください。</string>
+    <string name="socket_error_message">WWWJDICに接続できませんでした。ネットワーク接続を確認してください。問題が継続する場合は、設定画面で別のWWWJDICミラーサイトを選択してください。</string>
+    <string name="generic_error_message">予期せぬエラーが発生しました。設定画面で別のWWWJDICミラーサイトを選択してください。解決しない場合は、バグ報告をお願いします(情報画面を参照)。</string>
     <string name="ocr_hint1">* ガイドラインにあわせて、センターボタン、または画面タップでとります。</string>
     <string name="ocr_hint2">* 次の画面で長方形(1行分)を切り抜いて、「切り抜く」ボタンで OCRを開始します。
     </string>

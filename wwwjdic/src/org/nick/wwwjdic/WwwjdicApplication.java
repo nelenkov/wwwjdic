@@ -58,18 +58,6 @@ public class WwwjdicApplication extends Application {
         }
 
         updateKanjiRecognizerUrl();
-
-        // XXX temporary fix until monash is back online
-        replaceAustraliaMirror();
-    }
-
-    private void replaceAustraliaMirror() {
-        String mirrorUrl = WwwjdicPreferences.getWwwjdicUrl(this);
-        if ("http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi"
-                .equals(mirrorUrl)) {
-            WwwjdicPreferences.setWwwjdicUrl(
-                    "http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi", this);
-        }
     }
 
     private void updateKanjiRecognizerUrl() {
