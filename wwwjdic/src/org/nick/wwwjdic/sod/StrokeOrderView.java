@@ -28,8 +28,6 @@ public class StrokeOrderView extends View {
 
     private int animationDelayMillis;
 
-    // millis
-    private static final int SEGMENT_DRAW_DELAY = 100;
     private long lastTick = 0;
 
     private boolean animate = false;
@@ -91,7 +89,7 @@ public class StrokeOrderView extends View {
 
         boolean advance = false;
         long time = (System.currentTimeMillis() - lastTick);
-        if (time >= SEGMENT_DRAW_DELAY) {
+        if (time >= animationDelayMillis) {
             lastTick = System.currentTimeMillis();
             advance = true;
         }
@@ -102,7 +100,7 @@ public class StrokeOrderView extends View {
                 sp.draw(canvas, scale, strokeNum, annotate);
                 strokeNum++;
 
-                // all strokes drawn, stop animating 
+                // all strokes drawn, stop animating
                 if (i == strokePaths.size() - 1) {
                     animate = false;
                 }

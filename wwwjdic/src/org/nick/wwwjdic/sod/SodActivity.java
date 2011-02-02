@@ -290,6 +290,9 @@ public class SodActivity extends WebServiceBackedActivity implements
                     getResources().getString(R.string.getting_sod_info));
         } else {
             //animate(strokes);
+            int animationDelay = WwwjdicPreferences
+                    .getStrokeAnimationDelay(this);
+            strokeOrderView.setAnimationDelayMillis(animationDelay);
             strokeOrderView.setStrokePaths(strokes);
             strokeOrderView.setAnnotateStrokes(true);
             strokeOrderView.startAnimation();
