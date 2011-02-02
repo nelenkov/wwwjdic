@@ -74,6 +74,8 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     public static final long KOD_DEFAULT_UPDATE_INTERVAL = 24 * DateUtils.HOUR_IN_MILLIS;
 
+    public static final String DEFAULT_STROKE_ANIMATION_DELAY = "150";
+
     private CheckBoxPreference useKrPreference;
     private CheckBoxPreference autoSelectMirrorPreference;
     private ListPreference mirrorPreference;
@@ -319,9 +321,16 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         SharedPreferences preferences = getPrefs(context);
 
         String delayStr = preferences
-                .getString(PREF_SOD_ANIMATION_DELAY, "700");
+                .getString(PREF_SOD_ANIMATION_DELAY, DEFAULT_STROKE_ANIMATION_DELAY);
 
         return Integer.parseInt(delayStr);
+    }
+
+    public static void setStrokeAnimationDelay(Context context,
+            String delayMillisStr) {
+        SharedPreferences.Editor editor = getPrefsEditor(context);
+        editor.putString(PREF_SOD_ANIMATION_DELAY, delayMillisStr);
+        editor.commit();
     }
 
     public static int getSodServerTimeout(Context context) {
