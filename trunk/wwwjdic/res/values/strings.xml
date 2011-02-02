@@ -136,11 +136,11 @@
     <string name="select">Select...</string>
     <string name="radical">Radical: </string>
     <string name="timeout_error_message">Connection has timed out. Check your network
-        connection.</string>
+        connection. If the problem persists, try setting a different WWWJDIC mirror in Settings.</string>
     <string name="socket_error_message">Failed to connect to WWWJDIC. Check your network
-        connection.</string>
-    <string name="generic_error_message">An unexpected error has occurred. Please report
-        this.</string>
+        connection. If the problem persists, try setting a different WWWJDIC mirror in Settings.</string>
+    <string name="generic_error_message">An unexpected error has occurred. Try setting a different WWWJDIC mirror in Settings. If that doesn\'t help, please report
+        this (see About).</string>
     <string name="ocr_hint1">* Align text to guide lines (approx. is OK),
         then
         press center button/tap screen to capture.</string>
@@ -167,7 +167,7 @@
     <string name="pref_wwwjdic">WWWJDIC settings</string>
     <string name="pref_wwwjdic_mirror">WWWJDIC mirror</string>
     <string-array name="wwwjdic_mirror_names">
-        <item>Australia-->Japan (temp.)</item>
+        <item>Australia</item>
         <item>Canada</item>
         <item>EU</item>
         <item>Japan</item>
@@ -189,8 +189,7 @@
         <item>040:43:00/074:00:00</item>
     </string-array>
     <string-array name="wwwjdic_mirror_urls">
-        <!-- item>http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi</item-->
-        <item>http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi</item>
+        <item>http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi</item>
         <item>http://ryouko.imsb.nrc.ca/cgi-bin/wwwjdic</item>
         <item>http://jp.celltica.com/cgi-bin/wwwjdic</item>
         <item>http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi</item>
