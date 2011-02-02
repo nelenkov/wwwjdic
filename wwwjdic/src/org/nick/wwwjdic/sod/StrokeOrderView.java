@@ -1,17 +1,20 @@
 package org.nick.wwwjdic.sod;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
 public class StrokeOrderView extends View {
+
+    private static final float SEGMENT_LENGTH = 20f;
 
     private static final float OUTLINE_WIDTH = 2f;
 
@@ -24,6 +27,13 @@ public class StrokeOrderView extends View {
     private List<StrokePath> strokePaths;
 
     private int animationDelayMillis;
+
+    // millis
+    private static final int SEGMENT_DRAW_DELAY = 100;
+    private long lastTick = 0;
+
+    private boolean animate = false;
+    private boolean isSegmented = false;
 
     public StrokeOrderView(Context context) {
         super(context);
@@ -69,16 +79,63 @@ public class StrokeOrderView extends View {
         float dy = (height - kanjiSize) / 2;
         canvas.translate(dx, dy);
 
-        for (StrokePath sp : strokePaths) {
-            sp.draw(canvas, scale, strokeNum, annotate);
-            strokeNum++;
+        if (!animate) {
+            for (StrokePath sp : strokePaths) {
+                sp.draw(canvas, scale, strokeNum, annotate);
+                strokeNum++;
+            }
+            return;
+        }
+
+        segmentStrokes(scale);
+
+        boolean advance = false;
+        long time = (System.currentTimeMillis() - lastTick);
+        if (time >= SEGMENT_DRAW_DELAY) {
+            lastTick = System.currentTimeMillis();
+            advance = true;
+        }
+
+        for (int i = 0; i < strokePaths.size(); i++) {
+            StrokePath sp = strokePaths.get(i);
+            if (sp.isFullyDrawn()) {
+                sp.draw(canvas, scale, strokeNum, annotate);
+                strokeNum++;
+
+                // all strokes drawn, stop animating 
+                if (i == strokePaths.size() - 1) {
+                    animate = false;
+                }
+            } else {
+                if (advance) {
+                    sp.advanceSegment();
+                }
+                sp.drawSegments(canvas);
+                break;
+            }
+        }
+
+        postInvalidate();
+    }
+
+    private void segmentStrokes(float scale) {
+        if (!isSegmented) {
+            for (StrokePath sp : strokePaths) {
+                sp.segmentStroke(SEGMENT_LENGTH, scale);
+            }
+            isSegmented = true;
         }
     }
 
     public void clear() {
         if (strokePaths != null) {
             strokePaths.clear();
+
         }
+        lastTick = 0;
+
+        animate = false;
+        isSegmented = false;
         invalidate();
     }
 
@@ -95,7 +152,7 @@ public class StrokeOrderView extends View {
     }
 
     public void setStrokePaths(List<StrokePath> strokePaths) {
-        this.strokePaths = strokePaths;
+        this.strokePaths = new ArrayList<StrokePath>(strokePaths);
     }
 
     public int getAnimationDelayMillis() {
@@ -104,6 +161,16 @@ public class StrokeOrderView extends View {
 
     public void setAnimationDelayMillis(int animationDelayMillis) {
         this.animationDelayMillis = animationDelayMillis;
+    }
+
+    public void startAnimation() {
+        animate = true;
+        isSegmented = false;
+        lastTick = 0;
+        for (StrokePath sp : strokePaths) {
+            sp.resetSegments();
+        }
+        invalidate();
     }
 
 }

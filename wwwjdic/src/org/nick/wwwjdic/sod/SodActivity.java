@@ -167,6 +167,7 @@ public class SodActivity extends WebServiceBackedActivity implements
                     Message msg = handler.obtainMessage(REDRAW_SOD_MSG);
                     msg.obj = toDraw;
                     handler.sendMessage(msg);
+
                     try {
                         Thread.sleep(animationDelay);
                     } catch (InterruptedException e) {
@@ -239,8 +240,8 @@ public class SodActivity extends WebServiceBackedActivity implements
             HttpGet get = new HttpGet(lookupUrl);
             get.addHeader("Accept-Encoding", "gzip");
             get.addHeader("User-Agent", "gzip");
-            get.addHeader("X-User-Agent", WwwjdicApplication
-                    .getUserAgentString());
+            get.addHeader("X-User-Agent",
+                    WwwjdicApplication.getUserAgentString());
             get.addHeader("X-Device-Version", getDeviceVersionStr());
 
             try {
@@ -272,8 +273,8 @@ public class SodActivity extends WebServiceBackedActivity implements
         if (strokes == null) {
             Runnable getStrokesTask = new GetStrokePathTask(unicodeNumber,
                     false, httpClient, handler);
-            submitWsTask(getStrokesTask, getResources().getString(
-                    R.string.getting_sod_info));
+            submitWsTask(getStrokesTask,
+                    getResources().getString(R.string.getting_sod_info));
         } else {
             drawSod(strokes);
         }
@@ -285,10 +286,13 @@ public class SodActivity extends WebServiceBackedActivity implements
         if (strokes == null) {
             Runnable getStrokesTask = new GetStrokePathTask(unicodeNumber,
                     true, httpClient, handler);
-            submitWsTask(getStrokesTask, getResources().getString(
-                    R.string.getting_sod_info));
+            submitWsTask(getStrokesTask,
+                    getResources().getString(R.string.getting_sod_info));
         } else {
-            animate(strokes);
+            //animate(strokes);
+            strokeOrderView.setStrokePaths(strokes);
+            strokeOrderView.setAnnotateStrokes(true);
+            strokeOrderView.startAnimation();
         }
     }
 
