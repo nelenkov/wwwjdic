@@ -19,8 +19,6 @@ import android.graphics.Path;
 import android.graphics.Path.FillType;
 import android.graphics.PathMeasure;
 import android.graphics.PointF;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.util.Xml;
 
@@ -35,6 +33,9 @@ public class StrokePath {
 
     private Paint strokePaint;
     private Paint strokeAnnotationPaint;
+
+    private List<Path> segments;
+    private int currentSegment;
 
     public StrokePath(PointF moveTo) {
         this.moveTo = moveTo;
@@ -125,68 +126,102 @@ public class StrokePath {
         }
 
         path.transform(matrix);
-
         canvas.drawPath(path, strokePaint);
     }
 
-    private void walkPath(final Canvas canvas, Path path) {
+    private Path getStrokePath(float scale) {
+        Path path = new Path();
+        path.moveTo(moveTo.x, moveTo.y);
+        path.setFillType(FillType.WINDING);
+
+        PointF firstPoint = moveTo;
+        PointF lastPoint = moveTo;
+        PointF lastP2 = null;
+
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale, scale);
+
+        float[] cs = new float[2];
+        cs[0] = firstPoint.x;
+        cs[1] = firstPoint.y;
+        matrix.mapPoints(cs);
+
+        // canvas.drawCircle(cs[0], cs[1], 2, paint);
+
+        //        if (annotate) {
+        //            String strokeNumStr = Integer.toString(strokeNum);
+        //            canvas.drawText(strokeNumStr, cs[0] + 7, cs[1] - 9,
+        //                    strokeAnnotationPaint);
+        //        }
+
+        int idx = 0;
+        for (Curve c : curves) {
+            PointF p1 = null;
+            PointF p2 = null;
+            PointF p3 = null;
+
+            if (c.isRelative()) {
+                p1 = calcAbsolute(lastPoint, c.getP1());
+                p2 = calcAbsolute(lastPoint, c.getP2());
+                p3 = calcAbsolute(lastPoint, c.getP3());
+            } else {
+                p1 = c.getP1();
+                p2 = c.getP2();
+                p3 = c.getP3();
+            }
+
+            if (c.isSmooth()) {
+                p1 = calcReflectionRelToCurrent(lastP2, lastPoint);
+            }
+
+            path.cubicTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
+
+            if (c.isRelative()) {
+                lastP2 = new PointF(lastPoint.x + c.getP2().x, lastPoint.y
+                        + c.getP2().y);
+                lastPoint = new PointF(lastPoint.x + c.getP3().x, lastPoint.y
+                        + c.getP3().y);
+            } else {
+                lastPoint = c.getP3();
+                lastP2 = c.getP2();
+            }
+            idx++;
+        }
+
+        path.transform(matrix);
+
+        return path;
+    }
+
+    public void segmentStroke(float segmentLength, float scale) {
+        Path path = getStrokePath(scale);
+
+        segments = segmentPath(path, segmentLength, scale);
+        currentSegment = 0;
+    }
+
+    private static List<Path> segmentPath(Path path, float segmentLength,
+            float scale) {
         PathMeasure pm = new PathMeasure(path, false);
         float length = pm.getLength();
-        Path segment = new Path();
-        float start = 0;
-        float delta = 10;
 
-        final List<Path> segments = new ArrayList<Path>();
+        float start = 0;
+        float delta = segmentLength;
+
+        List<Path> segments = new ArrayList<Path>();
         while (start <= length) {
             float end = start + delta;
             if (end > length) {
                 end = length;
             }
+
+            Path segment = new Path();
             pm.getSegment(start, end, segment, true);
             segments.add(segment);
             start += delta;
         }
 
-        // for (Path s : segments) {
-        // canvas.drawPath(s, strokePaint);
-        // }
-
-        final Handler h = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                case 10:
-                    int last = msg.arg1;
-                    for (int i = 0; i <= last; i++) {
-                        Path s = segments.get(i);
-                        canvas.save();
-                        canvas.drawPath(s, strokePaint);
-                        canvas.restore();
-                    }
-                    break;
-                default:
-                    super.handleMessage(msg);
-                }
-            }
-        };
-
-        Runnable animationTask = new Runnable() {
-            public void run() {
-                for (int i = 0; i < segments.size(); i++) {
-                    Message msg = h.obtainMessage(10);
-                    msg.arg1 = i;
-                    h.sendMessage(msg);
-
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        Log.e(TAG, e.getMessage(), e);
-                    }
-                }
-            }
-        };
-        Thread t = new Thread(animationTask);
-        t.start();
+        return segments;
     }
 
     private PointF calcAbsolute(PointF currentPoint, PointF p) {
@@ -342,5 +377,41 @@ public class StrokePath {
         }
 
         return strokes;
+    }
+
+    public List<Path> getSegments() {
+        return segments;
+    }
+
+    public void advanceSegment() {
+        currentSegment++;
+    }
+
+    public void resetSegments() {
+        if (segments != null) {
+            segments.clear();
+        }
+        currentSegment = 0;
+    }
+
+    public boolean isFullyDrawn() {
+        if (segments == null) {
+            return true;
+        }
+
+        return currentSegment == segments.size() - 1;
+    }
+
+    public boolean isSegmented() {
+        return segments != null && !segments.isEmpty();
+    }
+
+    public void drawSegments(Canvas canvas) {
+        Path linkedPath = new Path();
+        for (int i = 0; i <= currentSegment; i++) {
+            Path segment = segments.get(i);
+            linkedPath.addPath(segment);
+        }
+        canvas.drawPath(linkedPath, strokePaint);
     }
 }
