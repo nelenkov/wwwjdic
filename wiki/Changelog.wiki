@@ -1,7 +1,11 @@
 #summary Full changelog
 
 = Changelog =
- * v1.62 (2011/02/01) Bug fixes
+ * v1.63 (2001/2/4) Animated strokes and global search
+  * Restored Australia mirror.
+  * Animated stroke drawing.
+  * You can now search WWWJDIC directly from the Android search widget.
+ * v1.62 (2011/2/1) Bug fixes
   * Temporarily replaced Australia mirror(currently offline) with Japan one.
   * Fixed mirror auto select.
   * Various bug fixes.
