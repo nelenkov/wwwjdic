@@ -68,10 +68,6 @@ public class SodActivity extends WebServiceBackedActivity implements
                     t.show();
                 }
                 break;
-            case REDRAW_SOD_MSG:
-                final List<StrokePath> strokes = (List<StrokePath>) msg.obj;
-                sodActivity.redraw(strokes);
-                break;
             default:
                 super.handleMessage(msg);
             }
@@ -81,8 +77,6 @@ public class SodActivity extends WebServiceBackedActivity implements
     private static final String TAG = SodActivity.class.getSimpleName();
 
     private static final int STROKE_PATH_MSG = 1;
-
-    private static final int REDRAW_SOD_MSG = 2;
 
     private static final String STROKE_PATH_LOOKUP_URL = "http://wwwjdic-android.appspot.com/kanji/";
 
@@ -147,36 +141,14 @@ public class SodActivity extends WebServiceBackedActivity implements
 
     }
 
-    public void redraw(List<StrokePath> strokes) {
-        strokeOrderView.setStrokePaths(strokes);
-        strokeOrderView.invalidate();
-    }
-
     public void animate(final List<StrokePath> strokes) {
         this.strokes = new ArrayList<StrokePath>(strokes);
 
-        strokeOrderView.setAnnotateStrokes(false);
-        final int animationDelay = WwwjdicPreferences
-                .getStrokeAnimationDelay(this);
-
-        Runnable animationTask = new Runnable() {
-            public void run() {
-                List<StrokePath> toDraw = new ArrayList<StrokePath>();
-                for (StrokePath s : strokes) {
-                    toDraw.add(s);
-                    Message msg = handler.obtainMessage(REDRAW_SOD_MSG);
-                    msg.obj = toDraw;
-                    handler.sendMessage(msg);
-
-                    try {
-                        Thread.sleep(animationDelay);
-                    } catch (InterruptedException e) {
-                        Log.e(TAG, e.getMessage(), e);
-                    }
-                }
-            }
-        };
-        getApp().getExecutorService().submit(animationTask);
+        int animationDelay = WwwjdicPreferences.getStrokeAnimationDelay(this);
+        strokeOrderView.setAnimationDelayMillis(animationDelay);
+        strokeOrderView.setStrokePaths(strokes);
+        strokeOrderView.setAnnotateStrokes(true);
+        strokeOrderView.startAnimation();
     }
 
     @Override
@@ -289,13 +261,7 @@ public class SodActivity extends WebServiceBackedActivity implements
             submitWsTask(getStrokesTask,
                     getResources().getString(R.string.getting_sod_info));
         } else {
-            //animate(strokes);
-            int animationDelay = WwwjdicPreferences
-                    .getStrokeAnimationDelay(this);
-            strokeOrderView.setAnimationDelayMillis(animationDelay);
-            strokeOrderView.setStrokePaths(strokes);
-            strokeOrderView.setAnnotateStrokes(true);
-            strokeOrderView.startAnimation();
+            animate(strokes);
         }
     }
 
