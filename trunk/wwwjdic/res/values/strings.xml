@@ -476,4 +476,7 @@
         widget below. Options are global, so all widgets will
         be
         affected.</string>
+    <string name="search_hint">Search WWWJDIC</string>
+    <string name="dict_search">WWWJDIC Search</string>    
+    <string name="dict_search_description">Search default dictionary</string>    
 </resources>

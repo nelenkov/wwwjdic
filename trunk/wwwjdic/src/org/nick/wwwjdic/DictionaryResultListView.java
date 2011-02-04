@@ -2,6 +2,7 @@ package org.nick.wwwjdic;
 
 import java.util.List;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -21,7 +22,13 @@ public class DictionaryResultListView extends
 
         setContentView(R.layout.search_results);
 
-        extractSearchCriteria();
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            criteria = SearchCriteria.createForDictionaryDefault(query);
+        } else {
+            extractSearchCriteria();
+        }
         SearchTask<DictionaryEntry> searchTask = new DictionarySearchTask(
                 getWwwjdicUrl(), getHttpTimeoutSeconds(), this, criteria);
         submitSearchTask(searchTask);
@@ -46,8 +53,8 @@ public class DictionaryResultListView extends
                 setListAdapter(adapter);
                 getListView().setTextFilterEnabled(true);
                 String message = getResources().getString(R.string.results_for);
-                setTitle(String.format(message, entries.size(), criteria
-                        .getQueryString()));
+                setTitle(String.format(message, entries.size(),
+                        criteria.getQueryString()));
                 dismissProgressDialog();
             }
         });
