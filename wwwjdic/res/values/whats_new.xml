@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Temporarily replaced Australia mirror with Japan one.\n* Fixed mirror auto select.\n* Various bug fixes.</string>
+    <string name="whats_new">* Restored Australia mirror.\n* Animated stroke drawing.\n* You can now search WWWJDIC directly from the Android search widget (add \'WWWJDIC Search\' to searchable items to enable).</string>
 </resources>
