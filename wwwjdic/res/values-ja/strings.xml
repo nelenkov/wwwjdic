@@ -327,4 +327,7 @@
     <string name="update_interval">更新間隔:</string>
     <string name="kod_configure_message">今日の漢字ウィジェットの表示と更新に関するオプションを選択してください。オプションはグロバールなので、すべてのウィジェットに適用されます。
     </string>
+    <string name="search_hint">WWWJDICを検索</string>
+    <string name="dict_search">WWWJDIC 辞書検索</string>    
+    <string name="dict_search_description">既定辞書を検索します</string>    
 </resources>
