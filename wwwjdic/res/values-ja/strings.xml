@@ -329,5 +329,6 @@
     </string>
     <string name="search_hint">WWWJDICを検索</string>
     <string name="dict_search">WWWJDIC辞書検索</string>    
-    <string name="dict_search_description">既定辞書を検索します</string>    
+    <string name="dict_search_description">既定辞書を検索します</string>
+    <string name="home">ホーム</string>     
 </resources>

@@ -1,5 +1,10 @@
 package org.nick.wwwjdic;
 
+import static org.nick.wwwjdic.Constants.DICTIONARY_TAB_IDX;
+import static org.nick.wwwjdic.Constants.EXAMPLE_SEARRCH_TAB_IDX;
+import static org.nick.wwwjdic.Constants.KANJI_TAB_IDX;
+import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
+
 import org.nick.wwwjdic.utils.Analytics;
 
 import android.app.AlertDialog;
@@ -16,11 +21,8 @@ public class Wwwjdic extends TabActivity {
     private static final int WHATS_NEW_DIALOG_ID = 1;
     private static final int DONATION_THANKS_DIALOG_ID = 2;
 
-    private static final int DICTIONARY_TAB_IDX = 0;
     private static final String DICTIONARY_TAB = "dictionaryTab";
-    private static final int KANJI_TAB_IDX = 1;
     private static final String KANJI_TAB = "kanjiTab";
-    private static final int EXAMPLE_SEARRCH_TAB_IDX = 2;
     private static final String EXAMPLE_SEARCH_TAB = "exampleSearchTab";
 
     private static final String DONATE_VERSION_PACKAGE = "org.nick.wwwjdic.donate";
@@ -98,31 +100,39 @@ public class Wwwjdic extends TabActivity {
         if (extras != null) {
             dictionaryIntent.putExtras(extras);
         }
-        tabHost.addTab(tabHost.newTabSpec(DICTIONARY_TAB).setIndicator(
-                getResources().getText(R.string.dictionary),
-                getResources().getDrawable(R.drawable.ic_tab_dict)).setContent(
-                dictionaryIntent));
+        tabHost.addTab(tabHost
+                .newTabSpec(DICTIONARY_TAB)
+                .setIndicator(getResources().getText(R.string.dictionary),
+                        getResources().getDrawable(R.drawable.ic_tab_dict))
+                .setContent(dictionaryIntent));
 
         Intent kanjiLookup = new Intent(this, KanjiLookup.class);
         if (extras != null) {
             kanjiLookup.putExtras(extras);
         }
-        tabHost.addTab(tabHost.newTabSpec(KANJI_TAB).setIndicator(
-                getResources().getText(R.string.kanji_lookup),
-                getResources().getDrawable(R.drawable.ic_tab_kanji))
+        tabHost.addTab(tabHost
+                .newTabSpec(KANJI_TAB)
+                .setIndicator(getResources().getText(R.string.kanji_lookup),
+                        getResources().getDrawable(R.drawable.ic_tab_kanji))
                 .setContent(kanjiLookup));
 
         Intent exampleSearch = new Intent(this, ExampleSearch.class);
         if (extras != null) {
             exampleSearch.putExtras(extras);
         }
-        tabHost.addTab(tabHost.newTabSpec(EXAMPLE_SEARCH_TAB).setIndicator(
-                getResources().getText(R.string.example_search),
-                getResources().getDrawable(R.drawable.ic_tab_example))
+        tabHost.addTab(tabHost
+                .newTabSpec(EXAMPLE_SEARCH_TAB)
+                .setIndicator(getResources().getText(R.string.example_search),
+                        getResources().getDrawable(R.drawable.ic_tab_example))
                 .setContent(exampleSearch));
 
         tabHost.setCurrentTab(DICTIONARY_TAB_IDX);
         if (extras != null) {
+            int selectedTab = extras.getInt(SELECTED_TAB_IDX, -1);
+            if (selectedTab != -1) {
+                tabHost.setCurrentTab(selectedTab);
+            }
+
             String searchKey = extras.getString(Constants.SEARCH_TEXT_KEY);
             int searchType = extras.getInt(Constants.SEARCH_TYPE);
             if (searchKey != null) {

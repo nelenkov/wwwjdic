@@ -25,7 +25,9 @@ public class DictionaryResultListView extends
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            criteria = SearchCriteria.createForDictionaryDefault(query);
+            String dictionary = WwwjdicPreferences.getDefaultDictionary(this);
+            criteria = SearchCriteria.createForDictionary(query, false, false,
+                    false, dictionary);
         } else {
             extractSearchCriteria();
         }

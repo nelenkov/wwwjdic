@@ -14,18 +14,23 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
-public class DetailActivity extends Activity implements
+public abstract class DetailActivity extends Activity implements
         OnCheckedChangeListener, OnLongClickListener {
 
     protected static final Pattern CROSS_REF_PATTERN = Pattern
             .compile("^.*\\(See (\\S+)\\).*$");
+
+    private static final int ITEM_ID_HOME = 0;
+
     protected HistoryDbHelper db;
     protected WwwjdicEntry wwwjdicEntry;
     protected boolean isFavorite;
@@ -58,12 +63,43 @@ public class DetailActivity extends Activity implements
         cm.setText(wwwjdicEntry.getHeadword());
         String messageTemplate = getResources().getString(
                 R.string.copied_to_clipboard);
-        Toast t = Toast.makeText(this, String.format(messageTemplate,
-                wwwjdicEntry.getHeadword()), Toast.LENGTH_SHORT);
+        Toast t = Toast.makeText(this,
+                String.format(messageTemplate, wwwjdicEntry.getHeadword()),
+                Toast.LENGTH_SHORT);
         t.show();
 
         return false;
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        menu.add(0, ITEM_ID_HOME, 0, R.string.home).setIcon(
+                android.R.drawable.ic_menu_compass);
+
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        switch (item.getItemId()) {
+        case ITEM_ID_HOME:
+            Intent intent = new Intent(this, Wwwjdic.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            setHomeActivityExtras(intent);
+
+            startActivity(intent);
+            finish();
+
+            return true;
+        default:
+            // do nothing
+        }
+
+        return super.onMenuItemSelected(featureId, item);
+    }
+
+    protected abstract void setHomeActivityExtras(Intent homeActivityIntent);
 
     protected WwwjdicApplication getApp() {
         return (WwwjdicApplication) getApplication();

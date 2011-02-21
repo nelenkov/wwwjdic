@@ -1,5 +1,8 @@
 package org.nick.wwwjdic;
 
+import static org.nick.wwwjdic.Constants.KANJI_TAB_IDX;
+import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -15,8 +18,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -215,8 +218,8 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
         Log.d(TAG, String.format(
                 "Will look for compounds in dictionary: %s(%s)", getApp()
                         .getCurrentDictionaryName(), dictionary));
-        SearchCriteria criteria = SearchCriteria.createForKanjiCompounds(entry
-                .getKanji(), searchType, commonWordsOnly, dictionary);
+        SearchCriteria criteria = SearchCriteria.createForKanjiCompounds(
+                entry.getKanji(), searchType, commonWordsOnly, dictionary);
         Intent intent = new Intent(KanjiEntryDetail.this,
                 DictionaryResultListView.class);
         intent.putExtra(Constants.CRITERIA_KEY, criteria);
@@ -308,8 +311,8 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
         switch (v.getId()) {
         case R.id.sod_button:
             Intent intent = new Intent(this, SodActivity.class);
-            intent.putExtra(Constants.KANJI_UNICODE_NUMBER, entry
-                    .getUnicodeNumber());
+            intent.putExtra(Constants.KANJI_UNICODE_NUMBER,
+                    entry.getUnicodeNumber());
             intent.putExtra(Constants.KANJI_GLYPH, entry.getKanji());
 
             startActivity(intent);
@@ -317,5 +320,10 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
         default:
             // do nothing
         }
+    }
+
+    @Override
+    protected void setHomeActivityExtras(Intent homeActivityIntent) {
+        homeActivityIntent.putExtra(SELECTED_TAB_IDX, KANJI_TAB_IDX);
     }
 }
