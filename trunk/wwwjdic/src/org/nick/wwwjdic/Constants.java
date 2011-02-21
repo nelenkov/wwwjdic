@@ -36,6 +36,11 @@ public class Constants {
 
     public static final String SELECTED_DICTIONARY_IDX = "org.nick.wwwjdic.selectedDict";
 
+    public static final String SELECTED_TAB_IDX = "org.nick.wwwjdic.selectedTabIdx";
+    public static final int DICTIONARY_TAB_IDX = 0;
+    public static final int KANJI_TAB_IDX = 1;
+    public static final int EXAMPLE_SEARRCH_TAB_IDX = 2;
+
     private Constants() {
     }
 

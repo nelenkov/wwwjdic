@@ -1,5 +1,8 @@
 package org.nick.wwwjdic;
 
+import static org.nick.wwwjdic.Constants.DICTIONARY_TAB_IDX;
+import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
+
 import java.util.regex.Matcher;
 
 import android.content.Intent;
@@ -127,6 +130,11 @@ public class DictionaryEntryDetail extends DetailActivity implements
             searchKey = searchKey.replace(COMMON_USAGE_MARKER, "");
         }
         return searchKey;
+    }
+
+    @Override
+    protected void setHomeActivityExtras(Intent homeActivityIntent) {
+        homeActivityIntent.putExtra(SELECTED_TAB_IDX, DICTIONARY_TAB_IDX);
     }
 
 }

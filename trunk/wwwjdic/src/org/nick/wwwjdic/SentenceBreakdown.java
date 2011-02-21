@@ -1,14 +1,20 @@
 package org.nick.wwwjdic;
 
+import static org.nick.wwwjdic.Constants.EXAMPLE_SEARRCH_TAB_IDX;
+import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
+
 import java.util.List;
 
 import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -99,6 +105,8 @@ public class SentenceBreakdown extends
     private static final int HILIGHT_COLOR1 = 0xff427ad7;
     private static final int HILIGHT_COLOR2 = 0xfff97600;
 
+    private static final int ITEM_ID_HOME = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +124,34 @@ public class SentenceBreakdown extends
         SearchTask<SentenceBreakdownEntry> searchTask = new SentenceBreakdownTask(
                 getWwwjdicUrl(), getHttpTimeoutSeconds(), this, query);
         submitSearchTask(searchTask);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        menu.add(0, ITEM_ID_HOME, 0, R.string.home).setIcon(
+                android.R.drawable.ic_menu_compass);
+
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        switch (item.getItemId()) {
+        case ITEM_ID_HOME:
+            Intent intent = new Intent(this, Wwwjdic.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(SELECTED_TAB_IDX, EXAMPLE_SEARRCH_TAB_IDX);
+
+            startActivity(intent);
+            finish();
+
+            return true;
+        default:
+            // do nothing
+        }
+
+        return super.onMenuItemSelected(featureId, item);
     }
 
     private void markString(SpannableString spannable, String term) {
