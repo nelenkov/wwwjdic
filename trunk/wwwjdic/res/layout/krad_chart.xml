@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+  <TextView android:id="@+id/matched_kanji" 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+    android:text="matched kanji" 
+    android:textSize="16dp"
+    android:singleLine="true"/>
+  <GridView 
     android:id="@+id/kradChartGrid" 
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" 
-    android:numColumns="10"
-    android:verticalSpacing="2dp" 
-    android:horizontalSpacing="2dp"
-    android:stretchMode="columnWidth" 
+    android:layout_height="0px" 
+    android:layout_weight="1"
+    android:numColumns="10" 
+    android:verticalSpacing="2dp"
+    android:horizontalSpacing="2dp" 
+    android:stretchMode="columnWidth"
     android:gravity="center" />
+</LinearLayout>
