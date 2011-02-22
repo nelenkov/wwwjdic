@@ -9,23 +9,30 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.nick.wwwjdic.hkr.HkrCandidates;
 import org.nick.wwwjdic.krad.KradDb;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class KradChart extends Activity implements OnItemClickListener {
+public class KradChart extends Activity implements OnClickListener,
+        OnItemClickListener {
 
     private static final String TAG = KradChart.class.getSimpleName();
 
@@ -37,12 +44,15 @@ public class KradChart extends Activity implements OnItemClickListener {
     private List<String> radicals = new ArrayList<String>();
     private Set<Character> selectedRadicals = new HashSet<Character>();
     private Set<Character> enabledRadicals = new HashSet<Character>();
+    private Set<Character> matchingKanjis;
 
     private TextView matchedKanji;
     private GridView radicalChartGrid;
     private KradAdapter adapter;
 
     private KradDb kradDb;
+
+    private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,34 +71,83 @@ public class KradChart extends Activity implements OnItemClickListener {
         }
 
         matchedKanji = (TextView) findViewById(R.id.matched_kanji);
+        matchedKanji.setOnClickListener(this);
         radicalChartGrid = (GridView) findViewById(R.id.kradChartGrid);
         radicalChartGrid.setOnItemClickListener(this);
 
-        try {
-            for (String numStrokesStr : NUM_STROKES) {
-                String labelStr = new String(numStrokesStr);
-                if (labelStr.length() == 1) {
-                    labelStr = " " + labelStr + " ";
-                }
-                radicals.add(labelStr);
-
-                String arrayName = "_" + numStrokesStr + "_stroke";
-                Field field = R.array.class.getField(arrayName);
-                int resourceId = (Integer) field.get(null);
-                String[] radicalArr = getResources().getStringArray(resourceId);
-                radicals.addAll(Arrays.asList(radicalArr));
-            }
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
-        enableAllRadicals();
-        adapter = new KradAdapter(this, R.layout.krad_item, radicals);
-        radicalChartGrid.setAdapter(adapter);
-
         setTitle(R.string.select_radical);
+
+        new AsyncTask<Void, Void, Boolean>() {
+
+            private Throwable error;
+
+            @Override
+            protected void onPreExecute() {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+
+                }
+                progressDialog = new ProgressDialog(KradChart.this);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setMessage(getString(R.string.loading));
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+            }
+
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                try {
+                    try {
+                        for (String numStrokesStr : NUM_STROKES) {
+                            String labelStr = new String(numStrokesStr);
+                            if (labelStr.length() == 1) {
+                                labelStr = " " + labelStr + " ";
+                            }
+                            radicals.add(labelStr);
+
+                            String arrayName = "_" + numStrokesStr + "_stroke";
+                            Field field = R.array.class.getField(arrayName);
+                            int resourceId = (Integer) field.get(null);
+                            String[] radicalArr = getResources()
+                                    .getStringArray(resourceId);
+                            radicals.addAll(Arrays.asList(radicalArr));
+                        }
+                    } catch (NoSuchFieldException e) {
+                        throw new RuntimeException(e);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    return true;
+                } catch (Exception e) {
+                    error = e;
+                    Log.d(TAG, "Error loading radkfile-u", e);
+
+                    return false;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+
+                    if (result) {
+                        enableAllRadicals();
+                        adapter = new KradAdapter(KradChart.this,
+                                R.layout.krad_item, radicals);
+                        radicalChartGrid.setAdapter(adapter);
+                    } else {
+                        Toast t = Toast.makeText(
+                                KradChart.this,
+                                "error loading radkfile-u "
+                                        + error.getMessage(),
+                                Toast.LENGTH_SHORT);
+                        t.show();
+                    }
+                }
+            }
+        }.execute();
     }
 
     private void enableAllRadicals() {
@@ -162,9 +221,9 @@ public class KradChart extends Activity implements OnItemClickListener {
 
         if (selectedRadicals.isEmpty()) {
             enableAllRadicals();
+            matchedKanji.setText("");
         } else {
-            Set<Character> matchingKanjis = kradDb
-                    .getKanjisForRadicals(selectedRadicals);
+            matchingKanjis = kradDb.getKanjisForRadicals(selectedRadicals);
             String matchingKanjisStr = TextUtils.join("", matchingKanjis);
             matchedKanji.setText(matchingKanjisStr);
 
@@ -174,5 +233,24 @@ public class KradChart extends Activity implements OnItemClickListener {
         }
 
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+        case R.id.matched_kanji:
+            String[] kanji = new String[matchingKanjis.size()];
+            int i = 0;
+            for (Character c : matchingKanjis) {
+                kanji[i] = Character.toString(c);
+                i++;
+            }
+            Intent intent = new Intent(this, HkrCandidates.class);
+            intent.putExtra(Constants.HKR_CANDIDATES_KEY, kanji);
+            startActivity(intent);
+            break;
+        default:
+            // do nothing
+        }
     }
 }
