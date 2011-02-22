@@ -1,6 +1,5 @@
 package org.nick.wwwjdic;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +8,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import org.nick.wwwjdic.krad.KradDb;
+import org.nick.wwwjdic.utils.FileUtils;
 
 import android.app.Application;
 import android.content.Context;
@@ -41,6 +43,8 @@ public class WwwjdicApplication extends Application {
     // EDICT by default
     private String currentDictionary = "1";
     private String currentDictionaryName = "General";
+
+    private KradDb kradDb = new KradDb();
 
     @Override
     public void onCreate() {
@@ -185,7 +189,7 @@ public class WwwjdicApplication extends Application {
         try {
             in = assetManager.open("keys");
 
-            return readTextFile(in).trim();
+            return FileUtils.readTextFile(in).trim();
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
@@ -197,18 +201,6 @@ public class WwwjdicApplication extends Application {
             }
         }
 
-    }
-
-    private String readTextFile(InputStream in) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte buff[] = new byte[1024];
-
-        int len = -1;
-        while ((len = in.read(buff)) != -1) {
-            baos.write(buff, 0, len);
-        }
-
-        return baos.toString("ASCII");
     }
 
     public WwwjdicApplication() {
@@ -311,6 +303,10 @@ public class WwwjdicApplication extends Application {
     public synchronized void setCurrentDictionaryName(
             String currentDictionaryName) {
         this.currentDictionaryName = currentDictionaryName;
+    }
+
+    public KradDb getKradDb() {
+        return kradDb;
     }
 
 }
