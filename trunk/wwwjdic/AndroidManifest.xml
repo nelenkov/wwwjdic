@@ -55,7 +55,9 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
-        </activity>    
+        </activity>
+        <activity android:name=".KradChart"
+            android:configChanges="orientation|keyboardHidden|keyboard"></activity>    
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>

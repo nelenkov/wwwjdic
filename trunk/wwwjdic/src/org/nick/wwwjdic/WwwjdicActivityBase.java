@@ -42,7 +42,8 @@ public class WwwjdicActivityBase extends Activity {
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         switch (item.getItemId()) {
         case ITEM_ID_ABOUT:
-            Intent intent = new Intent(this, AboutActivity.class);
+            // Intent intent = new Intent(this, AboutActivity.class);
+            Intent intent = new Intent(this, KradChart.class);
             startActivity(intent);
             return true;
         case ITEM_ID_OCR:
