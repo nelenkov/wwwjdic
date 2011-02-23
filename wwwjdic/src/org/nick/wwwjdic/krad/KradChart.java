@@ -1,4 +1,4 @@
-package org.nick.wwwjdic;
+package org.nick.wwwjdic.krad;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,8 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.nick.wwwjdic.Constants;
+import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.WwwjdicApplication;
 import org.nick.wwwjdic.hkr.HkrCandidates;
-import org.nick.wwwjdic.krad.KradDb;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -100,9 +102,9 @@ public class KradChart extends Activity implements OnClickListener,
                     try {
                         for (String numStrokesStr : NUM_STROKES) {
                             String labelStr = new String(numStrokesStr);
-                            if (labelStr.length() == 1) {
-                                labelStr = " " + labelStr + " ";
-                            }
+                            // if (labelStr.length() == 1) {
+                            // labelStr = " " + labelStr + " ";
+                            // }
                             radicals.add(labelStr);
 
                             String arrayName = "_" + numStrokesStr + "_stroke";
@@ -167,8 +169,10 @@ public class KradChart extends Activity implements OnClickListener,
 
         @Override
         public View getView(int position, View convertView, ViewGroup viewGroup) {
-            View result = super.getView(position, convertView, viewGroup);
+            TextView result = (TextView) super.getView(position, convertView,
+                    viewGroup);
             result.setBackgroundColor(Color.TRANSPARENT);
+            result.setTextSize(24f);
             String radical = getItem(position);
             if (isStrokeNumLabel(radical)) {
                 result.setBackgroundColor(Color.GRAY);

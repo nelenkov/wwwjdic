@@ -61,7 +61,7 @@
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name="org.nick.wwwjdic.sod.SodActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
-        <activity android:name="org.nick.wwwjdic.KradChart"
+        <activity android:name="org.nick.wwwjdic.krad.KradChart"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>        
             
         <activity android:name="org.nick.wwwjdic.widgets.KodWidgetConfigure" 

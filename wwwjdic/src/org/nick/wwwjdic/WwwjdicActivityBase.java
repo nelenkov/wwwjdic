@@ -2,6 +2,7 @@ package org.nick.wwwjdic;
 
 import org.nick.wwwjdic.history.FavoritesAndHistory;
 import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
+import org.nick.wwwjdic.krad.KradChart;
 import org.nick.wwwjdic.ocr.OcrActivity;
 
 import android.app.Activity;
