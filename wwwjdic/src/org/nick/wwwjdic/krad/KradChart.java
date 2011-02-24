@@ -54,17 +54,16 @@ public class KradChart extends Activity implements OnClickListener,
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
             "13", "14", "17" });
 
-    private static final String HAT = "𠆢";
-    private static final Map<Character, Character> KRAD_TO_DISPLAY = new HashMap<Character, Character>();
+    private static final Map<String, String> KRAD_TO_DISPLAY = new HashMap<String, String>();
     static {
-        KRAD_TO_DISPLAY.put('⺅', '亻');
-        KRAD_TO_DISPLAY.put('⺾', '艹');
-        KRAD_TO_DISPLAY.put('辶', '辶');
-        KRAD_TO_DISPLAY.put('⻏', '邦');
-        KRAD_TO_DISPLAY.put('⻖', '阡');
-        KRAD_TO_DISPLAY.put('⺌', '尚');
-        KRAD_TO_DISPLAY.put(HAT.charAt(0), '个');
-        KRAD_TO_DISPLAY.put('⺹', '耂');
+        KRAD_TO_DISPLAY.put("⺅", "亻");
+        KRAD_TO_DISPLAY.put("⺾", "艹");
+        KRAD_TO_DISPLAY.put("辶", "辶");
+        KRAD_TO_DISPLAY.put("⻏", "邦");
+        KRAD_TO_DISPLAY.put("⻖", "阡");
+        KRAD_TO_DISPLAY.put("⺌", "尚");
+        KRAD_TO_DISPLAY.put("𠆢", "个");
+        KRAD_TO_DISPLAY.put("⺹", "耂");
     }
     private static final List<String> REPLACED_CHARS = Arrays
             .asList(new String[] { "邦", "阡", "尚", "个" });
@@ -79,9 +78,9 @@ public class KradChart extends Activity implements OnClickListener,
          */
         private static final long serialVersionUID = -6074503793592867534L;
 
-        Set<Character> selectedRadicals = new HashSet<Character>();
-        Set<Character> enabledRadicals = new HashSet<Character>();
-        Set<Character> matchingKanjis = new HashSet<Character>();
+        Set<String> selectedRadicals = new HashSet<String>();
+        Set<String> enabledRadicals = new HashSet<String>();
+        Set<String> matchingKanjis = new HashSet<String>();
     }
 
     private State state = new State();
@@ -97,7 +96,6 @@ public class KradChart extends Activity implements OnClickListener,
     private KradDb kradDb = new KradDb();
 
     private ProgressDialog progressDialog;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -205,7 +203,6 @@ public class KradChart extends Activity implements OnClickListener,
         outState.putSerializable(STATE_KEY, state);
     }
 
-
     private void displayTotalMatches() {
         String totalMatchesTemplate = getResources().getString(
                 R.string.total_matches);
@@ -228,7 +225,7 @@ public class KradChart extends Activity implements OnClickListener,
     private void enableAllRadicals() {
         for (String radical : radicals) {
             if (!isStrokeNumLabel(radical)) {
-                state.enabledRadicals.add(radical.trim().charAt(0));
+                state.enabledRadicals.add(radical.trim());
             }
         }
     }
@@ -252,7 +249,7 @@ public class KradChart extends Activity implements OnClickListener,
             if (isStrokeNumLabel(modelStr)) {
                 result.setBackgroundColor(Color.GRAY);
             } else {
-                Character radical = modelStr.trim().charAt(0);
+                String radical = modelStr.trim();
                 String displayStr = toDisplayStr(radical);
                 if (REPLACED_CHARS.contains(displayStr)) {
                     result.setText(displayStr);
@@ -287,20 +284,18 @@ public class KradChart extends Activity implements OnClickListener,
         return NUM_STROKES.contains(str.trim());
     }
 
-    private boolean isSelected(String radicalStr) {
-        Character radical = radicalStr.trim().charAt(0);
+    private boolean isSelected(String radical) {
         return state.selectedRadicals.contains(radical);
     }
 
-    private boolean isDisabled(String radicalStr) {
-        Character radical = radicalStr.trim().charAt(0);
-        return !isStrokeNumLabel(radicalStr)
+    private boolean isDisabled(String radical) {
+        return !isStrokeNumLabel(radical)
                 && !state.enabledRadicals.contains(radical);
     }
 
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
-        Character radical = radicals.get(position).trim().charAt(0);
+        String radical = radicals.get(position).trim();
         if (state.selectedRadicals.contains(radical)) {
             state.selectedRadicals.remove(radical);
         } else {
@@ -333,13 +328,13 @@ public class KradChart extends Activity implements OnClickListener,
             return;
         }
 
-        Character[] matchingChars = state.matchingKanjis
-                .toArray(new Character[state.matchingKanjis.size()]);
+        String[] matchingChars = state.matchingKanjis
+                .toArray(new String[state.matchingKanjis.size()]);
         Arrays.sort(matchingChars);
 
-        Character[] charsToDisplay = new Character[NUM_SUMMARY_CHARS];
+        String[] charsToDisplay = new String[NUM_SUMMARY_CHARS];
         if (matchingChars.length < charsToDisplay.length) {
-            charsToDisplay = new Character[matchingChars.length];
+            charsToDisplay = new String[matchingChars.length];
         }
         System.arraycopy(matchingChars, 0, charsToDisplay, 0,
                 charsToDisplay.length);
@@ -350,10 +345,14 @@ public class KradChart extends Activity implements OnClickListener,
         }
         SpannableString str = new SpannableString(text);
 
-        for (Character c : charsToDisplay) {
+        for (String c : charsToDisplay) {
             int idx = text.indexOf(c);
             if (idx != -1) {
-                Intent intent = createCharDetailsIntent(Character.toString(c));
+                Intent intent = createCharDetailsIntent(c);
+                int end = idx + 1;
+                if (end > str.length() - 1) {
+                    end = str.length();
+                }
                 str.setSpan(new IntentSpan(this, intent), idx, idx + 1,
                         Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
             }
@@ -390,8 +389,8 @@ public class KradChart extends Activity implements OnClickListener,
         clearButton.setEnabled(matchesFound);
     }
 
-    private static String toDisplayStr(Character radical) {
-        Character displayChar = KRAD_TO_DISPLAY.get(radical);
+    private static String toDisplayStr(String radical) {
+        String displayChar = KRAD_TO_DISPLAY.get(radical);
         if (displayChar == null) {
             displayChar = radical;
         }
@@ -399,7 +398,8 @@ public class KradChart extends Activity implements OnClickListener,
         if (displayChar != radical) {
             Log.d(TAG, String.format("%s %s", radical, displayChar));
         }
-        return Character.toString(displayChar);
+
+        return displayChar;
     }
 
     @Override
@@ -435,25 +435,14 @@ public class KradChart extends Activity implements OnClickListener,
     }
 
     private Intent createShowAllIntent() {
-        Character[] matchingChars = state.matchingKanjis
-                .toArray(new Character[state.matchingKanjis.size()]);
+        String[] matchingChars = state.matchingKanjis
+                .toArray(new String[state.matchingKanjis.size()]);
         Arrays.sort(matchingChars);
-        for (int i = 0; i < matchingChars.length; i++) {
-            Character c = matchingChars[i];
-            //int cp = Character.codePointAt(matchingChars, i);
-            Log.d(TAG, String.format("%02X high: %s low: %s",
-                    (int) c.charValue(), Character.isHighSurrogate(c),
-                    Character.isLowSurrogate(c)));
-        }
+        List<String> l = Arrays.asList(matchingChars);
+        Log.d(TAG, "sorted: " + l);
 
-        String[] kanji = new String[matchingChars.length];
-        int i = 0;
-        for (Character c : matchingChars) {
-            kanji[i] = Character.toString(c);
-            i++;
-        }
         Intent intent = new Intent(this, HkrCandidates.class);
-        intent.putExtra(Constants.HKR_CANDIDATES_KEY, kanji);
+        intent.putExtra(Constants.HKR_CANDIDATES_KEY, matchingChars);
         return intent;
     }
 }
