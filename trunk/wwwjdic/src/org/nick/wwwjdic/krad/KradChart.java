@@ -2,6 +2,7 @@ package org.nick.wwwjdic.krad;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,8 +13,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.nick.wwwjdic.Constants;
+import org.nick.wwwjdic.KanjiResultListView;
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.SearchCriteria;
 import org.nick.wwwjdic.hkr.HkrCandidates;
+import org.nick.wwwjdic.utils.IntentSpan;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -22,7 +26,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.method.MovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,6 +38,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,9 +46,10 @@ import android.widget.Toast;
 public class KradChart extends Activity implements OnClickListener,
         OnItemClickListener {
 
+    private static final int NUM_SUMMARY_CHARS = 10;
+
     private static final String TAG = KradChart.class.getSimpleName();
 
-    private static final int NUM_KRAD_RADICALS = 252;
     private static final List<String> NUM_STROKES = Arrays.asList(new String[] {
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
             "13", "14", "17" });
@@ -60,11 +70,27 @@ public class KradChart extends Activity implements OnClickListener,
             .asList(new String[] { "邦", "阡", "尚", "个" });
 
     private List<String> radicals = new ArrayList<String>();
-    private Set<Character> selectedRadicals = new HashSet<Character>();
-    private Set<Character> enabledRadicals = new HashSet<Character>();
-    private Set<Character> matchingKanjis;
 
-    private TextView matchedKanji;
+    private static final String STATE_KEY = "org.nick.wwwjdic.kradChartState";
+
+    static class State implements Serializable {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -6074503793592867534L;
+
+        Set<Character> selectedRadicals = new HashSet<Character>();
+        Set<Character> enabledRadicals = new HashSet<Character>();
+        Set<Character> matchingKanjis = new HashSet<Character>();
+    }
+
+    private State state = new State();
+
+    private TextView matchedKanjiText;
+    private TextView totalMatchesText;
+    private Button showAllButton;
+    private Button clearButton;
+
     private GridView radicalChartGrid;
     private KradAdapter adapter;
 
@@ -72,17 +98,26 @@ public class KradChart extends Activity implements OnClickListener,
 
     private ProgressDialog progressDialog;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.krad_chart);
 
-        matchedKanji = (TextView) findViewById(R.id.matched_kanji);
-        matchedKanji.setOnClickListener(this);
+        matchedKanjiText = (TextView) findViewById(R.id.matched_kanji);
+        totalMatchesText = (TextView) findViewById(R.id.total_matches);
+        displayTotalMatches();
+
+        showAllButton = (Button) findViewById(R.id.show_all_button);
+        showAllButton.setOnClickListener(this);
+        clearButton = (Button) findViewById(R.id.clear_button);
+        clearButton.setOnClickListener(this);
+        toggleButtons();
+
         radicalChartGrid = (GridView) findViewById(R.id.kradChartGrid);
         radicalChartGrid.setOnItemClickListener(this);
 
-        setTitle(R.string.select_radical);
+        setTitle(R.string.multi_radical_search);
 
         new AsyncTask<Void, Void, Boolean>() {
 
@@ -156,6 +191,28 @@ public class KradChart extends Activity implements OnClickListener,
         }.execute();
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        state = (State) savedInstanceState.getSerializable(STATE_KEY);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable(STATE_KEY, state);
+    }
+
+
+    private void displayTotalMatches() {
+        String totalMatchesTemplate = getResources().getString(
+                R.string.total_matches);
+        totalMatchesText.setText(String.format(totalMatchesTemplate,
+                state.matchingKanjis.size()));
+    }
+
     private void initKradDb() {
         if (!kradDb.isInitialized()) {
             try {
@@ -171,7 +228,7 @@ public class KradChart extends Activity implements OnClickListener,
     private void enableAllRadicals() {
         for (String radical : radicals) {
             if (!isStrokeNumLabel(radical)) {
-                enabledRadicals.add(radical.trim().charAt(0));
+                state.enabledRadicals.add(radical.trim().charAt(0));
             }
         }
     }
@@ -232,38 +289,105 @@ public class KradChart extends Activity implements OnClickListener,
 
     private boolean isSelected(String radicalStr) {
         Character radical = radicalStr.trim().charAt(0);
-        return selectedRadicals.contains(radical);
+        return state.selectedRadicals.contains(radical);
     }
 
     private boolean isDisabled(String radicalStr) {
         Character radical = radicalStr.trim().charAt(0);
         return !isStrokeNumLabel(radicalStr)
-                && !enabledRadicals.contains(radical);
+                && !state.enabledRadicals.contains(radical);
     }
 
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
         Character radical = radicals.get(position).trim().charAt(0);
-        if (selectedRadicals.contains(radical)) {
-            selectedRadicals.remove(radical);
+        if (state.selectedRadicals.contains(radical)) {
+            state.selectedRadicals.remove(radical);
         } else {
-            selectedRadicals.add(radical);
+            state.selectedRadicals.add(radical);
         }
 
-        if (selectedRadicals.isEmpty()) {
+        if (state.selectedRadicals.isEmpty()) {
             enableAllRadicals();
-            matchedKanji.setText("");
+            matchedKanjiText.setText("");
         } else {
-            matchingKanjis = kradDb.getKanjisForRadicals(selectedRadicals);
-            String matchingKanjisStr = TextUtils.join("", matchingKanjis);
-            matchedKanji.setText(matchingKanjisStr);
+            state.matchingKanjis = kradDb
+                    .getKanjisForRadicals(state.selectedRadicals);
+            addClickableKanji(matchedKanjiText);
 
-            Log.d(TAG, "matching kanjis: " + matchingKanjis);
-            enabledRadicals = kradDb.getRadicalsForKanjis(matchingKanjis);
-            Log.d(TAG, "enabled radicals: " + enabledRadicals);
+            Log.d(TAG, "matching kanjis: " + state.matchingKanjis);
+            state.enabledRadicals = kradDb
+                    .getRadicalsForKanjis(state.matchingKanjis);
+            Log.d(TAG, "enabled radicals: " + state.enabledRadicals);
         }
+
+        toggleButtons();
+
+        displayTotalMatches();
 
         adapter.notifyDataSetChanged();
+    }
+
+    private void addClickableKanji(TextView textView) {
+        if (state.matchingKanjis.isEmpty()) {
+            return;
+        }
+
+        Character[] matchingChars = state.matchingKanjis
+                .toArray(new Character[state.matchingKanjis.size()]);
+        Arrays.sort(matchingChars);
+
+        Character[] charsToDisplay = new Character[NUM_SUMMARY_CHARS];
+        if (matchingChars.length < charsToDisplay.length) {
+            charsToDisplay = new Character[matchingChars.length];
+        }
+        System.arraycopy(matchingChars, 0, charsToDisplay, 0,
+                charsToDisplay.length);
+        String text = TextUtils.join(" ", charsToDisplay);
+        String ellipsis = "...";
+        if (matchingChars.length > charsToDisplay.length) {
+            text += " " + ellipsis;
+        }
+        SpannableString str = new SpannableString(text);
+
+        for (Character c : charsToDisplay) {
+            int idx = text.indexOf(c);
+            if (idx != -1) {
+                Intent intent = createCharDetailsIntent(Character.toString(c));
+                str.setSpan(new IntentSpan(this, intent), idx, idx + 1,
+                        Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            }
+        }
+
+        int idx = text.indexOf(ellipsis);
+        if (idx != -1) {
+            Intent intent = createShowAllIntent();
+            str.setSpan(new IntentSpan(this, intent), idx,
+                    idx + ellipsis.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        }
+
+        textView.setText(str);
+        textView.setLinkTextColor(Color.WHITE);
+        MovementMethod m = textView.getMovementMethod();
+        if ((m == null) || !(m instanceof LinkMovementMethod)) {
+            if (textView.getLinksClickable()) {
+                textView.setMovementMethod(LinkMovementMethod.getInstance());
+            }
+        }
+    }
+
+    private Intent createCharDetailsIntent(String kanji) {
+        Intent intent = new Intent(this, KanjiResultListView.class);
+        SearchCriteria criteria = SearchCriteria.createForKanjiOrReading(kanji);
+        intent.putExtra(Constants.CRITERIA_KEY, criteria);
+
+        return intent;
+    }
+
+    private void toggleButtons() {
+        boolean matchesFound = !state.matchingKanjis.isEmpty();
+        showAllButton.setEnabled(matchesFound);
+        clearButton.setEnabled(matchesFound);
     }
 
     private static String toDisplayStr(Character radical) {
@@ -281,19 +405,55 @@ public class KradChart extends Activity implements OnClickListener,
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-        case R.id.matched_kanji:
-            String[] kanji = new String[matchingKanjis.size()];
-            int i = 0;
-            for (Character c : matchingKanjis) {
-                kanji[i] = Character.toString(c);
-                i++;
-            }
-            Intent intent = new Intent(this, HkrCandidates.class);
-            intent.putExtra(Constants.HKR_CANDIDATES_KEY, kanji);
-            startActivity(intent);
+        case R.id.show_all_button:
+            showCandidates();
+            break;
+        case R.id.clear_button:
+            clearSelection();
             break;
         default:
             // do nothing
         }
+    }
+
+    private void clearSelection() {
+        state.selectedRadicals.clear();
+        state.matchingKanjis.clear();
+        enableAllRadicals();
+
+        matchedKanjiText.setText("");
+        displayTotalMatches();
+
+        toggleButtons();
+
+        adapter.notifyDataSetChanged();
+    }
+
+    private void showCandidates() {
+        Intent intent = createShowAllIntent();
+        startActivity(intent);
+    }
+
+    private Intent createShowAllIntent() {
+        Character[] matchingChars = state.matchingKanjis
+                .toArray(new Character[state.matchingKanjis.size()]);
+        Arrays.sort(matchingChars);
+        for (int i = 0; i < matchingChars.length; i++) {
+            Character c = matchingChars[i];
+            //int cp = Character.codePointAt(matchingChars, i);
+            Log.d(TAG, String.format("%02X high: %s low: %s",
+                    (int) c.charValue(), Character.isHighSurrogate(c),
+                    Character.isLowSurrogate(c)));
+        }
+
+        String[] kanji = new String[matchingChars.length];
+        int i = 0;
+        for (Character c : matchingChars) {
+            kanji[i] = Character.toString(c);
+            i++;
+        }
+        Intent intent = new Intent(this, HkrCandidates.class);
+        intent.putExtra(Constants.HKR_CANDIDATES_KEY, kanji);
+        return intent;
     }
 }
