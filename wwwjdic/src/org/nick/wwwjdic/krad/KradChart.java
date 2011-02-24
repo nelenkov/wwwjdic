@@ -5,13 +5,14 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.WwwjdicApplication;
 import org.nick.wwwjdic.hkr.HkrCandidates;
 
 import android.app.Activity;
@@ -43,6 +44,21 @@ public class KradChart extends Activity implements OnClickListener,
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
             "13", "14", "17" });
 
+    private static final String HAT = "𠆢";
+    private static final Map<Character, Character> KRAD_TO_DISPLAY = new HashMap<Character, Character>();
+    static {
+        KRAD_TO_DISPLAY.put('⺅', '亻');
+        KRAD_TO_DISPLAY.put('⺾', '艹');
+        KRAD_TO_DISPLAY.put('辶', '辶');
+        KRAD_TO_DISPLAY.put('⻏', '邦');
+        KRAD_TO_DISPLAY.put('⻖', '阡');
+        KRAD_TO_DISPLAY.put('⺌', '尚');
+        KRAD_TO_DISPLAY.put(HAT.charAt(0), '个');
+        KRAD_TO_DISPLAY.put('⺹', '耂');
+    }
+    private static final List<String> REPLACED_CHARS = Arrays
+            .asList(new String[] { "邦", "阡", "尚", "个" });
+
     private List<String> radicals = new ArrayList<String>();
     private Set<Character> selectedRadicals = new HashSet<Character>();
     private Set<Character> enabledRadicals = new HashSet<Character>();
@@ -52,7 +68,7 @@ public class KradChart extends Activity implements OnClickListener,
     private GridView radicalChartGrid;
     private KradAdapter adapter;
 
-    private KradDb kradDb;
+    private KradDb kradDb = new KradDb();
 
     private ProgressDialog progressDialog;
 
@@ -60,17 +76,6 @@ public class KradChart extends Activity implements OnClickListener,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.krad_chart);
-
-        kradDb = ((WwwjdicApplication) getApplication()).getKradDb();
-        if (!kradDb.isInitialized()) {
-            try {
-                InputStream in = getAssets().open("radkfile-u");
-                kradDb.readFromStream(in);
-            } catch (IOException e) {
-                Log.e(TAG, "error reading radkfile-u", e);
-                throw new RuntimeException(e);
-            }
-        }
 
         matchedKanji = (TextView) findViewById(R.id.matched_kanji);
         matchedKanji.setOnClickListener(this);
@@ -100,11 +105,10 @@ public class KradChart extends Activity implements OnClickListener,
             protected Boolean doInBackground(Void... params) {
                 try {
                     try {
+                        initKradDb();
+
                         for (String numStrokesStr : NUM_STROKES) {
                             String labelStr = new String(numStrokesStr);
-                            // if (labelStr.length() == 1) {
-                            // labelStr = " " + labelStr + " ";
-                            // }
                             radicals.add(labelStr);
 
                             String arrayName = "_" + numStrokesStr + "_stroke";
@@ -152,6 +156,18 @@ public class KradChart extends Activity implements OnClickListener,
         }.execute();
     }
 
+    private void initKradDb() {
+        if (!kradDb.isInitialized()) {
+            try {
+                InputStream in = getAssets().open("radkfile-u");
+                kradDb.readFromStream(in);
+            } catch (IOException e) {
+                Log.e(TAG, "error reading radkfile-u", e);
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     private void enableAllRadicals() {
         for (String radical : radicals) {
             if (!isStrokeNumLabel(radical)) {
@@ -171,18 +187,27 @@ public class KradChart extends Activity implements OnClickListener,
         public View getView(int position, View convertView, ViewGroup viewGroup) {
             TextView result = (TextView) super.getView(position, convertView,
                     viewGroup);
+            result.setTextColor(Color.WHITE);
             result.setBackgroundColor(Color.TRANSPARENT);
             result.setTextSize(24f);
-            String radical = getItem(position);
-            if (isStrokeNumLabel(radical)) {
+
+            String modelStr = getItem(position);
+            if (isStrokeNumLabel(modelStr)) {
                 result.setBackgroundColor(Color.GRAY);
+            } else {
+                Character radical = modelStr.trim().charAt(0);
+                String displayStr = toDisplayStr(radical);
+                if (REPLACED_CHARS.contains(displayStr)) {
+                    result.setText(displayStr);
+                    result.setTextColor(Color.LTGRAY);
+                }
             }
 
-            if (isSelected(radical)) {
+            if (isSelected(modelStr)) {
                 result.setBackgroundColor(Color.GREEN);
             }
 
-            if (isDisabled(radical)) {
+            if (isDisabled(modelStr)) {
                 result.setBackgroundColor(Color.DKGRAY);
             }
 
@@ -206,12 +231,14 @@ public class KradChart extends Activity implements OnClickListener,
     }
 
     private boolean isSelected(String radicalStr) {
-        return selectedRadicals.contains(radicalStr.trim().charAt(0));
+        Character radical = radicalStr.trim().charAt(0);
+        return selectedRadicals.contains(radical);
     }
 
     private boolean isDisabled(String radicalStr) {
+        Character radical = radicalStr.trim().charAt(0);
         return !isStrokeNumLabel(radicalStr)
-                && !enabledRadicals.contains(radicalStr.trim().charAt(0));
+                && !enabledRadicals.contains(radical);
     }
 
     public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -237,6 +264,18 @@ public class KradChart extends Activity implements OnClickListener,
         }
 
         adapter.notifyDataSetChanged();
+    }
+
+    private static String toDisplayStr(Character radical) {
+        Character displayChar = KRAD_TO_DISPLAY.get(radical);
+        if (displayChar == null) {
+            displayChar = radical;
+        }
+
+        if (displayChar != radical) {
+            Log.d(TAG, String.format("%s %s", radical, displayChar));
+        }
+        return Character.toString(displayChar);
     }
 
     @Override
