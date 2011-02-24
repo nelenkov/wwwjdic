@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.nick.wwwjdic.krad.KradDb;
 import org.nick.wwwjdic.utils.FileUtils;
 
 import android.app.Application;
@@ -43,8 +42,6 @@ public class WwwjdicApplication extends Application {
     // EDICT by default
     private String currentDictionary = "1";
     private String currentDictionaryName = "General";
-
-    private KradDb kradDb = new KradDb();
 
     @Override
     public void onCreate() {
@@ -303,10 +300,6 @@ public class WwwjdicApplication extends Application {
     public synchronized void setCurrentDictionaryName(
             String currentDictionaryName) {
         this.currentDictionaryName = currentDictionaryName;
-    }
-
-    public KradDb getKradDb() {
-        return kradDb;
     }
 
 }
