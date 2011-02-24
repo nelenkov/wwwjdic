@@ -13,8 +13,8 @@ public class KradDb {
 
     private static final String TAG = KradDb.class.getSimpleName();
 
-    private Map<Character, Set<Character>> radicalToKanjis = new HashMap<Character, Set<Character>>();
-    private Map<Character, Set<Character>> kanjiToRadicals = new HashMap<Character, Set<Character>>();
+    private Map<String, Set<String>> radicalToKanjis = new HashMap<String, Set<String>>();
+    private Map<String, Set<String>> kanjiToRadicals = new HashMap<String, Set<String>>();
 
     public boolean isInitialized() {
         return !radicalToKanjis.isEmpty();
@@ -30,15 +30,19 @@ public class KradDb {
             String[] lines = kradStr.split("\n");
             for (String line : lines) {
                 String[] fields = line.split(":");
-                Character radical = fields[0].trim().charAt(0);
-                Set<Character> kanjis = new HashSet<Character>();
-                char[] kanjiChars = fields[2].trim().toCharArray();
-                for (char c : kanjiChars) {
+                String radical = fields[0].trim();
+                Set<String> kanjis = new HashSet<String>();
+                String[] kanjiChars = fields[2].trim().split("");
+                for (String c : kanjiChars) {
+                    if ("".equals(c)) {
+                        continue;
+                    }
+
                     kanjis.add(c);
 
-                    Set<Character> radicals = kanjiToRadicals.get(c);
+                    Set<String> radicals = kanjiToRadicals.get(c);
                     if (radicals == null) {
-                        radicals = new HashSet<Character>();
+                        radicals = new HashSet<String>();
                         kanjiToRadicals.put(c, radicals);
                     }
                     radicals.add(radical);
@@ -57,14 +61,14 @@ public class KradDb {
         }
     }
 
-    public Set<Character> getKanjiForRadical(Character radical) {
+    public Set<String> getKanjiForRadical(String radical) {
         return radicalToKanjis.get(radical);
     }
 
-    public Set<Character> getKanjisForRadicals(Set<Character> radicals) {
-        Set<Character> result = new HashSet<Character>();
-        for (Character radical : radicals) {
-            Set<Character> kanjis = getKanjiForRadical(radical);
+    public Set<String> getKanjisForRadicals(Set<String> radicals) {
+        Set<String> result = new HashSet<String>();
+        for (String radical : radicals) {
+            Set<String> kanjis = getKanjiForRadical(radical);
             if (result.isEmpty()) {
                 result.addAll(kanjis);
             } else {
@@ -75,14 +79,14 @@ public class KradDb {
         return result;
     }
 
-    public Set<Character> getRadicalsForKanji(Character kanji) {
+    public Set<String> getRadicalsForKanji(String kanji) {
         return kanjiToRadicals.get(kanji);
     }
 
-    public Set<Character> getRadicalsForKanjis(Set<Character> kanjis) {
-        Set<Character> result = new HashSet<Character>();
-        for (Character kanji : kanjis) {
-            Set<Character> radicals = getRadicalsForKanji(kanji);
+    public Set<String> getRadicalsForKanjis(Set<String> kanjis) {
+        Set<String> result = new HashSet<String>();
+        for (String kanji : kanjis) {
+            Set<String> radicals = getRadicalsForKanji(kanji);
             result.addAll(radicals);
         }
 
