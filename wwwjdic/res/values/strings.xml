@@ -480,4 +480,8 @@
     <string name="dict_search">WWWJDIC Search</string>    
     <string name="dict_search_description">Search default dictionary</string>
     <string name="home">Home</string>    
+    <string name="show_all">Show all</string>
+    <string name="total_matches">%d matches</string>
+    <string name="no_matches">No matches</string>
+    <string name="multi_radical_search">Multi-radical search</string>
 </resources>
