@@ -17,6 +17,7 @@ import org.nick.wwwjdic.KanjiResultListView;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.SearchCriteria;
 import org.nick.wwwjdic.hkr.HkrCandidates;
+import org.nick.wwwjdic.utils.Dialogs;
 import org.nick.wwwjdic.utils.IntentSpan;
 
 import android.app.Activity;
@@ -49,6 +50,8 @@ public class KradChart extends Activity implements OnClickListener,
     private static final int NUM_SUMMARY_CHARS = 10;
 
     private static final String TAG = KradChart.class.getSimpleName();
+
+    private static final String MULTI_RADICAL_TIP = "multi_radical_tip";
 
     private static final List<String> NUM_STROKES = Arrays.asList(new String[] {
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
@@ -115,7 +118,7 @@ public class KradChart extends Activity implements OnClickListener,
         radicalChartGrid = (GridView) findViewById(R.id.kradChartGrid);
         radicalChartGrid.setOnItemClickListener(this);
 
-        setTitle(R.string.multi_radical_search);
+        setTitle(R.string.kanji_multi_radical_search);
 
         new AsyncTask<Void, Void, Boolean>() {
 
@@ -176,6 +179,9 @@ public class KradChart extends Activity implements OnClickListener,
                         adapter = new KradAdapter(KradChart.this,
                                 R.layout.krad_item, radicals);
                         radicalChartGrid.setAdapter(adapter);
+
+                        Dialogs.showTipOnce(KradChart.this, MULTI_RADICAL_TIP,
+                                R.string.multi_radical_search_tip);
                     } else {
                         Toast t = Toast.makeText(
                                 KradChart.this,
