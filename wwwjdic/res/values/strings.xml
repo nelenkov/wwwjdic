@@ -484,9 +484,16 @@
     <string name="total_matches">%d matche(s)</string>
     <string name="no_matches">No matches</string>
     <string name="kanji_multi_radical_search">Kanj multi-radical search</string>
-    <string name="kanji_extra_search">You can also search using</string>
+    <string name="kanji_extra_search">Additional search methods</string>
     <string name="hwr_search">Handwriting</string>
     <string name="ocr_search">OCR</string>
     <string name="multi_radical_search">Multi-radical</string>
     <string name="multi_radical_search_tip">* Tap (multiple)components to (de)select them\n* Select multiple components to drill down\n* Unavailable characters are greyed out\n* Tap on kanji at the top to dispaly details\n* Due to font limitations, some components are displayed as kanji that include them: \n  ひとやね: 个(top)\n  なおがしら: 尚(top)\n  こざとへん: 阡(left)\n  おおざと: 邦(right)</string>
+    <string name="kradfile_attribution">
+        Includes data from the
+        <a href="http://www.kanjicafe.com/kradfile_license.htm#download">KRADFILE - Unicode file</a>
+        . The file is (C) 2001, 2007, 2009 by Michael Raine, Jim Breen,
+        The EDR&amp;D Group at Monash University, Jim Rose, The
+        KanjiCafe.com, and is used in conformance with its
+        <a href="http://www.kanjicafe.com/kradfile_license.htm">license</a></string>
 </resources>

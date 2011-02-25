@@ -17,6 +17,7 @@ import org.nick.wwwjdic.KanjiResultListView;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.SearchCriteria;
 import org.nick.wwwjdic.hkr.HkrCandidates;
+import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Dialogs;
 import org.nick.wwwjdic.utils.IntentSpan;
 
@@ -99,6 +100,7 @@ public class KradChart extends Activity implements OnClickListener,
     private KradDb kradDb = new KradDb();
 
     private ProgressDialog progressDialog;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -209,6 +211,7 @@ public class KradChart extends Activity implements OnClickListener,
         outState.putSerializable(STATE_KEY, state);
     }
 
+
     private void displayTotalMatches() {
         String totalMatchesTemplate = getResources().getString(
                 R.string.total_matches);
@@ -301,6 +304,8 @@ public class KradChart extends Activity implements OnClickListener,
 
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
+        Analytics.event("multiradicalSelect", this);
+
         String radical = radicals.get(position).trim();
         if (state.selectedRadicals.contains(radical)) {
             state.selectedRadicals.remove(radical);
@@ -310,6 +315,7 @@ public class KradChart extends Activity implements OnClickListener,
 
         if (state.selectedRadicals.isEmpty()) {
             enableAllRadicals();
+            state.matchingKanjis.clear();
             matchedKanjiText.setText("");
         } else {
             state.matchingKanjis = kradDb
@@ -436,6 +442,8 @@ public class KradChart extends Activity implements OnClickListener,
     }
 
     private void showCandidates() {
+        Analytics.event("multiradicalShowAll", this);
+
         Intent intent = createShowAllIntent();
         startActivity(intent);
     }

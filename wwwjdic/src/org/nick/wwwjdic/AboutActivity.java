@@ -26,6 +26,10 @@ public class AboutActivity extends Activity implements OnClickListener {
         TextView faqText = (TextView) findViewById(R.id.faqText);
         faqText.setMovementMethod(LinkMovementMethod.getInstance());
 
+        TextView kradfileAttributionText = (TextView) findViewById(R.id.kradfile_attribution_text);
+        kradfileAttributionText.setMovementMethod(LinkMovementMethod
+                .getInstance());
+
         Button buyDonateButton = (Button) findViewById(R.id.buy_donate);
         if (!isDonateVersion()) {
             buyDonateButton.setOnClickListener(this);
