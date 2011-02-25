@@ -316,7 +316,7 @@ public class KradChart extends Activity implements OnClickListener,
         if (state.selectedRadicals.isEmpty()) {
             enableAllRadicals();
             state.matchingKanjis.clear();
-            matchedKanjiText.setText("");
+            matchedKanjiText.setText(R.string.no_matches);
         } else {
             state.matchingKanjis = kradDb
                     .getKanjisForRadicals(state.selectedRadicals);
@@ -433,7 +433,7 @@ public class KradChart extends Activity implements OnClickListener,
         state.matchingKanjis.clear();
         enableAllRadicals();
 
-        matchedKanjiText.setText("");
+        matchedKanjiText.setText(R.string.no_matches);
         displayTotalMatches();
 
         toggleButtons();
