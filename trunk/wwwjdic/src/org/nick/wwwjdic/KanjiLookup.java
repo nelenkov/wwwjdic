@@ -161,6 +161,8 @@ public class KanjiLookup extends WwwjdicActivityBase implements
         super.onResume();
 
         setupKanjiSummary();
+
+        setupClickableLinks();
     }
 
     private void setupKanjiSummary() {
