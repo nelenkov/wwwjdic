@@ -32,3 +32,6 @@ http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/example-breakdown.png
 
 == Kanji of the Day Widget ==
 http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/widget.png
+
+== Multi-radical kanji search ==
+http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/multi-radical-search.png
