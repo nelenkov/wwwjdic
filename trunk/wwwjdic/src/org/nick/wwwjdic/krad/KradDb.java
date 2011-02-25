@@ -35,6 +35,9 @@ public class KradDb {
             String[] lines = kradStr.split("\n");
             for (String line : lines) {
                 String[] fields = line.split(":");
+                if (fields.length < 3) {
+                    continue;
+                }
                 String radical = fields[0].trim();
                 Set<String> kanjis = new HashSet<String>();
                 String[] kanjiChars = fields[2].trim().split("");
