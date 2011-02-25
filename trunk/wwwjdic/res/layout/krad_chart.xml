@@ -30,13 +30,6 @@
         android:gravity="center"
         android:layout_gravity="center_vertical"
         android:singleLine="true" />
-      <CheckBox  
-       android:id="@+id/jis208_cb"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="JIS X\n0208"/>
       <Button
         android:id="@+id/show_all_button"
         android:layout_height="wrap_content"

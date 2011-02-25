@@ -213,7 +213,7 @@ public class KradChart extends Activity implements OnClickListener,
     private void initKradDb() {
         if (!kradDb.isInitialized()) {
             try {
-                InputStream in = getAssets().open("radkfile-u");
+                InputStream in = getAssets().open("radkfile-u-jis208.txt");
                 kradDb.readFromStream(in);
             } catch (IOException e) {
                 Log.e(TAG, "error reading radkfile-u", e);
@@ -251,8 +251,8 @@ public class KradChart extends Activity implements OnClickListener,
             } else {
                 String radical = modelStr.trim();
                 String displayStr = toDisplayStr(radical);
+                result.setText(displayStr);
                 if (REPLACED_CHARS.contains(displayStr)) {
-                    result.setText(displayStr);
                     result.setTextColor(Color.LTGRAY);
                 }
             }
