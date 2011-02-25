@@ -330,5 +330,14 @@
     <string name="search_hint">WWWJDICを検索</string>
     <string name="dict_search">WWWJDIC辞書検索</string>    
     <string name="dict_search_description">既定辞書を検索します</string>
-    <string name="home">ホーム</string>     
+    <string name="home">ホーム</string>
+    <string name="show_all">全て表示</string>
+    <string name="total_matches">%d件</string>
+    <string name="no_matches">マッチする漢字はありません</string>
+    <string name="kanji_multi_radical_search">構成要素漢字検索</string>
+    <string name="kanji_extra_search">他の漢字検索方法</string>
+    <string name="hwr_search">手書き認識</string>
+    <string name="ocr_search">OCR</string>
+    <string name="multi_radical_search">構成要素</string>
+    <string name="multi_radical_search_tip">* 要素をタッチすると選択・選択解除します。\n* 漢字候補を絞り込むには、複数の要素を選択します。\n* 選択不可能な要素はグレーアウトされます。\n* 上部に表示される漢字をタッチすると、詳細を表示します。\n* フォント制限のため、いくつかの要素はそれらを含む漢字で代行して表示しています。\n  ひとやね: 个\n  なおがしら: 尚\n  こざとへん: 阡\n  おおざと: 邦</string>
 </resources>

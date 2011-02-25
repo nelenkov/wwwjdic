@@ -7,23 +7,32 @@ import java.util.concurrent.RejectedExecutionException;
 
 import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
 import org.nick.wwwjdic.history.HistoryDbHelper;
+import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
+import org.nick.wwwjdic.krad.KradChart;
+import org.nick.wwwjdic.ocr.OcrActivity;
 import org.nick.wwwjdic.utils.Analytics;
+import org.nick.wwwjdic.utils.IntentSpan;
 import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.method.MovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView.OnEditorActionListener;
 
 public class KanjiLookup extends WwwjdicActivityBase implements
@@ -99,6 +108,43 @@ public class KanjiLookup extends WwwjdicActivityBase implements
         dbHelper = new HistoryDbHelper(this);
 
         setupKanjiSummary();
+
+        setupClickableLinks();
+    }
+
+    private void setupClickableLinks() {
+        View historyView = findViewById(R.id.kanji_history_summary);
+        historyView.setNextFocusDownId(R.id.hwrSearchLink);
+
+        TextView textView = (TextView) findViewById(R.id.hwrSearchLink);
+        makeClickable(textView, new Intent(this, RecognizeKanjiActivity.class));
+        textView.setNextFocusUpId(R.id.kanji_history_summary);
+        textView.setNextFocusDownId(R.id.ocrSearchLink);
+
+        textView = (TextView) findViewById(R.id.ocrSearchLink);
+        makeClickable(textView, new Intent(this, OcrActivity.class));
+        textView.setNextFocusUpId(R.id.hwrSearchLink);
+        textView.setNextFocusDownId(R.id.multiRadicalSearchLink);
+
+        textView = (TextView) findViewById(R.id.multiRadicalSearchLink);
+        makeClickable(textView, new Intent(this, KradChart.class));
+        textView.setNextFocusUpId(R.id.ocrSearchLink);
+    }
+
+    private void makeClickable(TextView textView, Intent intent) {
+        String text = textView.getText().toString();
+        SpannableString str = new SpannableString(text);
+        str.setSpan(new IntentSpan(this, intent), 0, text.length(),
+                Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        textView.setText(str);
+        textView.setLinkTextColor(Color.WHITE);
+        MovementMethod m = textView.getMovementMethod();
+        if ((m == null) || !(m instanceof LinkMovementMethod)) {
+            if (textView.getLinksClickable()) {
+                textView.setMovementMethod(LinkMovementMethod.getInstance());
+            }
+        }
     }
 
     @Override
