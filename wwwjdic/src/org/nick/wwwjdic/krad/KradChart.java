@@ -438,8 +438,6 @@ public class KradChart extends Activity implements OnClickListener,
         String[] matchingChars = state.matchingKanjis
                 .toArray(new String[state.matchingKanjis.size()]);
         Arrays.sort(matchingChars);
-        List<String> l = Arrays.asList(matchingChars);
-        Log.d(TAG, "sorted: " + l);
 
         Intent intent = new Intent(this, HkrCandidates.class);
         intent.putExtra(Constants.HKR_CANDIDATES_KEY, matchingChars);
