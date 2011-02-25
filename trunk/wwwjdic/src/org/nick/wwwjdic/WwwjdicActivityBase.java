@@ -2,7 +2,6 @@ package org.nick.wwwjdic;
 
 import org.nick.wwwjdic.history.FavoritesAndHistory;
 import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
-import org.nick.wwwjdic.krad.KradChart;
 import org.nick.wwwjdic.ocr.OcrActivity;
 
 import android.app.Activity;
@@ -43,8 +42,7 @@ public class WwwjdicActivityBase extends Activity {
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         switch (item.getItemId()) {
         case ITEM_ID_ABOUT:
-            // Intent intent = new Intent(this, AboutActivity.class);
-            Intent intent = new Intent(this, KradChart.class);
+            Intent intent = new Intent(this, AboutActivity.class);
             startActivity(intent);
             return true;
         case ITEM_ID_OCR:
