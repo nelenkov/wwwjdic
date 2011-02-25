@@ -9,6 +9,8 @@ import java.util.Set;
 
 import org.nick.wwwjdic.utils.FileUtils;
 
+import android.util.Log;
+
 public class KradDb {
 
     private static final String TAG = KradDb.class.getSimpleName();
@@ -26,6 +28,9 @@ public class KradDb {
         }
 
         try {
+            Log.d(TAG, "loading radkfile...");
+            long start = System.currentTimeMillis();
+
             String kradStr = FileUtils.readTextFile(in, "UTF-8").trim();
             String[] lines = kradStr.split("\n");
             for (String line : lines) {
@@ -49,6 +54,10 @@ public class KradDb {
                 }
                 radicalToKanjis.put(radical, kanjis);
             }
+
+            long time = System.currentTimeMillis() - start;
+            Log.d(TAG, String.format("loaded %d radicals, %d kanji in %d [ms]",
+                    radicalToKanjis.size(), kanjiToRadicals.size(), time));
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
