@@ -1,7 +1,11 @@
 #summary Full changelog
 
 = Changelog =
- * v1.63 (2001/2/4) Animated strokes and global search
+ * v1.7 (2011/2/25) Multi-radical search
+  * Added multi-radical kanji search.
+  * Added 'Home' menu to detail screens.
+  * Bug fixes.
+ * v1.63 (2011/2/4) Animated strokes and global search
   * Restored Australia mirror.
   * Animated stroke drawing.
   * You can now search WWWJDIC directly from the Android search widget.
