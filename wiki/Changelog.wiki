@@ -1,6 +1,11 @@
 #summary Full changelog
 
 = Changelog =
+ * v1.71 (2011/3/5) Context menus
+  * Added 'lookup kanji' menu to dictionary entries.
+  * Added context menus to dictionary/kanji search results. 
+  * Display Shift-JIS code.
+  * Layout adjustments.
  * v1.7 (2011/2/25) Multi-radical search
   * Added multi-radical kanji search.
   * Added 'Home' menu to detail screens.
