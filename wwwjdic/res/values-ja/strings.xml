@@ -47,6 +47,7 @@
     <string name="error">エラー</string>
     <string name="loading">読み込み中。お待ちください...</string>
     <string name="jis_code">JISコード: </string>
+    <string name="sjis_code">SJISコード: </string>
     <string name="unicode_number">Unicode番号: </string>
     <string name="classical_radical">部首番号: </string>
     <string name="freq_rank">頻度ランク: </string>
