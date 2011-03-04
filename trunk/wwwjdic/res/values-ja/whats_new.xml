@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">%sの新規機能</string>
-    <string name="whats_new">* 漢字構成要素による検索機能を追加。\n* 詳細画面に「ホーム」メニューを追加。\n* バグ修正。</string>
+    <string name="whats_new">* 辞書に「漢字引き」メニューを追加。\n* 辞書・漢字検索結果一覧にコンテキストメニューを追加(長押しで表示)。\n* Shift-JISコード表示追加.\n* レイアウト調整。</string>
+    
 </resources>
