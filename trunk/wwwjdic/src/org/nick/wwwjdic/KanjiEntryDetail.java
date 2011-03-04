@@ -24,6 +24,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 public class KanjiEntryDetail extends DetailActivity implements OnClickListener {
@@ -181,28 +183,37 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
         meaningsCodesLayout.addView(moreLabel);
 
         List<Pair<String, String>> codesData = crieateCodesData(entry);
-        for (Pair<String, String> codesEntry : codesData) {
-            View codesEntryView = createLabelTextView(codesEntry);
-            meaningsCodesLayout.addView(codesEntryView);
-        }
+        addCodesTable(meaningsCodesLayout, codesData);
 
         CheckBox starCb = (CheckBox) findViewById(R.id.star_kanji);
         starCb.setOnCheckedChangeListener(null);
         starCb.setChecked(isFavorite);
         starCb.setOnCheckedChangeListener(this);
+    }
 
-        // ExpandableListView expandableList = new ExpandableListView(this);
-        // KanjiCodesAdapter kanjiCodesAdapter = new KanjiCodesAdapter(entry);
-        // expandableList.setAdapter(kanjiCodesAdapter);
-        // // LayoutParams lp = new LayoutParams(LayoutParams.FILL_PARENT,
-        // // LayoutParams.FILL_PARENT);
-        // // expandableList.setLayoutParams(lp);
-        //
-        // RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-        // LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-        // params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        // meaningsCodesLayout.addView(expandableList, params);
+    private void addCodesTable(LinearLayout meaningsCodesLayout,
+            List<Pair<String, String>> codesData) {
+        TableLayout table = new TableLayout(this);
+        for (Pair<String, String> codesEntry : codesData) {
+            TableRow row = new TableRow(this);
 
+            TextView labelView = new TextView(KanjiEntryDetail.this);
+            labelView.setText(codesEntry.getFirst());
+            labelView.setGravity(Gravity.LEFT);
+            row.addView(labelView);
+
+            TextView textView = new TextView(KanjiEntryDetail.this);
+            textView.setText(codesEntry.getSecond());
+            textView.setGravity(Gravity.LEFT);
+            textView.setPadding(10, 0, 0, 0);
+            row.addView(textView);
+
+            table.addView(row);
+        }
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.FILL_PARENT,
+                ViewGroup.LayoutParams.FILL_PARENT);
+        meaningsCodesLayout.addView(table, lp);
     }
 
     private Intent createCrossRefIntent(String kanji) {
@@ -292,27 +303,6 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
         }
 
         return data;
-    }
-
-    private View createLabelTextView(Pair<String, String> data) {
-        LinearLayout layout = new LinearLayout(KanjiEntryDetail.this);
-        layout.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0, 0, 5, 0);
-
-        TextView labelView = new TextView(KanjiEntryDetail.this);
-        labelView.setText(data.getFirst());
-        labelView.setGravity(Gravity.LEFT);
-        layout.addView(labelView, lp);
-
-        TextView textView = new TextView(KanjiEntryDetail.this);
-        textView.setText(data.getSecond());
-        textView.setGravity(Gravity.RIGHT);
-        layout.addView(textView, lp);
-
-        return layout;
     }
 
     private String getStr(int id) {
