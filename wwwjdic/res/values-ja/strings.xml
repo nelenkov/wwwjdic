@@ -86,7 +86,7 @@
     <string name="pref_wwwjdic">WWWJDIC設定</string>
     <string name="pref_wwwjdic_mirror">WWWJDICミラーサイト</string>
     <string-array name="wwwjdic_mirror_names">
-        <item>オーストラリア-->日本(臨時)</item>
+        <item>オーストラリア</item>
         <item>カナダ</item>
         <item>EU</item>
         <item>日本</item>
@@ -150,7 +150,7 @@
     <string name="enter_eng_or_jap">英語または日本語</string>
     <string name="enter_kanji_search_key">漢字検索キー</string>
     <string name="break_down_jap">日本語文解析</string>
-    <string name="look_up_all_kanji">全ての漢字で検索</string>
+    <string name="look_up_all_kanji">漢字引き</string>
     <string name="copy_jp">日本語文コピー</string>
     <string name="copy_eng">英語文コピー</string>
     <string name="sentence_breakdown">例文解析</string>
@@ -342,8 +342,8 @@
     <string name="multi_radical_search">構成要素</string>
     <string name="multi_radical_search_tip">* 要素をタッチすると選択・選択解除します。\n* 漢字候補を絞り込むには、複数の要素を選択します。\n* 選択不可能な要素はグレーアウトされます。\n* 上部に表示される漢字をタッチすると、詳細を表示します。\n* フォント制限のため、いくつかの要素はそれらを含む漢字で代行して表示しています。\n  ひとやね: 个\n  なおがしら: 尚\n  こざとへん: 阡\n  おおざと: 邦</string>
     <string name="details">詳細</string>
-    <string name="lookup_kanji">漢字辞書で検索</string>
-    <string name="examples">例文</string>
+    <string name="lookup_kanji">漢字引き</string>
+    <string name="examples">例文検索</string>
     <string name="add_to_favorites">お気に入りに追加</string>
     <string name="added_to_favorites">\'%s\'をお気に入りに追加しました。</string>
 </resources>
