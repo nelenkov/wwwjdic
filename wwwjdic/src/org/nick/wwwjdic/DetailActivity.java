@@ -29,7 +29,7 @@ public abstract class DetailActivity extends Activity implements
     protected static final Pattern CROSS_REF_PATTERN = Pattern
             .compile("^.*\\(See (\\S+)\\).*$");
 
-    private static final int ITEM_ID_HOME = 0;
+    protected static final int ITEM_ID_HOME = 0;
 
     protected HistoryDbHelper db;
     protected WwwjdicEntry wwwjdicEntry;

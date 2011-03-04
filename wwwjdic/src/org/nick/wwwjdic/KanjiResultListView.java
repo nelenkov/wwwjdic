@@ -3,8 +3,6 @@ package org.nick.wwwjdic;
 
 import java.util.List;
 
-import org.nick.wwwjdic.sod.SodActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -92,7 +90,7 @@ public class KanjiResultListView extends ResultListViewBase<KanjiEntry> {
             addToFavorites(entry);
             return true;
         case MENU_ITEM_STROKE_ORDER:
-            showStrokeOrder(entry);
+            Activities.showStrokeOrder(this, entry);
             return true;
         case MENU_ITEM_COMPOUNDS:
             showCompounds(entry);
@@ -115,16 +113,6 @@ public class KanjiResultListView extends ResultListViewBase<KanjiEntry> {
 
         startActivity(intent);
     }
-
-    private void showStrokeOrder(KanjiEntry entry) {
-        Intent intent = new Intent(this, SodActivity.class);
-        intent.putExtra(Constants.KANJI_UNICODE_NUMBER,
-                entry.getUnicodeNumber());
-        intent.putExtra(Constants.KANJI_GLYPH, entry.getKanji());
-
-        startActivity(intent);
-    }
-
 
     public void setResult(final List<KanjiEntry> result) {
         guiThread.post(new Runnable() {

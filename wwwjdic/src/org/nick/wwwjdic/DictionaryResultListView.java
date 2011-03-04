@@ -102,7 +102,7 @@ public class DictionaryResultListView extends
             copy(entry);
             return true;
         case MENU_ITEM_LOOKUP_KANJI:
-            lookupKanji(entry);
+            Activities.lookupKanji(this, db, entry.getHeadword());
             return true;
         case MENU_ITEM_ADD_TO_FAVORITES:
             addToFavorites(entry);
@@ -112,22 +112,6 @@ public class DictionaryResultListView extends
             return true;
         }
         return false;
-    }
-
-    private void lookupKanji(DictionaryEntry entry) {
-        SearchCriteria criteria = SearchCriteria.createForKanjiOrReading(entry
-                .getHeadword());
-
-        Intent intent = new Intent(this, KanjiResultListView.class);
-        intent.putExtra(Constants.CRITERIA_KEY, criteria);
-
-        if (!StringUtils.isEmpty(criteria.getQueryString())) {
-            db.addSearchCriteria(criteria);
-        }
-
-        Analytics.event("kanjiSearch", this);
-
-        startActivity(intent);
     }
 
     private void searchExamples(DictionaryEntry entry) {

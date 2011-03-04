@@ -10,6 +10,8 @@ import org.nick.wwwjdic.utils.DictUtils;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -22,6 +24,8 @@ public class DictionaryEntryDetail extends DetailActivity implements
 
     private static final String TAG = DictionaryEntryDetail.class
             .getSimpleName();
+
+    private static final int ITEM_ID_LOOKUP_KANJI = 1;
 
     private static final int DEFAULT_MAX_NUM_EXAMPLES = 20;
 
@@ -123,6 +127,37 @@ public class DictionaryEntryDetail extends DetailActivity implements
     @Override
     protected void setHomeActivityExtras(Intent homeActivityIntent) {
         homeActivityIntent.putExtra(SELECTED_TAB_IDX, DICTIONARY_TAB_IDX);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        menu.add(0, ITEM_ID_LOOKUP_KANJI, 0, R.string.lookup_kanji).setIcon(
+                android.R.drawable.ic_menu_search);
+
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        switch (item.getItemId()) {
+        case ITEM_ID_HOME:
+            Intent intent = new Intent(this, Wwwjdic.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            setHomeActivityExtras(intent);
+
+            startActivity(intent);
+            finish();
+
+            return true;
+        case ITEM_ID_LOOKUP_KANJI:
+            Activities.lookupKanji(this, db, wwwjdicEntry.getHeadword());
+            return true;
+        default:
+            // do nothing
+        }
+
+        return super.onMenuItemSelected(featureId, item);
     }
 
 }
