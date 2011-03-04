@@ -3,11 +3,11 @@ package org.nick.wwwjdic;
 import static org.nick.wwwjdic.Constants.KANJI_TAB_IDX;
 import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import org.nick.wwwjdic.sod.SodActivity;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Pair;
 
@@ -232,14 +232,27 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
 
     private List<Pair<String, String>> crieateCodesData(KanjiEntry entry) {
         ArrayList<Pair<String, String>> data = new ArrayList<Pair<String, String>>();
-        if (entry.getJisCode() != null) {
-            data.add(new Pair<String, String>(getStr(R.string.jis_code), entry
-                    .getJisCode()));
-        }
 
         if (entry.getUnicodeNumber() != null) {
             data.add(new Pair<String, String>(getStr(R.string.unicode_number),
-                    entry.getUnicodeNumber()));
+                    entry.getUnicodeNumber().toUpperCase()));
+        }
+
+        if (entry.getJisCode() != null) {
+            data.add(new Pair<String, String>(getStr(R.string.jis_code), entry
+                    .getJisCode().toUpperCase()));
+        }
+
+
+        String kanji = entry.getHeadword();
+        try {
+            byte[] sjis = kanji.getBytes("SJIS");
+            String sjisCode = String.format("%02x%02x", sjis[0], sjis[1])
+                    .toUpperCase();
+            data.add(new Pair<String, String>(getStr(R.string.sjis_code),
+                    sjisCode));
+        } catch (UnsupportedEncodingException e) {
+            Log.w(TAG, "SJIS conversion not supported", e);
         }
 
         if (entry.getClassicalRadicalNumber() != null) {
@@ -310,12 +323,7 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.sod_button:
-            Intent intent = new Intent(this, SodActivity.class);
-            intent.putExtra(Constants.KANJI_UNICODE_NUMBER,
-                    entry.getUnicodeNumber());
-            intent.putExtra(Constants.KANJI_GLYPH, entry.getKanji());
-
-            startActivity(intent);
+            Activities.showStrokeOrder(this, entry);
             break;
         default:
             // do nothing
