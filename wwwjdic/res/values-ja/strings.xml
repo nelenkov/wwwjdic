@@ -340,4 +340,9 @@
     <string name="ocr_search">OCR</string>
     <string name="multi_radical_search">構成要素</string>
     <string name="multi_radical_search_tip">* 要素をタッチすると選択・選択解除します。\n* 漢字候補を絞り込むには、複数の要素を選択します。\n* 選択不可能な要素はグレーアウトされます。\n* 上部に表示される漢字をタッチすると、詳細を表示します。\n* フォント制限のため、いくつかの要素はそれらを含む漢字で代行して表示しています。\n  ひとやね: 个\n  なおがしら: 尚\n  こざとへん: 阡\n  おおざと: 邦</string>
+    <string name="details">詳細</string>
+    <string name="lookup_kanji">漢字辞書で検索</string>
+    <string name="examples">例文</string>
+    <string name="add_to_favorites">お気に入りに追加</string>
+    <string name="added_to_favorites">\'%s\'をお気に入りに追加しました。</string>
 </resources>

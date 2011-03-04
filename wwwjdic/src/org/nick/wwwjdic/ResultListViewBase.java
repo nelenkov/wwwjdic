@@ -12,10 +12,13 @@ import org.nick.wwwjdic.utils.Analytics;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
+import android.text.ClipboardManager;
 import android.util.Log;
+import android.widget.Toast;
 
 public abstract class ResultListViewBase<T> extends ListActivity implements
         ResultListView<T> {
@@ -29,7 +32,7 @@ public abstract class ResultListViewBase<T> extends ListActivity implements
 
     protected ProgressDialog progressDialog;
 
-    private HistoryDbHelper db;
+    protected HistoryDbHelper db;
 
     protected ResultListViewBase() {
         guiThread = new Handler();
@@ -64,14 +67,14 @@ public abstract class ResultListViewBase<T> extends ListActivity implements
     }
 
     protected void submitSearchTask(SearchTask<T> searchTask) {
-        progressDialog = ProgressDialog.show(this, "", getResources().getText(
-                R.string.loading).toString(), true);
+        progressDialog = ProgressDialog.show(this, "",
+                getResources().getText(R.string.loading).toString(), true);
 
         ExecutorService executorService = getApp().getExecutorService();
         transPending = executorService.submit(searchTask);
     }
 
-    private WwwjdicApplication getApp() {
+    protected WwwjdicApplication getApp() {
         WwwjdicApplication app = (WwwjdicApplication) getApplication();
         return app;
     }
@@ -145,4 +148,23 @@ public abstract class ResultListViewBase<T> extends ListActivity implements
             entry.setId(favoriteId);
         }
     }
+
+    protected void copy(WwwjdicEntry entry) {
+        String headword = entry.getHeadword();
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        clipboard.setText(headword);
+        String message = getResources().getString(R.string.copied_to_clipboard,
+                headword);
+        Toast t = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        t.show();
+    }
+
+    protected void addToFavorites(WwwjdicEntry entry) {
+        db.addFavorite(entry);
+        String message = getResources().getString(R.string.added_to_favorites,
+                entry.getHeadword());
+        Toast t = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        t.show();
+    }
+
 }

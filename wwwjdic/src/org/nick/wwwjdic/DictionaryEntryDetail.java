@@ -5,6 +5,8 @@ import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
 
 import java.util.regex.Matcher;
 
+import org.nick.wwwjdic.utils.DictUtils;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,10 +22,6 @@ public class DictionaryEntryDetail extends DetailActivity implements
 
     private static final String TAG = DictionaryEntryDetail.class
             .getSimpleName();
-
-    private static final String COMMON_USAGE_MARKER = "(P)";
-
-    private static final String VARIATION_DELIMITER = ";";
 
     private static final int DEFAULT_MAX_NUM_EXAMPLES = 20;
 
@@ -83,7 +81,7 @@ public class DictionaryEntryDetail extends DetailActivity implements
         exampleSearchButton = (Button) findViewById(R.id.examples_button);
         exampleSearchButton.setOnClickListener(this);
 
-        exampleSearchKey = extractSearchKey();
+        exampleSearchKey = DictUtils.extractSearchKey(wwwjdicEntry);
         disableExampleSearchIfSingleKanji();
     }
 
@@ -120,16 +118,6 @@ public class DictionaryEntryDetail extends DetailActivity implements
         default:
             // do nothing
         }
-    }
-
-    private String extractSearchKey() {
-        String searchKey = wwwjdicEntry.getHeadword();
-        if (searchKey.indexOf(VARIATION_DELIMITER) != -1) {
-            String[] variations = searchKey.split(VARIATION_DELIMITER);
-            searchKey = variations[0];
-            searchKey = searchKey.replace(COMMON_USAGE_MARKER, "");
-        }
-        return searchKey;
     }
 
     @Override

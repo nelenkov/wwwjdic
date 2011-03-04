@@ -41,6 +41,10 @@ public class Constants {
     public static final int KANJI_TAB_IDX = 1;
     public static final int EXAMPLE_SEARRCH_TAB_IDX = 2;
 
+    public static final String DICT_COMMON_USAGE_MARKER = "(P)";
+
+    public static final String DICT_VARIATION_DELIMITER = ";";
+
     private Constants() {
     }
 

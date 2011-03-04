@@ -496,4 +496,9 @@
         The EDR&amp;D Group at Monash University, Jim Rose, The
         KanjiCafe.com, and is used in conformance with its
         <a href="http://www.kanjicafe.com/kradfile_license.htm">license</a></string>
+    <string name="details">Details</string>
+    <string name="lookup_kanji">Lookup kanji</string>
+    <string name="examples">Examples</string>
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="added_to_favorites">\'%s\' added to favorites.</string>
 </resources>
