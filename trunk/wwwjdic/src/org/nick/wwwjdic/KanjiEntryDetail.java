@@ -326,4 +326,5 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
     protected void setHomeActivityExtras(Intent homeActivityIntent) {
         homeActivityIntent.putExtra(SELECTED_TAB_IDX, KANJI_TAB_IDX);
     }
+
 }
