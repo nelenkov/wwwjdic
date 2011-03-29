@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.nick.wwwjdic.app.server.CacheController;
+
 public class KanjiStrokesServlet extends HttpServlet {
 
     /**
@@ -57,21 +59,31 @@ public class KanjiStrokesServlet extends HttpServlet {
 
         Transaction tx = null;
         try {
-            q = pm.newQuery("select from org.nick.wwwjdic.app.kanjivg.Kanji "
-                    + "where unicodeNumber == unicodeNumberParam "
-                    + "parameters String unicodeNumberParam ");
+            Kanji k = null;
 
-            tx = pm.currentTransaction();
-            tx.begin();
+            Kanji cachedKanji = (Kanji) CacheController.get(unicodeNumber);
+            if (cachedKanji != null) {
+                k = cachedKanji;
+                log.info("Got kanji from cache: " + unicodeNumber);
+            } else {
+                q = pm.newQuery("select from org.nick.wwwjdic.app.kanjivg.Kanji "
+                        + "where unicodeNumber == unicodeNumberParam "
+                        + "parameters String unicodeNumberParam ");
 
-            List<Kanji> kanjis = (List<Kanji>) q.execute(unicodeNumber);
-            if (kanjis.isEmpty()) {
-                log.info(String.format("KanjiVG data for %s not found",
-                        unicodeNumber));
-                return String.format("not found (%s)", unicodeNumber);
+                tx = pm.currentTransaction();
+                tx.begin();
+
+                List<Kanji> kanjis = (List<Kanji>) q.execute(unicodeNumber);
+                if (kanjis.isEmpty()) {
+                    log.info(String.format("KanjiVG data for %s not found",
+                            unicodeNumber));
+                    return String.format("not found (%s)", unicodeNumber);
+                }
+
+                k = kanjis.get(0);
+                CacheController.put(unicodeNumber, k);
+                log.info("Put kanji in cache: " + unicodeNumber);
             }
-
-            Kanji k = kanjis.get(0);
             String result = k.getMidashi() + " " + k.getUnicodeNumber() + "\n";
             log.info("returning " + result);
 

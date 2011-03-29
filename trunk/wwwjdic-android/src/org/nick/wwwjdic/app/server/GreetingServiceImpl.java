@@ -30,7 +30,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class GreetingServiceImpl extends RemoteServiceServlet implements
         GreetingService {
 
-    Logger logger = Logger.getLogger("GreetingServiceImpl");
+    Logger logger = Logger.getLogger(GreetingServiceImpl.class.getName());
 
     private KanjiVgImporter importer = new KanjiVgImporter();
 
@@ -103,20 +103,31 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
         Transaction tx = null;
         try {
-            q = pm.newQuery("select from org.nick.wwwjdic.app.kanjivg.Kanji "
-                    + "where unicodeNumber == unicodeNumberParam "
-                    + "parameters String unicodeNumberParam ");
+            Kanji k = null;
+            Kanji cachedKanji = (Kanji) CacheController.get(unicodeNumber);
+            if (cachedKanji != null) {
+                k = cachedKanji;
+                logger.info("Got kanji from cache: " + unicodeNumber);
+            } else {
+                q = pm.newQuery("select from org.nick.wwwjdic.app.kanjivg.Kanji "
+                        + "where unicodeNumber == unicodeNumberParam "
+                        + "parameters String unicodeNumberParam ");
 
-            tx = pm.currentTransaction();
-            tx.begin();
+                tx = pm.currentTransaction();
+                tx.begin();
 
-            List<Kanji> kanjis = (List<Kanji>) q.execute(unicodeNumber);
-            if (kanjis.isEmpty()) {
-                return String.format("kanji with unicode number %s not found",
-                        unicodeNumber);
+                List<Kanji> kanjis = (List<Kanji>) q.execute(unicodeNumber);
+                if (kanjis.isEmpty()) {
+                    return String.format(
+                            "kanji with unicode number %s not found",
+                            unicodeNumber);
+                }
+
+                k = kanjis.get(0);
+                logger.info("Put kanji in cache: " + unicodeNumber);
+                CacheController.put(unicodeNumber, k);
             }
 
-            Kanji k = kanjis.get(0);
             String result = k.getMidashi() + "|" + k.getUnicodeNumber() + "|";
 
             List<Stroke> strokes = k.getStrokes();

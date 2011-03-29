@@ -18,7 +18,7 @@ public class KanjiVgImporterServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         KanjiVgImporter importer = new KanjiVgImporter();
-        int processed = importer.processKanjiVg(20);
+        int processed = importer.processKanjiVg(BATCH_SIZE);
 
         PrintWriter out = resp.getWriter();
         out.write("processed " + processed);
