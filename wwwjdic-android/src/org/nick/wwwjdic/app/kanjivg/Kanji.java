@@ -1,5 +1,6 @@
 package org.nick.wwwjdic.app.kanjivg;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,12 @@ import javax.persistence.OneToMany;
 import com.google.appengine.api.datastore.Key;
 
 @PersistenceCapable
-public class Kanji {
+public class Kanji implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
