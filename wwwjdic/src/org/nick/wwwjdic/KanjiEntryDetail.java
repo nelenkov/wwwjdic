@@ -182,7 +182,7 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
         moreLabel.setBackgroundColor(Color.GRAY);
         meaningsCodesLayout.addView(moreLabel);
 
-        List<Pair<String, String>> codesData = crieateCodesData(entry);
+        List<Pair<String, String>> codesData = createCodesData(entry);
         addCodesTable(meaningsCodesLayout, codesData);
 
         CheckBox starCb = (CheckBox) findViewById(R.id.star_kanji);
@@ -241,7 +241,7 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
         makeClickable(textView, 0, textView.getText().length(), intent);
     }
 
-    private List<Pair<String, String>> crieateCodesData(KanjiEntry entry) {
+    private List<Pair<String, String>> createCodesData(KanjiEntry entry) {
         ArrayList<Pair<String, String>> data = new ArrayList<Pair<String, String>>();
 
         if (entry.getUnicodeNumber() != null) {
@@ -258,10 +258,16 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
         String kanji = entry.getHeadword();
         try {
             byte[] sjis = kanji.getBytes("SJIS");
-            String sjisCode = String.format("%02x%02x", sjis[0], sjis[1])
-                    .toUpperCase();
-            data.add(new Pair<String, String>(getStr(R.string.sjis_code),
-                    sjisCode));
+            if (sjis.length < 2) {
+                Log.w(TAG, "Unable to encode " + kanji + " as SJIS");
+                data.add(new Pair<String, String>(getStr(R.string.sjis_code),
+                        "N/A"));
+            } else {
+                String sjisCode = String.format("%02x%02x", sjis[0], sjis[1])
+                        .toUpperCase();
+                data.add(new Pair<String, String>(getStr(R.string.sjis_code),
+                        sjisCode));
+            }
         } catch (UnsupportedEncodingException e) {
             Log.w(TAG, "SJIS conversion not supported", e);
         }
