@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Added \'lookup kanji\' menu to dictionary entries.\n* Added context menus to dictionary/kanji search results (long press to access).\n* Display Shift-JIS code.\n* Layout adjustments.</string>
+    <string name="whats_new">* Bug fixes.</string>
 </resources>
