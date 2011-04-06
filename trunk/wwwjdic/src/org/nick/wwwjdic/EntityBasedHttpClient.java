@@ -17,17 +17,48 @@ public abstract class EntityBasedHttpClient {
     protected String url;
     protected DefaultHttpClient httpClient;
 
+    // static {
+    // java.util.logging.Logger.getLogger("org.apache.http.wire").setLevel(
+    // java.util.logging.Level.FINEST);
+    // java.util.logging.Logger.getLogger("org.apache.http.headers").setLevel(
+    // java.util.logging.Level.FINEST);
+    // java.util.logging.Logger.getLogger("httpclient.wire.header").setLevel(
+    // java.util.logging.Level.FINEST);
+    // java.util.logging.Logger.getLogger("httpclient.wire.content").setLevel(
+    // java.util.logging.Level.FINEST);
+    //
+    // System.setProperty("org.apache.commons.logging.Log",
+    // "org.apache.commons.logging.impl.SimpleLog");
+    // System.setProperty("org.apache.commons.logging.simplelog.showdatetime",
+    // "true");
+    // System.setProperty(
+    // "org.apache.commons.logging.simplelog.log.httpclient.wire",
+    // "debug");
+    // System.setProperty(
+    // "org.apache.commons.logging.simplelog.log.org.apache.http",
+    // "debug");
+    // System.setProperty(
+    // "org.apache.commons.logging.simplelog.log.org.apache.http.headers",
+    // "debug");
+    // }
+
     public EntityBasedHttpClient(String endpoint, int timeout) {
         this.url = endpoint;
 
+        HttpParams params = createHttpParams(timeout);
+        httpClient = new DefaultHttpClient(params);
+    }
+
+    protected HttpParams createHttpParams(int timeout) {
         HttpParams params = new BasicHttpParams();
         HttpProtocolParams.setContentCharset(params,
                 HTTP.DEFAULT_CONTENT_CHARSET);
         HttpProtocolParams.setUseExpectContinue(params, true);
         HttpConnectionParams.setConnectionTimeout(params, timeout);
-        HttpProtocolParams.setUserAgent(params, WwwjdicApplication
-                .getUserAgentString());
-        httpClient = new DefaultHttpClient(params);
+        HttpProtocolParams.setUserAgent(params,
+                WwwjdicApplication.getUserAgentString());
+
+        return params;
     }
 
     protected String readAllLines(BufferedReader reader) throws IOException {

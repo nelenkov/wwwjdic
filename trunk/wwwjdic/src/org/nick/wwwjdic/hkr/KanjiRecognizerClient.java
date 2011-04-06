@@ -9,6 +9,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.AbstractHttpEntity;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +25,13 @@ public class KanjiRecognizerClient extends EntityBasedHttpClient {
 
     public KanjiRecognizerClient(String endpoint, int timeout) {
         super(endpoint, timeout);
+    }
+
+    protected HttpParams createHttpParams(int timeout) {
+        HttpParams params = super.createHttpParams(timeout);
+        HttpProtocolParams.setUseExpectContinue(params, false);
+
+        return params;
     }
 
     private String createRecognizerRequest(List<Stroke> strokes,
