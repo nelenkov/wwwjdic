@@ -33,7 +33,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     public static final String PREF_AUTO_SELECT_MIRROR_KEY = "pref_auto_select_mirror";
     public static final String PREF_WWWJDIC_MIRROR_URL_KEY = "pref_wwwjdic_mirror_url";
-    public static final String DEFAULT_WWWJDIC_URL = "http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi";
+    public static final String DEFAULT_WWWJDIC_URL = "http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi"; 
 
     public static final String PREF_WWWJDIC_TIMEOUT_KEY = "pref_wwwjdic_timeout";
 
