@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Bug fixes.</string>
+    <string name="whats_new">* Link to the Kanji Recognizer app if online recognition is unavailable.\n* Made Japan the default mirror\n* Improved widget error handling\n* Bug fixes.</string>
 </resources>
