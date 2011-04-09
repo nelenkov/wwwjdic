@@ -12,8 +12,10 @@ import org.nick.wwwjdic.ocr.WeOcrClient;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Dialogs;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
@@ -21,6 +23,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -103,15 +106,22 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         Analytics.startSession(this);
 
         if (WwwjdicPreferences.isUseKanjiRecognizer(this) && !bound) {
-            boolean success = bindService(new Intent(
-                    "org.nick.kanjirecognizer.hkr.RECOGNIZE_KANJI"),
-                    connection, Context.BIND_AUTO_CREATE);
-            if (success) {
-                Log.d(TAG, "successfully bound to KR service");
-                lookAheadCb.setEnabled(false);
-            } else {
-                Log.d(TAG, "could not bind to KR service");
-            }
+            bindToKanjiRecognizer();
+            setTitle(R.string.offline_hkr);
+        } else {
+            setTitle(R.string.online_hkr);
+        }
+    }
+
+    void bindToKanjiRecognizer() {
+        boolean success = bindService(new Intent(
+                "org.nick.kanjirecognizer.hkr.RECOGNIZE_KANJI"),
+                connection, Context.BIND_AUTO_CREATE);
+        if (success) {
+            Log.d(TAG, "successfully bound to KR service");
+            lookAheadCb.setEnabled(false);
+        } else {
+            Log.d(TAG, "could not bind to KR service");
         }
     }
 
@@ -174,9 +184,13 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                     krActivity.sendToDictionary(results);
                 } else {
                     if (msg.arg2 == HKR_RESULT_TYPE_WS) {
-                        Toast t = Toast.makeText(krActivity,
-                                R.string.ws_hkr_failed, Toast.LENGTH_LONG);
-                        t.show();
+                        if (WwwjdicPreferences.isKrInstalled(krActivity,
+                                krActivity.getApplication())) {
+                            showEnableKrDialog();
+                        } else {
+                            showInstallKrDialog();
+                        }
+
                     } else {
                         Toast t = Toast.makeText(krActivity,
                                 R.string.hkr_failed, Toast.LENGTH_SHORT);
@@ -189,6 +203,57 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
             }
         }
 
+        private void showEnableKrDialog() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setMessage(R.string.wskr_unavailable_enable_kr)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.yes,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                        int id) {
+                                    WwwjdicPreferences.setUseKanjiRecognizer(
+                                            true, activity);
+                                    RecognizeKanjiActivity krActivity = (RecognizeKanjiActivity) activity;
+                                    krActivity.bindToKanjiRecognizer();
+                                    krActivity.setTitle(R.string.offline_hkr);
+                                }
+                            })
+                    .setNegativeButton(R.string.no,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                        int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+
+        private void showInstallKrDialog() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setMessage(R.string.wskr_unavailable_install_kr)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.yes,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                        int id) {
+                                    Intent intent = new Intent(
+                                            Intent.ACTION_VIEW,
+                                            Uri.parse("market://details?id="
+                                                    + WwwjdicPreferences.KR_PACKAGE));
+                                    activity.startActivity(intent);
+                                }
+                            })
+                    .setNegativeButton(R.string.no,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                        int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
     }
 
     @Override
@@ -229,6 +294,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                 handler.sendMessage(msg);
             }
         }
+
     }
 
     private boolean isUseLookahead() {
@@ -277,8 +343,9 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         @Override
         public void run() {
             try {
-                WeOcrClient client = new WeOcrClient(WwwjdicPreferences
-                        .getWeocrUrl(RecognizeKanjiActivity.this),
+                WeOcrClient client = new WeOcrClient(
+                        WwwjdicPreferences
+                                .getWeocrUrl(RecognizeKanjiActivity.this),
                         WwwjdicPreferences
                                 .getWeocrTimeout(RecognizeKanjiActivity.this));
                 String[] candidates = client.sendCharacterOcrRequest(bitmap,
@@ -366,8 +433,8 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         Runnable krTask = new Runnable() {
             public void run() {
                 try {
-                    recognizer.startRecognition(drawView.getWidth(), drawView
-                            .getHeight());
+                    recognizer.startRecognition(drawView.getWidth(),
+                            drawView.getHeight());
                     int strokeNum = 0;
                     for (Stroke s : strokes) {
                         for (PointF p : s.getPoints()) {

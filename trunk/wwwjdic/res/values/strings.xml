@@ -502,4 +502,16 @@
     <string name="examples">Examples</string>
     <string name="add_to_favorites">Add to favorites</string>
     <string name="added_to_favorites">\'%s\' added to favorites.</string>
+    <string name="wskr_unavailable_install_kr">Online kanji recogntion is not available at this time. 
+    You can enable offline recognition by installing the \'Kanji Recognizer\' application. 
+        Start it at least once after installing, so that it can download the recognition model.
+        Then start WWWJDIC, press the Menu key, select Settings and check \'Use Kanji Recognizer\'.
+        Would you like to install it now? 
+        \n(no ads are displayed when used from WWWJDIC)</string>
+    <string name="wskr_unavailable_enable_kr">Online kanji recogntion is not available at this time. 
+        You can enable offline recognition using the Kanji Recognizer application. 
+        Would you like to enable offline recognition now? 
+    </string>    
+    <string name="online_hkr">Hand written kanji recognition (online)</string>
+    <string name="offline_hkr">Hand written kanji recognition (offline)</string>
 </resources>
