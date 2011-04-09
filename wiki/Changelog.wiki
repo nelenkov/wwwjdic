@@ -1,6 +1,11 @@
 #summary Full changelog
 
 = Changelog =
+ * v1.72 (2011/4/9) Various improvements.
+  * Link to the Kanji Recognizer app if online recognition is unavailable.
+  * Made Japan the default mirror.
+  * Improved widget error handling.
+  * Bug fixes.
  * v1.71 (2011/3/5) Context menus
   * Added 'lookup kanji' menu to dictionary entries.
   * Added context menus to dictionary/kanji search results. 
