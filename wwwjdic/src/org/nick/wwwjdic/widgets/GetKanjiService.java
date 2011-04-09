@@ -57,9 +57,9 @@ public class GetKanjiService extends Service {
 
     private static final String PRE_END_TAG = "</pre>";
 
-    private static final int NUM_RETRIES = 3;
+    private static final int NUM_RETRIES = 5;
 
-    private static final int RETRY_INTERVAL = 1000;
+    private static final int RETRY_INTERVAL = 15 * 1000;
 
     private final RandomJisGenerator jisGenerator = new RandomJisGenerator();
 
