@@ -346,4 +346,16 @@
     <string name="examples">例文検索</string>
     <string name="add_to_favorites">お気に入りに追加</string>
     <string name="added_to_favorites">\'%s\'をお気に入りに追加しました。</string>
+    <string name="wskr_unavailable_install_kr">オンライン手書き認識は現在ご利用いただけません。
+Kanji Recognizerアプリケーションをインストールすると、オフライン手書き認識をご利用いただけます。
+初期化するために、Kanji Recognizerを少なくとも一回起動してください。
+その後は、WWWJDICを起動し、メニューキーを押して、「設定」を選択します。設定画面で「Kanji Recognizer使用」をチェックしてください。
+\nインストールしますか?
+\n(WWWJDICから利用するときは、報告を表示しません。</string>
+    <string name="wskr_unavailable_enable_kr">オンライン手書き認識は現在ご利用いただけません。 
+        Kanji Recognizer アプリケーションと連携して、オフライン手書き認識をご利用いただけます。
+        オフライン手書き認識を有効にしますか?
+    </string>
+    <string name="online_hkr">手書き認識 (オンライン)</string>
+    <string name="offline_hkr">手書き認識 (オフライン)</string>
 </resources>

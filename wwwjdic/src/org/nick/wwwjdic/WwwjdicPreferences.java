@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,7 +37,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     public static final String PREF_WWWJDIC_TIMEOUT_KEY = "pref_wwwjdic_timeout";
 
-    private static final String KR_PACKAGE = "org.nick.kanjirecognizer";
+    public static final String KR_PACKAGE = "org.nick.kanjirecognizer";
 
     private static final String PREF_DEFAULT_DICT_PREF_KEY = "pref_default_dict";
 
@@ -108,7 +109,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         if (PREF_USE_KR_KEY.equals(preference.getKey())) {
             Boolean enabled = (Boolean) newValue;
             if (enabled) {
-                if (!isKrInstalled()) {
+                if (!isKrInstalled(this, getApplication())) {
                     showInstallKrDialog();
                     return false;
                 }
@@ -176,9 +177,9 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         dialog.show();
     }
 
-    private boolean isKrInstalled() {
+    public static boolean isKrInstalled(Context context, Application application) {
         Log.d(TAG, "Checking for Kanji Recognizer...");
-        PackageManager pm = getPackageManager();
+        PackageManager pm = context.getPackageManager();
         try {
             PackageInfo pi = pm.getPackageInfo(KR_PACKAGE, 0);
             Log.d(TAG, String.format("Found KR: %s, version %s(%d)",
@@ -190,7 +191,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
                 return false;
             }
 
-            String myPackageName = getApplication().getPackageName();
+            String myPackageName = application.getPackageName();
             Log.d(TAG, String.format("Checking for signature match: "
                     + "my package = %s, KR package = %s", myPackageName,
                     pi.packageName));
@@ -289,6 +290,13 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         SharedPreferences preferences = getPrefs(context);
 
         return preferences.getBoolean(PREF_KR_USE_KANJI_RECOGNIZER_KEY, false);
+    }
+
+    public static void setUseKanjiRecognizer(boolean useKr, Context context) {
+        SharedPreferences.Editor editor = getPrefsEditor(context);
+
+        editor.putBoolean(PREF_KR_USE_KANJI_RECOGNIZER_KEY, useKr);
+        editor.commit();
     }
 
     public static int getWeocrTimeout(Context context) {
