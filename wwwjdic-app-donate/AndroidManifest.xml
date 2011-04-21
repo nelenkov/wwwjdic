@@ -80,6 +80,8 @@
                 android:resource="@xml/kod_widget_info" />
         </receiver>
         <service android:name="org.nick.wwwjdic.widgets.GetKanjiService" />
+        <provider android:name="org.nick.wwwjdic.SearchSuggestionProvider"
+              android:authorities="org.nick.wwwjdic.SearchSuggestionProvider" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

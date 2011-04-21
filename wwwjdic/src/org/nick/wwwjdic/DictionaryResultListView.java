@@ -9,6 +9,7 @@ import org.nick.wwwjdic.utils.StringUtils;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -48,6 +49,10 @@ public class DictionaryResultListView extends
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             String dictionary = WwwjdicPreferences.getDefaultDictionary(this);
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
+                    this, SearchSuggestionProvider.AUTHORITY,
+                    SearchSuggestionProvider.MODE);
+            suggestions.saveRecentQuery(query, null);
             criteria = SearchCriteria.createForDictionary(query, false, false,
                     false, dictionary);
         } else {
