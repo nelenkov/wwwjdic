@@ -10,6 +10,7 @@ import org.nick.wwwjdic.ExamplesResultListView;
 import org.nick.wwwjdic.KanjiResultListView;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.SearchCriteria;
+import org.nick.wwwjdic.SearchSuggestionProvider;
 import org.nick.wwwjdic.utils.Analytics;
 
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.provider.SearchRecentSuggestions;
 import android.util.Log;
 import android.widget.Toast;
 import au.com.bytecode.opencsv.CSVReader;
@@ -73,6 +75,12 @@ public class SearchHistory extends HistoryBase {
 
             @Override
             protected Boolean doInBackground(Void... params) {
+                // clear search suggestions
+                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
+                        SearchHistory.this, SearchSuggestionProvider.AUTHORITY,
+                        SearchSuggestionProvider.MODE);
+                suggestions.clearHistory();
+
                 Cursor c = filterCursor();
 
                 db.beginTransaction();
@@ -220,8 +228,9 @@ public class SearchHistory extends HistoryBase {
                 if (result) {
                     String message = getResources().getString(
                             R.string.history_exported);
-                    Toast t = Toast.makeText(SearchHistory.this, String.format(
-                            message, filename, count), Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(SearchHistory.this,
+                            String.format(message, filename, count),
+                            Toast.LENGTH_SHORT);
                     t.show();
                 } else {
                     String message = getResources().getString(
@@ -298,8 +307,9 @@ public class SearchHistory extends HistoryBase {
                 if (result) {
                     String message = getResources().getString(
                             R.string.history_imported);
-                    Toast t = Toast.makeText(SearchHistory.this, String.format(
-                            message, importFile, count), Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(SearchHistory.this,
+                            String.format(message, importFile, count),
+                            Toast.LENGTH_SHORT);
                     t.show();
                 } else {
                     String message = getResources().getString(
