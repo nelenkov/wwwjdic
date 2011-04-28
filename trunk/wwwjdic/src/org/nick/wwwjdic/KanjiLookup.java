@@ -105,7 +105,7 @@ public class KanjiLookup extends WwwjdicActivityBase implements
             }
         }
 
-        dbHelper = new HistoryDbHelper(this);
+        dbHelper = HistoryDbHelper.getInstance(this);
 
         setupKanjiSummary();
 
@@ -150,10 +150,6 @@ public class KanjiLookup extends WwwjdicActivityBase implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        if (dbHelper != null) {
-            dbHelper.close();
-        }
     }
 
     @Override

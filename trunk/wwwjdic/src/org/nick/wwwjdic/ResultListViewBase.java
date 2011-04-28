@@ -36,7 +36,7 @@ public abstract class ResultListViewBase<T> extends ListActivity implements
 
     protected ResultListViewBase() {
         guiThread = new Handler();
-        db = new HistoryDbHelper(this);
+        db = HistoryDbHelper.getInstance(this);
     }
 
     @Override
@@ -57,10 +57,6 @@ public abstract class ResultListViewBase<T> extends ListActivity implements
     protected void onDestroy() {
         if (transPending != null) {
             transPending.cancel(true);
-        }
-
-        if (db != null) {
-            db.close();
         }
 
         super.onDestroy();
