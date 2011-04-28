@@ -514,4 +514,8 @@
     </string>    
     <string name="online_hkr">Hand written kanji recognition (online)</string>
     <string name="offline_hkr">Hand written kanji recognition (offline)</string>
+    <string name="ocr_error">Initializing the camera for OCR failed. Please contact 
+    the developer (see About) to get your device supported. Please note that 
+    errors specific to a particular device cannot be resolved without a detailed 
+    error report (logcat). Thank you.</string>
 </resources>

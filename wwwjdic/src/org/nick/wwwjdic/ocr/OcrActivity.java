@@ -17,6 +17,7 @@ import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.ocr.crop.CropImage;
 import org.nick.wwwjdic.utils.Analytics;
+import org.nick.wwwjdic.utils.Dialogs;
 
 import android.content.Context;
 import android.content.Intent;
@@ -437,6 +438,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
             camera.stopPreview();
         }
 
+
         try {
             Camera.Parameters p = camera.getParameters();
             if (previewSize != null) {
@@ -471,8 +473,9 @@ public class OcrActivity extends WebServiceBackedActivity implements
             camera.setPreviewDisplay(holder);
             camera.startPreview();
             isPreviewRunning = true;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            Log.e(TAG, "error initializing camera: " + e.getMessage(), e);
+            Dialogs.createErrorDialog(this, R.string.ocr_error).show();
         }
     }
 
@@ -531,8 +534,9 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
             flashToggle.setEnabled(supportsFlash);
             camera.setPreviewDisplay(holder);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            Log.e(TAG, "error initializing camera: " + e.getMessage(), e);
+            Dialogs.createErrorDialog(this, R.string.ocr_error).show();
         }
     }
 

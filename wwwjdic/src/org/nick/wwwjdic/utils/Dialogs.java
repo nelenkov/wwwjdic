@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 
 public class Dialogs {
 
@@ -18,6 +20,20 @@ public class Dialogs {
         builder.setMessage(messageId);
         builder.setTitle(R.string.tip);
         builder.setIcon(android.R.drawable.ic_dialog_info);
+
+        return builder.create();
+    }
+
+    public static Dialog createErrorDialog(Context context, int messageId) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(messageId).setTitle(R.string.error)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(R.string.ok, new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
 
         return builder.create();
     }
