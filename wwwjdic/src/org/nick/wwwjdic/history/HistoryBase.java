@@ -23,11 +23,11 @@ import android.os.Environment;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
@@ -68,7 +68,7 @@ public abstract class HistoryBase extends ListActivity {
     protected int selectedFilter = -1;
 
     protected HistoryBase() {
-        db = new HistoryDbHelper(this);
+        db = HistoryDbHelper.getInstance(this);
     }
 
     @Override
@@ -91,8 +91,6 @@ public abstract class HistoryBase extends ListActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        db.close();
     }
 
     @Override
@@ -212,13 +210,15 @@ public abstract class HistoryBase extends ListActivity {
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.import_and_overwrite).setCancelable(false)
+        builder.setMessage(R.string.import_and_overwrite)
+                .setCancelable(false)
                 .setPositiveButton(R.string.yes,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 doImport(filename);
                             }
-                        }).setNegativeButton(R.string.no,
+                        })
+                .setNegativeButton(R.string.no,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
@@ -250,18 +250,20 @@ public abstract class HistoryBase extends ListActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String message = getResources().getString(R.string.overwrite_file);
-        builder.setMessage(String.format(message, filename)).setCancelable(
-                false).setPositiveButton(R.string.yes,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        doExport(filename);
-                    }
-                }).setNegativeButton(R.string.no,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+        builder.setMessage(String.format(message, filename))
+                .setCancelable(false)
+                .setPositiveButton(R.string.yes,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                doExport(filename);
+                            }
+                        })
+                .setNegativeButton(R.string.no,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -360,13 +362,15 @@ public abstract class HistoryBase extends ListActivity {
 
     private Dialog createConfirmDeleteDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.delete_all_iteims).setCancelable(false)
+        builder.setMessage(R.string.delete_all_iteims)
+                .setCancelable(false)
                 .setPositiveButton(R.string.yes,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 deleteAll();
                             }
-                        }).setNegativeButton(R.string.no,
+                        })
+                .setNegativeButton(R.string.no,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();

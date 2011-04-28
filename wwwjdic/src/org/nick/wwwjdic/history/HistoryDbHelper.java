@@ -91,7 +91,17 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
 
     private Context context;
 
-    public HistoryDbHelper(Context context) {
+    private static HistoryDbHelper instance;
+
+    public static HistoryDbHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new HistoryDbHelper(context);
+        }
+
+        return instance;
+    }
+
+    private HistoryDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
     }
@@ -149,7 +159,7 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         addSearchCriteria(criteria, System.currentTimeMillis());
     }
 
-    public void addSearchCriteria(SearchCriteria criteria,
+    public synchronized void addSearchCriteria(SearchCriteria criteria,
             long currentTimeMillis) {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -157,11 +167,12 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         db.insertOrThrow(HISTORY_TABLE_NAME, null, values);
     }
 
-    public long addFavorite(WwwjdicEntry entry) {
+    public synchronized long addFavorite(WwwjdicEntry entry) {
         return addFavorite(entry, System.currentTimeMillis());
     }
 
-    public long addFavorite(WwwjdicEntry entry, long currentTimeInMillis) {
+    public synchronized long addFavorite(WwwjdicEntry entry,
+            long currentTimeInMillis) {
         SQLiteDatabase db = getWritableDatabase();
         long result = addFavorite(db, entry, currentTimeInMillis);
 
@@ -194,8 +205,8 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         values.put(HISTORY_QUERY_STRING, criteria.getQueryString());
         values.put(HISTORY_IS_EXACT_MATCH, criteria.isExactMatch());
         values.put(HISTORY_SEARCH_TYPE, criteria.getType());
-        values.put(HISTORY_IS_ROMANIZED_JAPANESE, criteria
-                .isRomanizedJapanese());
+        values.put(HISTORY_IS_ROMANIZED_JAPANESE,
+                criteria.isRomanizedJapanese());
         values.put(HISTORY_IS_COMMON_WORDS_ONLY, criteria.isCommonWordsOnly());
         values.put(HISTORY_DICTIONARY, criteria.getDictionary());
         values.put(HISTORY_KANJI_SEARCH_TYPE, criteria.getKanjiSearchType());
@@ -450,22 +461,22 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
 
     }
 
-    public void deleteHistoryItem(long id) {
+    public synchronized void deleteHistoryItem(long id) {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(HISTORY_TABLE_NAME, "_id = " + id, null);
     }
 
-    public void deleteFavorite(long id) {
+    public synchronized void deleteFavorite(long id) {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(FAVORITES_TABLE_NAME, "_id = " + id, null);
     }
 
-    public void deleteAllHistory() {
+    public synchronized void deleteAllHistory() {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(HISTORY_TABLE_NAME, null, null);
     }
 
-    public void deleteAllFavorites() {
+    public synchronized void deleteAllFavorites() {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(FAVORITES_TABLE_NAME, null, null);
     }

@@ -96,7 +96,7 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
             }
         }
 
-        dbHelper = new HistoryDbHelper(this);
+        dbHelper = HistoryDbHelper.getInstance(this);
 
         setupDictSummary();
 
@@ -112,10 +112,6 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        if (dbHelper != null) {
-            dbHelper.close();
-        }
     }
 
     private void selectDictionary(Bundle savedInstanceState) {
@@ -143,8 +139,8 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt(Constants.SELECTED_DICTIONARY_IDX, dictSpinner
-                .getSelectedItemPosition());
+        outState.putInt(Constants.SELECTED_DICTIONARY_IDX,
+                dictSpinner.getSelectedItemPosition());
     }
 
     private void findViews() {
@@ -171,8 +167,7 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
     private void setupSpinners() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.dictionaries_array, R.layout.spinner_text);
-        adapter
-                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dictSpinner.setAdapter(adapter);
         dictSpinner.setOnItemSelectedListener(this);
     }
@@ -210,8 +205,9 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
                 String dict = getDictionaryFromSelection(dictIdx);
 
                 SearchCriteria criteria = SearchCriteria.createForDictionary(
-                        input, exactMatchCb.isChecked(), romanizedJapaneseCb
-                                .isChecked(), commonWordsCb.isChecked(), dict);
+                        input, exactMatchCb.isChecked(),
+                        romanizedJapaneseCb.isChecked(),
+                        commonWordsCb.isChecked(), dict);
 
                 Intent intent = new Intent(this, DictionaryResultListView.class);
                 intent.putExtra(Constants.CRITERIA_KEY, criteria);

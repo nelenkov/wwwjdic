@@ -10,15 +10,15 @@ import org.nick.wwwjdic.utils.StringUtils;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 public class ExampleSearch extends WwwjdicActivityBase implements
         OnClickListener, OnItemSelectedListener {
@@ -63,7 +63,7 @@ public class ExampleSearch extends WwwjdicActivityBase implements
             }
         }
 
-        dbHelper = new HistoryDbHelper(this);
+        dbHelper = HistoryDbHelper.getInstance(this);
 
         setupExamplesSummary();
     }
@@ -71,10 +71,6 @@ public class ExampleSearch extends WwwjdicActivityBase implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        if (dbHelper != null) {
-            dbHelper.close();
-        }
     }
 
     @Override

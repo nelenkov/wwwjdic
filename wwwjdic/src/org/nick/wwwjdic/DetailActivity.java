@@ -36,7 +36,7 @@ public abstract class DetailActivity extends Activity implements
     protected boolean isFavorite;
 
     protected DetailActivity() {
-        db = new HistoryDbHelper(this);
+        db = HistoryDbHelper.getInstance(this);
     }
 
     protected void addToFavorites() {
