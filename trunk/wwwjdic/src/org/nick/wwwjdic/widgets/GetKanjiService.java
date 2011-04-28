@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -21,10 +20,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
-import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.GzipStringResponseHandler;
 import org.nick.wwwjdic.KanjiEntry;
-import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicApplication;
 import org.nick.wwwjdic.WwwjdicPreferences;
@@ -38,11 +35,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.text.format.Time;
 import android.util.Log;
-import android.view.View;
 import android.widget.RemoteViews;
 
 public class GetKanjiService extends Service {
@@ -129,11 +124,11 @@ public class GetKanjiService extends Service {
                 views = new RemoteViews(context.getPackageName(),
                         R.layout.kod_widget);
             }
-            showLoading(views);
+            KodWidgetProvider.showLoading(this, views);
 
-            HttpClient client = createHttpClient(WwwjdicPreferences
-                    .getWwwjdicUrl(this), WwwjdicPreferences
-                    .getWwwjdicTimeoutSeconds(this) * 1000);
+            HttpClient client = createHttpClient(
+                    WwwjdicPreferences.getWwwjdicUrl(this),
+                    WwwjdicPreferences.getWwwjdicTimeoutSeconds(this) * 1000);
             String unicodeCp = jisGenerator
                     .generateAsUnicodeCp(WwwjdicPreferences
                             .isKodLevelOneOnly(context));
@@ -144,8 +139,9 @@ public class GetKanjiService extends Service {
 
             for (int i = 0; i < NUM_RETRIES; i++) {
                 try {
-                    wwwjdicResponse = query(client, WwwjdicPreferences
-                            .getWwwjdicUrl(this), backdoorCode);
+                    wwwjdicResponse = query(client,
+                            WwwjdicPreferences.getWwwjdicUrl(this),
+                            backdoorCode);
                     if (wwwjdicResponse != null) {
                         break;
                     }
@@ -164,7 +160,7 @@ public class GetKanjiService extends Service {
             if (wwwjdicResponse == null) {
                 Log.e(TAG, String.format("Failed to get WWWJDIC response "
                         + "after %d tries, giving up.", NUM_RETRIES));
-                showError(views);
+                KodWidgetProvider.showError(this, views);
 
                 return views;
             }
@@ -173,33 +169,13 @@ public class GetKanjiService extends Service {
             List<KanjiEntry> entries = parseResult(wwwjdicResponse);
 
             if (entries.isEmpty()) {
-                showError(views);
+                KodWidgetProvider.showError(this, views);
 
                 return views;
             }
 
-            KanjiEntry entry = entries.get(0);
-            String kod = entry.getHeadword();
-            Log.d(TAG, "KOD: " + kod);
-            Intent intent = new Intent(context, KanjiEntryDetail.class);
-            intent.putExtra(Constants.KANJI_ENTRY_KEY, entries.get(0));
-            intent.putExtra(Constants.KOD_WIDGET_CLICK, true);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
-                    intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-            String dateStr = DateFormat.getDateFormat(this).format(new Date());
-            views.setTextViewText(R.id.kod_date_text, dateStr);
-            views.setTextViewText(R.id.kod_text, kod);
-            if (showReadingAndMeaning) {
-                views.setTextViewText(R.id.kod_reading, entry.getReading());
-                views.setTextViewText(R.id.kod_meaning, entry
-                        .getMeaningsAsString());
-            }
-
-            views.setOnClickPendingIntent(R.id.widget, pendingIntent);
-            clearLoading(views);
+            KodWidgetProvider.showKanji(context, views, showReadingAndMeaning,
+                    entries);
 
             return views;
 
@@ -207,29 +183,10 @@ public class GetKanjiService extends Service {
             Log.e(TAG, "Couldn't contact WWWJDIC", e);
             views = new RemoteViews(context.getPackageName(),
                     R.layout.kod_widget);
-            showError(views);
+            KodWidgetProvider.showError(this, views);
 
             return views;
         }
-    }
-
-    private void showError(RemoteViews views) {
-        views.setViewVisibility(R.id.kod_message_text, View.VISIBLE);
-        views.setTextViewText(R.id.kod_message_text, getResources().getString(
-                R.string.error));
-        views.setViewVisibility(R.id.widget, View.GONE);
-    }
-
-    private void showLoading(RemoteViews views) {
-        views.setTextViewText(R.id.kod_message_text, getResources().getString(
-                R.string.widget_loading));
-        views.setViewVisibility(R.id.kod_message_text, View.VISIBLE);
-        views.setViewVisibility(R.id.widget, View.GONE);
-    }
-
-    private void clearLoading(RemoteViews views) {
-        views.setViewVisibility(R.id.kod_message_text, View.GONE);
-        views.setViewVisibility(R.id.widget, View.VISIBLE);
     }
 
     private HttpClient createHttpClient(String url, int timeoutMillis) {
@@ -239,8 +196,8 @@ public class GetKanjiService extends Service {
         HttpParams httpParams = httpclient.getParams();
         HttpConnectionParams.setConnectionTimeout(httpParams, timeoutMillis);
         HttpConnectionParams.setSoTimeout(httpParams, timeoutMillis);
-        HttpProtocolParams.setUserAgent(httpParams, WwwjdicApplication
-                .getUserAgentString());
+        HttpProtocolParams.setUserAgent(httpParams,
+                WwwjdicApplication.getUserAgentString());
 
         return httpclient;
     }
