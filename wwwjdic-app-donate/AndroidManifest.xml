@@ -40,7 +40,7 @@
         <activity android:name="org.nick.wwwjdic.SentenceBreakdown"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name="org.nick.wwwjdic.KanjiEntryDetail"
-            android:taskAffinity="" android:launchMode="singleTop"></activity>
+            android:taskAffinity=""></activity>
         <activity android:name="org.nick.wwwjdic.RadicalChart"></activity>
         <activity android:name="org.nick.wwwjdic.WwwjdicPreferences"></activity>
         <activity android:name="org.nick.wwwjdic.ocr.OcrActivity"
