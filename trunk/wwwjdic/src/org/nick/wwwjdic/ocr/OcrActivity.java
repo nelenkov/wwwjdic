@@ -438,7 +438,6 @@ public class OcrActivity extends WebServiceBackedActivity implements
             camera.stopPreview();
         }
 
-
         try {
             Camera.Parameters p = camera.getParameters();
             if (previewSize != null) {
@@ -514,7 +513,15 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
         Camera.Parameters params = camera.getParameters();
         List<Size> supportedPreviewSizes = getSupportedPreviewSizes(params);
+        Log.d(TAG, "supported preview sizes");
+        for (Size s : supportedPreviewSizes) {
+            Log.d(TAG, String.format("%dx%d", s.width, s.height));
+        }
         List<Size> supportedPictueSizes = getSupportedPictureSizes(params);
+        Log.d(TAG, "supported picture sizes:");
+        for (Size s : supportedPictueSizes) {
+            Log.d(TAG, String.format("%dx%d", s.width, s.height));
+        }
         supportsFlash = ReflectionUtils.getFlashMode(params) != null;
 
         try {
@@ -592,13 +599,19 @@ public class OcrActivity extends WebServiceBackedActivity implements
     private Size getOptimalPreviewSize(List<Size> sizes) {
         WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         int targetHeight = windowManager.getDefaultDisplay().getHeight();
+        int targetWidth = windowManager.getDefaultDisplay().getWidth();
 
         Size result = null;
-        double minDiff = Double.MAX_VALUE;
+        double diff = Double.MAX_VALUE;
         for (Size size : sizes) {
-            if (Math.abs(size.height - targetHeight) < minDiff) {
+            double newDiff = Math.abs(size.width - targetWidth)
+                    + Math.abs(size.height - targetHeight);
+            if (newDiff == 0) {
                 result = size;
-                minDiff = Math.abs(size.height - targetHeight);
+                break;
+            } else if (newDiff < diff) {
+                diff = newDiff;
+                result = size;
             }
         }
 
