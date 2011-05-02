@@ -7,7 +7,7 @@
             android:defaultValue="true" android:disableDependentsState="true" />
         <ListPreference android:title="@string/pref_wwwjdic_mirror"
             android:key="pref_wwwjdic_mirror_url"
-            android:defaultValue="http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi"
+            android:defaultValue="http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi"
             android:entries="@array/wwwjdic_mirror_names"
             android:entryValues="@array/wwwjdic_mirror_urls"
             android:dependency="pref_auto_select_mirror" />
@@ -52,17 +52,16 @@
             android:title="@string/pref_kr_use_kanji_recognizer"
             android:summary="@string/pref_kr_use_kanji_recognizer_summary"
             android:defaultValue="false" 
-            android:disableDependentsState="false"
-            android:enabled="false"/>
+            android:disableDependentsState="true"/>
         <EditTextPreference android:title="@string/pref_kr_url"
             android:key="pref_kr_url" android:defaultValue="http://kanji.sljfaq.org/kanji-0.016.cgi"
-            android:singleLine="true" android:inputType="numberDecimal"/>
-            <!-- android:dependency="pref_kr_use_kanji_recognizer" /-->
+            android:singleLine="true" android:inputType="numberDecimal"
+            android:dependency="pref_kr_use_kanji_recognizer" />
         <EditTextPreference android:key="pref_kr_timeout"
             android:title="@string/pref_kr_timeout" android:summary="@string/pref_timeout_summary"
             android:singleLine="true" android:inputType="numberDecimal"
-            android:defaultValue="10" android:maxLength="4"/>
-            <!-- android:dependency="pref_kr_use_kanji_recognizer" /-->
+            android:defaultValue="10" android:maxLength="4"
+            android:dependency="pref_kr_use_kanji_recognizer" />
         <CheckBoxPreference android:key="pref_kr_annotate"
             android:title="@string/pref_kr_annotate"
             android:defaultValue="true" android:disableDependentsState="false" />
