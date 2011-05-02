@@ -518,4 +518,5 @@
     the developer (see About) to get your device supported. Please note that 
     errors specific to a particular device cannot be resolved without a detailed 
     error report (logcat). Thank you.</string>
+    <string name="kr_download_uri">market://details?id=org.nick.kanjirecognizer</string>
 </resources>
