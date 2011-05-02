@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="whats_new">* Kanji Recognizerアプリ連携を有効にした\n* 漢字ウィジェットがエラー状態の時にタップで手動更新追加\n* 検索ウィジェットが最近の検索を保存するようにした\n* OCRカメラ対応改善、東芝Regza(IS04)対応\n* OCRエラー処理改善\n* 検索履歴・お気に入りバグ修正</string>
+</resources>
