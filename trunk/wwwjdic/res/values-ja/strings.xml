@@ -361,4 +361,9 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     <string name="ocr_error">カメラを初期化できませんでした。お使いの端末も対応するために、
         開発者にご連絡ください (情報画面を参照)。端末固有なエラーは詳細なエラーレポート(logcat)を
        いただかないと、解決は基本的にできません。ご了承ください。</string>
+    <string name="not_now">後で</string>
+    <string name="dont_ask_again">今後もしない</string>
+    <string name="install_tts_data_title">TTSデータインストール</string>
+    <string name="install_tts_data_message">必要なテキスト読み上げデータはインストールされていません。
+    インストールしますか?</string>   
 </resources>

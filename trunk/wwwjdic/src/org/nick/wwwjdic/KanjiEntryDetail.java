@@ -6,6 +6,7 @@ import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 
 import org.nick.wwwjdic.utils.Analytics;
@@ -32,12 +33,16 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
 
     private static final String TAG = KanjiEntryDetail.class.getSimpleName();
 
+    private LinearLayout translationsCodesLayout;
+
     private KanjiEntry entry;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.kanji_entry_details);
+
+        checkTtsAvailability();
 
         entry = (KanjiEntry) getIntent().getSerializableExtra(
                 Constants.KANJI_ENTRY_KEY);
@@ -154,25 +159,25 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
             readingLayout.addView(layout);
         }
 
-        LinearLayout meaningsCodesLayout = (LinearLayout) findViewById(R.id.meaningsCodesLayout);
+        translationsCodesLayout = (LinearLayout) findViewById(R.id.translations_layout);
 
         if (entry.getMeanings().isEmpty()) {
             TextView text = new TextView(this, null,
                     R.style.dict_detail_meaning);
-            meaningsCodesLayout.addView(text);
+            translationsCodesLayout.addView(text);
         } else {
             for (String meaning : entry.getMeanings()) {
-                TextView text = new TextView(this, null,
-                        R.style.dict_detail_meaning);
-                text.setText(meaning);
+                final Pair<LinearLayout, TextView> translationViews = createMeaningTextView(
+                        KanjiEntryDetail.this, meaning);
                 Matcher m = CROSS_REF_PATTERN.matcher(meaning);
                 if (m.matches()) {
                     Intent crossRefIntent = createCrossRefIntent(m.group(1));
                     int start = m.start(1);
                     int end = m.end(1);
-                    makeClickable(text, start, end, crossRefIntent);
+                    makeClickable(translationViews.getSecond(), start, end,
+                            crossRefIntent);
                 }
-                meaningsCodesLayout.addView(text);
+                translationsCodesLayout.addView(translationViews.getFirst());
             }
         }
 
@@ -180,15 +185,24 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
         moreLabel.setText(R.string.codes_more);
         moreLabel.setTextColor(Color.WHITE);
         moreLabel.setBackgroundColor(Color.GRAY);
-        meaningsCodesLayout.addView(moreLabel);
+        translationsCodesLayout.addView(moreLabel);
 
         List<Pair<String, String>> codesData = createCodesData(entry);
-        addCodesTable(meaningsCodesLayout, codesData);
+        addCodesTable(translationsCodesLayout, codesData);
 
         CheckBox starCb = (CheckBox) findViewById(R.id.star_kanji);
         starCb.setOnCheckedChangeListener(null);
         starCb.setChecked(isFavorite);
         starCb.setOnCheckedChangeListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (tts != null) {
+            tts.shutdown();
+        }
     }
 
     private void addCodesTable(LinearLayout meaningsCodesLayout,
@@ -253,7 +267,6 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
             data.add(new Pair<String, String>(getStr(R.string.jis_code), entry
                     .getJisCode().toUpperCase()));
         }
-
 
         String kanji = entry.getHeadword();
         try {
@@ -329,6 +342,47 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
     @Override
     protected void setHomeActivityExtras(Intent homeActivityIntent) {
         homeActivityIntent.putExtra(SELECTED_TAB_IDX, KANJI_TAB_IDX);
+    }
+
+    @Override
+    protected Locale getSpeechLocale() {
+        return Locale.ENGLISH;
+    }
+
+    protected void showTtsButtons() {
+        toggleTtsButtons(true);
+    }
+
+    @Override
+    protected void hideTtsButtons() {
+        toggleTtsButtons(false);
+    }
+
+    private void toggleTtsButtons(boolean show) {
+        int childCount = translationsCodesLayout.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View view = translationsCodesLayout.getChildAt(i);
+            if (view instanceof Button) {
+                if (show) {
+                    view.setVisibility(View.VISIBLE);
+                } else {
+                    view.setVisibility(View.GONE);
+                }
+            } else if (view instanceof ViewGroup) {
+                ViewGroup vg = (ViewGroup) view;
+                int count = vg.getChildCount();
+                for (int j = 0; j < count; j++) {
+                    view = vg.getChildAt(j);
+                    if (view instanceof Button) {
+                        if (show) {
+                            view.setVisibility(View.VISIBLE);
+                        } else {
+                            view.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

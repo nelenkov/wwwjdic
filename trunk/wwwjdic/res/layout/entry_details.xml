@@ -33,7 +33,7 @@
         android:background="#ff888888" android:textColor="#ffffffff" />
     <ScrollView android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-        <LinearLayout android:id="@+id/meanings_layout"
+        <LinearLayout android:id="@+id/translations_layout"
             android:layout_width="fill_parent" android:layout_height="fill_parent"
             android:orientation="vertical">
         </LinearLayout>
