@@ -226,7 +226,7 @@ public class DictionaryEntryDetail extends DetailActivity implements
                 if (show) {
                     view.setVisibility(View.VISIBLE);
                 } else {
-                    view.setVisibility(View.GONE);
+                    view.setVisibility(View.INVISIBLE);
                 }
             } else if (view instanceof ViewGroup) {
                 ViewGroup vg = (ViewGroup) view;
@@ -237,7 +237,7 @@ public class DictionaryEntryDetail extends DetailActivity implements
                         if (show) {
                             view.setVisibility(View.VISIBLE);
                         } else {
-                            view.setVisibility(View.GONE);
+                            view.setVisibility(View.INVISIBLE);
                         }
                     }
                 }
