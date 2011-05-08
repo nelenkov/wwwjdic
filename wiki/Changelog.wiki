@@ -1,6 +1,8 @@
 #summary Full changelog
 
 = Changelog =
+ * v1.8 (2011/5/8) Text to speech 
+  * Added text-to-speech for kanji (English) and dictionary entry translations (English/German/French/Spanish)
  * v1.73 (2011/4/30) Bug fixes
   * Tapping kanji widget when in error state will now trigger manual update
   * Added recent search suggestions to search widget
