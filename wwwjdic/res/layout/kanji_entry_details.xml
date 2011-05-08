@@ -90,7 +90,7 @@
     <ScrollView android:id="@+id/meaningsScroll"
         android:layout_width="fill_parent" android:layout_height="fill_parent"
         android:paddingTop="4dip">
-        <LinearLayout android:id="@+id/meaningsCodesLayout"
+        <LinearLayout android:id="@+id/translations_layout"
             android:orientation="vertical" android:layout_width="fill_parent"
             android:layout_height="fill_parent">
              <TextView android:layout_width="fill_parent"

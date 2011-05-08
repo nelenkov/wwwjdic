@@ -3,9 +3,13 @@ package org.nick.wwwjdic;
 import static org.nick.wwwjdic.Constants.DICTIONARY_TAB_IDX;
 import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 
 import org.nick.wwwjdic.utils.DictUtils;
+import org.nick.wwwjdic.utils.Pair;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -29,10 +34,12 @@ public class DictionaryEntryDetail extends DetailActivity implements
 
     private static final int DEFAULT_MAX_NUM_EXAMPLES = 20;
 
+    private LinearLayout translationsLayout;
     private TextView entryView;
     private CheckBox starCb;
     private Button exampleSearchButton;
 
+    private DictionaryEntry entry;
     private String exampleSearchKey;
 
     @Override
@@ -40,8 +47,10 @@ public class DictionaryEntryDetail extends DetailActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entry_details);
 
-        DictionaryEntry entry = (DictionaryEntry) getIntent()
-                .getSerializableExtra(Constants.ENTRY_KEY);
+        checkTtsAvailability();
+
+        entry = (DictionaryEntry) getIntent().getSerializableExtra(
+                Constants.ENTRY_KEY);
         wwwjdicEntry = entry;
         isFavorite = getIntent().getBooleanExtra(Constants.IS_FAVORITE, false);
 
@@ -61,20 +70,19 @@ public class DictionaryEntryDetail extends DetailActivity implements
             wordReadingLayout.addView(readingView);
         }
 
-        LinearLayout meaningsLayout = (LinearLayout) findViewById(R.id.meanings_layout);
+        translationsLayout = (LinearLayout) findViewById(R.id.translations_layout);
 
         for (String meaning : entry.getMeanings()) {
-            TextView text = new TextView(this, null,
-                    R.style.dict_detail_meaning);
-            text.setText(meaning);
+            final Pair<LinearLayout, TextView> translationViews = createMeaningTextView(
+                    DictionaryEntryDetail.this, meaning);
             Matcher m = CROSS_REF_PATTERN.matcher(meaning);
             if (m.matches()) {
                 Intent intent = createCrossRefIntent(m.group(1));
                 int start = m.start(1);
                 int end = m.end(1);
-                makeClickable(text, start, end, intent);
+                makeClickable(translationViews.getSecond(), start, end, intent);
             }
-            meaningsLayout.addView(text);
+            translationsLayout.addView(translationViews.getFirst());
         }
 
         starCb = (CheckBox) findViewById(R.id.star_word);
@@ -87,6 +95,15 @@ public class DictionaryEntryDetail extends DetailActivity implements
 
         exampleSearchKey = DictUtils.extractSearchKey(wwwjdicEntry);
         disableExampleSearchIfSingleKanji();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (tts != null) {
+            tts.shutdown();
+        }
     }
 
     private Intent createCrossRefIntent(String word) {
@@ -160,4 +177,71 @@ public class DictionaryEntryDetail extends DetailActivity implements
         return super.onMenuItemSelected(featureId, item);
     }
 
+    @Override
+    protected Locale getSpeechLocale() {
+        WwwjdicApplication app = getApp();
+        String currentDictionary = app.getCurrentDictionary();
+        String[] engDictsArr = { "1", "3", "4", "5", "6", "7", "8", "A", "B",
+                "C", "D" };
+        List<String> engDicts = Arrays.asList(engDictsArr);
+        if (engDicts.contains(currentDictionary)) {
+            return Locale.ENGLISH;
+        } else {
+            if ("F".equals(currentDictionary)) {
+                return Locale.GERMAN;
+            } else if ("G".equals(currentDictionary)) {
+                return Locale.FRENCH;
+            } else if ("H".equals(currentDictionary)) {
+                return new Locale("RU");
+            } else if ("I".equals(currentDictionary)) {
+                return new Locale("SE");
+            } else if ("J".equals(currentDictionary)) {
+                return new Locale("HU");
+            } else if ("K".equals(currentDictionary)) {
+                return new Locale("ES");
+            } else if ("L".equals(currentDictionary)) {
+                return new Locale("NL");
+            } else if ("M".equals(currentDictionary)) {
+                return new Locale("SL");
+            }
+        }
+
+        return null;
+    }
+
+    protected void showTtsButtons() {
+        toggleTtsButtons(true);
+    }
+
+    @Override
+    protected void hideTtsButtons() {
+        toggleTtsButtons(false);
+    }
+
+    private void toggleTtsButtons(boolean show) {
+        int childCount = translationsLayout.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View view = translationsLayout.getChildAt(i);
+            if (view instanceof Button) {
+                if (show) {
+                    view.setVisibility(View.VISIBLE);
+                } else {
+                    view.setVisibility(View.GONE);
+                }
+            } else if (view instanceof ViewGroup) {
+                ViewGroup vg = (ViewGroup) view;
+                int count = vg.getChildCount();
+                for (int j = 0; j < count; j++) {
+                    view = vg.getChildAt(j);
+                    if (view instanceof Button) {
+                        if (show) {
+                            view.setVisibility(View.VISIBLE);
+                        } else {
+                            view.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

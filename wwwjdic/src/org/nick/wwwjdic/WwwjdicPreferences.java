@@ -73,6 +73,8 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     public static final String PREF_KOD_SHOW_READING_KEY = "pref_kod_show_reading";
     public static final String PREF_KOD_UPDATE_INTERAVL_KEY = "pref_kod_update_interval";
 
+    private static final String PREF_WANTS_TTS_KEY = "pref_wants_tts";
+
     public static final long KOD_DEFAULT_UPDATE_INTERVAL = 24 * DateUtils.HOUR_IN_MILLIS;
 
     public static final String DEFAULT_STROKE_ANIMATION_DELAY = "150";
@@ -461,5 +463,16 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     public static long getKodUpdateInterval(Context context) {
         return getPrefs(context).getLong(PREF_KOD_UPDATE_INTERAVL_KEY,
                 KOD_DEFAULT_UPDATE_INTERVAL);
+    }
+
+    public static boolean wantsTts(Context context) {
+        return getBooleanPref(context, PREF_WANTS_TTS_KEY, true);
+    }
+
+    public static synchronized void setWantsTts(Context context,
+            boolean wantsTts) {
+        SharedPreferences.Editor editor = getPrefsEditor(context);
+        editor.putBoolean(PREF_WANTS_TTS_KEY, wantsTts);
+        editor.commit();
     }
 }

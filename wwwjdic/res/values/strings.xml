@@ -519,4 +519,9 @@
     errors specific to a particular device cannot be resolved without a detailed 
     error report (logcat). Thank you.</string>
     <string name="kr_download_uri">market://details?id=org.nick.kanjirecognizer</string>
+    <string name="not_now">Not now</string>
+    <string name="dont_ask_again">Don\'t ask again</string>
+    <string name="install_tts_data_title">Install TTS data</string>
+    <string name="install_tts_data_message">You don\'t have the required text-to-speech data 
+    files. Would you like to install them now?</string>
 </resources>
