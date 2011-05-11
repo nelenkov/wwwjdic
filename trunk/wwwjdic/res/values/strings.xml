@@ -524,4 +524,9 @@
     <string name="install_tts_data_title">Install TTS data</string>
     <string name="install_tts_data_message">You don\'t have the required text-to-speech data 
     files. Would you like to install them now?</string>
+    <string name="crash_toast_text">Unexpected error. A report has been sent to the developer to help fix the issue.</string>
+    <string name="pref_error_reporting">Error reporting</string>
+    <string name="pref_disable_acra">Automatic error reports</string>
+    <string name="pref_acra_disabled">Reporting disabled</string>
+    <string name="pref_acra_enabled">Reporting enabled</string>
 </resources>

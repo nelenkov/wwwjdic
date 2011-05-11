@@ -95,4 +95,11 @@
             android:entries="@array/export_meanings_separator_char_names"
             android:entryValues="@array/export_meanings_separator_chars" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_error_reporting">
+        <CheckBoxPreference android:key="acra.enable"
+            android:title="@string/pref_disable_acra"
+            android:summaryOn="@string/pref_acra_enabled"
+            android:summaryOff="@string/pref_acra_disabled"
+            android:defaultValue="true"/>    
+    </PreferenceCategory>
 </PreferenceScreen>

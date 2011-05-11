@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
 import org.nick.wwwjdic.utils.FileUtils;
 
 import android.app.Application;
@@ -25,6 +28,7 @@ import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
 
+@ReportsCrashes(formKey = "dGF6Q1RPRG4zVTVibU5FR25HVVVhMHc6MQ", mode = ReportingInteractionMode.TOAST, resToastText = R.string.crash_toast_text)
 public class WwwjdicApplication extends Application {
 
     private static final String TAG = WwwjdicApplication.class.getSimpleName();
@@ -50,6 +54,7 @@ public class WwwjdicApplication extends Application {
         flurryKey = readKey();
         FlurryAgent.setCaptureUncaughtExceptions(false);
 
+        ACRA.init(this);
         createWwwjdicDirIfNecessary();
 
         initRadicals();
