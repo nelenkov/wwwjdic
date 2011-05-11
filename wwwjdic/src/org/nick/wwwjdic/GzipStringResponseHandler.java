@@ -20,11 +20,20 @@ public class GzipStringResponseHandler implements ResponseHandler<String> {
     public String handleResponse(HttpResponse response)
             throws ClientProtocolException, IOException {
         HttpEntity entity = response.getEntity();
+        if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+            if (entity != null) {
+                entity.consumeContent();
+            }
+            throw new RuntimeException("Server error: "
+                    + response.getStatusLine());
+        }
+
         Header contentEncoding = response.getFirstHeader("Content-Encoding");
         String responseStr = null;
         if (contentEncoding != null
                 && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
             GZIPInputStream gz = new GZIPInputStream(entity.getContent());
+            try {
             ByteArrayOutputStream arr = new ByteArrayOutputStream();
             byte[] buff = new byte[1024];
             int len;
@@ -33,16 +42,15 @@ public class GzipStringResponseHandler implements ResponseHandler<String> {
             }
 
             responseStr = new String(arr.toByteArray(), "UTF-8");
+            } finally {
+                gz.close();
+            }
         } else {
             if (entity != null) {
                 responseStr = EntityUtils.toString(entity);
             }
         }
 
-        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            return responseStr;
-        }
-
-        throw new RuntimeException("Server error: " + responseStr);
+        return responseStr;
     }
 }
