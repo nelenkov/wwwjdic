@@ -365,5 +365,10 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     <string name="dont_ask_again">今後もしない</string>
     <string name="install_tts_data_title">TTSデータインストール</string>
     <string name="install_tts_data_message">必要なテキスト読み上げデータはインストールされていません。
-    インストールしますか?</string>   
+    インストールしますか?</string>
+    <string name="crash_toast_text">予期せぬエラー。開発者にエラー報告を送信しました。</string>
+    <string name="pref_error_reporting">エラー報告</string>
+    <string name="pref_disable_acra">自動エラー報告</string>
+    <string name="pref_acra_disabled">エラー報告は無効</string>
+    <string name="pref_acra_enabled">エラー報告は有効</string>
 </resources>
