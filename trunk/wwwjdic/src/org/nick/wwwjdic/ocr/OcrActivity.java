@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.acra.ErrorReporter;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.DictionaryResultListView;
 import org.nick.wwwjdic.ExamplesResultListView;
@@ -173,6 +174,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
             camera.takePicture(null, null, captureCb);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
+            ErrorReporter.getInstance().handleException(e);
             Toast t = Toast.makeText(OcrActivity.this,
                     R.string.image_capture_failed, Toast.LENGTH_SHORT);
             t.show();
@@ -474,6 +476,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
             isPreviewRunning = true;
         } catch (Exception e) {
             Log.e(TAG, "error initializing camera: " + e.getMessage(), e);
+            ErrorReporter.getInstance().handleException(e);
             Dialogs.createErrorDialog(this, R.string.ocr_error).show();
         }
     }
@@ -543,6 +546,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
             camera.setPreviewDisplay(holder);
         } catch (Exception e) {
             Log.e(TAG, "error initializing camera: " + e.getMessage(), e);
+            ErrorReporter.getInstance().handleException(e);
             Dialogs.createErrorDialog(this, R.string.ocr_error).show();
         }
     }
