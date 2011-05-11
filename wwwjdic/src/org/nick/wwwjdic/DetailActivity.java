@@ -182,7 +182,9 @@ public abstract class DetailActivity extends Activity implements
             public void onClick(View v) {
                 String toSpeak = DictUtils.stripWwwjdicTags(ctx,
                         translationText.getText().toString());
-                tts.speak(toSpeak, TextToSpeech.QUEUE_ADD, null);
+                if (tts != null) {
+                    tts.speak(toSpeak, TextToSpeech.QUEUE_ADD, null);
+                }
             }
         });
 
