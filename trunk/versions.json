@@ -1,0 +1,23 @@
+[
+{ 
+    packageName: "org.nick.wwwjdic", 
+    marketName: "AndroidMarket", 
+    versionCode: "36", 
+    versionName: "1.8.1"
+    downloadUrl: "market://details?id=org.nick.wwwjdic";
+},
+{
+    packageName: "org.nick.wwwjdic.donate", 
+    marketName: "AndroidMarket", 
+    versionCode: "17", 
+    versionName: "1.8.1"
+    downloadUrl: "market://details?id=org.nick.wwwjdic.donate";
+}, 
+{
+    packageName: "org.nick.wwwjdic", 
+    marketName: "AmazonAppStore", 
+    versionCode: "36", 
+    versionName: "1.8.1"
+    downloadUrl: "http://www.amazon.com/gp/mas/dl/android?p=org.nick.wwwjdic"
+}, 
+]
