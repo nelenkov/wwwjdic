@@ -75,6 +75,10 @@ public class WwwjdicApplication extends Application {
     }
 
     private void startCheckUpdateService() {
+        if (!WwwjdicPreferences.isUpdateCheckEnabled(this)) {
+            return;
+        }
+
         long now = new Date().getTime();
         long lastCheck = WwwjdicPreferences.getLastUpdateCheck(this);
         long elapsed = now - lastCheck;

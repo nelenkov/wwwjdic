@@ -103,6 +103,7 @@ public class UpdateCheckService extends IntentService {
         Notification notification = new Notification(R.drawable.icon_update,
                 message, System.currentTimeMillis());
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        notification.flags |= Notification.FLAG_ONLY_ALERT_ONCE;
 
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(latest
                 .getDownloadUrl()));
