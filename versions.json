@@ -4,14 +4,14 @@
     marketName: "AndroidMarket", 
     versionCode: "36", 
     versionName: "1.8.1",
-    downloadUrl: "market://details?id=org.nick.wwwjdic";
+    downloadUrl: "market://details?id=org.nick.wwwjdic"
 },
 {
     packageName: "org.nick.wwwjdic.donate", 
     marketName: "AndroidMarket", 
     versionCode: "17", 
     versionName: "1.8.1",
-    downloadUrl: "market://details?id=org.nick.wwwjdic.donate";
+    downloadUrl: "market://details?id=org.nick.wwwjdic.donate"
 }, 
 {
     packageName: "org.nick.wwwjdic", 
