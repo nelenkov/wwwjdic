@@ -529,4 +529,7 @@
     <string name="pref_disable_acra">Automatic error reports</string>
     <string name="pref_acra_disabled">Reporting disabled</string>
     <string name="pref_acra_enabled">Reporting enabled</string>
+    <string name="versions_url">http://wwwjdic.googlecode.com/svn/trunk/versions.json</string>
+    <string name="market_name">AndroidMarket</string>
+    <string name="update_available">Version %s is available. Click to upgrade.</string>
 </resources>

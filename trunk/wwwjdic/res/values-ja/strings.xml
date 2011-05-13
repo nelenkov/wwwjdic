@@ -371,4 +371,5 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     <string name="pref_disable_acra">自動エラー報告</string>
     <string name="pref_acra_disabled">エラー報告は無効</string>
     <string name="pref_acra_enabled">エラー報告は有効</string>
+    <string name="update_available">更新版(v%s)あり。タップで更新できます。</string>
 </resources>

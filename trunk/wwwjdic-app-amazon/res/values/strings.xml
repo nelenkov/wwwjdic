@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">WWWJDIC for Android</string>
     <string name="kr_download_uri">http://www.amazon.com/gp/mas/dl/android?p=org.nick.kanjirecognizer</string>
+    <string name="market_name">AmazonAppStore</string>
 </resources>
