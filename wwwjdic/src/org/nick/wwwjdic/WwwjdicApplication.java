@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,10 +13,12 @@ import java.util.concurrent.Executors;
 import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
+import org.nick.wwwjdic.updates.UpdateCheckService;
 import org.nick.wwwjdic.utils.FileUtils;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -67,6 +70,21 @@ public class WwwjdicApplication extends Application {
 
         WwwjdicPreferences.setStrokeAnimationDelay(this,
                 WwwjdicPreferences.DEFAULT_STROKE_ANIMATION_DELAY);
+
+        startCheckUpdateService();
+    }
+
+    private void startCheckUpdateService() {
+        long now = new Date().getTime();
+        long lastCheck = WwwjdicPreferences.getLastUpdateCheck(this);
+        long elapsed = now - lastCheck;
+        if (elapsed >= WwwjdicPreferences.UPDATE_CHECK_INTERVAL_SECS * 1000L) {
+            WwwjdicPreferences.setLastUpdateCheck(this, now);
+            Intent intent = UpdateCheckService.createStartIntent(this,
+                    getResources().getString(R.string.versions_url),
+                    getResources().getString(R.string.market_name));
+            startService(intent);
+        }
     }
 
     private void updateKanjiRecognizerUrl() {
