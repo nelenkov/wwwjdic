@@ -532,4 +532,8 @@
     <string name="versions_url">http://wwwjdic.googlecode.com/svn/trunk/versions.json</string>
     <string name="market_name">AndroidMarket</string>
     <string name="update_available">Version %s is available. Click to upgrade.</string>
+    <string name="pref_enable_update_check">Check for updates</string>
+    <string name="pref_enable_update_check_summary">If enabled will automatically check 
+    for an updated version and notify you if available.</string>
+    <string name="pref_maintenance">App maintenance</string>
 </resources>

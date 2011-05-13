@@ -73,6 +73,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     public static final String PREF_KOD_SHOW_READING_KEY = "pref_kod_show_reading";
     public static final String PREF_KOD_UPDATE_INTERAVL_KEY = "pref_kod_update_interval";
 
+    private static final String PREF_ENABLE_UPDATE_CHECK_KEY = "pref_enable_update_check";
     private static final String PREF_LAST_UPDATE_CHECK_KEY = "pref_last_update_check";
     public static final long UPDATE_CHECK_INTERVAL_SECS = 24L * 60L * 60L;
 
@@ -479,7 +480,12 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         editor.commit();
     }
 
-    public static void setLastUpdateCheck(Context context, long lastUpdateCheck) {
+    public static boolean isUpdateCheckEnabled(Context context) {
+        return getBooleanPref(context, PREF_ENABLE_UPDATE_CHECK_KEY, true);
+    }
+
+    public static synchronized void setLastUpdateCheck(Context context,
+            long lastUpdateCheck) {
         SharedPreferences.Editor editor = getPrefsEditor(context);
         editor.putLong(PREF_LAST_UPDATE_CHECK_KEY, lastUpdateCheck);
         editor.commit();
