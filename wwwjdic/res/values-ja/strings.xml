@@ -373,7 +373,7 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     <string name="pref_acra_enabled">エラー報告は有効</string>
     <string name="update_available">更新版(v%s)あり。タップで更新できます。</string>
     <string name="pref_maintenance">アプリメンテナンス</string>
-    <string name="pref_enable_update_check">更新版自動チェック</string>
+    <string name="pref_enable_update_check">自動更新チェック</string>
     <string name="pref_enable_update_check_summary">有効な場合は、自動的に更新版があるかをチェックし、
     通知します。</string>
 </resources>
