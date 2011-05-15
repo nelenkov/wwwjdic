@@ -1,7 +1,7 @@
 #summary Full changelog
 
 = Changelog =
- v1.8.1 (2011/5/15) App maintenance features
+ * v1.8.1 (2011/5/15) App maintenance features
   * Added automatic error reporting
   * Added automatic update check
   * Mobile friendly FAQ page
