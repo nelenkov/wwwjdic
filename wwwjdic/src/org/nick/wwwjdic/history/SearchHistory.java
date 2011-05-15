@@ -155,6 +155,8 @@ public class SearchHistory extends HistoryBase {
     protected void copyCurrentItem() {
         SearchCriteria criteria = getCurrentCriteria();
         clipboardManager.setText(criteria.getQueryString());
+
+        showCopiedToast(criteria.getQueryString());
     }
 
     private SearchCriteria getCurrentCriteria() {
