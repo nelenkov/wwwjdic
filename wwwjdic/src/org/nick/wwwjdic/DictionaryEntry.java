@@ -85,7 +85,8 @@ public class DictionaryEntry extends WwwjdicEntry implements Serializable {
 
     @Override
     public String getDetailString() {
-        return reading + " " + tranlsationString;
+        return (reading == null ? "" : reading) + " "
+                + (tranlsationString == null ? "" : tranlsationString);
     }
 
     @Override
