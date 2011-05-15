@@ -537,6 +537,8 @@ public class Favorites extends HistoryBase implements
     protected void copyCurrentItem() {
         WwwjdicEntry entry = getCurrentEntry();
         clipboardManager.setText(entry.getHeadword());
+
+        showCopiedToast(entry.getHeadword());
     }
 
     private WwwjdicEntry getCurrentEntry() {
