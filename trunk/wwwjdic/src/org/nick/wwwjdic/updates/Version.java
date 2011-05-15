@@ -123,11 +123,12 @@ public class Version implements Comparable<Version> {
         return result;
     }
 
-    public static List<Version> filterByMarket(String market,
+    public static List<Version> findMatching(Version version,
             List<Version> versions) {
         List<Version> result = new ArrayList<Version>();
         for (Version v : versions) {
-            if (market.equals(v.getMarketName())) {
+            if (version.getMarketName().equals(v.getMarketName())
+                    && version.getPackageName().equals(v.getPackageName())) {
                 result.add(v);
             }
         }
