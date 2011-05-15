@@ -516,14 +516,18 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
         Camera.Parameters params = camera.getParameters();
         List<Size> supportedPreviewSizes = getSupportedPreviewSizes(params);
-        Log.d(TAG, "supported preview sizes");
-        for (Size s : supportedPreviewSizes) {
-            Log.d(TAG, String.format("%dx%d", s.width, s.height));
+        if (supportedPreviewSizes != null) {
+            Log.d(TAG, "supported preview sizes");
+            for (Size s : supportedPreviewSizes) {
+                Log.d(TAG, String.format("%dx%d", s.width, s.height));
+            }
         }
         List<Size> supportedPictueSizes = getSupportedPictureSizes(params);
-        Log.d(TAG, "supported picture sizes:");
-        for (Size s : supportedPictueSizes) {
-            Log.d(TAG, String.format("%dx%d", s.width, s.height));
+        if (supportedPictueSizes != null) {
+            Log.d(TAG, "supported picture sizes:");
+            for (Size s : supportedPictueSizes) {
+                Log.d(TAG, String.format("%dx%d", s.width, s.height));
+            }
         }
         supportsFlash = ReflectionUtils.getFlashMode(params) != null;
 
