@@ -71,8 +71,12 @@ public class UpdateCheckService extends IntentService {
             String jsonStr = EntityUtils.toString(response.getEntity());
             List<Version> allVersions = Version.listFromJson(jsonStr);
             Log.d(TAG, String.format("got %d versions", allVersions.size()));
-            List<Version> matchingVersions = Version.filterByMarket(marketName,
-                    allVersions);
+            Version thisAppsVersion = Version.getAppVersion(this, marketName);
+            if (thisAppsVersion == null) {
+                return;
+            }
+            List<Version> matchingVersions = Version.findMatching(
+                    thisAppsVersion, allVersions);
             if (matchingVersions.isEmpty()) {
                 Log.w(TAG, "no versions matching current market : "
                         + marketName);
@@ -80,10 +84,6 @@ public class UpdateCheckService extends IntentService {
             }
 
             Version latest = matchingVersions.get(0);
-            Version thisAppsVersion = Version.getAppVersion(this, marketName);
-            if (thisAppsVersion == null) {
-                return;
-            }
             boolean needsUpdate = latest.getVersionCode() > thisAppsVersion
                     .getVersionCode();
             if (needsUpdate) {
