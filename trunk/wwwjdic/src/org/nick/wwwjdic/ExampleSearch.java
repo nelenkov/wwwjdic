@@ -9,6 +9,7 @@ import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -118,9 +119,17 @@ public class ExampleSearch extends WwwjdicActivityBase implements
             // hideKeyboard();
 
             String queryString = exampleSearchInputText.getText().toString();
+            if (TextUtils.isEmpty(queryString)) {
+                return;
+            }
+
             if (sentenceModeSpinner.getSelectedItemPosition() == 0) {
-                int numMaxResults = Integer.parseInt(maxNumExamplesText
-                        .getText().toString());
+                int numMaxResults = 20;
+                try {
+                    numMaxResults = Integer.parseInt(maxNumExamplesText
+                            .getText().toString());
+                } catch (NumberFormatException e) {
+                }
                 SearchCriteria criteria = SearchCriteria
                         .createForExampleSearch(queryString,
                                 exampleExactMatchCb.isChecked(), numMaxResults);
