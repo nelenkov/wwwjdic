@@ -83,7 +83,6 @@ public class WwwjdicApplication extends Application {
         long lastCheck = WwwjdicPreferences.getLastUpdateCheck(this);
         long elapsed = now - lastCheck;
         if (elapsed >= WwwjdicPreferences.UPDATE_CHECK_INTERVAL_SECS * 1000L) {
-            WwwjdicPreferences.setLastUpdateCheck(this, now);
             Intent intent = UpdateCheckService.createStartIntent(this,
                     getResources().getString(R.string.versions_url),
                     getResources().getString(R.string.market_name));

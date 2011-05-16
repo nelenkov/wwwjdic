@@ -3,11 +3,11 @@ package org.nick.wwwjdic.updates;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicApplication;
+import org.nick.wwwjdic.WwwjdicPreferences;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -30,7 +30,7 @@ public class UpdateCheckService extends IntentService {
     private String versionsUrl;
     private String marketName;
 
-    private HttpClient httpClient;
+    private AndroidHttpClient httpClient;
 
     public static Intent createStartIntent(Context ctx, String versionsUrl,
             String marketName) {
@@ -91,9 +91,15 @@ public class UpdateCheckService extends IntentService {
             } else {
                 Log.i(TAG, "already using latest version: " + thisAppsVersion);
             }
+
+            // only set this on success
+            WwwjdicPreferences.setLastUpdateCheck(this,
+                    System.currentTimeMillis());
         } catch (Exception e) {
             Log.e(TAG,
                     "error checking for current versions: " + e.getMessage(), e);
+        } finally {
+            httpClient.close();
         }
     }
 
