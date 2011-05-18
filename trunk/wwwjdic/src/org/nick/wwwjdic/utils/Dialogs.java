@@ -48,4 +48,22 @@ public class Dialogs {
             dialog.show();
         }
     }
+
+    public static Dialog createFinishActivityAlertDialog(
+            final Activity activity, int titleId, int messageId) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(messageId);
+        builder.setTitle(titleId);
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.setPositiveButton(R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        activity.finish();
+                    }
+                });
+        builder.setCancelable(false);
+
+        return builder.create();
+    }
 }
