@@ -376,4 +376,7 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     <string name="pref_enable_update_check">自動更新チェック</string>
     <string name="pref_enable_update_check_summary">有効な場合は、自動的に更新版があるかをチェックし、
     通知します。</string>
+    <string name="camera_in_use_title">カメラは使用中</string>
+    <string name="camera_in_use_message">他のアプリはカメラを使用しているので、カメラは使えません。
+    カメラを使用しているアプリを全て終了してから、再試行してください。</string>
 </resources>

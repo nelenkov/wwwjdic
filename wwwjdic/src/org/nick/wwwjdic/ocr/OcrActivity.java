@@ -3,7 +3,6 @@ package org.nick.wwwjdic.ocr;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.acra.ErrorReporter;
@@ -103,6 +102,15 @@ public class OcrActivity extends WebServiceBackedActivity implements
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.ocr);
         surfaceView = (SurfaceView) findViewById(R.id.capture_surface);
+
+        camera = CameraHolder.getInstance().tryOpen();
+        if (camera == null) {
+            Dialogs.createFinishActivityAlertDialog(this,
+                    R.string.camera_in_use_title,
+                    R.string.camera_in_use_message).show();
+            return;
+        }
+
         surfaceView.setOnTouchListener(this);
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
@@ -423,7 +431,18 @@ public class OcrActivity extends WebServiceBackedActivity implements
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
         Log.d(TAG, String.format("surface changed: w=%d; h=%d)", w, h));
 
+        if (holder.getSurface() == null) {
+            Log.d(TAG, "holder.getSurface() == null");
+            return;
+        }
+
         if (holder != surfaceHolder) {
+            return;
+        }
+
+        // camera is null if in use. in that case we finish(),
+        // so just ignore it
+        if (camera == null) {
             return;
         }
 
@@ -467,7 +486,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
             }
 
             if (supportsFlash) {
-                toggleFlash(flashToggle.isChecked(), p);
+                CameraHolder.getInstance().toggleFlash(flashToggle.isChecked(),
+                        p);
             }
 
             camera.setParameters(p);
@@ -481,55 +501,37 @@ public class OcrActivity extends WebServiceBackedActivity implements
         }
     }
 
-    private List<Size> parseSizeListStr(String previewSizesStr) {
-        List<Size> result = new ArrayList<Size>();
-        String[] sizesStr = previewSizesStr.split(",");
-
-        for (String s : sizesStr) {
-            s = s.trim();
-
-            int idx = s.indexOf('x');
-            if (idx < 0) {
-                Log.w(TAG, "Bad preview-size: " + previewSize);
-                continue;
-            }
-
-            int width;
-            int height;
-            try {
-                width = Integer.parseInt(s.substring(0, idx));
-                height = Integer.parseInt(s.substring(idx + 1));
-            } catch (NumberFormatException nfe) {
-                Log.w(TAG, "Bad preview-size: " + previewSize);
-                continue;
-            }
-            // why is this not static??
-            result.add(camera.new Size(width, height));
-        }
-
-        return result;
-    }
-
     public void surfaceCreated(SurfaceHolder holder) {
         Log.d(TAG, "surfaceCreated");
-        camera = Camera.open();
+
+        if (camera == null) {
+            camera = CameraHolder.getInstance().tryOpen();
+            if (camera == null) {
+                Dialogs.createFinishActivityAlertDialog(this,
+                        R.string.camera_in_use_title,
+                        R.string.camera_in_use_message).show();
+                return;
+            }
+        }
 
         Camera.Parameters params = camera.getParameters();
-        List<Size> supportedPreviewSizes = getSupportedPreviewSizes(params);
+        List<Size> supportedPreviewSizes = CameraHolder.getInstance()
+                .getSupportedPreviewSizes(params);
         if (supportedPreviewSizes != null) {
             Log.d(TAG, "supported preview sizes");
             for (Size s : supportedPreviewSizes) {
                 Log.d(TAG, String.format("%dx%d", s.width, s.height));
             }
         }
-        List<Size> supportedPictueSizes = getSupportedPictureSizes(params);
+        List<Size> supportedPictueSizes = CameraHolder.getInstance()
+                .getSupportedPictureSizes(params);
         if (supportedPictueSizes != null) {
             Log.d(TAG, "supported picture sizes:");
             for (Size s : supportedPictueSizes) {
                 Log.d(TAG, String.format("%dx%d", s.width, s.height));
             }
         }
-        supportsFlash = ReflectionUtils.getFlashMode(params) != null;
+        supportsFlash = CameraHolder.getInstance().supportsFlash(params);
 
         try {
             if (supportedPreviewSizes != null) {
@@ -553,42 +555,6 @@ public class OcrActivity extends WebServiceBackedActivity implements
             ErrorReporter.getInstance().handleException(e);
             Dialogs.createErrorDialog(this, R.string.ocr_error).show();
         }
-    }
-
-    private List<Size> getSupportedPictureSizes(Camera.Parameters params) {
-        List<Size> supportedPictureSizes = ReflectionUtils
-                .getSupportedPictureSizes(params);
-
-        if (supportedPictureSizes == null) {
-            String supportedSizesStr = params.get("picture-size-values");
-            if (supportedSizesStr == null) {
-                supportedSizesStr = params.get("picture-size-value");
-            }
-            Log.d(TAG, "picture sizes: " + supportedSizesStr);
-            if (supportedSizesStr != null) {
-                supportedPictureSizes = parseSizeListStr(supportedSizesStr);
-            }
-        }
-
-        return supportedPictureSizes;
-    }
-
-    private List<Size> getSupportedPreviewSizes(Camera.Parameters params) {
-        List<Size> supportedPreviewSizes = ReflectionUtils
-                .getSupportedPreviewSizes(params);
-
-        if (supportedPreviewSizes == null) {
-            String previewSizesStr = params.get("preview-size-values");
-            if (previewSizesStr == null) {
-                previewSizesStr = params.get("preview-size-value");
-            }
-            Log.d(TAG, "preview sizes: " + previewSizesStr);
-            if (previewSizesStr != null) {
-                supportedPreviewSizes = parseSizeListStr(previewSizesStr);
-            }
-        }
-
-        return supportedPreviewSizes;
     }
 
     private Size getOptimalPictureSize(List<Size> supportedPictueSizes) {
@@ -629,7 +595,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
     public void surfaceDestroyed(SurfaceHolder holder) {
         camera.stopPreview();
         isPreviewRunning = false;
-        camera.release();
+        CameraHolder.getInstance().release();
+        camera = null;
     }
 
     @Override
@@ -726,18 +693,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
         }
 
         Camera.Parameters params = camera.getParameters();
-        toggleFlash(isChecked, params);
+        CameraHolder.getInstance().toggleFlash(isChecked, params);
     }
 
-    private void toggleFlash(boolean useFlash, Camera.Parameters params) {
-        String flashMode = "off";
-        if (useFlash) {
-            flashMode = "on";
-        } else {
-            flashMode = "off";
-        }
-
-        ReflectionUtils.setFlashMode(params, flashMode);
-        camera.setParameters(params);
-    }
 }
