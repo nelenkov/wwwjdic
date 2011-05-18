@@ -138,6 +138,12 @@ public class OcrActivity extends WebServiceBackedActivity implements
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        closeCamera();
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -456,7 +462,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
         }
 
         if (isPreviewRunning) {
-            camera.stopPreview();
+            stopPreview();
         }
 
         try {
@@ -492,13 +498,28 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
             camera.setParameters(p);
             camera.setPreviewDisplay(holder);
-            camera.startPreview();
-            isPreviewRunning = true;
+            startPreview();
         } catch (Exception e) {
             Log.e(TAG, "error initializing camera: " + e.getMessage(), e);
             ErrorReporter.getInstance().handleException(e);
             Dialogs.createErrorDialog(this, R.string.ocr_error).show();
         }
+    }
+
+    private void startPreview() {
+        if (isPreviewRunning) {
+            stopPreview();
+        }
+
+        try {
+            Log.v(TAG, "startPreview");
+            camera.startPreview();
+        } catch (Throwable ex) {
+            closeCamera();
+            throw new RuntimeException("startPreview failed", ex);
+        }
+
+        isPreviewRunning = true;
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
@@ -593,10 +614,23 @@ public class OcrActivity extends WebServiceBackedActivity implements
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
-        camera.stopPreview();
+        stopPreview();
+        closeCamera();
+    }
+
+    private void stopPreview() {
+        if (camera != null && isPreviewRunning) {
+            camera.stopPreview();
+        }
         isPreviewRunning = false;
-        CameraHolder.getInstance().release();
-        camera = null;
+    }
+
+    private void closeCamera() {
+        if (camera != null) {
+            CameraHolder.getInstance().release();
+            camera = null;
+            isPreviewRunning = false;
+        }
     }
 
     @Override
