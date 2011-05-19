@@ -74,18 +74,20 @@ public class GetKanjiService extends Service {
         public void run() {
             try {
                 RemoteViews updateViews = buildUpdate(GetKanjiService.this);
-
-                ComponentName thisWidget = new ComponentName(
-                        GetKanjiService.this, KodWidgetProvider.class);
-                AppWidgetManager manager = AppWidgetManager
-                        .getInstance(GetKanjiService.this);
-                manager.updateAppWidget(thisWidget, updateViews);
+                updateKodWidgets(GetKanjiService.this, updateViews);
             } finally {
                 scheduleNextUpdate();
 
                 stopSelf();
             }
         }
+    }
+
+    private void updateKodWidgets(Context context, RemoteViews updateViews) {
+        ComponentName allKodWidgets = new ComponentName(context,
+                KodWidgetProvider.class);
+        AppWidgetManager manager = AppWidgetManager.getInstance(context);
+        manager.updateAppWidget(allKodWidgets, updateViews);
     }
 
     private void scheduleNextUpdate() {
@@ -125,6 +127,7 @@ public class GetKanjiService extends Service {
                         R.layout.kod_widget);
             }
             KodWidgetProvider.showLoading(this, views);
+            updateKodWidgets(this, views);
 
             HttpClient client = createHttpClient(
                     WwwjdicPreferences.getWwwjdicUrl(this),
@@ -160,6 +163,8 @@ public class GetKanjiService extends Service {
             if (wwwjdicResponse == null) {
                 Log.e(TAG, String.format("Failed to get WWWJDIC response "
                         + "after %d tries, giving up.", NUM_RETRIES));
+                WwwjdicPreferences.setLastKodUpdateError(context,
+                        System.currentTimeMillis());
                 KodWidgetProvider.showError(this, views);
 
                 return views;
@@ -169,6 +174,8 @@ public class GetKanjiService extends Service {
             List<KanjiEntry> entries = parseResult(wwwjdicResponse);
 
             if (entries.isEmpty()) {
+                WwwjdicPreferences.setLastKodUpdateError(context,
+                        System.currentTimeMillis());
                 KodWidgetProvider.showError(this, views);
 
                 return views;
@@ -176,6 +183,7 @@ public class GetKanjiService extends Service {
 
             KodWidgetProvider.showKanji(context, views, showReadingAndMeaning,
                     entries);
+            WwwjdicPreferences.setLastKodUpdateError(context, 0);
 
             return views;
 
@@ -183,6 +191,8 @@ public class GetKanjiService extends Service {
             Log.e(TAG, "Couldn't contact WWWJDIC", e);
             views = new RemoteViews(context.getPackageName(),
                     R.layout.kod_widget);
+            WwwjdicPreferences.setLastKodUpdateError(context,
+                    System.currentTimeMillis());
             KodWidgetProvider.showError(this, views);
 
             return views;
