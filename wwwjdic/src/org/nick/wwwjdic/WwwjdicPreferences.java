@@ -81,6 +81,8 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     public static final long KOD_DEFAULT_UPDATE_INTERVAL = 24 * DateUtils.HOUR_IN_MILLIS;
 
+    private static final String PREF_LAST_KOD_UPDATE_ERROR_KEY = "pref_last_kod_update_error";
+
     public static final String DEFAULT_STROKE_ANIMATION_DELAY = "150";
 
     private CheckBoxPreference useKrPreference;
@@ -493,5 +495,16 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     public static long getLastUpdateCheck(Context context) {
         return getPrefs(context).getLong(PREF_LAST_UPDATE_CHECK_KEY, 0);
+    }
+
+    public static synchronized void setLastKodUpdateError(Context context,
+            long lastUpdateError) {
+        SharedPreferences.Editor editor = getPrefsEditor(context);
+        editor.putLong(PREF_LAST_KOD_UPDATE_ERROR_KEY, lastUpdateError);
+        editor.commit();
+    }
+
+    public static long getLastKodUpdateError(Context context) {
+        return getPrefs(context).getLong(PREF_LAST_KOD_UPDATE_ERROR_KEY, 0);
     }
 }

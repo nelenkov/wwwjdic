@@ -7,6 +7,7 @@ import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.WwwjdicPreferences;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -45,17 +46,25 @@ public class KodWidgetProvider extends AppWidgetProvider {
                 this.onDeleted(context, new int[] { appWidgetId });
             }
         } else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action)) {
-            Log.d(TAG, "got " + action);
             Bundle extras = intent.getExtras();
             boolean noConnectivity = extras.getBoolean(
                     ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
-            Log.d(TAG, "noConnectivity : " + noConnectivity);
+            Log.d(TAG, "CONNECTIVITY_ACTION::noConnectivity : "
+                    + noConnectivity);
+            if (noConnectivity) {
+                return;
+            }
 
             NetworkInfo ni = (NetworkInfo) extras
                     .getParcelable(ConnectivityManager.EXTRA_NETWORK_INFO);
-            if (ni.isConnectedOrConnecting()) {
-                Log.d(TAG, "************** " + ni.getTypeName()
-                        + " is connecting");
+            if (ni.isConnected()) {
+                Log.d(TAG, ni.getTypeName() + " is connecting");
+                if (WwwjdicPreferences.getLastKodUpdateError(context) != 0) {
+                    Log.d(TAG,
+                            "KOD widget is in error state, trying to update...");
+                    context.startService(new Intent(context,
+                            GetKanjiService.class));
+                }
             }
         } else {
             super.onReceive(context, intent);

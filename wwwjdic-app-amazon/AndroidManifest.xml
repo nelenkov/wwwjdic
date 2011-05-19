@@ -71,6 +71,9 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
         </activity>      
 
         <receiver android:name="org.nick.wwwjdic.widgets.KodWidgetProvider"
