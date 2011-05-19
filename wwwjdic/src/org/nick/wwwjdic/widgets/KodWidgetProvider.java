@@ -15,6 +15,9 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +43,19 @@ public class KodWidgetProvider extends AppWidgetProvider {
                     AppWidgetManager.INVALID_APPWIDGET_ID);
             if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
                 this.onDeleted(context, new int[] { appWidgetId });
+            }
+        } else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action)) {
+            Log.d(TAG, "got " + action);
+            Bundle extras = intent.getExtras();
+            boolean noConnectivity = extras.getBoolean(
+                    ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
+            Log.d(TAG, "noConnectivity : " + noConnectivity);
+
+            NetworkInfo ni = (NetworkInfo) extras
+                    .getParcelable(ConnectivityManager.EXTRA_NETWORK_INFO);
+            if (ni.isConnectedOrConnecting()) {
+                Log.d(TAG, "************** " + ni.getTypeName()
+                        + " is connecting");
             }
         } else {
             super.onReceive(context, intent);
@@ -84,8 +100,8 @@ public class KodWidgetProvider extends AppWidgetProvider {
 
         Intent updateIntent = new Intent(context, GetKanjiService.class);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0,
-                updateIntent, 0);
-        views.setOnClickPendingIntent(R.id.widget, pendingIntent);
+                updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.kod_message_text, pendingIntent);
     }
 
     public static void showLoading(Context context, RemoteViews views) {
