@@ -39,15 +39,27 @@ public class HistoryItem extends LinearLayout {
 
         String searchKey = criteria.getQueryString();
         if (criteria.isKanjiRadicalLookup()) {
-            Radical radical = Radicals.getInstance().getRadicalByNumber(
-                    Integer.parseInt(searchKey));
-            searchKey = radical.getGlyph() + " (" + radical.getNumber() + ")";
+            Integer radicalNumber = tryParseInt(searchKey);
+            if (radicalNumber != null) {
+                Radical radical = Radicals.getInstance().getRadicalByNumber(
+                        radicalNumber);
+                searchKey = radical.getGlyph() + " (" + radical.getNumber()
+                        + ")";
+            }
         }
         searchKeyText.setText(searchKey);
 
         String detailStr = buildDetailString(criteria);
         if (detailStr != null && !"".equals(detailStr)) {
             criteriaDetailsText.setText(detailStr);
+        }
+    }
+
+    private Integer tryParseInt(String str) {
+        try {
+            return Integer.parseInt(str);
+        } catch (NumberFormatException nfe) {
+            return null;
         }
     }
 
@@ -115,8 +127,8 @@ public class HistoryItem extends LinearLayout {
 
         if (criteria.getType() == SearchCriteria.CRITERIA_TYPE_EXAMPLES) {
             String message = getStr(R.string.max_results_short);
-            buff.append(String.format(" " + message, criteria
-                    .getNumMaxResults()));
+            buff.append(String.format(" " + message,
+                    criteria.getNumMaxResults()));
         }
 
         String result = buff.toString().trim();
