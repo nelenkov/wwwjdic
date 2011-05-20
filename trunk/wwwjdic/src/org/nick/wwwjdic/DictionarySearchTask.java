@@ -13,7 +13,9 @@ public class DictionarySearchTask extends BackdoorSearchTask<DictionaryEntry> {
 
     @Override
     protected DictionaryEntry parseEntry(String entryStr) {
-        return DictionaryEntry.parseEdict(entryStr.trim());
+        SearchCriteria criteria = (SearchCriteria) query;
+        return DictionaryEntry.parseEdict(entryStr.trim(),
+                criteria.getDictionary());
     }
 
     @Override

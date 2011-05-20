@@ -7,12 +7,13 @@ import org.nick.wwwjdic.utils.StringUtils;
 
 public class FavoritesEntryParser {
 
-    private static final int NUM_FIELDS = 4;
+    private static final int NUM_FIELDS = 5;
 
     public static final int TYPE_IDX = 0;
     public static final int HEADWORD_IDX = 1;
     public static final int DICT_STR_IDX = 2;
     public static final int TIME_IDX = 3;
+    public static final int DICTIONARY_IDX = 4;
 
     private static final int DICT_DETAILS_NUM_FIELDS = 3;
 
@@ -30,6 +31,7 @@ public class FavoritesEntryParser {
         result[HEADWORD_IDX] = entry.getHeadword();
         result[DICT_STR_IDX] = entry.getDictString();
         result[TIME_IDX] = Long.toString(time);
+        result[DICTIONARY_IDX] = entry.getDictionary();
 
         return result;
     }
@@ -96,7 +98,12 @@ public class FavoritesEntryParser {
         int type = Integer.parseInt(record[TYPE_IDX]);
         switch (type) {
         case TYPE_DICT:
-            result = DictionaryEntry.parseEdict(record[DICT_STR_IDX]);
+            if (record.length == NUM_FIELDS) {
+                result = DictionaryEntry.parseEdict(record[DICT_STR_IDX],
+                        record[DICTIONARY_IDX]);
+            } else {
+                result = DictionaryEntry.parseEdict(record[DICT_STR_IDX], "1");
+            }
             break;
         case TYPE_KANJI:
             result = KanjiEntry.parseKanjidic(record[DICT_STR_IDX]);

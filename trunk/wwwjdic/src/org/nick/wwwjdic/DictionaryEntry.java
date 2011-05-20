@@ -23,12 +23,12 @@ public class DictionaryEntry extends WwwjdicEntry implements Serializable {
 
     private String tranlsationString;
 
-    private DictionaryEntry(String edictStr) {
-        super(edictStr);
+    private DictionaryEntry(String edictStr, String dictionary) {
+        super(edictStr, dictionary);
     }
 
-    public static DictionaryEntry parseEdict(String edictStr) {
-        DictionaryEntry result = new DictionaryEntry(edictStr);
+    public static DictionaryEntry parseEdict(String edictStr, String dictionary) {
+        DictionaryEntry result = new DictionaryEntry(edictStr, dictionary);
         String[] fields = edictStr.split(" ");
 
         result.word = fields[WORD_IDX];

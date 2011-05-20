@@ -26,6 +26,7 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
     private static final String FAVORITES_DICT_STR = "dict_str";
     private static final String FAVORITES_HEADWORD = "headword";
     private static final String FAVORITES_IS_KANJI = "is_kanji";
+    private static final String FAVORITES_DICTIONARY = "dictionary";
 
     public static final int FAVORITES_TYPE_DICT = 0;
     public static final int FAVORITES_TYPE_KANJI = 1;
@@ -45,7 +46,7 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
     public static final int HISTORY_SEARCH_TYPE_KANJI = 1;
     public static final int HISTORY_SEARCH_TYPE_EXAMPLES = 2;
 
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 15;
 
     private static final String DATABASE_NAME = "wwwjdic_history.db";
 
@@ -79,12 +80,14 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
             + "min_stroke_count integer, max_stroke_count integer, max_results integer);";
 
     public static final String[] FAVORITES_ALL_COLUMNS = { ID, TIME,
-            FAVORITES_IS_KANJI, FAVORITES_HEADWORD, FAVORITES_DICT_STR };
+            FAVORITES_IS_KANJI, FAVORITES_HEADWORD, FAVORITES_DICT_STR,
+            FAVORITES_DICTIONARY };
 
     private static final String FAVORITES_TABLE_CREATE = "create table "
             + FAVORITES_TABLE_NAME
             + " (_id integer primary key autoincrement, time integer not null, "
-            + "is_kanji integer not null, headword text not null, dict_str text not null);";
+            + "is_kanji integer not null, headword text not null, "
+            + "dict_str text not null, dictionary text);";
 
     private SQLiteStatement favoritesCountStatement;
     private SQLiteStatement historyCountStatement;
@@ -122,7 +125,12 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d(TAG, String.format("upgrading db from version %d to %d",
                 oldVersion, newVersion));
-        upgradeDbTov14(db);
+        if (newVersion == 14) {
+            upgradeDbTov14(db);
+        }
+        if (newVersion == 15) {
+            upgradeDbTov15(db);
+        }
         Log.d(TAG, "done");
     }
 
@@ -149,6 +157,17 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
                     + "kanji_search_type, min_stroke_count, max_stroke_count)"
                     + "select * from " + HISTORY_BACKUP_TABLE_NAME);
             db.execSQL("drop table " + HISTORY_BACKUP_TABLE_NAME);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    private void upgradeDbTov15(SQLiteDatabase db) {
+        db.beginTransaction();
+        try {
+            db.execSQL("alter table " + FAVORITES_TABLE_NAME
+                    + " add column dictionary text");
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -194,6 +213,9 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
                         : SearchCriteria.CRITERIA_TYPE_DICT);
         values.put(FAVORITES_HEADWORD, entry.getHeadword());
         values.put(FAVORITES_DICT_STR, entry.getDictString());
+        if (entry.getDictString() != null) {
+            values.put(FAVORITES_DICTIONARY, entry.getDictionary());
+        }
 
         return values;
     }
@@ -448,12 +470,17 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         String dictStr = cursor.getString(idx);
         idx = cursor.getColumnIndex(ID);
         long id = cursor.getLong(idx);
+        String dictionary = null;
+        idx = cursor.getColumnIndexOrThrow(FAVORITES_DICTIONARY);
+        if (!cursor.isNull(idx)) {
+            dictionary = cursor.getString(idx);
+        }
 
         WwwjdicEntry result = null;
         if (isKanji) {
             result = KanjiEntry.parseKanjidic(dictStr);
         } else {
-            result = DictionaryEntry.parseEdict(dictStr);
+            result = DictionaryEntry.parseEdict(dictStr, dictionary);
         }
         result.setId(id);
 
