@@ -17,6 +17,7 @@ import org.nick.wwwjdic.utils.StringUtils;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -319,6 +320,13 @@ public class KanjiLookup extends WwwjdicActivityBase implements
         case R.id.kanjiSearchTypeSpinner:
             kanjiInputText.setText("");
             kanjiInputText.requestFocus();
+
+            // radical number or number of strokes
+            if (position == 1 || position == 2) {
+                kanjiInputText.setInputType(InputType.TYPE_CLASS_NUMBER);
+            } else {
+                kanjiInputText.setInputType(InputType.TYPE_CLASS_TEXT);
+            }
 
             if (position != 2) {
                 toggleRadicalStrokeCountPanel(false);
