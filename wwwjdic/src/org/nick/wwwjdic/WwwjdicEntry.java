@@ -8,9 +8,15 @@ public abstract class WwwjdicEntry implements Serializable {
 
     protected Long id;
     protected String dictString;
+    protected String dictionary;
 
     protected WwwjdicEntry(String dictString) {
         this.dictString = dictString;
+    }
+
+    protected WwwjdicEntry(String dictString, String dictionary) {
+        this.dictString = dictString;
+        this.dictionary = dictionary;
     }
 
     public Long getId() {
@@ -33,6 +39,14 @@ public abstract class WwwjdicEntry implements Serializable {
 
     public boolean isSingleKanji() {
         return getHeadword().length() == 1;
+    }
+
+    public String getDictionary() {
+        return dictionary;
+    }
+
+    public void setDictionary(String dictionary) {
+        this.dictionary = dictionary;
     }
 
 }

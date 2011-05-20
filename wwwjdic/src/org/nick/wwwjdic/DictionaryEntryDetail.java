@@ -179,29 +179,28 @@ public class DictionaryEntryDetail extends DetailActivity implements
 
     @Override
     protected Locale getSpeechLocale() {
-        WwwjdicApplication app = getApp();
-        String currentDictionary = app.getCurrentDictionary();
+        String entryDictionary = entry.getDictionary();
         String[] engDictsArr = { "1", "3", "4", "5", "6", "7", "8", "A", "B",
                 "C", "D" };
         List<String> engDicts = Arrays.asList(engDictsArr);
-        if (engDicts.contains(currentDictionary)) {
+        if (engDicts.contains(entryDictionary)) {
             return Locale.ENGLISH;
         } else {
-            if ("F".equals(currentDictionary)) {
+            if ("F".equals(entryDictionary)) {
                 return Locale.GERMAN;
-            } else if ("G".equals(currentDictionary)) {
+            } else if ("G".equals(entryDictionary)) {
                 return Locale.FRENCH;
-            } else if ("H".equals(currentDictionary)) {
+            } else if ("H".equals(entryDictionary)) {
                 return new Locale("RU");
-            } else if ("I".equals(currentDictionary)) {
+            } else if ("I".equals(entryDictionary)) {
                 return new Locale("SE");
-            } else if ("J".equals(currentDictionary)) {
+            } else if ("J".equals(entryDictionary)) {
                 return new Locale("HU");
-            } else if ("K".equals(currentDictionary)) {
+            } else if ("K".equals(entryDictionary)) {
                 return new Locale("ES");
-            } else if ("L".equals(currentDictionary)) {
+            } else if ("L".equals(entryDictionary)) {
                 return new Locale("NL");
-            } else if ("M".equals(currentDictionary)) {
+            } else if ("M".equals(entryDictionary)) {
                 return new Locale("SL");
             }
         }
