@@ -37,7 +37,14 @@ public class DictionaryEntryAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         DictionaryEntry entry = entries.get(position);
 
-        return new DictionaryEntryView(context, entry);
+        if (convertView == null) {
+            return new DictionaryEntryView(context, entry);
+        }
+
+        DictionaryEntryView entryView = (DictionaryEntryView) convertView;
+        entryView.populate(entry);
+
+        return entryView;
     }
 
     private final class DictionaryEntryView extends LinearLayout {
@@ -57,10 +64,10 @@ public class DictionaryEntryAdapter extends BaseAdapter {
                     entry.getWord());
             addView(entryText, params);
 
+            readingText = createTextView(context, R.style.dict_list_reading, "");
+            addView(readingText, params);
             if (entry.getReading() != null) {
-                readingText = createTextView(context,
-                        R.style.dict_list_reading, entry.getReading());
-                addView(readingText, params);
+                readingText.setText(entry.getReading());
             }
 
             String translationStr = StringUtils.join(entry.getMeanings(), "/",
@@ -77,6 +84,18 @@ public class DictionaryEntryAdapter extends BaseAdapter {
             result.setText(text);
 
             return result;
+        }
+
+        void populate(DictionaryEntry entry) {
+            entryText.setText(entry.getWord());
+            if (entry.getReading() != null) {
+                readingText.setText(entry.getReading());
+            } else {
+                readingText.setText("");
+            }
+            String translationStr = StringUtils.join(entry.getMeanings(), "/",
+                    0);
+            translationText.setText(translationStr);
         }
     }
 }
