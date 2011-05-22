@@ -186,21 +186,21 @@ public class DictionaryEntryDetail extends DetailActivity implements
         if (engDicts.contains(entryDictionary)) {
             return Locale.ENGLISH;
         } else {
-            if ("F".equals(entryDictionary)) {
+            if ("G".equals(entryDictionary)) {
                 return Locale.GERMAN;
-            } else if ("G".equals(entryDictionary)) {
-                return Locale.FRENCH;
             } else if ("H".equals(entryDictionary)) {
-                return new Locale("RU");
+                return Locale.FRENCH;
             } else if ("I".equals(entryDictionary)) {
-                return new Locale("SE");
+                return new Locale("RU");
             } else if ("J".equals(entryDictionary)) {
-                return new Locale("HU");
+                return new Locale("SE");
             } else if ("K".equals(entryDictionary)) {
-                return new Locale("ES");
+                return new Locale("HU");
             } else if ("L".equals(entryDictionary)) {
-                return new Locale("NL");
+                return new Locale("ES");
             } else if ("M".equals(entryDictionary)) {
+                return new Locale("NL");
+            } else if ("N".equals(entryDictionary)) {
                 return new Locale("SL");
             }
         }

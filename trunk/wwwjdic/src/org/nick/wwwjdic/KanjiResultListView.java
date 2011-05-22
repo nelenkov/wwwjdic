@@ -1,6 +1,5 @@
 package org.nick.wwwjdic;
 
-
 import java.util.List;
 
 import android.content.Intent;
@@ -22,7 +21,6 @@ public class KanjiResultListView extends ResultListViewBase<KanjiEntry> {
     private static final int MENU_ITEM_ADD_TO_FAVORITES = 2;
     private static final int MENU_ITEM_STROKE_ORDER = 3;
     private static final int MENU_ITEM_COMPOUNDS = 4;
-
 
     private List<KanjiEntry> entries;
 
@@ -122,9 +120,9 @@ public class KanjiResultListView extends ResultListViewBase<KanjiEntry> {
                         KanjiResultListView.this, entries);
                 setListAdapter(adapter);
                 getListView().setTextFilterEnabled(true);
-                String message = getResources().getString(R.string.results_for);
-                setTitle(String.format(message, entries.size(),
-                        criteria.getQueryString()));
+                String message = getResources().getString(R.string.results_for,
+                        entries.size(), criteria.getQueryString());
+                setTitle(message);
                 dismissProgressDialog();
             }
         });

@@ -31,7 +31,7 @@ public class SearchCriteriaParser {
         result[KANJI_LOOKUP_IDX] = toTfInt(criteria.isKanjiLookup());
         result[ROMANIZED_JAP_IDX] = toTfInt(criteria.isRomanizedJapanese());
         result[COMMON_WORDS_ONLY_IDX] = toTfInt(criteria.isCommonWordsOnly());
-        result[DICTIONARY_IDX] = criteria.getDictionary();
+        result[DICTIONARY_IDX] = criteria.getDictionaryCode();
         result[KANJI_SEARCH_TYPE_IDX] = criteria.getKanjiSearchType();
         result[MIN_STROKE_COUNT_IDX] = toIntStr(criteria.getMinStrokeCount());
         result[MAX_STROKE_COUNT_IDX] = toIntStr(criteria.getMaxStrokeCount());

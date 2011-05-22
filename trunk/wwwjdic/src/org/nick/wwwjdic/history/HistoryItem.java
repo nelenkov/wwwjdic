@@ -86,8 +86,8 @@ public class HistoryItem extends LinearLayout {
             }
         } else {
             if (criteria.getType() == SearchCriteria.CRITERIA_TYPE_DICT) {
-                String dictName = HistoryUtils.lookupDictionaryName(criteria,
-                        getContext());
+                String dictName = HistoryUtils.lookupDictionaryName(
+                        criteria.getDictionaryCode(), getContext());
 
                 buff.append(dictName);
             }

@@ -2,6 +2,7 @@ package org.nick.wwwjdic;
 
 import java.util.List;
 
+import org.nick.wwwjdic.history.HistoryUtils;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.DictUtils;
 import org.nick.wwwjdic.utils.StringUtils;
@@ -143,12 +144,16 @@ public class DictionaryResultListView extends
                         DictionaryResultListView.this, entries);
                 setListAdapter(adapter);
                 getListView().setTextFilterEnabled(true);
-                String message = getResources().getString(R.string.results_for);
-                setTitle(String.format(message, entries.size(),
-                        criteria.getQueryString()));
+                String message = getResources().getString(
+                        R.string.results_for_in_dict,
+                        entries.size(),
+                        criteria.getQueryString(),
+                        HistoryUtils.lookupDictionaryName(
+                                criteria.getDictionaryCode(),
+                                DictionaryResultListView.this));
+                setTitle(message);
                 dismissProgressDialog();
             }
         });
     }
-
 }

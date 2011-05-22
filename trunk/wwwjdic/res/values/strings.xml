@@ -16,7 +16,6 @@
         <item>B</item>
         <item>C</item>
         <item>D</item>
-        <item>F</item>
         <item>G</item>
         <item>H</item>
         <item>I</item>
@@ -24,6 +23,7 @@
         <item>K</item>
         <item>L</item>
         <item>M</item>
+        <item>N</item>
     </string-array>
     <string-array name="dictionary_idxs_array">
         <item>0</item>
@@ -276,8 +276,9 @@
     <string name="select_radical">Select radical</string>
     <string name="copied_to_clipboard">\'%s\' copied to clipboard</string>
     <string name="details_for">Details for \'%s\'</string>
-    <string name="results_for">%1$d result(s) for \'%2$s\'
+    <string name="results_for_in_dict">%1$d result(s) for \'%2$s\' in \'%3$s\'
     </string>
+     <string name="results_for">%1$d result(s) for \'%2$s\'</string>
     <string name="examples_for">%1$d example(s) for \'%2$s\'</string>
     <string name="sod_for">Stroke order diagram for \'%s\'</string>
     <string name="doing_ocr">OCR in progress...</string>

@@ -33,7 +33,7 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
     private boolean isRomanizedJapanese;
     private boolean isCommonWordsOnly;
     private int kanjiCompoundSearchType;
-    private String dictionary;
+    private String dictionaryCode;
     private String kanjiSearchType;
     private Integer minStrokeCount;
     private Integer maxStrokeCount;
@@ -106,7 +106,7 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
         this.isRomanizedJapanese = isRomanizedJapanese;
         this.isCommonWordsOnly = isCommonWordsOnly;
         this.kanjiCompoundSearchType = kanjiCompoundSearchType;
-        this.dictionary = dictionary;
+        this.dictionaryCode = dictionary;
         this.kanjiSearchType = kanjiSearchType;
         this.minStrokeCount = minStrokeCount;
         this.maxStrokeCount = maxStrokeCount;
@@ -129,8 +129,8 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
         return isCommonWordsOnly;
     }
 
-    public String getDictionary() {
-        return dictionary;
+    public String getDictionaryCode() {
+        return dictionaryCode;
     }
 
     public String getKanjiSearchType() {
