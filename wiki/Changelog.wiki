@@ -1,6 +1,13 @@
 #summary Full changelog
 
 = Changelog =
+ * v1.8.2 (2011/5/22) New WWWJDIC dictionary codes. Stability improvements
+  * Use new WWWJDIC dictionary codes
+  * Save TTS languae in history/favorites
+  * OCR error handling improvements
+  * Automatically refresh widget after network connectivity is restored
+  * Performance improvements
+  * Various bug fixes 
  * v1.8.1 (2011/5/15) App maintenance features
   * Added automatic error reporting
   * Added automatic update check
