@@ -339,17 +339,20 @@ public class OcrActivity extends WebServiceBackedActivity implements
         }
 
         autoFocusInProgress = true;
-        camera.autoFocus(new Camera.AutoFocusCallback() {
-            @Override
-            public void onAutoFocus(boolean success, Camera camera) {
-                Message msg = handler.obtainMessage(AUTO_FOCUS,
-                        success ? 1 : 0, -1);
-                handler.sendMessage(msg);
-            }
-        });
-
-        toggleSearchButtons(false);
-        ocrredTextView.setText("");
+        try {
+            camera.autoFocus(new Camera.AutoFocusCallback() {
+                @Override
+                public void onAutoFocus(boolean success, Camera camera) {
+                    sendAutoFocusResultMessage(success);
+                }
+            });
+        } catch (RuntimeException e) {
+            Log.e(TAG, "auto focusFailed: " + e.getMessage(), e);
+            sendAutoFocusResultMessage(false);
+        } finally {
+            toggleSearchButtons(false);
+            ocrredTextView.setText("");
+        }
     }
 
     @Override
@@ -728,6 +731,11 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
         Camera.Parameters params = camera.getParameters();
         CameraHolder.getInstance().toggleFlash(isChecked, params);
+    }
+
+    private void sendAutoFocusResultMessage(boolean success) {
+        Message msg = handler.obtainMessage(AUTO_FOCUS, success ? 1 : 0, -1);
+        handler.sendMessage(msg);
     }
 
 }
