@@ -180,6 +180,11 @@ public class DictionaryEntryDetail extends DetailActivity implements
     @Override
     protected Locale getSpeechLocale() {
         String entryDictionary = entry.getDictionary();
+        // make English the default
+        if (entryDictionary == null) {
+            return Locale.ENGLISH;
+        }
+
         String[] engDictsArr = { "1", "3", "4", "5", "6", "7", "8", "A", "B",
                 "C", "D" };
         List<String> engDicts = Arrays.asList(engDictsArr);
