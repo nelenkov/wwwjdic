@@ -32,30 +32,7 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
 
     private static final String TAG = Dictionary.class.getSimpleName();
 
-    private static final Map<Integer, String> IDX_TO_DICT = new HashMap<Integer, String>();
-
-    static {
-        IDX_TO_DICT.put(0, "1");
-        IDX_TO_DICT.put(1, "2");
-        IDX_TO_DICT.put(2, "3");
-        IDX_TO_DICT.put(3, "4");
-        IDX_TO_DICT.put(4, "5");
-        IDX_TO_DICT.put(5, "6");
-        IDX_TO_DICT.put(6, "7");
-        IDX_TO_DICT.put(7, "8");
-        IDX_TO_DICT.put(8, "A");
-        IDX_TO_DICT.put(9, "B");
-        IDX_TO_DICT.put(10, "C");
-        IDX_TO_DICT.put(11, "D");
-        IDX_TO_DICT.put(12, "G");
-        IDX_TO_DICT.put(13, "H");
-        IDX_TO_DICT.put(14, "I");
-        IDX_TO_DICT.put(15, "J");
-        IDX_TO_DICT.put(16, "K");
-        IDX_TO_DICT.put(17, "L");
-        IDX_TO_DICT.put(18, "M");
-        IDX_TO_DICT.put(19, "N");
-    }
+    private static final Map<Integer, String> IDX_TO_DICT_CODE = new HashMap<Integer, String>();
 
     private EditText inputText;
     private CheckBox exactMatchCb;
@@ -72,6 +49,8 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.dict_lookup);
+
+        populateIdxToDictCode();
 
         findViews();
         setupListeners();
@@ -107,6 +86,19 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
                 inputText.requestFocus();
             }
         });
+    }
+
+    private void populateIdxToDictCode() {
+        if (IDX_TO_DICT_CODE.isEmpty()) {
+            String[] dictionaryIdxs = getResources().getStringArray(
+                    R.array.dictionary_idxs_array);
+            String[] dictionaryCodes = getResources().getStringArray(
+                    R.array.dictionary_codes_array);
+            for (int i = 0; i < dictionaryIdxs.length; i++) {
+                IDX_TO_DICT_CODE.put(Integer.parseInt(dictionaryIdxs[i]),
+                        dictionaryCodes[i]);
+            }
+        }
     }
 
     @Override
@@ -228,7 +220,7 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
     }
 
     private String getDictionaryFromSelection(int dictIdx) {
-        String dict = IDX_TO_DICT.get(dictIdx);
+        String dict = IDX_TO_DICT_CODE.get(dictIdx);
         Log.i(TAG, "dictionary idx: " + Integer.toString(dictIdx));
         Log.i(TAG, "dictionary: " + dict);
         if (dict == null) {

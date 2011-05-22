@@ -45,27 +45,6 @@ public class KanjiLookup extends WwwjdicActivityBase implements
 
     private static final Map<Integer, String> IDX_TO_CODE = new HashMap<Integer, String>();
 
-    static {
-        // Kanji or reading
-        IDX_TO_CODE.put(0, "J");
-        // Stroke count
-        IDX_TO_CODE.put(1, "C");
-        // Radical number
-        IDX_TO_CODE.put(2, "B");
-        // English meaning
-        IDX_TO_CODE.put(3, "E");
-        // Unicode code (hex)
-        IDX_TO_CODE.put(4, "U");
-        // JIS code
-        IDX_TO_CODE.put(5, "J");
-        // SKIP code
-        IDX_TO_CODE.put(6, "P");
-        // Pinyin reading
-        IDX_TO_CODE.put(7, "Y");
-        // Korean reading
-        IDX_TO_CODE.put(8, "W");
-    }
-
     private EditText kanjiInputText;
     private Spinner kanjiSearchTypeSpinner;
 
@@ -83,6 +62,8 @@ public class KanjiLookup extends WwwjdicActivityBase implements
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.kanji_lookup);
+
+        populateIdxToCode();
 
         findViews();
         setupListeners();
@@ -111,6 +92,16 @@ public class KanjiLookup extends WwwjdicActivityBase implements
         setupKanjiSummary();
 
         setupClickableLinks();
+    }
+
+    private void populateIdxToCode() {
+        if (IDX_TO_CODE.isEmpty()) {
+            String[] kanjiSearchCodesArray = getResources().getStringArray(
+                    R.array.kanji_search_codes_array);
+            for (int i = 0; i < kanjiSearchCodesArray.length; i++) {
+                IDX_TO_CODE.put(i, kanjiSearchCodesArray[i]);
+            }
+        }
     }
 
     private void setupClickableLinks() {
