@@ -23,9 +23,9 @@ public class SentenceBreakdownTask extends SearchTask<SentenceBreakdownEntry> {
             "<font color=\"\\S+\">(\\S+)</font>", Pattern.CASE_INSENSITIVE);
 
     private static final Pattern ENTRY_WITH_EXPLANATION_PATTERN = Pattern
-            .compile("^.*<li>\\s*(.+)<br>\\s*(.+)\\sÅy(.+)Åz\\s+(.+)</li>.*$");
+            .compile("^.*<li>\\s*(.+)<br>\\s*(.+)\\s„Äê(.+)„Äë\\s+(.+)</li>.*$");
     private static final Pattern ENTRY_PATTERN = Pattern
-            .compile("^.*<li>\\s*(.+)\\sÅy(.+)Åz\\s+(.+)\\s+(<font.*>(.+)</font>)?</li>.*$");
+            .compile("^.*<li>\\s*(.+)\\s„Äê(.+)„Äë\\s+(.+)\\s+(<font.*>(.+)</font>)?</li>.*$");
     private static final Pattern NO_READING_ENTRY_PATTERN = Pattern
             .compile("^.*<li>\\s*(\\S+)\\s+(.+)\\s+(<font.*>(.+)</font>)?</li>.*$");
 
@@ -98,8 +98,9 @@ public class SentenceBreakdownTask extends SearchTask<SentenceBreakdownEntry> {
                             inflectedForms.get(wordIdx), word, reading,
                             translation, explanation);
                 } else {
-                    entry = SentenceBreakdownEntry.create(inflectedForms
-                            .get(wordIdx), word, reading, translation);
+                    entry = SentenceBreakdownEntry.create(
+                            inflectedForms.get(wordIdx), word, reading,
+                            translation);
                 }
                 result.add(entry);
                 wordIdx++;
