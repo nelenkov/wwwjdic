@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Added automatic error reporting\n* Added automatic update check\n* Mobile friendly FAQ page\n* Bug fixes</string>
+    <string name="whats_new">* Use new WWWJDIC dictionary codes\n* Save TTS language in history/favorites\n* Better OCR error handling\n* Automatically refresh widget after network connectivity is restored\n* Performance improvements\n* Various bug fixes </string>
 </resources>
