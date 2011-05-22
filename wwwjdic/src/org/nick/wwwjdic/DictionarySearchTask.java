@@ -15,13 +15,13 @@ public class DictionarySearchTask extends BackdoorSearchTask<DictionaryEntry> {
     protected DictionaryEntry parseEntry(String entryStr) {
         SearchCriteria criteria = (SearchCriteria) query;
         return DictionaryEntry.parseEdict(entryStr.trim(),
-                criteria.getDictionary());
+                criteria.getDictionaryCode());
     }
 
     @Override
     protected String generateBackdoorCode(SearchCriteria criteria) {
         StringBuffer buff = new StringBuffer();
-        buff.append(criteria.getDictionary());
+        buff.append(criteria.getDictionaryCode());
         // raw
         buff.append("Z");
 

@@ -47,14 +47,14 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         IDX_TO_DICT.put(9, "B");
         IDX_TO_DICT.put(10, "C");
         IDX_TO_DICT.put(11, "D");
-        IDX_TO_DICT.put(12, "F");
-        IDX_TO_DICT.put(13, "G");
-        IDX_TO_DICT.put(14, "H");
-        IDX_TO_DICT.put(15, "I");
-        IDX_TO_DICT.put(16, "J");
-        IDX_TO_DICT.put(17, "K");
-        IDX_TO_DICT.put(18, "L");
-        IDX_TO_DICT.put(19, "M");
+        IDX_TO_DICT.put(12, "G");
+        IDX_TO_DICT.put(13, "H");
+        IDX_TO_DICT.put(14, "I");
+        IDX_TO_DICT.put(15, "J");
+        IDX_TO_DICT.put(16, "K");
+        IDX_TO_DICT.put(17, "L");
+        IDX_TO_DICT.put(18, "M");
+        IDX_TO_DICT.put(19, "N");
     }
 
     private EditText inputText;
@@ -120,7 +120,6 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
                     Constants.SELECTED_DICTIONARY_IDX, 0);
             dictSpinner.setSelection(idx);
         } else {
-
             dictSpinner.setSelection(WwwjdicPreferences
                     .getDefaultDictionaryIdx(this));
         }

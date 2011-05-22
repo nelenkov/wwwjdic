@@ -230,7 +230,7 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         values.put(HISTORY_IS_ROMANIZED_JAPANESE,
                 criteria.isRomanizedJapanese());
         values.put(HISTORY_IS_COMMON_WORDS_ONLY, criteria.isCommonWordsOnly());
-        values.put(HISTORY_DICTIONARY, criteria.getDictionary());
+        values.put(HISTORY_DICTIONARY, criteria.getDictionaryCode());
         values.put(HISTORY_KANJI_SEARCH_TYPE, criteria.getKanjiSearchType());
         values.put(HISTORY_MIN_STROKE_COUNT, criteria.getMinStrokeCount());
         values.put(HISTORY_MAX_STROKE_COUNT, criteria.getMaxStrokeCount());
