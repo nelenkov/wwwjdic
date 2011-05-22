@@ -36,7 +36,14 @@ public class KanjiEntryAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         KanjiEntry entry = entries.get(position);
 
-        return new KanjiEntryView(context, entry);
+        if (convertView == null) {
+            return new KanjiEntryView(context, entry);
+        }
+
+        KanjiEntryView entryView = (KanjiEntryView) convertView;
+        entryView.populate(entry);
+
+        return entryView;
     }
 
     private static final class KanjiEntryView extends LinearLayout {
@@ -69,16 +76,17 @@ public class KanjiEntryAdapter extends BaseAdapter {
             entryText.setTextSize(42f);
             addView(entryText, entryParams);
 
+            onyomiText = createTextView(context, R.style.kanji_list_reading, "");
+            readingMeaningsLayout.addView(onyomiText, params);
             if (entry.getOnyomi() != null) {
-                onyomiText = createTextView(context,
-                        R.style.kanji_list_reading, entry.getOnyomi());
-                readingMeaningsLayout.addView(onyomiText, params);
+                onyomiText.setText(entry.getOnyomi());
             }
 
+            kunyomiText = createTextView(context, R.style.kanji_list_reading,
+                    "");
+            readingMeaningsLayout.addView(kunyomiText, params);
             if (entry.getKunyomi() != null) {
-                kunyomiText = createTextView(context,
-                        R.style.kanji_list_reading, entry.getKunyomi());
-                readingMeaningsLayout.addView(kunyomiText, params);
+                kunyomiText.setText(entry.getKunyomi());
             }
 
             String meaningsStr = entry.getMeaningsAsString();
@@ -96,6 +104,22 @@ public class KanjiEntryAdapter extends BaseAdapter {
             result.setText(text);
 
             return result;
+        }
+
+        void populate(KanjiEntry entry) {
+            entryText.setText(entry.getKanji());
+            if (entry.getOnyomi() != null) {
+                onyomiText.setText(entry.getOnyomi());
+            } else {
+                onyomiText.setText("");
+            }
+            if (entry.getKunyomi() != null) {
+                kunyomiText.setText(entry.getKunyomi());
+            } else {
+                kunyomiText.setText("");
+            }
+            String meaningsStr = entry.getMeaningsAsString();
+            translationText.setText(meaningsStr);
         }
     }
 
