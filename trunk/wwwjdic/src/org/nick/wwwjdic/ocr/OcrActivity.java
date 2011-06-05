@@ -173,6 +173,11 @@ public class OcrActivity extends WebServiceBackedActivity implements
     void autoFocus() {
         try {
             autoFocusInProgress = false;
+            // if camera is closed, ignore
+            if (camera == null) {
+                return;
+            }
+
             imageCaptureUri = createTempFile();
             if (imageCaptureUri == null) {
                 Toast t = Toast.makeText(OcrActivity.this,
@@ -188,6 +193,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
             camera.takePicture(null, null, captureCb);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
+            deleteTempFile();
+
             ErrorReporter.getInstance().handleException(e);
             Toast t = Toast.makeText(OcrActivity.this,
                     R.string.image_capture_failed, Toast.LENGTH_SHORT);
@@ -358,11 +365,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.CROP_RETURN_RESULT) {
-            File f = new File(imageCaptureUri.getPath());
-            if (f.exists()) {
-                boolean deleted = f.delete();
-                Log.d(TAG, "deleted: " + deleted);
-            }
+            deleteTempFile();
 
             if (resultCode == RESULT_OK) {
                 Bitmap cropped = (Bitmap) data.getExtras()
@@ -392,6 +395,18 @@ public class OcrActivity extends WebServiceBackedActivity implements
                         Toast.LENGTH_SHORT);
                 t.show();
             }
+        }
+    }
+
+    private void deleteTempFile() {
+        if (imageCaptureUri == null) {
+            return;
+        }
+
+        File f = new File(imageCaptureUri.getPath());
+        if (f.exists()) {
+            boolean deleted = f.delete();
+            Log.d(TAG, "deleted: " + deleted);
         }
     }
 
