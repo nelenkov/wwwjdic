@@ -9,6 +9,31 @@
         android:layout_width="match_parent" android:layout_height="wrap_content"
         android:text="@string/limit_to_frequently_used_kanji"
         android:layout_marginBottom="5dp"></CheckBox>
+   <CheckBox android:id="@+id/kod_use_jlpt_cb"
+        android:layout_width="match_parent" 
+        android:layout_height="wrap_content"
+        android:text="@string/limit_to_jlpt_level"
+        android:layout_marginBottom="5dp"></CheckBox>
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="20dp">
+        <TextView android:id="@+id/jlpt_level_label"
+            android:text="@string/jlpt_level" 
+            android:layout_width="wrap_content"
+            android:textSize="16sp" 
+            android:textColor="#FFFF"
+            android:layout_height="wrap_content" 
+            android:layout_gravity="center_vertical"
+            android:enabled="false"/>
+        <Spinner android:id="@+id/kod_jlpt_level_spinner"
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content"
+            android:entries="@array/jlpt_levels"
+            android:prompt="@string/select_jlpt_level"
+            android:layout_marginLeft="5dp"
+            android:enabled="false"/>
+    </LinearLayout>          
     <CheckBox android:layout_width="match_parent"
         android:layout_height="wrap_content" android:id="@+id/kod_show_reading_cb"
         android:text="@string/display_reading_and_meaning"></CheckBox>
