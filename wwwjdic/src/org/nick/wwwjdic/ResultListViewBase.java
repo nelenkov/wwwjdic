@@ -76,6 +76,10 @@ public abstract class ResultListViewBase<T> extends ListActivity implements
     }
 
     public void setError(final Exception ex) {
+        if (isFinishing()) {
+            return;
+        }
+
         guiThread.post(new Runnable() {
             public void run() {
                 setTitle(getResources().getText(R.string.error));
