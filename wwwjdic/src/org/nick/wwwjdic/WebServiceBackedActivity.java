@@ -67,7 +67,8 @@ public abstract class WebServiceBackedActivity extends Activity {
     }
 
     public void dismissProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
+        if (progressDialog != null && progressDialog.isShowing()
+                && !isFinishing()) {
             progressDialog.dismiss();
             progressDialog = null;
         }
