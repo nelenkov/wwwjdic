@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
@@ -132,9 +133,7 @@ public class GetKanjiService extends Service {
             HttpClient client = createHttpClient(
                     WwwjdicPreferences.getWwwjdicUrl(this),
                     WwwjdicPreferences.getWwwjdicTimeoutSeconds(this) * 1000);
-            String unicodeCp = jisGenerator
-                    .generateAsUnicodeCp(WwwjdicPreferences
-                            .isKodLevelOneOnly(context));
+            String unicodeCp = selectKanji(context);
             Log.d(TAG, "KOD Unicode CP: " + unicodeCp);
             String backdoorCode = generateBackdoorCode(unicodeCp);
             Log.d(TAG, "backdoor code: " + backdoorCode);
@@ -197,6 +196,26 @@ public class GetKanjiService extends Service {
 
             return views;
         }
+    }
+
+    private String selectKanji(Context context) {
+        if (WwwjdicPreferences.isKodUseJlpt(this)
+                && !WwwjdicPreferences.isKodLevelOneOnly(this)) {
+            int level = WwwjdicPreferences.getKodJlptLevel(this);
+            int arrayId = getResources().getIdentifier("jlpt_n" + level,
+                    "array", context.getPackageName());
+            String[] kanjis = context.getResources().getStringArray(arrayId);
+            Random random = new Random();
+
+            String kanji = kanjis[random.nextInt(kanjis.length)];
+            int unicodeCp = (int) kanji.toCharArray()[0];
+
+            return Integer.toString(unicodeCp, 16);
+        }
+
+        String unicodeCp = jisGenerator.generateAsUnicodeCp(WwwjdicPreferences
+                .isKodLevelOneOnly(context));
+        return unicodeCp;
     }
 
     private HttpClient createHttpClient(String url, int timeoutMillis) {

@@ -540,4 +540,13 @@
     <string name="camera_in_use_title">Camera in use</string>
     <string name="camera_in_use_message">The camera is in use by another application. 
     Make sure other applications running the camera are not running and try again.</string>
+    <string name="limit_to_jlpt_level">Limit to selected JLPT level</string>
+    <string-array name="jlpt_levels">
+        <item>N1</item>
+        <item>N2</item>
+        <item>N3</item>
+        <item>N4</item>
+        <item>N5</item>
+    </string-array>
+    <string name="select_jlpt_level">Select level</string>
 </resources>

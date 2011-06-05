@@ -69,9 +69,11 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     public static final String PREF_TIP_SHOWN = "pref_tip_shown";
 
-    public static final String PREF_KOD_LEVEL1_ONLY_KEY = "pref kod_level_one_only";
-    public static final String PREF_KOD_SHOW_READING_KEY = "pref_kod_show_reading";
-    public static final String PREF_KOD_UPDATE_INTERAVL_KEY = "pref_kod_update_interval";
+    private static final String PREF_KOD_LEVEL1_ONLY_KEY = "pref kod_level_one_only";
+    private static final String PREF_KOD_USE_JLPT_KEY = "pref_kod_use_jlpt";
+    private static final String PREF_KOD_JLPT_LEVEL = "prf_kod_jlpt_level";
+    private static final String PREF_KOD_SHOW_READING_KEY = "pref_kod_show_reading";
+    private static final String PREF_KOD_UPDATE_INTERAVL_KEY = "pref_kod_update_interval";
 
     private static final String PREF_ENABLE_UPDATE_CHECK_KEY = "pref_enable_update_check";
     private static final String PREF_LAST_UPDATE_CHECK_KEY = "pref_last_update_check";
@@ -443,16 +445,24 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         return prefs;
     }
 
+    public static boolean isKodLevelOneOnly(Context context) {
+        return getBooleanPref(context, PREF_KOD_LEVEL1_ONLY_KEY, false);
+    }
+
     public static void setKodLevelOneOnly(Context context, boolean levelOneOnly) {
         saveBooleanPref(context, PREF_KOD_LEVEL1_ONLY_KEY, levelOneOnly);
     }
 
-    public static void setKodShowReading(Context context, boolean showReading) {
-        saveBooleanPref(context, PREF_KOD_SHOW_READING_KEY, showReading);
+    public static boolean isKodUseJlpt(Context context) {
+        return getBooleanPref(context, PREF_KOD_USE_JLPT_KEY, false);
     }
 
-    public static boolean isKodLevelOneOnly(Context context) {
-        return getBooleanPref(context, PREF_KOD_LEVEL1_ONLY_KEY, false);
+    public static void setKodUseJlpt(Context context, boolean levelOneOnly) {
+        saveBooleanPref(context, PREF_KOD_USE_JLPT_KEY, levelOneOnly);
+    }
+
+    public static void setKodShowReading(Context context, boolean showReading) {
+        saveBooleanPref(context, PREF_KOD_SHOW_READING_KEY, showReading);
     }
 
     public static boolean isKodShowReading(Context context) {
@@ -469,6 +479,16 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     public static long getKodUpdateInterval(Context context) {
         return getPrefs(context).getLong(PREF_KOD_UPDATE_INTERAVL_KEY,
                 KOD_DEFAULT_UPDATE_INTERVAL);
+    }
+
+    public static void setKodJlptLevel(Context context, int jlptLevel) {
+        SharedPreferences.Editor editor = getPrefsEditor(context);
+        editor.putInt(PREF_KOD_JLPT_LEVEL, jlptLevel);
+        editor.commit();
+    }
+
+    public static int getKodJlptLevel(Context context) {
+        return getPrefs(context).getInt(PREF_KOD_JLPT_LEVEL, 1);
     }
 
     public static boolean wantsTts(Context context) {

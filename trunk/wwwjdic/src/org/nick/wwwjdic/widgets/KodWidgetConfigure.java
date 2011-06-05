@@ -12,9 +12,13 @@ import android.text.format.DateUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Spinner;
+import android.widget.TextView;
 
-public class KodWidgetConfigure extends Activity implements OnClickListener {
+public class KodWidgetConfigure extends Activity implements OnClickListener,
+        OnCheckedChangeListener {
 
     private static final int ONE_DAY_IDX = 0;
     private static final int TWELVE_HOURS_IDX = 1;
@@ -29,6 +33,9 @@ public class KodWidgetConfigure extends Activity implements OnClickListener {
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     private CheckBox levelOneCb;
+    private CheckBox useJlptCb;
+    private TextView jlptLevelLabel;
+    private Spinner jlptLevelSpinner;
     private CheckBox showReadingCb;
     private Spinner updateIntervalSpinner;
 
@@ -42,6 +49,7 @@ public class KodWidgetConfigure extends Activity implements OnClickListener {
         findViews();
 
         levelOneCb.setChecked(WwwjdicPreferences.isKodLevelOneOnly(this));
+        useJlptCb.setChecked(WwwjdicPreferences.isKodUseJlpt(this));
         showReadingCb.setChecked(WwwjdicPreferences.isKodShowReading(this));
         long updateInterval = WwwjdicPreferences.getKodUpdateInterval(this);
         if (updateInterval == TWELVE_HOURS_MILLIS) {
@@ -54,6 +62,9 @@ public class KodWidgetConfigure extends Activity implements OnClickListener {
             // default to 24h
             updateIntervalSpinner.setSelection(ONE_DAY_IDX);
         }
+
+        int jlptLevel = WwwjdicPreferences.getKodJlptLevel(this);
+        jlptLevelSpinner.setSelection(jlptLevel - 1);
 
         findViewById(R.id.kod_configure_ok_button).setOnClickListener(this);
         findViewById(R.id.kod_configure_cancel_button).setOnClickListener(this);
@@ -72,6 +83,11 @@ public class KodWidgetConfigure extends Activity implements OnClickListener {
 
     private void findViews() {
         levelOneCb = (CheckBox) findViewById(R.id.kod_level1_only_cb);
+        levelOneCb.setOnCheckedChangeListener(this);
+        useJlptCb = (CheckBox) findViewById(R.id.kod_use_jlpt_cb);
+        useJlptCb.setOnCheckedChangeListener(this);
+        jlptLevelLabel = (TextView) findViewById(R.id.jlpt_level_label);
+        jlptLevelSpinner = (Spinner) findViewById(R.id.kod_jlpt_level_spinner);
         showReadingCb = (CheckBox) findViewById(R.id.kod_show_reading_cb);
         updateIntervalSpinner = (Spinner) findViewById(R.id.kod_update_interval_spinner);
     }
@@ -83,8 +99,11 @@ public class KodWidgetConfigure extends Activity implements OnClickListener {
         switch (v.getId()) {
         case R.id.kod_configure_ok_button:
             WwwjdicPreferences.setKodLevelOneOnly(this, levelOneCb.isChecked());
-            WwwjdicPreferences.setKodShowReading(this, showReadingCb
-                    .isChecked());
+            WwwjdicPreferences.setKodUseJlpt(this, useJlptCb.isChecked());
+            WwwjdicPreferences.setKodJlptLevel(this,
+                    jlptLevelSpinner.getSelectedItemPosition() + 1);
+            WwwjdicPreferences.setKodShowReading(this,
+                    showReadingCb.isChecked());
 
             long updateInterval = WwwjdicPreferences.KOD_DEFAULT_UPDATE_INTERVAL;
             switch (updateIntervalSpinner.getSelectedItemPosition()) {
@@ -115,6 +134,24 @@ public class KodWidgetConfigure extends Activity implements OnClickListener {
             break;
         case R.id.kod_configure_cancel_button:
             finish();
+            break;
+        default:
+            // do nothing
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId()) {
+        case R.id.kod_level1_only_cb:
+            useJlptCb.setEnabled(!isChecked);
+            jlptLevelSpinner.setEnabled(!isChecked);
+            jlptLevelLabel.setEnabled(!isChecked);
+            break;
+        case R.id.kod_use_jlpt_cb:
+            levelOneCb.setEnabled(!isChecked);
+            jlptLevelLabel.setEnabled(isChecked);
+            jlptLevelSpinner.setEnabled(isChecked);
             break;
         default:
             // do nothing
