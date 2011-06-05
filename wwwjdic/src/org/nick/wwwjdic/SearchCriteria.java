@@ -11,6 +11,7 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
 
     private static final String KANJI_TEXT_LOOKUP_CODE = "J";
     private static final String KANJI_RADICAL_LOOKUP_CODE = "B";
+    private static final String ENGLISH_MEANING_LOOKUP_CODE = "E";
 
     private static final String DICTIONARY_CODE_GENERAL = "1";
 
@@ -138,7 +139,8 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
     }
 
     public boolean isKanjiCodeLookup() {
-        return !KANJI_TEXT_LOOKUP_CODE.equals(kanjiSearchType);
+        return !KANJI_TEXT_LOOKUP_CODE.equals(kanjiSearchType)
+                && !ENGLISH_MEANING_LOOKUP_CODE.equals(kanjiSearchType);
     }
 
     public boolean isKanjiRadicalLookup() {
