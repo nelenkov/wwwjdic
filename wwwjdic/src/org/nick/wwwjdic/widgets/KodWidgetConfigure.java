@@ -48,8 +48,16 @@ public class KodWidgetConfigure extends Activity implements OnClickListener,
 
         findViews();
 
-        levelOneCb.setChecked(WwwjdicPreferences.isKodLevelOneOnly(this));
-        useJlptCb.setChecked(WwwjdicPreferences.isKodUseJlpt(this));
+        boolean isJisLevel1 = WwwjdicPreferences.isKodLevelOneOnly(this);
+        boolean isUseJlpt = WwwjdicPreferences.isKodUseJlpt(this);
+        levelOneCb.setChecked(isJisLevel1);
+        useJlptCb.setChecked(isUseJlpt);
+
+        levelOneCb.setEnabled(!isUseJlpt);
+        useJlptCb.setEnabled(!isJisLevel1);
+        jlptLevelSpinner.setEnabled(!isJisLevel1);
+        jlptLevelLabel.setEnabled(!isJisLevel1);
+
         showReadingCb.setChecked(WwwjdicPreferences.isKodShowReading(this));
         long updateInterval = WwwjdicPreferences.getKodUpdateInterval(this);
         if (updateInterval == TWELVE_HOURS_MILLIS) {
