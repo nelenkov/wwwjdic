@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Enabled Kanji Recognizer integration\n* Tapping kanji widget when in error state will now trigger manual update\n* Added recent search suggestions to search widget\n* Improved camera handling for OCR, now supports Toshiba Regza\n* Imporved OCR error handling\n* History/favorites bug fixes</string>
-</resources>
