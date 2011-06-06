@@ -302,8 +302,14 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
         }
 
         if (entry.getJlptLevel() != null) {
+            String newLevel = JlptLevels.getInstance().getLevel(
+                    entry.getKanji());
+            String levelStr = entry.getJlptLevel().toString();
+            if (newLevel != null) {
+                levelStr += " (" + newLevel + ")";
+            }
             data.add(new Pair<String, String>(getStr(R.string.jlpt_level),
-                    entry.getJlptLevel().toString()));
+                    levelStr));
         }
 
         if (entry.getSkipCode() != null) {

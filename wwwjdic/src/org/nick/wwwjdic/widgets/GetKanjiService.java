@@ -22,6 +22,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.nick.wwwjdic.GzipStringResponseHandler;
+import org.nick.wwwjdic.JlptLevels;
 import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicApplication;
@@ -202,9 +203,7 @@ public class GetKanjiService extends Service {
         if (WwwjdicPreferences.isKodUseJlpt(this)
                 && !WwwjdicPreferences.isKodLevelOneOnly(this)) {
             int level = WwwjdicPreferences.getKodJlptLevel(this);
-            int arrayId = getResources().getIdentifier("jlpt_n" + level,
-                    "array", context.getPackageName());
-            String[] kanjis = context.getResources().getStringArray(arrayId);
+            String[] kanjis = JlptLevels.getKanjiForLevel(context, level);
             Random random = new Random();
 
             String kanji = kanjis[random.nextInt(kanjis.length)];

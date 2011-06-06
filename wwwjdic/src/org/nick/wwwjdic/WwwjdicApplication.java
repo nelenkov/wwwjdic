@@ -62,6 +62,8 @@ public class WwwjdicApplication extends Application {
 
         initRadicals();
 
+        JlptLevels.getInstance().initialize(this);
+
         if (isAutoSelectMirror()) {
             setMirrorBasedOnLocation();
         }
