@@ -1,6 +1,10 @@
 #summary Full changelog
 
 = Changelog =
+ * v1.8.3.2
+   * moved JLPT kanji to class file to avoid resource array restriction on pre-Gingerbread devices.
+ * v1.8.3.1
+  * Temporary disabled JLPT support. Pre-Gingerbread device can't handle resource arrays with more than 512 elements.
  * v1.8.3 (2011/6/6) New JLPT levels support.
   * Kanji of the day can now be limited to specified JLPT level
   * Display new JLPT level in kanji details
