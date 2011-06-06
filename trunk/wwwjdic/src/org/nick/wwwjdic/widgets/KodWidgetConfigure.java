@@ -55,8 +55,8 @@ public class KodWidgetConfigure extends Activity implements OnClickListener,
 
         levelOneCb.setEnabled(!isUseJlpt);
         useJlptCb.setEnabled(!isJisLevel1);
-        jlptLevelSpinner.setEnabled(!isJisLevel1);
-        jlptLevelLabel.setEnabled(!isJisLevel1);
+        jlptLevelSpinner.setEnabled(isUseJlpt);
+        jlptLevelLabel.setEnabled(isUseJlpt);
 
         showReadingCb.setChecked(WwwjdicPreferences.isKodShowReading(this));
         long updateInterval = WwwjdicPreferences.getKodUpdateInterval(this);
