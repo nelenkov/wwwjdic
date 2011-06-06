@@ -1,6 +1,11 @@
 #summary Full changelog
 
 = Changelog =
+ * v1.8.3 (2011/6/6) New JLPT levels support.
+  * Kanji of the day can now be limited to specified JLPT level
+  * Display new JLPT level in kanji details
+  * Search by English meaning now returns all relevant results
+  * Bug fixes
  * v1.8.2 (2011/5/22) Support new WWWJDIC dictionary codes. Stability improvements
   * Use new WWWJDIC dictionary codes
   * Save TTS languae in history/favorites
