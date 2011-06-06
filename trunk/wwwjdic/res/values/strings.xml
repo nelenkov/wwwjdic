@@ -123,6 +123,7 @@
     <string name="freq_rank">Frequency rank: </string>
     <string name="grade">Grade: </string>
     <string name="jlpt_level">JLPT level: </string>
+    <string name="jlpt_level_label">JLPT level: </string>
     <string name="skip_code">SKIP code: </string>
     <string name="korean_reading">Korean reading: </string>
     <string name="pinyn">Pinyin: </string>

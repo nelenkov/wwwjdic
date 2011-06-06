@@ -53,6 +53,7 @@
     <string name="freq_rank">頻度ランク: </string>
     <string name="grade">学習学年: </string>
     <string name="jlpt_level">日本語能力試験レベル: </string>
+    <string name="jlpt_level_label">日本語能力\n試験レベル: </string>
     <string name="skip_code">SKIPコード: </string>
     <string name="korean_reading">韓国語読み: </string>
     <string name="pinyn">標準中国読み: </string>
@@ -380,6 +381,6 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     <string name="camera_in_use_title">カメラは使用中</string>
     <string name="camera_in_use_message">他のアプリはカメラを使用しているので、カメラは使えません。
     カメラを使用しているアプリを全て終了してから、再試行してください。</string>
-    <string name="limit_to_jlpt_level">日本語能力試験で絞る</string>
+    <string name="limit_to_jlpt_level">日本語能力試験レベルで絞る</string>
     <string name="select_jlpt_level">レベルを選択してください</string>
 </resources>

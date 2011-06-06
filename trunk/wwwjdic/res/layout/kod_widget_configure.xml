@@ -1,62 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:layout_height="fill_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent">
+<LinearLayout 
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
     android:orientation="vertical">
     <TextView android:text="@string/kod_configure_message"
-        android:id="@+id/kod_configure_message" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:layout_margin="5dp"></TextView>
+        android:id="@+id/kod_configure_message" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:layout_margin="5dp"></TextView>
     <CheckBox android:id="@+id/kod_level1_only_cb"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_width="match_parent" 
+        android:layout_height="wrap_content"
         android:text="@string/limit_to_frequently_used_kanji"
-        android:layout_marginBottom="5dp"></CheckBox>
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"/>
    <CheckBox android:id="@+id/kod_use_jlpt_cb"
         android:layout_width="match_parent" 
         android:layout_height="wrap_content"
         android:text="@string/limit_to_jlpt_level"
-        android:layout_marginBottom="5dp"></CheckBox>
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"/>
     <LinearLayout android:layout_width="fill_parent"
         android:layout_height="wrap_content" 
         android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_marginBottom="20dp">
         <TextView android:id="@+id/jlpt_level_label"
-            android:text="@string/jlpt_level" 
-            android:layout_width="wrap_content"
+            android:text="@string/jlpt_level_label" 
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:paddingLeft="5dp"
             android:textSize="16sp" 
             android:textColor="#FFFF"
-            android:layout_height="wrap_content" 
-            android:layout_gravity="center_vertical"
             android:enabled="false"/>
         <Spinner android:id="@+id/kod_jlpt_level_spinner"
-            android:layout_width="wrap_content" 
+            android:layout_width="0px" 
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:entries="@array/jlpt_levels"
             android:prompt="@string/select_jlpt_level"
             android:layout_marginLeft="5dp"
             android:enabled="false"/>
     </LinearLayout>          
     <CheckBox android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:id="@+id/kod_show_reading_cb"
-        android:text="@string/display_reading_and_meaning"></CheckBox>
+        android:layout_height="wrap_content" 
+        android:id="@+id/kod_show_reading_cb"
+        android:layout_marginLeft="5dp"
+        android:text="@string/display_reading_and_meaning"/>
     <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:layout_marginLeft="5dp"
+        android:layout_height="wrap_content" 
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_marginBottom="20dp">
         <TextView android:id="@+id/update_interval_label"
-            android:text="@string/update_interval" android:layout_width="wrap_content"
-            android:textSize="16sp" android:textColor="#FFFF"
-            android:layout_height="wrap_content" android:layout_gravity="center_vertical"></TextView>
+            android:text="@string/update_interval" 
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" 
+            android:paddingLeft="5dp"
+            android:textSize="16sp" 
+            android:textColor="#FFFF"/>
         <Spinner android:id="@+id/kod_update_interval_spinner"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:entries="@array/kod_update_times" android:prompt="@string/widget_update_interval"
-            android:layout_marginLeft="5dp"></Spinner>
+            android:layout_width="0px" 
+            android:layout_height="wrap_content"
+            android:layout_weight="1" 
+            android:entries="@array/kod_update_times" 
+            android:prompt="@string/widget_update_interval"
+            android:layout_marginLeft="5dp"/>
     </LinearLayout>
     <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:layout_gravity="center"
-        android:layout_marginLeft="5dp" android:layout_marginRight="5dp">
-        <Button android:layout_width="0px" android:layout_weight="1"
-            android:layout_height="wrap_content" android:id="@+id/kod_configure_ok_button"
-            android:text="@string/ok"></Button>
-        <Button android:layout_width="0px" android:layout_weight="1"
-            android:layout_height="wrap_content" android:id="@+id/kod_configure_cancel_button"
-            android:text="@string/cancel" android:layout_gravity="center"></Button>
+        android:layout_height="wrap_content" 
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp" 
+        android:layout_marginRight="5dp">
+        <Button android:id="@+id/kod_configure_ok_button"
+            android:layout_width="0px" 
+            android:layout_weight="1"
+            android:layout_height="wrap_content" 
+            android:text="@string/ok"/>
+        <Button android:id="@+id/kod_configure_cancel_button" 
+            android:layout_width="0px" 
+            android:layout_weight="1"
+            android:layout_height="wrap_content" 
+            android:text="@string/cancel" 
+            android:layout_gravity="center"/>
     </LinearLayout>
 </LinearLayout>
+</ScrollView>
