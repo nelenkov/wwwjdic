@@ -203,7 +203,7 @@ public class GetKanjiService extends Service {
         if (WwwjdicPreferences.isKodUseJlpt(this)
                 && !WwwjdicPreferences.isKodLevelOneOnly(this)) {
             int level = WwwjdicPreferences.getKodJlptLevel(this);
-            String[] kanjis = JlptLevels.getKanjiForLevel(context, level);
+            String[] kanjis = JlptLevels.getKanjiForLevel(level);
             Random random = new Random();
 
             String kanji = kanjis[random.nextInt(kanjis.length)];
