@@ -540,7 +540,7 @@
     <string name="pref_maintenance">App maintenance</string>
     <string name="camera_in_use_title">Camera in use</string>
     <string name="camera_in_use_message">The camera is in use by another application. 
-    Make sure other applications running the camera are not running and try again.</string>
+    Make sure other applications using the camera are not running and try again.</string>
     <string name="limit_to_jlpt_level">Limit to selected JLPT level</string>
     <string-array name="jlpt_levels">
         <item>N1</item>
