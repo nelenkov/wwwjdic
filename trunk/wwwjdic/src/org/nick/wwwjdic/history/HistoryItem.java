@@ -43,8 +43,8 @@ public class HistoryItem extends LinearLayout {
             if (radicalNumber != null) {
                 Radical radical = Radicals.getInstance().getRadicalByNumber(
                         radicalNumber);
-                searchKey = radical.getGlyph() + " (" + radical.getNumber()
-                        + ")";
+                searchKey = radical == null ? "" : radical.getGlyph() + " ("
+                        + radical.getNumber() + ")";
             }
         }
         searchKeyText.setText(searchKey);

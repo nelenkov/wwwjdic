@@ -66,7 +66,9 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
         // radicalGlyphText.setTextSize(30f);
         Radicals radicals = Radicals.getInstance();
         Radical radical = radicals.getRadicalByNumber(entry.getRadicalNumber());
-        radicalGlyphText.setText(radical.getGlyph().substring(0, 1));
+        if (radical != null) {
+            radicalGlyphText.setText(radical.getGlyph().substring(0, 1));
+        }
 
         TextView radicalNumberView = (TextView) findViewById(R.id.radicalNumberText);
         radicalNumberView.setText(Integer.toString(entry.getRadicalNumber()));
