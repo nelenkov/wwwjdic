@@ -123,7 +123,9 @@ public abstract class ResultListViewBase<T> extends ListActivity implements
     protected void extractSearchCriteria() {
         criteria = (SearchCriteria) getIntent().getSerializableExtra(
                 Constants.CRITERIA_KEY);
-        Log.d(TAG, "query string: " + criteria.getQueryString());
+        if (criteria != null) {
+            Log.d(TAG, "query string: " + criteria.getQueryString());
+        }
     }
 
     protected String getWwwjdicUrl() {
