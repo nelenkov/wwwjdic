@@ -550,4 +550,5 @@
         <item>N5</item>
     </string-array>
     <string name="select_jlpt_level">Select level</string>
+    <string name="read_picture_error">Error reading picture file: %s</string>
 </resources>
