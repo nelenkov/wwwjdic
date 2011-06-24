@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
+import org.acra.ErrorReporter;
 import org.nick.wwwjdic.R;
 
 import android.app.ProgressDialog;
@@ -39,15 +40,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 /**
  * The activity can crop specific region of interest from an image.
  */
 public class CropImage extends MonitoredActivity {
+
+    private static final String TAG = CropImage.class.getSimpleName();
 
     // private static final String TAG = "CropImage";
 
@@ -103,7 +108,13 @@ public class CropImage extends MonitoredActivity {
                 is = cr.openInputStream(target);
                 mBitmap = BitmapFactory.decodeStream(is);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                Log.e(TAG, "error reading picture: " + e.getMessage(), e);
+                ErrorReporter.getInstance().handleException(e);
+                Toast.makeText(
+                        this,
+                        getResources().getString(R.string.read_picture_error,
+                                e.getMessage()), Toast.LENGTH_SHORT).show();
+                finish();
             } finally {
                 if (is != null) {
                     try {
@@ -146,32 +157,33 @@ public class CropImage extends MonitoredActivity {
 
         mImageView.setImageBitmapResetBase(mBitmap, true);
 
-        startBackgroundJob(this, null, getResources().getString(
-                R.string.runningFaceDetection), new Runnable() {
-            public void run() {
-                final CountDownLatch latch = new CountDownLatch(1);
-                final Bitmap b = mBitmap;
-                mHandler.post(new Runnable() {
+        startBackgroundJob(this, null,
+                getResources().getString(R.string.runningFaceDetection),
+                new Runnable() {
                     public void run() {
-                        if (b != mBitmap && b != null) {
-                            mImageView.setImageBitmapResetBase(b, true);
-                            mBitmap.recycle();
-                            mBitmap = b;
+                        final CountDownLatch latch = new CountDownLatch(1);
+                        final Bitmap b = mBitmap;
+                        mHandler.post(new Runnable() {
+                            public void run() {
+                                if (b != mBitmap && b != null) {
+                                    mImageView.setImageBitmapResetBase(b, true);
+                                    mBitmap.recycle();
+                                    mBitmap = b;
+                                }
+                                if (mImageView.getScale() == 1F) {
+                                    mImageView.center(true, true);
+                                }
+                                latch.countDown();
+                            }
+                        });
+                        try {
+                            latch.await();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
                         }
-                        if (mImageView.getScale() == 1F) {
-                            mImageView.center(true, true);
-                        }
-                        latch.countDown();
+                        mRunFaceDetection.run();
                     }
-                });
-                try {
-                    latch.await();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                mRunFaceDetection.run();
-            }
-        }, mHandler);
+                }, mHandler);
     }
 
     private static class BackgroundJob extends
@@ -359,8 +371,8 @@ public class CropImage extends MonitoredActivity {
 
         Bundle extras = new Bundle();
         extras.putParcelable("data", croppedImage);
-        setResult(RESULT_OK, (new Intent()).setAction("inline-data").putExtras(
-                extras));
+        setResult(RESULT_OK,
+                (new Intent()).setAction("inline-data").putExtras(extras));
         finish();
     }
 
@@ -419,8 +431,8 @@ public class CropImage extends MonitoredActivity {
         Bitmap b1;
         if (scaler != null) {
             // this is used for minithumb and crop, so we want to filter here.
-            b1 = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source
-                    .getHeight(), scaler, true);
+            b1 = Bitmap.createBitmap(source, 0, 0, source.getWidth(),
+                    source.getHeight(), scaler, true);
         } else {
             b1 = source;
         }
