@@ -573,7 +573,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
         supportsFlash = CameraHolder.getInstance().supportsFlash(params);
 
         try {
-            if (supportedPreviewSizes != null) {
+            if (supportedPreviewSizes != null
+                    && !supportedPreviewSizes.isEmpty()) {
                 previewSize = getOptimalPreviewSize(supportedPreviewSizes);
                 Log.d(TAG, String.format("preview width: %d; height: %d",
                         previewSize.width, previewSize.height));
@@ -581,7 +582,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
                 camera.setParameters(params);
             }
 
-            if (supportedPictueSizes != null) {
+            if (supportedPictueSizes != null && !supportedPictueSizes.isEmpty()) {
                 pictureSize = getOptimalPictureSize(supportedPictueSizes);
                 Log.d(TAG, String.format("picture width: %d; height: %d",
                         pictureSize.width, pictureSize.height));
