@@ -115,8 +115,8 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
     void bindToKanjiRecognizer() {
         boolean success = bindService(new Intent(
-                "org.nick.kanjirecognizer.hkr.RECOGNIZE_KANJI"),
-                connection, Context.BIND_AUTO_CREATE);
+                "org.nick.kanjirecognizer.hkr.RECOGNIZE_KANJI"), connection,
+                Context.BIND_AUTO_CREATE);
         if (success) {
             Log.d(TAG, "successfully bound to KR service");
             lookAheadCb.setEnabled(false);
@@ -230,6 +230,10 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         }
 
         private void showInstallKrDialog() {
+            if (activity.isFinishing()) {
+                return;
+            }
+
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setMessage(R.string.wskr_unavailable_install_kr)
                     .setCancelable(false)
