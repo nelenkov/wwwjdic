@@ -41,6 +41,10 @@ public class Radicals {
     }
 
     public Radical getRadicalByNumber(int radicalNumber) {
+        if (radicalNumber > radicals.size()) {
+            return null;
+        }
+
         return radicals.get(radicalNumber - 1);
     }
 }
