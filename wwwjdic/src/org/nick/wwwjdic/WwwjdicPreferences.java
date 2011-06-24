@@ -36,6 +36,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     public static final String DEFAULT_WWWJDIC_URL = "http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi";
 
     public static final String PREF_WWWJDIC_TIMEOUT_KEY = "pref_wwwjdic_timeout";
+    private static final int WWWJDIC_TIMEOUT_DEFAULT = 10 * 1000;
 
     public static final String KR_PACKAGE = "org.nick.kanjirecognizer";
 
@@ -46,6 +47,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     public static final String PREF_KR_URL_KEY = "pref_kr_url";
     public static final String KR_DEFAULT_URL = "http://kanji.sljfaq.org/kanji-0.016.cgi";
     private static final String PREF_KR_TIMEOUT_KEY = "pref_kr_timeout";
+    private static final int KR_TIMEOUT_DEFAULT = 10 * 1000;
     private static final String PREF_KR_ANNOTATE = "pref_kr_annotate";
     private static final String PREF_KR_ANNOTATE_MIDWAY = "pref_kr_annotate_midway";
     private static final String PREF_KR_USE_KANJI_RECOGNIZER_KEY = "pref_kr_use_kanji_recognizer";
@@ -54,11 +56,13 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     private static final String PREF_DUMP_CROPPED_IMAGES_KEY = "pref_ocr_dump_cropped_images";
     private static final String PREF_WEOCR_URL_KEY = "pref_weocr_url";
     private static final String PREF_WEOCR_TIMEOUT_KEY = "pref_weocr_timeout";
+    private static final int WEOCR_TIMEOUT_DEFAULT = 10 * 1000;
 
     private static final String PREF_DIRECT_SEARCH_KEY = "pref_ocr_direct_search";
 
     private static final String PREF_SOD_ANIMATION_DELAY = "pref_sod_animation_delay";
     private static final String PREF_SOD_TIMEOUT = "pref_sod_server_timeout";
+    private static final int SOD_TIMEOUT_DEFAULT = 30 * 1000;
 
     private static final String PREF_ACCOUNT_NAME_KEY = "pref_account_name";
 
@@ -221,7 +225,11 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
         String idxStr = preferences.getString(PREF_DEFAULT_DICT_PREF_KEY, "0");
 
-        return Integer.parseInt(idxStr);
+        try {
+            return Integer.parseInt(idxStr);
+        } catch (NumberFormatException nfe) {
+            return 0;
+        }
     }
 
     public static String getDefaultDictionary(Context context) {
@@ -268,7 +276,11 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         String timeoutStr = preferences.getString(PREF_WWWJDIC_TIMEOUT_KEY,
                 "10");
 
-        return Integer.parseInt(timeoutStr);
+        try {
+            return Integer.parseInt(timeoutStr);
+        } catch (NumberFormatException nfe) {
+            return WWWJDIC_TIMEOUT_DEFAULT;
+        }
     }
 
     public static int getKrTimeout(Context context) {
@@ -276,7 +288,11 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
         String timeoutStr = preferences.getString(PREF_KR_TIMEOUT_KEY, "10");
 
-        return Integer.parseInt(timeoutStr) * 1000;
+        try {
+            return Integer.parseInt(timeoutStr) * 1000;
+        } catch (NumberFormatException nfe) {
+            return KR_TIMEOUT_DEFAULT;
+        }
     }
 
     public static String getKrUrl(Context context) {
@@ -315,7 +331,11 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
         String timeoutStr = preferences.getString(PREF_WEOCR_TIMEOUT_KEY, "10");
 
-        return Integer.parseInt(timeoutStr) * 1000;
+        try {
+            return Integer.parseInt(timeoutStr) * 1000;
+        } catch (NumberFormatException nfe) {
+            return WEOCR_TIMEOUT_DEFAULT;
+        }
     }
 
     public static String getWeocrUrl(Context context) {
@@ -342,7 +362,11 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         String delayStr = preferences.getString(PREF_SOD_ANIMATION_DELAY,
                 DEFAULT_STROKE_ANIMATION_DELAY);
 
-        return Integer.parseInt(delayStr);
+        try {
+            return Integer.parseInt(delayStr);
+        } catch (NumberFormatException e) {
+            return Integer.parseInt(DEFAULT_STROKE_ANIMATION_DELAY);
+        }
     }
 
     public static void setStrokeAnimationDelay(Context context,
@@ -357,7 +381,11 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
         String delayStr = preferences.getString(PREF_SOD_TIMEOUT, "30");
 
-        return Integer.parseInt(delayStr) * 1000;
+        try {
+            return Integer.parseInt(delayStr) * 1000;
+        } catch (NumberFormatException nfe) {
+            return SOD_TIMEOUT_DEFAULT;
+        }
     }
 
     public static String getGoogleAcountName(Context context) {
