@@ -38,6 +38,10 @@ public class WwwjdicApplication extends Application {
 
     private static final String WWWJDIC_DIR = "wwwjdic";
 
+    private static final String OLD_JAPAN_MIRROR = "http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi";
+
+    private static final String NEW_JAPAN_MIRROR = "http://wwwjdic.mygengo.com/cgi-data/wwwjdic";
+
     private ExecutorService executorService;
 
     private LocationManager locationManager;
@@ -60,6 +64,8 @@ public class WwwjdicApplication extends Application {
         ACRA.init(this);
         createWwwjdicDirIfNecessary();
 
+        updateJapanMirror();
+
         initRadicals();
 
         if (isAutoSelectMirror()) {
@@ -72,6 +78,13 @@ public class WwwjdicApplication extends Application {
                 WwwjdicPreferences.DEFAULT_STROKE_ANIMATION_DELAY);
 
         startCheckUpdateService();
+    }
+
+    private void updateJapanMirror() {
+        String mirrorUlr = WwwjdicPreferences.getWwwjdicUrl(this);
+        if (OLD_JAPAN_MIRROR.equals(mirrorUlr)) {
+            WwwjdicPreferences.setWwwjdicUrl(NEW_JAPAN_MIRROR, this);
+        }
     }
 
     private void startCheckUpdateService() {
