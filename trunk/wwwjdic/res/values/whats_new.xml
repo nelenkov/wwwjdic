@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Kanji of the day can be limited to specified JLPT level (now working on all Android versions)\n* Display new JLPT level in kanji details\n* Search by English meaning now returns all relevant results\n* Bug fixes</string>
+    <string name="whats_new">* Switched to new Japan mirror\n* Properly display kanji grade in kanji details\n* Bug fixes</string>
 </resources>
