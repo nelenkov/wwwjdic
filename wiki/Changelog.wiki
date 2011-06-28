@@ -1,6 +1,10 @@
 #summary Full changelog
 
 = Changelog =
+ * v1.8.4 (2011/6/29) New Japan mirror
+  * Switched to new Japan mirror
+  * Properly display kanji grade in kanji details
+  * Bug fixes
  * v1.8.3.2
    * moved JLPT kanji to class file to avoid resource array restriction on pre-Gingerbread devices.
  * v1.8.3.1
