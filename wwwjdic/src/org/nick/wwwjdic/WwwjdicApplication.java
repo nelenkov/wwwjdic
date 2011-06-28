@@ -31,7 +31,7 @@ import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
 
-@ReportsCrashes(formKey = "dGF6Q1RPRG4zVTVibU5FR25HVVVhMHc6MQ", mode = ReportingInteractionMode.TOAST, resToastText = R.string.crash_toast_text)
+@ReportsCrashes(formKey = "dDA0N2Z5TWdReHdCaC1vOVB4WEpCZEE6MQ", mode = ReportingInteractionMode.TOAST, resToastText = R.string.crash_toast_text)
 public class WwwjdicApplication extends Application {
 
     private static final String TAG = WwwjdicApplication.class.getSimpleName();

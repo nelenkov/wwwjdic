@@ -7,6 +7,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Flurry"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/opencsv"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/gdocs-wwwjdic"/>
-	<classpathentry kind="lib" path="lib/acra-3.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/acra-4.2.3RC.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

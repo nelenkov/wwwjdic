@@ -15,6 +15,6 @@
 	<classpathentry kind="lib" path="/Wwwjdic/lib/google-api-client-apache-1.2.1-alpha.jar"/>
 	<classpathentry kind="lib" path="/Wwwjdic/lib/FlurryAgent.jar"/>
 	<classpathentry kind="src" path="Wwwjdic_src"/>
-	<classpathentry kind="lib" path="/Wwwjdic/lib/acra-3.1.2.jar"/>
+	<classpathentry kind="lib" path="/Wwwjdic/lib/acra-4.2.3RC.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
