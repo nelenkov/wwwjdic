@@ -61,7 +61,7 @@
     <string name="dictionary_label">辞書:</string>
     <string name="dictionary">辞書検索</string>
     <string name="kanji_lookup">漢字検索</string>
-    <string name="about">情報</string>
+    <string name="about">アプリについて</string>
     <string name="min">最小</string>
     <string name="max">最大</string>
     <string name="strokes">画数: </string>
