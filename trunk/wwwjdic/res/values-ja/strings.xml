@@ -384,4 +384,7 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     <string name="limit_to_jlpt_level">日本語能力試験レベルで絞る</string>
     <string name="select_jlpt_level">レベルを選択してください</string>
     <string name="read_picture_error">画像ファイル読み込みエラー: %s</string>
+    <string name="grade_elementary">小学校 %s年生</string>
+    <string name="grade_secondary">中学校</string>
+    <string name="grade_jinmeiyou">人名用漢字</string>
 </resources>

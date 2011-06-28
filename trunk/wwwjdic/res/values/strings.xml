@@ -551,4 +551,7 @@
     </string-array>
     <string name="select_jlpt_level">Select level</string>
     <string name="read_picture_error">Error reading picture file: %s</string>
+    <string name="grade_elementary">Elementary %s</string>
+    <string name="grade_secondary">Secondary</string>
+    <string name="grade_jinmeiyou">Jinmeiyou (for use in names)</string>
 </resources>
