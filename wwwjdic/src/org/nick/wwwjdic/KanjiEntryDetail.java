@@ -5,6 +5,7 @@ import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -32,6 +33,13 @@ import android.widget.TextView;
 public class KanjiEntryDetail extends DetailActivity implements OnClickListener {
 
     private static final String TAG = KanjiEntryDetail.class.getSimpleName();
+
+    private static final List<String> ELEMENTARY_GRADES = Arrays
+            .asList(new String[] { "1", "2", "3", "4", "5", "6" });
+    private static final List<String> SECONDARY_GRADES = Arrays
+            .asList(new String[] { "8" });
+    private static final List<String> JINMEIYOU_GRADES = Arrays
+            .asList(new String[] { "9", "10" });
 
     private LinearLayout translationsCodesLayout;
 
@@ -299,8 +307,17 @@ public class KanjiEntryDetail extends DetailActivity implements OnClickListener 
         }
 
         if (entry.getGrade() != null) {
-            data.add(new Pair<String, String>(getStr(R.string.grade), entry
-                    .getGrade().toString()));
+            String rawGrade = entry.getGrade().toString();
+            String gradeStr = rawGrade;
+            if (ELEMENTARY_GRADES.contains(rawGrade)) {
+                gradeStr = getResources().getString(R.string.grade_elementary,
+                        rawGrade);
+            } else if (SECONDARY_GRADES.contains(rawGrade)) {
+                gradeStr = getResources().getString(R.string.grade_secondary);
+            } else if (JINMEIYOU_GRADES.contains(rawGrade)) {
+                gradeStr = getResources().getString(R.string.grade_jinmeiyou);
+            }
+            data.add(new Pair<String, String>(getStr(R.string.grade), gradeStr));
         }
 
         if (entry.getJlptLevel() != null) {
