@@ -1,5 +1,6 @@
 package org.nick.wwwjdic;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -14,6 +15,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.speech.tts.TextToSpeech;
 import android.text.ClipboardManager;
@@ -196,9 +199,22 @@ public abstract class DetailActivity extends Activity implements
     protected abstract Locale getSpeechLocale();
 
     protected void checkTtsAvailability() {
+        if (!isIntentAvailable(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA)) {
+            return;
+        }
+
         Intent checkIntent = new Intent(
                 TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkIntent, TTS_DATA_CHECK_CODE);
+    }
+
+    private boolean isIntentAvailable(String action) {
+        PackageManager packageManager = getPackageManager();
+        Intent intent = new Intent(action);
+        List<ResolveInfo> list = packageManager.queryIntentActivities(intent,
+                PackageManager.MATCH_DEFAULT_ONLY);
+
+        return list.size() > 0;
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
