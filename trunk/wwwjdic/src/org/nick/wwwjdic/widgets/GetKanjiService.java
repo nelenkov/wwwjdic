@@ -234,6 +234,8 @@ public class GetKanjiService extends Service {
         try {
             String lookupUrl = String.format("%s?%s", url, backdoorCode);
             HttpGet get = new HttpGet(lookupUrl);
+            get.addHeader("Cache-Control", "no-cache");
+            get.addHeader("Pragma", "no-cache");
 
             GzipStringResponseHandler responseHandler = new GzipStringResponseHandler();
             String responseStr = httpclient.execute(get, responseHandler);

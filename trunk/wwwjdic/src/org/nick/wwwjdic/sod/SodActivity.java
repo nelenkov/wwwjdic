@@ -210,6 +210,8 @@ public class SodActivity extends WebServiceBackedActivity implements
         public void run() {
             String lookupUrl = STROKE_PATH_LOOKUP_URL + unicodeNumber;
             HttpGet get = new HttpGet(lookupUrl);
+            get.addHeader("Cache-Control", "no-cache");
+            get.addHeader("Pragma", "no-cache");
             get.addHeader("Accept-Encoding", "gzip");
             get.addHeader("User-Agent", "gzip");
             get.addHeader("X-User-Agent",
