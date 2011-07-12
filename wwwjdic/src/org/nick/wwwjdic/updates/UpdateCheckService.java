@@ -55,6 +55,8 @@ public class UpdateCheckService extends IntentService {
                 .getUserAgentString());
 
         HttpGet get = new HttpGet(versionsUrl);
+        get.addHeader("Cache-Control", "no-cache");
+        get.addHeader("Pragma", "no-cache");
         try {
             Log.d(TAG, "getting latests versions info...");
             HttpResponse response = httpClient.execute(get);
