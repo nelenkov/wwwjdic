@@ -4,87 +4,122 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.HttpContext;
 import org.nick.wwwjdic.Constants;
-import org.nick.wwwjdic.GzipStringResponseHandler;
+import org.nick.wwwjdic.HttpClientFactory;
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.WebServiceBackedActivity;
-import org.nick.wwwjdic.WwwjdicApplication;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.utils.Analytics;
-import org.nick.wwwjdic.utils.StringUtils;
 
-import android.os.Build;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class SodActivity extends WebServiceBackedActivity implements
-        OnClickListener {
+public class SodActivity extends Activity implements OnClickListener {
 
-    private static final String HEADER_CACHE_CONTROL = "Cache-Control";
-    private static final String HEADER_PRAGMA = "Pragma";
-    private static final String NO_CACHE = "no-cache";
+    static class GetSodTask extends AsyncTask<String, Void, String> {
 
-    public static class SodHandler extends WsResultHandler {
+        private SodActivity sodActivity;
+        private boolean animate;
+        private HttpClient httpClient;
+        private ResponseHandler<String> responseHandler;
 
-        public SodHandler(SodActivity sodActivity) {
-            super(sodActivity);
+        GetSodTask(SodActivity sodActivity, boolean animate) {
+            this.sodActivity = sodActivity;
+            this.animate = animate;
+            this.httpClient = createHttpClient();
+            this.responseHandler = HttpClientFactory
+                    .createWwwjdicResponseHandler();
         }
 
-        @SuppressWarnings("unchecked")
+        private HttpClient createHttpClient() {
+            return HttpClientFactory.createSodHttpClient(WwwjdicPreferences
+                    .getSodServerTimeout(sodActivity));
+        }
+
         @Override
-        public void handleMessage(Message msg) {
-            final SodActivity sodActivity = (SodActivity) activity;
+        protected void onPreExecute() {
+            if (sodActivity == null) {
+                return;
+            }
 
-            switch (msg.what) {
-            case STROKE_PATH_MSG:
-                sodActivity.dismissProgressDialog();
+            String message = sodActivity.getResources().getString(
+                    R.string.getting_sod_info);
+            sodActivity.showProgressDialog(message);
+        }
 
-                if (msg.arg1 == 1) {
-                    final List<StrokePath> strokes = (List<StrokePath>) msg.obj;
-                    boolean animate = msg.arg2 == 1;
-                    if (strokes != null) {
-                        if (animate) {
-                            sodActivity.animate(strokes);
-                        } else {
-                            sodActivity.drawSod(strokes);
-                        }
+        @Override
+        protected String doInBackground(String... params) {
+            String unicodeNumber = params[0];
+            String lookupUrl = STROKE_PATH_LOOKUP_URL + unicodeNumber;
+            HttpGet get = new HttpGet(lookupUrl);
+
+            try {
+                String responseStr = httpClient.execute(get, responseHandler);
+                Log.d(TAG, "got SOD response: " + responseStr);
+
+                return responseStr;
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage(), e);
+
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (sodActivity == null) {
+                return;
+            }
+
+            sodActivity.dismissProgressDialog();
+            if (result != null) {
+                sodActivity.setStrokePathsStr(result);
+                StrokedCharacter character = parseWsReply(result);
+                if (character != null) {
+                    if (animate) {
+                        sodActivity.animate(character);
                     } else {
-                        Toast t = Toast.makeText(sodActivity, String.format(
-                                sodActivity.getString(R.string.no_sod_data),
-                                sodActivity.getKanji()), Toast.LENGTH_SHORT);
-                        t.show();
+                        sodActivity.drawSod(character);
                     }
                 } else {
-                    Toast t = Toast.makeText(sodActivity,
-                            R.string.getting_sod_data_failed,
-                            Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(sodActivity, String.format(
+                            sodActivity.getString(R.string.no_sod_data),
+                            sodActivity.getKanji()), Toast.LENGTH_SHORT);
                     t.show();
                 }
-                break;
-            default:
-                super.handleMessage(msg);
+            } else {
+                Toast t = Toast.makeText(sodActivity,
+                        R.string.getting_sod_data_failed, Toast.LENGTH_SHORT);
+                t.show();
             }
+        }
+
+        void attach(SodActivity sodActivity) {
+            this.sodActivity = sodActivity;
+        }
+
+        void detach() {
+            sodActivity = null;
         }
     }
 
     private static final String TAG = SodActivity.class.getSimpleName();
 
-    private static final int STROKE_PATH_MSG = 1;
-
     private static final String STROKE_PATH_LOOKUP_URL = "http://wwwjdic-android.appspot.com/kanji/";
 
     private static final String NOT_FOUND_STATUS = "not found";
+
+    private static final String EXTRA_RIGHT_STROKE_PATHS_STRING = "org.nick.recognizer.quiz.RIGHT_STROKE_PATHS_STRING";
+
+    private static final float KANJIVG_SIZE = 109f;
 
     private Button drawButton;
     private Button clearButton;
@@ -92,16 +127,19 @@ public class SodActivity extends WebServiceBackedActivity implements
 
     private StrokeOrderView strokeOrderView;
 
-    protected HttpContext localContext;
-    private HttpClient httpClient;
-
     private String unicodeNumber;
     private String kanji;
 
-    private List<StrokePath> strokes;
+    private StrokedCharacter character;
+    private String strokePathsStr;
+
+    private GetSodTask getSodTask;
+    private boolean isRotating = false;
+    private ProgressDialog progressDialog;
 
     @Override
-    protected void activityOnCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.sod);
 
@@ -111,7 +149,6 @@ public class SodActivity extends WebServiceBackedActivity implements
         clearButton.setOnClickListener(this);
         animateButton.setOnClickListener(this);
 
-        httpClient = createHttpClient();
         unicodeNumber = getIntent().getExtras().getString(
                 Constants.KANJI_UNICODE_NUMBER);
         kanji = getIntent().getExtras().getString(Constants.KANJI_GLYPH);
@@ -119,7 +156,31 @@ public class SodActivity extends WebServiceBackedActivity implements
         String message = getResources().getString(R.string.sod_for);
         setTitle(String.format(message, kanji));
 
-        drawSod();
+        getSodTask = (GetSodTask) getLastNonConfigurationInstance();
+        if (getSodTask != null) {
+            getSodTask.attach(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (getSodTask != null && !isRotating) {
+            getSodTask.cancel(true);
+            getSodTask = null;
+        }
+    }
+
+    @Override
+    public Object onRetainNonConfigurationInstance() {
+        isRotating = true;
+
+        if (getSodTask != null) {
+            getSodTask.detach();
+        }
+
+        return getSodTask;
     }
 
     @Override
@@ -129,6 +190,14 @@ public class SodActivity extends WebServiceBackedActivity implements
         Analytics.startSession(this);
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        drawSod();
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -136,38 +205,45 @@ public class SodActivity extends WebServiceBackedActivity implements
         Analytics.endSession(this);
     }
 
-    public void drawSod(List<StrokePath> strokes) {
-        this.strokes = new ArrayList<StrokePath>(strokes);
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
 
-        strokeOrderView.setStrokePaths(strokes);
+        if (savedInstanceState != null) {
+            strokePathsStr = savedInstanceState
+                    .getString(EXTRA_RIGHT_STROKE_PATHS_STRING);
+            character = parseWsReply(strokePathsStr);
+            if (character != null) {
+                strokeOrderView.setCharacter(character);
+                strokeOrderView.invalidate();
+            }
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString(EXTRA_RIGHT_STROKE_PATHS_STRING, strokePathsStr);
+    }
+
+    void drawSod(StrokedCharacter character) {
+        this.character = character;
+
+        strokeOrderView.setCharacter(character);
         strokeOrderView.setAnnotateStrokes(true);
         strokeOrderView.invalidate();
 
     }
 
-    public void animate(final List<StrokePath> strokes) {
-        this.strokes = new ArrayList<StrokePath>(strokes);
+    void animate(StrokedCharacter character) {
+        this.character = character;
 
         int animationDelay = WwwjdicPreferences.getStrokeAnimationDelay(this);
         strokeOrderView.setAnimationDelayMillis(animationDelay);
-        strokeOrderView.setStrokePaths(strokes);
+        strokeOrderView.setCharacter(character);
         strokeOrderView.setAnnotateStrokes(true);
         strokeOrderView.startAnimation();
-    }
-
-    @Override
-    protected WsResultHandler createHandler() {
-        return new SodHandler(this);
-    }
-
-    private HttpClient createHttpClient() {
-        HttpClient result = new DefaultHttpClient();
-        HttpParams httpParams = result.getParams();
-        int timeout = WwwjdicPreferences.getSodServerTimeout(this);
-        HttpConnectionParams.setConnectionTimeout(httpParams, timeout);
-        HttpConnectionParams.setSoTimeout(httpParams, timeout);
-
-        return result;
     }
 
     private void findViews() {
@@ -195,84 +271,37 @@ public class SodActivity extends WebServiceBackedActivity implements
         }
     }
 
-    class GetStrokePathTask implements Runnable {
-
-        private String unicodeNumber;
-        private boolean animate;
-
-        private Handler handler;
-        private HttpClient httpClient;
-
-        public GetStrokePathTask(String unicodeNumber, boolean animate,
-                HttpClient httpClient, Handler handler) {
-            this.unicodeNumber = unicodeNumber;
-            this.animate = animate;
-            this.handler = handler;
-            this.httpClient = httpClient;
-        }
-
-        public void run() {
-            String lookupUrl = STROKE_PATH_LOOKUP_URL + unicodeNumber;
-            HttpGet get = new HttpGet(lookupUrl);
-            get.addHeader(HEADER_CACHE_CONTROL, NO_CACHE);
-            get.addHeader(HEADER_PRAGMA, NO_CACHE);
-            get.addHeader("Accept-Encoding", "gzip");
-            get.addHeader("User-Agent", "gzip");
-            get.addHeader("X-User-Agent",
-                    WwwjdicApplication.getUserAgentString());
-            get.addHeader("X-Device-Version", getDeviceVersionStr());
-
-            try {
-                String responseStr = httpClient.execute(get,
-                        new GzipStringResponseHandler(), localContext);
-                Log.d(TAG, "got SOD response: " + responseStr);
-
-                List<StrokePath> strokes = parseWsReply(responseStr);
-                Message msg = handler.obtainMessage(STROKE_PATH_MSG, strokes);
-                msg.arg1 = 1;
-                msg.arg2 = animate ? 1 : 0;
-                handler.sendMessage(msg);
-            } catch (Exception e) {
-                Message msg = handler.obtainMessage(STROKE_PATH_MSG);
-                msg.arg1 = 0;
-                handler.sendMessage(msg);
-                Log.e(TAG, e.getMessage(), e);
-            }
-        }
-
-        private String getDeviceVersionStr() {
-            return String.format("%s/%s", Build.MODEL, Build.VERSION.RELEASE);
-        }
-    }
-
     private void drawSod() {
         Analytics.event("drawSod", this);
 
-        if (strokes == null) {
-            Runnable getStrokesTask = new GetStrokePathTask(unicodeNumber,
-                    false, httpClient, handler);
-            submitWsTask(getStrokesTask,
-                    getResources().getString(R.string.getting_sod_info));
+        if (character == null) {
+            getStrokes();
         } else {
-            drawSod(strokes);
+            drawSod(character);
         }
+    }
+
+    private void getStrokes() {
+        if (getSodTask != null) {
+            getSodTask.cancel(true);
+        }
+        getSodTask = new GetSodTask(this, false);
+        getSodTask.execute(unicodeNumber);
     }
 
     private void animate() {
         Analytics.event("animateSod", this);
 
-        if (strokes == null) {
-            Runnable getStrokesTask = new GetStrokePathTask(unicodeNumber,
-                    true, httpClient, handler);
-            submitWsTask(getStrokesTask,
-                    getResources().getString(R.string.getting_sod_info));
+        if (character == null) {
+            getStrokes();
         } else {
-            animate(strokes);
+            animate(character);
         }
     }
 
-    private List<StrokePath> parseWsReply(String reply) {
-        if (StringUtils.isEmpty(reply)) {
+    private static List<StrokePath> parseWsReplyStrokes(String reply) {
+        if (reply == null || "".equals(reply)) {
+
             return null;
         }
 
@@ -294,12 +323,39 @@ public class SodActivity extends WebServiceBackedActivity implements
         return result;
     }
 
-    public String getUnicodeNumber() {
-        return unicodeNumber;
+    private static StrokedCharacter parseWsReply(String reply) {
+        List<StrokePath> strokes = parseWsReplyStrokes(reply);
+        if (strokes == null) {
+            return null;
+        }
+
+        StrokedCharacter result = new StrokedCharacter(strokes, KANJIVG_SIZE,
+                KANJIVG_SIZE);
+
+        return result;
     }
 
-    public String getKanji() {
+    String getKanji() {
         return kanji;
     }
 
+    String getStrokePathsStr() {
+        return strokePathsStr;
+    }
+
+    void setStrokePathsStr(String strokePathsStr) {
+        this.strokePathsStr = strokePathsStr;
+    }
+
+    void showProgressDialog(String message) {
+        progressDialog = ProgressDialog.show(this, "", message, true);
+    }
+
+    void dismissProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()
+                && !isFinishing()) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+    }
 }

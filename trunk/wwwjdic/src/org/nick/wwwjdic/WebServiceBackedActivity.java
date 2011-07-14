@@ -61,9 +61,13 @@ public abstract class WebServiceBackedActivity extends Activity {
     protected abstract WsResultHandler createHandler();
 
     protected void submitWsTask(Runnable task, String message) {
-        progressDialog = ProgressDialog.show(this, "", message, true);
+        showProgressDialog(message);
         ExecutorService executorService = getApp().getExecutorService();
         activeWsRequest = executorService.submit(task);
+    }
+
+    public void showProgressDialog(String message) {
+        progressDialog = ProgressDialog.show(this, "", message, true);
     }
 
     public void dismissProgressDialog() {

@@ -30,6 +30,10 @@ public class StrokePath {
 
     private PointF moveTo;
     private List<Curve> curves = new ArrayList<Curve>();
+    private Path strokePath;
+    private boolean pathScaled = false;
+    private float translationDx = -1;
+    private float translationDy = -1;
 
     private Paint strokePaint;
     private Paint strokeAnnotationPaint;
@@ -40,6 +44,10 @@ public class StrokePath {
     public StrokePath(PointF moveTo) {
         this.moveTo = moveTo;
 
+        initPaints();
+    }
+
+    private void initPaints() {
         strokePaint = new Paint();
         strokePaint.setColor(Color.WHITE);
         strokePaint.setStyle(Style.STROKE);
@@ -65,94 +73,72 @@ public class StrokePath {
         return curves;
     }
 
-    public void draw(final Canvas canvas, final float scale, int strokeNum,
-            boolean annotate) {
-        Path path = new Path();
-        path.moveTo(moveTo.x, moveTo.y);
-        path.setFillType(FillType.WINDING);
-
-        PointF firstPoint = moveTo;
-        PointF lastPoint = moveTo;
-        PointF lastP2 = null;
-
+    public void draw(final Canvas canvas, final float scale, float dx,
+            float dy, int strokeNum, boolean annotate) {
         Matrix matrix = new Matrix();
-        matrix.postScale(scale, scale);
 
-        float[] cs = new float[2];
-        cs[0] = firstPoint.x;
-        cs[1] = firstPoint.y;
-        matrix.mapPoints(cs);
+        if (strokePath != null) {
+            boolean needsScaling = !pathScaled;
+            if (needsScaling) {
+                matrix.postScale(scale, scale);
+                pathScaled = true;
+            }
+            if (needsTranslation(dx, dy)) {
+                matrix.postTranslate(dx, dy);
+                translationDx = dx;
+                translationDy = dy;
+            }
 
-        // canvas.drawCircle(cs[0], cs[1], 2, paint);
+            transformMoveTo(matrix);
 
-        if (annotate) {
-            String strokeNumStr = Integer.toString(strokeNum);
-            canvas.drawText(strokeNumStr, cs[0] + 7, cs[1] - 9,
-                    strokeAnnotationPaint);
+            strokePath.transform(matrix);
+
+            if (annotate) {
+                annotate(canvas, strokeNum);
+            }
+
+        } else {
+            strokePath = curvesToPath();
+
+            matrix.postScale(scale, scale);
+            matrix.postTranslate(dx, dy);
+
+            transformMoveTo(matrix);
+            strokePath.transform(matrix);
+
+            pathScaled = true;
+            translationDx = dx;
+            translationDy = dy;
+
+            if (annotate) {
+                annotate(canvas, strokeNum);
+            }
         }
 
-        int idx = 0;
-        for (Curve c : curves) {
-            PointF p1 = null;
-            PointF p2 = null;
-            PointF p3 = null;
-
-            if (c.isRelative()) {
-                p1 = calcAbsolute(lastPoint, c.getP1());
-                p2 = calcAbsolute(lastPoint, c.getP2());
-                p3 = calcAbsolute(lastPoint, c.getP3());
-            } else {
-                p1 = c.getP1();
-                p2 = c.getP2();
-                p3 = c.getP3();
-            }
-
-            if (c.isSmooth()) {
-                p1 = calcReflectionRelToCurrent(lastP2, lastPoint);
-            }
-
-            path.cubicTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
-
-            if (c.isRelative()) {
-                lastP2 = new PointF(lastPoint.x + c.getP2().x, lastPoint.y
-                        + c.getP2().y);
-                lastPoint = new PointF(lastPoint.x + c.getP3().x, lastPoint.y
-                        + c.getP3().y);
-            } else {
-                lastPoint = c.getP3();
-                lastP2 = c.getP2();
-            }
-            idx++;
-        }
-
-        path.transform(matrix);
-        canvas.drawPath(path, strokePaint);
+        canvas.drawPath(strokePath, strokePaint);
     }
 
-    private Path getStrokePath(float scale) {
+
+    private void transformMoveTo(Matrix matrix) {
+        float[] cs = new float[2];
+        cs[0] = moveTo.x;
+        cs[1] = moveTo.y;
+        matrix.mapPoints(cs);
+        moveTo.x = cs[0];
+        moveTo.y = cs[1];
+    }
+
+    private boolean needsTranslation(float dx, float dy) {
+        return dx != 0 && dy != 0 && dx != translationDx || dy != translationDy;
+    }
+
+    private Path curvesToPath() {
         Path path = new Path();
         path.moveTo(moveTo.x, moveTo.y);
         path.setFillType(FillType.WINDING);
 
-        PointF firstPoint = moveTo;
         PointF lastPoint = moveTo;
         PointF lastP2 = null;
-
-        Matrix matrix = new Matrix();
-        matrix.postScale(scale, scale);
-
-        float[] cs = new float[2];
-        cs[0] = firstPoint.x;
-        cs[1] = firstPoint.y;
-        matrix.mapPoints(cs);
-
-        // canvas.drawCircle(cs[0], cs[1], 2, paint);
-
-        //        if (annotate) {
-        //            String strokeNumStr = Integer.toString(strokeNum);
-        //            canvas.drawText(strokeNumStr, cs[0] + 7, cs[1] - 9,
-        //                    strokeAnnotationPaint);
-        //        }
 
         int idx = 0;
         for (Curve c : curves) {
@@ -187,21 +173,46 @@ public class StrokePath {
             }
             idx++;
         }
-
-        path.transform(matrix);
-
         return path;
     }
 
-    public void segmentStroke(float segmentLength, float scale) {
+    private void annotate(final Canvas canvas, int strokeNum) {
+        float x = moveTo.x;
+        float y = moveTo.y;
+
+        String strokeNumStr = Integer.toString(strokeNum);
+        canvas.drawText(strokeNumStr, x + 7, y - 9, strokeAnnotationPaint);
+    }
+
+    private Path getStrokePath(float scale) {
+        Matrix matrix = new Matrix();
+
+        if (strokePath != null) {
+            if (!pathScaled) {
+                matrix.postScale(scale, scale);
+                strokePath.transform(matrix);
+                pathScaled = true;
+            }
+        } else {
+            strokePath = curvesToPath();
+            matrix.postScale(scale, scale);
+            strokePath.transform(matrix);
+            pathScaled = true;
+        }
+
+        return strokePath;
+    }
+
+    public void segmentStroke(float segmentLength, float scale, float dx,
+            float dy) {
         Path path = getStrokePath(scale);
 
-        segments = segmentPath(path, segmentLength, scale);
+        segments = segmentPath(path, segmentLength, scale, dx, dy);
         currentSegment = 0;
     }
 
-    private static List<Path> segmentPath(Path path, float segmentLength,
-            float scale) {
+    private List<Path> segmentPath(Path path, float segmentLength, float scale,
+            float dx, float dy) {
         PathMeasure pm = new PathMeasure(path, false);
         float length = pm.getLength();
 
@@ -217,6 +228,13 @@ public class StrokePath {
 
             Path segment = new Path();
             pm.getSegment(start, end, segment, true);
+            if (needsTranslation(dx, dy)) {
+                Matrix matrix = new Matrix();
+                matrix.postTranslate(dx, dy);
+                segment.transform(matrix);
+                translationDx = dx;
+                translationDy = dy;
+            }
             segments.add(segment);
             start += delta;
         }
@@ -407,6 +425,10 @@ public class StrokePath {
     }
 
     public void drawSegments(Canvas canvas) {
+        if (segments.isEmpty()) {
+            return;
+        }
+
         Path linkedPath = new Path();
         for (int i = 0; i <= currentSegment; i++) {
             Path segment = segments.get(i);
@@ -414,4 +436,28 @@ public class StrokePath {
         }
         canvas.drawPath(linkedPath, strokePaint);
     }
+
+    public Path getStrokePath() {
+        if (strokePath == null) {
+            strokePath = curvesToPath();
+        }
+
+        return strokePath;
+    }
+
+    public void setStrokePath(Path strokePath) {
+        this.strokePath = strokePath;
+    }
+
+    public void reset() {
+        strokePath = null;
+        pathScaled = false;
+        translationDx = -1;
+        translationDy = -1;
+    }
+
+    public boolean isScaled() {
+        return pathScaled;
+    }
+
 }

@@ -1,6 +1,5 @@
 package org.nick.wwwjdic.sod;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -9,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -18,20 +18,17 @@ public class StrokeOrderView extends View {
 
     private static final float OUTLINE_WIDTH = 2f;
 
-    private static final float KANJIVG_SIZE = 109f;
-
     private Paint outlinePaint;
 
     private boolean annotateStrokes = true;
 
-    private List<StrokePath> strokePaths;
+    private StrokedCharacter character;
 
     private int animationDelayMillis;
 
     private long lastTick = 0;
 
     private boolean animate = false;
-    private boolean isSegmented = false;
 
     public StrokeOrderView(Context context) {
         super(context);
@@ -53,39 +50,64 @@ public class StrokeOrderView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Rect r = new Rect();
-        getDrawingRect(r);
+        drawOutline(canvas);
 
-        canvas.drawRect(r, outlinePaint);
-
-        if (strokePaths != null) {
+        if (character != null && character.hasStrokes()) {
             drawStrokePaths(canvas, annotateStrokes);
         }
+    }
+
+    private void drawOutline(Canvas canvas) {
+        Rect r = new Rect();
+        getDrawingRect(r);
+        r.top += 2;
+        outlinePaint.setPathEffect(null);
+        canvas.drawRect(r, outlinePaint);
     }
 
     private void drawStrokePaths(Canvas canvas, boolean annotate) {
         int strokeNum = 1;
 
+        float scale = 1;
+        float dx = 0;
+        float dy = 0;
+
         int width = getWidth();
         int height = getHeight();
+
         int dimension = Math.min(width, height);
+        if (!character.isTransformed()) {
 
-        float scale = dimension / KANJIVG_SIZE;
-        float kanjiSize = scale * KANJIVG_SIZE;
+            float originalDimension = character.getDimension();
+            scale = dimension / originalDimension;
 
-        float dx = (width - kanjiSize) / 2;
-        float dy = (height - kanjiSize) / 2;
-        canvas.translate(dx, dy);
+            RectF scaledBounds = character.getScaledBounds(scale);
+
+            RectF r = new RectF(0, 0, width, height);
+            dx = Math.abs(r.centerX() - scaledBounds.centerX());
+            dy = Math.abs(r.centerY() - scaledBounds.centerY());
+            if (r.centerX() < scaledBounds.centerX()) {
+                dx *= -1;
+            }
+            if (r.centerY() < scaledBounds.centerY()) {
+                dy *= -1;
+            }
+
+            character.setCanvasWidth(Float.valueOf(width));
+            character.setCanvasHeight(Float.valueOf(height));
+            character.setTransformed(true);
+        }
 
         if (!animate) {
+            List<StrokePath> strokePaths = character.getStrokes();
             for (StrokePath sp : strokePaths) {
-                sp.draw(canvas, scale, strokeNum, annotate);
+                sp.draw(canvas, scale, dx, dy, strokeNum, annotate);
                 strokeNum++;
             }
             return;
         }
 
-        segmentStrokes(scale);
+        character.segmentStrokes(scale, dx, dy, SEGMENT_LENGTH);
 
         boolean advance = false;
         long time = (System.currentTimeMillis() - lastTick);
@@ -94,10 +116,11 @@ public class StrokeOrderView extends View {
             advance = true;
         }
 
+        List<StrokePath> strokePaths = character.getStrokes();
         for (int i = 0; i < strokePaths.size(); i++) {
             StrokePath sp = strokePaths.get(i);
             if (sp.isFullyDrawn()) {
-                sp.draw(canvas, scale, strokeNum, annotate);
+                sp.draw(canvas, scale, dx, dy, strokeNum, annotate);
                 strokeNum++;
 
                 // all strokes drawn, stop animating
@@ -116,24 +139,13 @@ public class StrokeOrderView extends View {
         postInvalidate();
     }
 
-    private void segmentStrokes(float scale) {
-        if (!isSegmented) {
-            for (StrokePath sp : strokePaths) {
-                sp.segmentStroke(SEGMENT_LENGTH, scale);
-            }
-            isSegmented = true;
-        }
-    }
-
     public void clear() {
-        if (strokePaths != null) {
-            strokePaths.clear();
-
+        if (character != null) {
+            character = null;
         }
         lastTick = 0;
 
         animate = false;
-        isSegmented = false;
         invalidate();
     }
 
@@ -145,12 +157,20 @@ public class StrokeOrderView extends View {
         this.annotateStrokes = annotateStrokes;
     }
 
-    public List<StrokePath> getStrokePaths() {
-        return strokePaths;
+    public StrokedCharacter getCharacter() {
+        return character;
     }
 
-    public void setStrokePaths(List<StrokePath> strokePaths) {
-        this.strokePaths = new ArrayList<StrokePath>(strokePaths);
+    public void setCharacter(StrokedCharacter character) {
+        this.character = character;
+    }
+
+    public List<StrokePath> getStrokePaths() {
+        if (character == null) {
+            return null;
+        }
+
+        return character.getStrokes();
     }
 
     public int getAnimationDelayMillis() {
@@ -163,10 +183,9 @@ public class StrokeOrderView extends View {
 
     public void startAnimation() {
         animate = true;
-        isSegmented = false;
         lastTick = 0;
-        for (StrokePath sp : strokePaths) {
-            sp.resetSegments();
+        if (character != null) {
+            character.resetSegments();
         }
         invalidate();
     }
