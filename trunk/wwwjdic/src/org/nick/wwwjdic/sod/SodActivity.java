@@ -31,6 +31,10 @@ import android.widget.Toast;
 public class SodActivity extends WebServiceBackedActivity implements
         OnClickListener {
 
+    private static final String HEADER_CACHE_CONTROL = "Cache-Control";
+    private static final String HEADER_PRAGMA = "Pragma";
+    private static final String NO_CACHE = "no-cache";
+
     public static class SodHandler extends WsResultHandler {
 
         public SodHandler(SodActivity sodActivity) {
@@ -210,8 +214,8 @@ public class SodActivity extends WebServiceBackedActivity implements
         public void run() {
             String lookupUrl = STROKE_PATH_LOOKUP_URL + unicodeNumber;
             HttpGet get = new HttpGet(lookupUrl);
-            get.addHeader("Cache-Control", "no-cache");
-            get.addHeader("Pragma", "no-cache");
+            get.addHeader(HEADER_CACHE_CONTROL, NO_CACHE);
+            get.addHeader(HEADER_PRAGMA, NO_CACHE);
             get.addHeader("Accept-Encoding", "gzip");
             get.addHeader("User-Agent", "gzip");
             get.addHeader("X-User-Agent",

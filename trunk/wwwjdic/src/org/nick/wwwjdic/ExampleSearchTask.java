@@ -94,16 +94,15 @@ public class ExampleSearchTask extends SearchTask<ExampleSentence> {
             NameValuePair pair = new BasicNameValuePair("exsrchstr",
                     searchString);
             pairs.add(pair);
-            pair = new BasicNameValuePair("exsrchnum", Integer
-                    .toString(maxNumExamples));
+            pair = new BasicNameValuePair("exsrchnum",
+                    Integer.toString(maxNumExamples));
             pairs.add(pair);
 
             UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs,
                     "EUC-JP");
             post.setEntity(formEntity);
 
-            GzipStringResponseHandler handler = new GzipStringResponseHandler();
-            String responseStr = httpclient.execute(post, handler);
+            String responseStr = httpclient.execute(post, responseHandler);
 
             return responseStr;
         } catch (IOException e) {

@@ -82,9 +82,6 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
             Log.d(TAG, "WWWJDIC URL: " + lookupUrl);
 
             HttpGet get = new HttpGet(lookupUrl);
-            get.addHeader("Cache-Control", "no-cache");
-            get.addHeader("Pragma", "no-cache");
-
             String responseStr = httpclient.execute(get, responseHandler,
                     localContext);
 

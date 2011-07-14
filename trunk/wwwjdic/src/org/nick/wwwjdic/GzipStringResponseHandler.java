@@ -32,18 +32,19 @@ public class GzipStringResponseHandler implements ResponseHandler<String> {
         String responseStr = null;
         if (contentEncoding != null
                 && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
-            GZIPInputStream gz = new GZIPInputStream(entity.getContent());
-            try {
-            ByteArrayOutputStream arr = new ByteArrayOutputStream();
-            byte[] buff = new byte[1024];
-            int len;
-            while ((len = gz.read(buff)) > 0) {
-                arr.write(buff, 0, len);
-            }
+            GZIPInputStream is = new GZIPInputStream(entity.getContent());
 
-            responseStr = new String(arr.toByteArray(), "UTF-8");
+            try {
+                ByteArrayOutputStream arr = new ByteArrayOutputStream();
+                byte[] buff = new byte[1024];
+                int len;
+                while ((len = is.read(buff)) > 0) {
+                    arr.write(buff, 0, len);
+                }
+
+                responseStr = new String(arr.toByteArray(), "UTF-8");
             } finally {
-                gz.close();
+                is.close();
             }
         } else {
             if (entity != null) {
