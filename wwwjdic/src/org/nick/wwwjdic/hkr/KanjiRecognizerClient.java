@@ -27,6 +27,7 @@ public class KanjiRecognizerClient extends EntityBasedHttpClient {
         super(endpoint, timeout);
     }
 
+    @Override
     protected HttpParams createHttpParams(int timeout) {
         HttpParams params = super.createHttpParams(timeout);
         HttpProtocolParams.setUseExpectContinue(params, false);

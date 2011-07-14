@@ -16,16 +16,12 @@ import java.util.regex.Pattern;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.nick.wwwjdic.GzipStringResponseHandler;
+import org.nick.wwwjdic.HttpClientFactory;
 import org.nick.wwwjdic.JlptLevels;
 import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.WwwjdicApplication;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.utils.StringUtils;
 
@@ -62,8 +58,16 @@ public class GetKanjiService extends Service {
 
     private final Executor executor = Executors.newSingleThreadExecutor();
 
+    private HttpClient httpclient;
+    private ResponseHandler<String> responseHandler;
+
     @Override
     public void onStart(Intent intent, int startId) {
+        httpclient = HttpClientFactory
+                .createWwwjdicHttpClient(WwwjdicPreferences
+                        .getWwwjdicTimeoutSeconds(this) * 1000);
+        responseHandler = HttpClientFactory.createWwwjdicResponseHandler();
+
         executor.execute(new GetKanjiTask());
     }
 
@@ -131,9 +135,6 @@ public class GetKanjiService extends Service {
             KodWidgetProvider.showLoading(this, views);
             updateKodWidgets(this, views);
 
-            HttpClient client = createHttpClient(
-                    WwwjdicPreferences.getWwwjdicUrl(this),
-                    WwwjdicPreferences.getWwwjdicTimeoutSeconds(this) * 1000);
             String unicodeCp = selectKanji(context);
             Log.d(TAG, "KOD Unicode CP: " + unicodeCp);
             String backdoorCode = generateBackdoorCode(unicodeCp);
@@ -142,7 +143,7 @@ public class GetKanjiService extends Service {
 
             for (int i = 0; i < NUM_RETRIES; i++) {
                 try {
-                    wwwjdicResponse = query(client,
+                    wwwjdicResponse = query(
                             WwwjdicPreferences.getWwwjdicUrl(this),
                             backdoorCode);
                     if (wwwjdicResponse != null) {
@@ -217,29 +218,12 @@ public class GetKanjiService extends Service {
         return unicodeCp;
     }
 
-    private HttpClient createHttpClient(String url, int timeoutMillis) {
-        Log.d(TAG, "WWWJDIC URL: " + url);
-        Log.d(TAG, "HTTP timeout: " + timeoutMillis);
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpParams httpParams = httpclient.getParams();
-        HttpConnectionParams.setConnectionTimeout(httpParams, timeoutMillis);
-        HttpConnectionParams.setSoTimeout(httpParams, timeoutMillis);
-        HttpProtocolParams.setUserAgent(httpParams,
-                WwwjdicApplication.getUserAgentString());
-
-        return httpclient;
-    }
-
-    private String query(HttpClient httpclient, String url, String backdoorCode) {
+    private String query(String url, String backdoorCode) {
         try {
             String lookupUrl = String.format("%s?%s", url, backdoorCode);
             HttpGet get = new HttpGet(lookupUrl);
-            get.addHeader("Cache-Control", "no-cache");
-            get.addHeader("Pragma", "no-cache");
 
-            GzipStringResponseHandler responseHandler = new GzipStringResponseHandler();
             String responseStr = httpclient.execute(get, responseHandler);
-            // localContext);
 
             return responseStr;
         } catch (ClientProtocolException cpe) {

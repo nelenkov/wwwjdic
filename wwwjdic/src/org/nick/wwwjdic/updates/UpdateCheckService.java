@@ -27,6 +27,10 @@ public class UpdateCheckService extends IntentService {
     private static final String VERSIONS_URL_KEY = "versions-url";
     private static final String MARKET_NAME_KEY = "market-name";
 
+    private static final String HEADER_CACHE_CONTROL = "Cache-Control";
+    private static final String HEADER_PRAGMA = "Pragma";
+    private static final String NO_CACHE = "no-cache";
+
     private String versionsUrl;
     private String marketName;
 
@@ -55,8 +59,9 @@ public class UpdateCheckService extends IntentService {
                 .getUserAgentString());
 
         HttpGet get = new HttpGet(versionsUrl);
-        get.addHeader("Cache-Control", "no-cache");
-        get.addHeader("Pragma", "no-cache");
+        get.addHeader(HEADER_CACHE_CONTROL, NO_CACHE);
+        get.addHeader(HEADER_PRAGMA, NO_CACHE);
+
         try {
             Log.d(TAG, "getting latests versions info...");
             HttpResponse response = httpClient.execute(get);

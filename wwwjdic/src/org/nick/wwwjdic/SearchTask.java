@@ -4,10 +4,6 @@ import java.util.List;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HttpContext;
 
 import android.util.Log;
@@ -24,7 +20,7 @@ public abstract class SearchTask<T> implements Runnable {
 
     protected HttpContext localContext;
     protected HttpClient httpclient;
-    protected ResponseHandler<String> responseHandler = new GzipStringResponseHandler();
+    protected ResponseHandler<String> responseHandler;
 
     public SearchTask(String url, int timeoutSeconds,
             ResultListView<T> resultView, WwwjdicQuery query) {
@@ -33,18 +29,8 @@ public abstract class SearchTask<T> implements Runnable {
         this.resultListView = resultView;
         this.query = query;
 
-        createHttpClient();
-    }
-
-    private void createHttpClient() {
-        Log.d(TAG, "WWWJDIC URL: " + url);
-        Log.d(TAG, "HTTP timeout: " + timeoutMillis);
-        httpclient = new DefaultHttpClient();
-        HttpParams httpParams = httpclient.getParams();
-        HttpConnectionParams.setConnectionTimeout(httpParams, timeoutMillis);
-        HttpConnectionParams.setSoTimeout(httpParams, timeoutMillis);
-        HttpProtocolParams.setUserAgent(httpParams, WwwjdicApplication
-                .getUserAgentString());
+        httpclient = HttpClientFactory.createWwwjdicHttpClient(timeoutMillis);
+        responseHandler = HttpClientFactory.createWwwjdicResponseHandler();
     }
 
     public void run() {
