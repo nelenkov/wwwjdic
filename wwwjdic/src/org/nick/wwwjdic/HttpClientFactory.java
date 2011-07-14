@@ -23,11 +23,9 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
-import android.util.Log;
+import android.os.Build;
 
 public class HttpClientFactory {
-
-    private static final String TAG = HttpClientFactory.class.getSimpleName();
 
     private static final String HEADER_ACCEPT_ENCODING = "Accept-Encoding";
     private static final String ENCODING_GZIP = "gzip";
@@ -40,29 +38,52 @@ public class HttpClientFactory {
     }
 
     public static HttpClient createWwwjdicHttpClient(int timeoutMillis) {
-        Log.d(TAG, "HTTP timeout: " + timeoutMillis);
+        DefaultHttpClient result = createDefaultClient(timeoutMillis);
+        result.addRequestInterceptor(new HttpRequestInterceptor() {
+            public void process(HttpRequest request, HttpContext context) {
+                addWwwjdicHeaders(request);
+            }
+        });
+        addGzipInterceptor(result);
 
+        return result;
+    }
+
+    public static HttpClient createSodHttpClient(int timeoutMillis) {
+        DefaultHttpClient result = createDefaultClient(timeoutMillis);
+        result.addRequestInterceptor(new HttpRequestInterceptor() {
+            public void process(HttpRequest request, HttpContext context) {
+                addWwwjdicHeaders(request);
+                addSodHeaders(request);
+            }
+        });
+        addGzipInterceptor(result);
+
+        return result;
+    }
+
+    protected static void addSodHeaders(HttpRequest request) {
+        request.addHeader("User-Agent", "gzip");
+        request.addHeader("X-User-Agent",
+                WwwjdicApplication.getUserAgentString());
+        request.addHeader("X-Device-Version", getDeviceVersionStr());
+    }
+
+    private static String getDeviceVersionStr() {
+        return String.format("%s/%s", Build.MODEL, Build.VERSION.RELEASE);
+    }
+
+    private static DefaultHttpClient createDefaultClient(int timeoutMillis) {
         DefaultHttpClient result = new DefaultHttpClient();
         HttpParams httpParams = result.getParams();
         HttpConnectionParams.setConnectionTimeout(httpParams, timeoutMillis);
         HttpConnectionParams.setSoTimeout(httpParams, timeoutMillis);
         HttpProtocolParams.setUserAgent(httpParams,
                 WwwjdicApplication.getUserAgentString());
+        return result;
+    }
 
-        result.addRequestInterceptor(new HttpRequestInterceptor() {
-            public void process(HttpRequest request, HttpContext context) {
-                if (!request.containsHeader(HEADER_ACCEPT_ENCODING)) {
-                    request.addHeader(HEADER_ACCEPT_ENCODING, ENCODING_GZIP);
-                }
-                if (!request.containsHeader(HEADER_CACHE_CONTROL)) {
-                    request.addHeader(HEADER_CACHE_CONTROL, NO_CACHE);
-                }
-                if (!request.containsHeader(HEADER_PRAGMA)) {
-                    request.addHeader(HEADER_PRAGMA, NO_CACHE);
-                }
-            }
-        });
-
+    private static void addGzipInterceptor(DefaultHttpClient result) {
         result.addResponseInterceptor(new HttpResponseInterceptor() {
             public void process(HttpResponse response, HttpContext context) {
                 // Inflate any responses compressed with gzip
@@ -79,12 +100,22 @@ public class HttpClientFactory {
                 }
             }
         });
-
-        return result;
     }
 
     public static ResponseHandler<String> createWwwjdicResponseHandler() {
         return new StringResponseHandler();
+    }
+
+    private static void addWwwjdicHeaders(HttpRequest request) {
+        if (!request.containsHeader(HEADER_ACCEPT_ENCODING)) {
+            request.addHeader(HEADER_ACCEPT_ENCODING, ENCODING_GZIP);
+        }
+        if (!request.containsHeader(HEADER_CACHE_CONTROL)) {
+            request.addHeader(HEADER_CACHE_CONTROL, NO_CACHE);
+        }
+        if (!request.containsHeader(HEADER_PRAGMA)) {
+            request.addHeader(HEADER_PRAGMA, NO_CACHE);
+        }
     }
 
     static class InflatingEntity extends HttpEntityWrapper {
