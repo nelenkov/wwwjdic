@@ -54,8 +54,6 @@ public class CropImage extends MonitoredActivity {
 
     private static final String TAG = CropImage.class.getSimpleName();
 
-    // private static final String TAG = "CropImage";
-
     private static final boolean RECYCLE_INPUT = true;
 
     private int mAspectX, mAspectY;
