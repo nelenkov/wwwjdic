@@ -226,7 +226,9 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                                 }
                             });
             AlertDialog dialog = builder.create();
-            dialog.show();
+            if (!activity.isFinishing()) {
+                dialog.show();
+            }
         }
 
         private void showInstallKrDialog() {
