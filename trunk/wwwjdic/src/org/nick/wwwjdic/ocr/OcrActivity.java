@@ -321,6 +321,19 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
     private void crop() {
         try {
+            if (!tempFileExists()) {
+                String path = "";
+                if (imageCaptureUri != null) {
+                    path = new File(imageCaptureUri.getPath())
+                            .getAbsolutePath();
+                }
+                Log.w(TAG, "temp file does not exist: " + path);
+                Toast.makeText(
+                        this,
+                        getResources().getString(R.string.read_picture_error,
+                                path), Toast.LENGTH_SHORT).show();
+            }
+
             Intent intent = new Intent(this, CropImage.class);
             Bundle extras = new Bundle();
             // if we want to scale
@@ -408,6 +421,16 @@ public class OcrActivity extends WebServiceBackedActivity implements
             boolean deleted = f.delete();
             Log.d(TAG, "deleted: " + deleted);
         }
+    }
+
+    private boolean tempFileExists() {
+        if (imageCaptureUri == null) {
+            return false;
+        }
+
+        File f = new File(imageCaptureUri.getPath());
+
+        return f.exists();
     }
 
     private Bitmap convertToGrayscale(Bitmap bitmap) {
