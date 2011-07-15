@@ -137,9 +137,13 @@ public abstract class ResultListViewBase<T> extends ListActivity implements
     }
 
     protected void dismissProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-            progressDialog = null;
+        try {
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        } catch (Throwable t) {
+            Log.w(TAG, "error dismissing progress dialog: " + t.getMessage(), t);
         }
     }
 
