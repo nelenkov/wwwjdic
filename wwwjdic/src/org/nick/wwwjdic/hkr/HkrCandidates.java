@@ -12,9 +12,9 @@ import android.os.Bundle;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -80,7 +80,8 @@ public class HkrCandidates extends ListActivity {
     }
 
     private void append(String kanji) {
-        String clipboardText = clipboard.getText().toString();
+        CharSequence text = clipboard.getText();
+        String clipboardText = text == null ? "" : text.toString();
         clipboardText += kanji;
         clipboard.setText(clipboardText);
         String messageTemplate = getResources().getString(
