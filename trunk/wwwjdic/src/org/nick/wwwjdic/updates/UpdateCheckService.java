@@ -3,10 +3,11 @@ package org.nick.wwwjdic.updates;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
+import org.nick.wwwjdic.HttpClientFactory;
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.WwwjdicApplication;
 import org.nick.wwwjdic.WwwjdicPreferences;
 
 import android.app.IntentService;
@@ -16,7 +17,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.net.http.AndroidHttpClient;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -27,14 +27,10 @@ public class UpdateCheckService extends IntentService {
     private static final String VERSIONS_URL_KEY = "versions-url";
     private static final String MARKET_NAME_KEY = "market-name";
 
-    private static final String HEADER_CACHE_CONTROL = "Cache-Control";
-    private static final String HEADER_PRAGMA = "Pragma";
-    private static final String NO_CACHE = "no-cache";
-
     private String versionsUrl;
     private String marketName;
 
-    private AndroidHttpClient httpClient;
+    private HttpClient httpClient;
 
     public static Intent createStartIntent(Context ctx, String versionsUrl,
             String marketName) {
@@ -55,15 +51,14 @@ public class UpdateCheckService extends IntentService {
         versionsUrl = extras.getString(VERSIONS_URL_KEY);
         marketName = extras.getString(MARKET_NAME_KEY);
 
-        httpClient = AndroidHttpClient.newInstance(WwwjdicApplication
-                .getUserAgentString());
+        httpClient = HttpClientFactory
+                .createWwwjdicHttpClient(WwwjdicPreferences
+                        .getWwwjdicTimeoutSeconds(this) * 1000);
 
         HttpGet get = new HttpGet(versionsUrl);
-        get.addHeader(HEADER_CACHE_CONTROL, NO_CACHE);
-        get.addHeader(HEADER_PRAGMA, NO_CACHE);
 
         try {
-            Log.d(TAG, "getting latests versions info...");
+            Log.d(TAG, "getting latests versions info from " + versionsUrl);
             HttpResponse response = httpClient.execute(get);
             if (response.getStatusLine().getStatusCode() != 200) {
                 Log.e(TAG,
@@ -105,8 +100,6 @@ public class UpdateCheckService extends IntentService {
         } catch (Exception e) {
             Log.e(TAG,
                     "error checking for current versions: " + e.getMessage(), e);
-        } finally {
-            httpClient.close();
         }
     }
 
