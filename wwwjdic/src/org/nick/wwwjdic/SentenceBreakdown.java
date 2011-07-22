@@ -97,6 +97,9 @@ public class SentenceBreakdown extends
 
     }
 
+    public static final String EXTRA_SENTENCE = "org.nick.wwwjdic.SENTENCE";
+    public static final String EXTRA_SENTENCE_TRANSLATION = "org.nick.wwwjdic.SENTENCE_TRANSLATION";
+
     private List<SentenceBreakdownEntry> entries;
 
     private TextView sentenceView;
@@ -114,11 +117,20 @@ public class SentenceBreakdown extends
         setContentView(R.layout.sentence_breakdown);
 
         Bundle extras = getIntent().getExtras();
-        String sentenceStr = extras.getString(Constants.SENTENCE);
+        String sentenceStr = extras.getString(EXTRA_SENTENCE);
+        String sentenceTranslation = extras
+                .getString(EXTRA_SENTENCE_TRANSLATION);
         markedSentence = new SpannableString(sentenceStr);
 
         sentenceView = (TextView) findViewById(R.id.sentence);
         sentenceView.setText(markedSentence);
+
+        TextView englishSentenceText = (TextView) findViewById(R.id.englishSentence);
+        if (!StringUtils.isEmpty(sentenceTranslation)) {
+            englishSentenceText.setText(sentenceTranslation);
+        } else {
+            englishSentenceText.setVisibility(View.GONE);
+        }
 
         WwwjdicQuery query = new WwwjdicQuery(sentenceStr);
         SearchTask<SentenceBreakdownEntry> searchTask = new SentenceBreakdownTask(
