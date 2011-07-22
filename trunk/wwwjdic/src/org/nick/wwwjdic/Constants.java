@@ -26,8 +26,6 @@ public class Constants {
 
     public static final String IS_FAVORITE = "org.nick.wwwjdic.isFavorite";
 
-    public static final String SENTENCE = "org.nick.wwwjdic.sentence";
-
     public static final String FILTER_TYPE = "org.nick.wwwjdic.filterType";
 
     public static final String FAVORITES_HISTORY_SELECTED_TAB_IDX = "org.nick.wwwjdic.favoritesAndHistorySelectedTabIdx";

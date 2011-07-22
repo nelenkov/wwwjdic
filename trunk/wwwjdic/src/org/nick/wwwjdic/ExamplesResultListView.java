@@ -14,11 +14,11 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
@@ -94,8 +94,8 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
             void populate(ExampleSentence sentence, String queryString) {
                 SpannableString english = markQueryString(
                         sentence.getEnglish(), queryString, true);
-                SpannableString japanese = markQueryString(sentence
-                        .getJapanese(), queryString, false);
+                SpannableString japanese = markQueryString(
+                        sentence.getJapanese(), queryString, false);
 
                 japaneseSentenceText.setText(japanese);
                 englishSentenceText.setText(english);
@@ -147,8 +147,8 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
         extractSearchCriteria();
         SearchTask<ExampleSentence> searchTask = new ExampleSearchTask(
                 getWwwjdicUrl() + EXAMPLE_SEARCH_QUERY_STR,
-                getHttpTimeoutSeconds(), this, criteria, criteria
-                        .getNumMaxResults());
+                getHttpTimeoutSeconds(), this, criteria,
+                criteria.getNumMaxResults());
         submitSearchTask(searchTask);
     }
 
@@ -198,8 +198,11 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
         Analytics.event("sentenceBreakdown", this);
 
         Intent intent = new Intent(this, SentenceBreakdown.class);
-        intent.putExtra(Constants.SENTENCE, getCurrentSentence(id)
-                .getJapanese());
+        ExampleSentence sentence = getCurrentSentence(id);
+        intent.putExtra(SentenceBreakdown.EXTRA_SENTENCE,
+                sentence.getJapanese());
+        intent.putExtra(SentenceBreakdown.EXTRA_SENTENCE_TRANSLATION,
+                sentence.getEnglish());
         startActivity(intent);
     }
 
@@ -238,8 +241,8 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
                 getListView().setTextFilterEnabled(true);
                 String message = getResources()
                         .getString(R.string.examples_for);
-                setTitle(String.format(message, sentences.size(), criteria
-                        .getQueryString()));
+                setTitle(String.format(message, sentences.size(),
+                        criteria.getQueryString()));
                 dismissProgressDialog();
             }
         });

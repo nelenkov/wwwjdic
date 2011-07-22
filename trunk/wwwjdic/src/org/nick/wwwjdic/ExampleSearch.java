@@ -146,7 +146,7 @@ public class ExampleSearch extends WwwjdicActivityBase implements
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(this, SentenceBreakdown.class);
-                intent.putExtra(Constants.SENTENCE, queryString);
+                intent.putExtra(SentenceBreakdown.EXTRA_SENTENCE, queryString);
 
                 Analytics.event("sentenceTranslation", this);
 
