@@ -41,11 +41,19 @@ public class CacheController {
         return "Cache Hits=" + hits + " : Cache Misses=" + misses;
     }
 
-    public static void put(String key, Object value) {
+    public static synchronized void put(String key, Object value) {
         cache.put(key, value);
     }
 
     public static Object get(String key) {
         return cache.get(key);
+    }
+
+    public static synchronized void clear() {
+        cache.clear();
+    }
+
+    public static synchronized void remove(Object obj) {
+        cache.remove(obj);
     }
 }
