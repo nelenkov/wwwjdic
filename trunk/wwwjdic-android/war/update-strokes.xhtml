@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kanji Stroke Update</title>
+  </head>
+
+  <body>
+    <h1>Kanji Stroke Update</h1>
+
+    <form action="/update-strokes" method="post" enctype="multipart/form-data">
+      <p>
+        Upload KanjiVG SVG files (old format):
+      </p>
+      <br/>
+      
+      <p>  
+        <input name="svg1" type="file"/><br/>
+        <input name="svg2" type="file"/><br/>
+        <input name="svg3" type="file"/><br/>
+        <input name="svg4" type="file"/><br/>
+        <input name="svg5" type="file"/><br/>
+      </p>
+      
+      <hr/>
+      <p>
+        <input type="submit" value="Update" />
+        <input type="reset" value="Reset"/>
+      </p>
+    </form>
+  </body>
+</html>
