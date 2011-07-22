@@ -23,6 +23,11 @@
         <servlet-name>KanjiVgImporterServlet</servlet-name>
         <servlet-class>org.nick.wwwjdic.app.kanjivg.KanjiVgImporterServlet</servlet-class>
     </servlet>
+     <servlet>
+        <servlet-name>UpdateStrokesServlet</servlet-name>
+        <servlet-class>org.nick.wwwjdic.app.kanjivg.UpdateStrokesServlet</servlet-class>
+    </servlet>
+    
     <servlet-mapping>
         <servlet-name>greetServlet</servlet-name>
         <url-pattern>/wwwjdic_android/greet</url-pattern>
@@ -43,6 +48,11 @@
         <servlet-name>KanjiVgImporterServlet</servlet-name>
         <url-pattern>/import</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateStrokesServlet</servlet-name>
+        <url-pattern>/update-strokes</url-pattern>
+    </servlet-mapping>
+    
     <!-- Default page to serve -->
     <welcome-file-list>
         <welcome-file>Wwwjdic_android.html</welcome-file>
@@ -68,6 +78,10 @@
         <web-resource-collection>
             <web-resource-name>remoteapi</web-resource-name>
             <url-pattern>/remote_api</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>update-strokes</web-resource-name>
+            <url-pattern>/update-strokes</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description>admin</description>

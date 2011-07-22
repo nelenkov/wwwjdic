@@ -48,12 +48,24 @@ public class Stroke implements Serializable {
         return number;
     }
 
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
     public String getType() {
         return type;
     }
 
     public String getPath() {
         return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String toString() {
+        return String.format("%d|%s|%s", number, type, path);
     }
 
 }
