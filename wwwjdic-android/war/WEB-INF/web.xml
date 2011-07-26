@@ -83,6 +83,10 @@
             <web-resource-name>update-strokes</web-resource-name>
             <url-pattern>/update-strokes</url-pattern>
         </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>kanjview</web-resource-name>
+            <url-pattern>/kanjiview*</url-pattern>
+        </web-resource-collection>
         <auth-constraint>
             <description>admin</description>
             <role-name>admin</role-name>

@@ -15,6 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.nick.wwwjdic.app.server.CacheController;
 
+import com.google.appengine.repackaged.org.json.JSONArray;
+import com.google.appengine.repackaged.org.json.JSONException;
+import com.google.appengine.repackaged.org.json.JSONObject;
+
 public class KanjiStrokesServlet extends HttpServlet {
 
     /**
@@ -38,17 +42,108 @@ public class KanjiStrokesServlet extends HttpServlet {
             log.info("X-Device-Version: " + xDeviceVersion);
         }
 
+        boolean useJson = false;
+        String format = req.getParameter("f");
+        if (format != null && format.equals("json")) {
+            useJson = true;
+        }
         String unicodeNumber = req.getPathInfo().replace("/", "");
         log.info("got request for " + unicodeNumber);
-        String kanji = findKanji(unicodeNumber);
 
-        resp.setCharacterEncoding("UTF-8");
-        resp.setContentType("text/plain");
+        if (useJson) {
+            String kanji = findKanjiJson(unicodeNumber);
 
-        PrintWriter out = resp.getWriter();
-        out.write(kanji);
-        out.flush();
-        out.close();
+            resp.setCharacterEncoding("UTF-8");
+            resp.setContentType("application/x-javascript");
+
+            PrintWriter out = resp.getWriter();
+            out.write("var kanjis = ");
+            out.write(kanji);
+            out.flush();
+            out.close();
+        } else {
+            String kanji = findKanji(unicodeNumber);
+
+            resp.setCharacterEncoding("UTF-8");
+            resp.setContentType("text/plain");
+
+            PrintWriter out = resp.getWriter();
+            out.write(kanji);
+            out.flush();
+            out.close();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private String findKanjiJson(String unicodeNumber) {
+
+        PersistenceManager pm = PMF.get().getPersistenceManager();
+        Query q = null;
+
+        Transaction tx = null;
+        try {
+            Kanji k = null;
+
+            Kanji cachedKanji = (Kanji) CacheController.get(unicodeNumber);
+            if (cachedKanji != null) {
+                k = cachedKanji;
+                log.info("Got kanji from cache: " + unicodeNumber);
+            } else {
+                q = pm.newQuery("select from org.nick.wwwjdic.app.kanjivg.Kanji "
+                        + "where unicodeNumber == unicodeNumberParam "
+                        + "parameters String unicodeNumberParam ");
+
+                tx = pm.currentTransaction();
+                tx.begin();
+
+                List<Kanji> kanjis = (List<Kanji>) q.execute(unicodeNumber);
+                if (kanjis.isEmpty()) {
+                    log.info(String.format("KanjiVG data for %s not found",
+                            unicodeNumber));
+                    return String.format("not found (%s)", unicodeNumber);
+                }
+
+                k = kanjis.get(0);
+                CacheController.put(unicodeNumber, k);
+                log.info("Put kanji in cache: " + unicodeNumber);
+            }
+
+            try {
+                JSONObject jsonObj = new JSONObject();
+                jsonObj.put("kanji", k.getMidashi());
+                jsonObj.put("unicode", k.getUnicodeNumber());
+
+                JSONArray pathsArr = new JSONArray();
+                List<Stroke> strokes = k.getStrokes();
+                for (Stroke s : strokes) {
+                    String path = s.getPath();
+                    // log.info("path: " + path);
+                    if (!"".equals(path) && !"null".equals(path)
+                            && path != null) {
+                        pathsArr.put(s.getPath());
+                    }
+                }
+                jsonObj.put("paths", pathsArr);
+
+                JSONArray jsonArr = new JSONArray();
+                jsonArr.put(jsonObj);
+                return jsonArr.toString();
+            } catch (JSONException e) {
+                log.severe(e.getMessage());
+                throw new RuntimeException(e);
+            }
+
+        } finally {
+            if (tx != null && tx.isActive()) {
+                tx.commit();
+            }
+
+            if (q != null) {
+                q.closeAll();
+            }
+
+            pm.close();
+        }
     }
 
     @SuppressWarnings("unchecked")

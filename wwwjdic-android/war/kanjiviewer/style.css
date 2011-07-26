@@ -1,0 +1,12 @@
+#kanjiViewer {
+    border: 1px solid #aaa;
+    width: 872px;
+    height: 872px;
+}
+
+#buttons {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
