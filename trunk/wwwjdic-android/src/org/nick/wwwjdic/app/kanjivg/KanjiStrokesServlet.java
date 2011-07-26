@@ -47,7 +47,18 @@ public class KanjiStrokesServlet extends HttpServlet {
         if (format != null && format.equals("json")) {
             useJson = true;
         }
-        String unicodeNumber = req.getPathInfo().replace("/", "");
+
+        String kanjiStr = req.getPathInfo().replace("/", "");
+        log.info("kanjiStr: " + kanjiStr);
+
+        String unicodeNumber = null;
+        try {
+            Integer.parseInt(kanjiStr, 16);
+            unicodeNumber = kanjiStr;
+        } catch (NumberFormatException e) {
+            unicodeNumber = Integer.toHexString(kanjiStr.charAt(0) | 0x10000)
+                    .substring(1);
+        }
         log.info("got request for " + unicodeNumber);
 
         if (useJson) {
@@ -57,7 +68,6 @@ public class KanjiStrokesServlet extends HttpServlet {
             resp.setContentType("application/x-javascript");
 
             PrintWriter out = resp.getWriter();
-            out.write("var kanjis = ");
             out.write(kanji);
             out.flush();
             out.close();
@@ -125,9 +135,7 @@ public class KanjiStrokesServlet extends HttpServlet {
                 }
                 jsonObj.put("paths", pathsArr);
 
-                JSONArray jsonArr = new JSONArray();
-                jsonArr.put(jsonObj);
-                return jsonArr.toString();
+                return jsonObj.toString();
             } catch (JSONException e) {
                 log.severe(e.getMessage());
                 throw new RuntimeException(e);
