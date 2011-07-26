@@ -33,6 +33,10 @@
     <form id="kanjiViewerParams" action="#">
         <table>
             <tr>
+                <td><label for="kanji">Kanji</label></td>
+                <td><input type="text" value="雨" id="kanji"/></td>
+            </tr>
+            <tr>
                 <td><label for="strokeWidth">Stroke width</label></td>
                 <td><input type="text" value="3" id="strokeWidth"/></td>
             </tr>
@@ -45,13 +49,35 @@
                 <td><input type="text" value="1" id="zoomFactor"/></td>
             </tr>
             <tr>           
-                <td><input type="submit" value="Redraw"/></td>
+                <td><input id="redraw" type="submit" value="Redraw"/></td>
             </tr>
         </table>
     </form>
     </p>
-    <br/>
-    <div id="kanjiViewer"></div>
-</body>
+    <script>
+    $("#redraw").click(function () { 
+    	var kanji = $("#kanji").val();
+    	var kanjiUrl = "/kanji/" + kanji + "?f=json";
+    	$.ajax({
+    		   type: "GET",
+    		   url: kanjiUrl,
+    		   dataType: "json", 
+    		   success: function(json){
+    			   var kanjis = new Array();
+    			   kanjis.push(json);
+    			   KanjiViewer.initialize("kanjiViewer", 
+    					   jQuery('#strokeWidth').val(), 
+    					   jQuery('#fontSize').val(), 
+    					   kanjis);
+    		   },
+    	       error: function(jqXHR, textStatus, errorThrown) {
+    	    	 alert(textStatus);  
+    	       }
+    		 });
+    });
+   </script>
+   <br/>
+   <div id="kanjiViewer"></div>
+   </body>
 </html>
         
