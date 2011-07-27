@@ -5,6 +5,5 @@ jQuery(document).ready(function() {
         KanjiViewer.setStrokeWidth(jQuery('#strokeWidth').val());
         return false;
     });
-    var kanjis = new Array();
-    KanjiViewer.initialize("kanjiViewer", jQuery('#strokeWidth').val(), jQuery('#fontSize').val(), kanjis);
+    KanjiViewer.initialize("kanjiViewer", jQuery('#strokeWidth').val(), jQuery('#fontSize').val());
 });

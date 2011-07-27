@@ -46,10 +46,11 @@
             </tr>
             <tr>
                 <td><label for="zoomFactor">Zoom factor</label></td>
-                <td><input type="text" value="1" id="zoomFactor"/></td>
+                <td><input type="text" value="3" id="zoomFactor"/></td>
             </tr>
             <tr>           
                 <td><input id="redraw" type="submit" value="Redraw"/></td>
+                <td><input id="clear" type="submit" value="Clear"/></td>
             </tr>
         </table>
     </form>
@@ -62,18 +63,22 @@
     		   type: "GET",
     		   url: kanjiUrl,
     		   dataType: "json", 
-    		   success: function(json){
+    		   success: function(kanji){
     			   var kanjis = new Array();
-    			   kanjis.push(json);
-    			   KanjiViewer.initialize("kanjiViewer", 
-    					   jQuery('#strokeWidth').val(), 
-    					   jQuery('#fontSize').val(), 
-    					   kanjis);
+    			   kanjis.push(kanji);
+    			   
+                   KanjiViewer.setStrokeWidth($('#strokeWidth').val());
+                   KanjiViewer.setFontSize($('#fontSize').val());
+    			   KanjiViewer.draw(kanjis);
+    			   KanjiViewer.setZoom($("#zoomFactor").val());
     		   },
     	       error: function(jqXHR, textStatus, errorThrown) {
-    	    	 alert(textStatus);  
+    	    	 alert(textStatus);
     	       }
     		 });
+    });
+    $("#clear").click(function() {
+    	KanjiViewer.clear();
     });
    </script>
    <br/>
