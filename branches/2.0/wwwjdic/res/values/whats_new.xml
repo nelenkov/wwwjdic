@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="whats_new_title">What\'s new in %s</string>
+    <string name="whats_new">* Fix for empty search results on some mobile networks\n* Performance optimizations\n* Bug fixes</string>
+</resources>

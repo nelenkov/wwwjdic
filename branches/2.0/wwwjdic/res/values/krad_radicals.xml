@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="_1_stroke">
+        <item>一</item>
+        <item>｜</item>
+        <item>丶</item>
+        <item>ノ</item>
+        <item>乙</item>
+        <item>亅</item>
+    </string-array>
+    <string-array name="_2_stroke">
+        <item>二</item>
+        <item>亠</item>
+        <item>人</item>
+        <item>⺅</item>
+        <item>𠆢</item>
+        <item>儿</item>
+        <item>入</item>
+        <item>ハ</item>
+        <item>并</item>
+        <item>冂</item>
+        <item>冖</item>
+        <item>冫</item>
+        <item>几</item>
+        <item>凵</item>
+        <item>刀</item>
+        <item>刂</item>
+        <item>力</item>
+        <item>勹</item>
+        <item>匕</item>
+        <item>匚</item>
+        <item>十</item>
+        <item>卜</item>
+        <item>卩</item>
+        <item>厂</item>
+        <item>厶</item>
+        <item>又</item>
+        <item>マ</item>
+        <item>九</item>
+        <item>ユ</item>
+        <item>乃</item>
+    </string-array>
+    <string-array name="_3_stroke">
+        <item>辶</item>
+        <item>口</item>
+        <item>囗</item>
+        <item>土</item>
+        <item>士</item>
+        <item>夂</item>
+        <item>夕</item>
+        <item>大</item>
+        <item>女</item>
+        <item>子</item>
+        <item>宀</item>
+        <item>寸</item>
+        <item>小</item>
+        <item>⺌</item>
+        <item>尢</item>
+        <item>尸</item>
+        <item>屮</item>
+        <item>山</item>
+        <item>川</item>
+        <item>巛</item>
+        <item>工</item>
+        <item>已</item>
+        <item>巾</item>
+        <item>干</item>
+        <item>幺</item>
+        <item>广</item>
+        <item>廴</item>
+        <item>廾</item>
+        <item>弋</item>
+        <item>弓</item>
+        <item>ヨ</item>
+        <item>彑</item>
+        <item>彡</item>
+        <item>彳</item>
+        <item>忄</item>
+        <item>扌</item>
+        <item>氵</item>
+        <item>犭</item>
+        <item>⺾</item>
+        <item>⻏</item>
+        <item>⻖</item>
+        <item>也</item>
+        <item>亡</item>
+        <item>及</item>
+        <item>久</item>
+    </string-array>
+
+    <string-array name="_4_stroke">
+        <item>⺹</item>
+        <item>心</item>
+        <item>戈</item>
+        <item>戸</item>
+        <item>手</item>
+        <item>支</item>
+        <item>攵</item>
+        <item>文</item>
+        <item>斗</item>
+        <item>斤</item>
+        <item>方</item>
+        <item>无</item>
+        <item>日</item>
+        <item>曰</item>
+        <item>月</item>
+        <item>木</item>
+        <item>欠</item>
+        <item>止</item>
+        <item>歹</item>
+        <item>殳</item>
+        <item>比</item>
+        <item>毛</item>
+        <item>氏</item>
+        <item>气</item>
+        <item>水</item>
+        <item>火</item>
+        <item>灬</item>
+        <item>爪</item>
+        <item>父</item>
+        <item>爻</item>
+        <item>爿</item>
+        <item>片</item>
+        <item>牛</item>
+        <item>犬</item>
+        <item>礻</item>
+        <item>王</item>
+        <item>元</item>
+        <item>井</item>
+        <item>勿</item>
+        <item>尤</item>
+        <item>五</item>
+        <item>屯</item>
+        <item>巴</item>
+        <item>毋</item>
+    </string-array>
+
+    <string-array name="_5_stroke">
+        <item>玄</item>
+        <item>瓦</item>
+        <item>甘</item>
+        <item>生</item>
+        <item>用</item>
+        <item>田</item>
+        <item>疋</item>
+        <item>疒</item>
+        <item>癶</item>
+        <item>白</item>
+        <item>皮</item>
+        <item>皿</item>
+        <item>目</item>
+        <item>矛</item>
+        <item>矢</item>
+        <item>石</item>
+        <item>示</item>
+        <item>禸</item>
+        <item>禾</item>
+        <item>穴</item>
+        <item>立</item>
+        <item>衤</item>
+        <item>世</item>
+        <item>巨</item>
+        <item>冊</item>
+        <item>母</item>
+        <item>罒</item>
+        <item>牙</item>
+    </string-array>
+
+    <string-array name="_6_stroke">
+        <item>瓜</item>
+        <item>竹</item>
+        <item>米</item>
+        <item>糸</item>
+        <item>缶</item>
+        <item>羊</item>
+        <item>羽</item>
+        <item>而</item>
+        <item>耒</item>
+        <item>耳</item>
+        <item>聿</item>
+        <item>肉</item>
+        <item>自</item>
+        <item>至</item>
+        <item>臼</item>
+        <item>舌</item>
+        <item>舟</item>
+        <item>艮</item>
+        <item>色</item>
+        <item>虍</item>
+        <item>虫</item>
+        <item>血</item>
+        <item>行</item>
+        <item>衣</item>
+        <item>西</item>
+    </string-array>
+
+    <string-array name="_7_stroke">
+        <item>臣</item>
+        <item>見</item>
+        <item>角</item>
+        <item>言</item>
+        <item>谷</item>
+        <item>豆</item>
+        <item>豕</item>
+        <item>豸</item>
+        <item>貝</item>
+        <item>赤</item>
+        <item>走</item>
+        <item>足</item>
+        <item>身</item>
+        <item>車</item>
+        <item>辛</item>
+        <item>辰</item>
+        <item>酉</item>
+        <item>釆</item>
+        <item>里</item>
+        <item>舛</item>
+        <item>麦</item>
+    </string-array>
+
+    <string-array name="_8_stroke">
+        <item>金</item>
+        <item>長</item>
+        <item>門</item>
+        <item>隶</item>
+        <item>隹</item>
+        <item>雨</item>
+        <item>青</item>
+        <item>非</item>
+        <item>奄</item>
+        <item>岡</item>
+        <item>免</item>
+        <item>斉</item>
+    </string-array>
+
+    <string-array name="_9_stroke">
+        <item>面</item>
+        <item>革</item>
+        <item>韭</item>
+        <item>音</item>
+        <item>頁</item>
+        <item>風</item>
+        <item>飛</item>
+        <item>食</item>
+        <item>首</item>
+        <item>香</item>
+        <item>品</item>
+    </string-array>
+
+    <string-array name="_10_stroke">
+        <item>馬</item>
+        <item>骨</item>
+        <item>高</item>
+        <item>髟</item>
+        <item>鬥</item>
+        <item>鬯</item>
+        <item>鬲</item>
+        <item>鬼</item>
+        <item>竜</item>
+        <item>韋</item>
+    </string-array>
+
+    <string-array name="_11_stroke">
+        <item>魚</item>
+        <item>鳥</item>
+        <item>鹵</item>
+        <item>鹿</item>
+        <item>麻</item>
+        <item>亀</item>
+        <item>滴</item>
+        <item>黄</item>
+        <item>黒</item>
+    </string-array>
+
+    <string-array name="_12_stroke">
+        <item>黍</item>
+        <item>黹</item>
+        <item>無</item>
+        <item>歯</item>
+    </string-array>
+
+    <string-array name="_13_stroke">
+        <item>黽</item>
+        <item>鼎</item>
+        <item>鼓</item>
+        <item>鼠</item>
+    </string-array>
+
+    <string-array name="_14_stroke">
+        <item>鼻</item>
+        <item>齊</item>
+    </string-array>
+
+    <string-array name="_17_stroke">
+        <item>龠</item>
+    </string-array>
+</resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detailLayout" android:layout_width="fill_parent"
+    android:layout_height="wrap_content" android:orientation="vertical"
+    android:paddingLeft="6dip">
+    <LinearLayout android:id="@+id/wordReadingLayout"
+        android:orientation="horizontal" android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5px">
+        <LinearLayout android:id="@+id/word_reading_layout"
+            android:layout_width="0dip" android:layout_weight="1"
+            android:layout_height="wrap_content" android:orientation="vertical">
+            <TextView android:layout_height="fill_parent"
+                android:layout_width="fill_parent" android:id="@+id/wordText"
+                style="@style/dict_detail_heading"></TextView>
+        </LinearLayout>
+        <LinearLayout android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:orientation="vertical">
+            <CheckBox android:id="@+id/star_word"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:focusable="false"
+                android:button="@android:drawable/btn_star"
+                android:gravity="center" android:layout_gravity="center" />
+            <Button android:id="@+id/examples_button"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent" android:text="@string/ex"
+                android:background="@android:drawable/btn_default_small"
+                android:gravity="center" android:layout_gravity="center" />
+        </LinearLayout>
+    </LinearLayout>
+    <TextView android:text="@string/translation"
+        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:background="#ff888888" android:textColor="#ffffffff" />
+    <ScrollView android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout android:id="@+id/translations_layout"
+            android:layout_width="fill_parent" android:layout_height="fill_parent"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
