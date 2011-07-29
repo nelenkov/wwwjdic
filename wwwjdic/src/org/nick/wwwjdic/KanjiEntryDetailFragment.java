@@ -47,6 +47,23 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
     private LinearLayout translationsCodesLayout;
 
     private KanjiEntry entry;
+    
+    public static KanjiEntryDetailFragment newInstance(int index,
+    		KanjiEntry entry) {
+    	KanjiEntryDetailFragment f = new KanjiEntryDetailFragment();
+
+		// Supply index input as an argument.
+		Bundle args = new Bundle();
+		args.putInt("index", index);
+		args.putSerializable(Constants.KANJI_ENTRY_KEY, entry);
+		f.setArguments(args);
+
+		return f;
+	}
+
+	public int getShownIndex() {
+		return getArguments().getInt("index", 0);
+	}
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
