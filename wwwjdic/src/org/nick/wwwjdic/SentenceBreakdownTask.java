@@ -32,7 +32,7 @@ public class SentenceBreakdownTask extends SearchTask<SentenceBreakdownEntry> {
     private static final Pattern BR_PATTERN = Pattern.compile("^<br>$");
 
     public SentenceBreakdownTask(String url, int timeoutSeconds,
-            ResultListViewBase<SentenceBreakdownEntry> resultListView,
+            ResultListFragmentBase<SentenceBreakdownEntry> resultListView,
             WwwjdicQuery query) {
         super(url, timeoutSeconds, resultListView, query);
     }
