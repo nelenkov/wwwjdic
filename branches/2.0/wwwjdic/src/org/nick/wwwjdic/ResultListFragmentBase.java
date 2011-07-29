@@ -14,6 +14,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.text.ClipboardManager;
@@ -23,7 +24,8 @@ import android.widget.Toast;
 public abstract class ResultListFragmentBase<T> extends ListFragment implements
         ResultListView<T> {
 
-    private static final String TAG = ResultListFragmentBase.class.getSimpleName();
+    private static final String TAG = ResultListFragmentBase.class
+            .getSimpleName();
 
     protected SearchCriteria criteria;
 
@@ -35,6 +37,13 @@ public abstract class ResultListFragmentBase<T> extends ListFragment implements
     protected HistoryDbHelper db;
 
     protected ResultListFragmentBase() {
+    }
+
+
+    @Override
+    public void onCreate(Bundle state) {
+        super.onCreate(state);
+
         guiThread = new Handler();
         db = HistoryDbHelper.getInstance(getActivity());
     }
