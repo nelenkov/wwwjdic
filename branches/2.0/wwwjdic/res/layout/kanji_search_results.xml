@@ -3,7 +3,7 @@
     android:id="@+id/searchResultsRoot" 
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <fragment class="org.nick.wwwjdic.DictionaryResultListFragment"
+    <fragment class="org.nick.wwwjdic.KanjiResultListFragment"
             android:id="@+id/results_list"
             android:layout_width="match_parent" 
             android:layout_height="match_parent" />

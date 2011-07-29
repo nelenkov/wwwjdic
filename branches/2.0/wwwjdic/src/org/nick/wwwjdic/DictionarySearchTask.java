@@ -6,7 +6,7 @@ import java.net.URLEncoder;
 public class DictionarySearchTask extends BackdoorSearchTask<DictionaryEntry> {
 
     public DictionarySearchTask(String url, int timeoutSeconds,
-            ResultListViewBase<DictionaryEntry> resultListView,
+            ResultListFragmentBase<DictionaryEntry> resultListView,
             SearchCriteria criteria) {
         super(url, timeoutSeconds, resultListView, criteria);
     }

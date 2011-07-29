@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sentence_breakdown" 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <TextView android:id="@+id/sentence" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:textAppearance="?android:attr/textAppearanceLarge" 
+        android:textColor="#ffff" />
+    <TextView android:id="@+id/englishSentence"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" 
+        android:layout_below="@id/sentence" />    
+    <TextView android:id="@+id/breakdown_text" 
+        android:text="@string/sentence_words"
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"
+        android:background="#ff888888" 
+        android:textColor="#ffffffff"
+        android:layout_below="@id/englishSentence" />
+    <ListView android:id="@android:id/list"
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent"
+        android:layout_below="@id/breakdown_text" />
+</RelativeLayout>
