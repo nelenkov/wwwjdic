@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.acra.ErrorReporter;
 import org.xmlpull.v1.XmlPullParser;
 
 import android.graphics.Canvas;
@@ -117,7 +118,6 @@ public class StrokePath {
 
         canvas.drawPath(strokePath, strokePaint);
     }
-
 
     private void transformMoveTo(Matrix matrix) {
         float[] cs = new float[2];
@@ -299,11 +299,19 @@ public class StrokePath {
                     continue;
                 }
 
-                float f = Float.parseFloat(floatStr);
-                if (x == null) {
-                    x = f;
-                } else {
-                    y = f;
+                try {
+                    float f = Float.parseFloat(floatStr);
+                    if (x == null) {
+                        x = f;
+                    } else {
+                        y = f;
+                    }
+                } catch (NumberFormatException e) {
+                    ErrorReporter er = ErrorReporter.getInstance();
+                    er.putCustomData("pathStr", path);
+                    er.putCustomData("floatStr", floatStr);
+                    er.handleSilentException(e);
+                    throw e;
                 }
             }
 
