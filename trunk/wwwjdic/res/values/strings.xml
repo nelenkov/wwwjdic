@@ -195,7 +195,7 @@
         <item>http://ryouko.imsb.nrc.ca/cgi-bin/wwwjdic</item>
         <item>http://jp.celltica.com/cgi-bin/wwwjdic</item>
         <item>http://wwwjdic.mygengo.com/cgi-data/wwwjdic</item>
-        <item>http://wwwjdic.sys5.se/cgi-bin/wwwjdic.cgi</item>
+        <item>http://wwwjdic.se/cgi-bin/wwwjdic.cgi</item>
         <item>http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic</item>
     </string-array>
     <string name="pref_wwwjdic_timeout">WWWJDIC timeout</string>
