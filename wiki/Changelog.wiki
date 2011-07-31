@@ -1,6 +1,9 @@
 #summary Full changelog
 
 = Changelog =
+ * v1.8.6 (2011/7/31) New Sweden mirror
+  * Use new Sweden mirror site
+  * Updated third-party libraries
  * v1.8.5 (2011/7/22) Performance optimization and bug fixes
   * Fix for empty search results on some mobile networks
   * Performance optimizations
