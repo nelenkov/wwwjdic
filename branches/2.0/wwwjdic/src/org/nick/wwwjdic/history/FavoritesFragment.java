@@ -1186,6 +1186,8 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    	getActivity().setProgressBarIndeterminateVisibility(false);
+    	
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(data);
 
@@ -1199,6 +1201,8 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+    	getActivity().setProgressBarIndeterminateVisibility(false);
+    	
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(null);
     }
