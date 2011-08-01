@@ -8,9 +8,9 @@ import org.nick.wwwjdic.history.FavoritesItem.FavoriteStatusChangedListener;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.widget.CursorAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
 
 class FavoritesAdapter extends CursorAdapter {
 
@@ -18,7 +18,7 @@ class FavoritesAdapter extends CursorAdapter {
 
     public FavoritesAdapter(Context context, Cursor c,
             FavoriteStatusChangedListener statusChangedListener) {
-        super(context, c);
+        super(context, c, 0);
         this.favoriteStatusChanged = statusChangedListener;
     }
 
