@@ -3,19 +3,19 @@ package org.nick.wwwjdic.history;
 import android.content.Context;
 import android.database.Cursor;
 
-public class FavoritesLoader extends HistoryLoaderBase {
+public class SearchHistoryLoader extends HistoryLoaderBase {
 
-    public FavoritesLoader(Context context, HistoryDbHelper db) {
+    public SearchHistoryLoader(Context context, HistoryDbHelper db) {
         super(context, db);
     }
 
     @Override
     public Cursor loadInBackground() {
         if (selectedFilter == FILTER_ALL) {
-            lastCursor = db.getFavorites();
+            lastCursor = db.getHistory();
 
         } else {
-            lastCursor = db.getFavoritesByType(selectedFilter);
+            lastCursor = db.getHistoryByType(selectedFilter);
         }
 
         return lastCursor;

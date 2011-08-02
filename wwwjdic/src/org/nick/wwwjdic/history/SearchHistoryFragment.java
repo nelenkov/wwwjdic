@@ -37,42 +37,13 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     protected void setupAdapter() {
         MatrixCursor cursor = new MatrixCursor(
                 HistoryDbHelper.HISTORY_ALL_COLUMNS, 0);
-        // XXX
-        //        startManagingCursor(cursor);
+
         SearchHistoryAdapter adapter = new SearchHistoryAdapter(getActivity(),
                 cursor);
         setListAdapter(adapter);
 
+        getActivity().setProgressBarIndeterminateVisibility(true);
         getLoaderManager().initLoader(1, null, this);
-
-        // XXX
-        //        new AsyncTask<Void, Void, Cursor>() {
-        //            @Override
-        //            protected void onPreExecute() {
-        //                getActivity().getParent()
-        //                        .setProgressBarIndeterminateVisibility(true);
-        //            }
-        //
-        //            @Override
-        //            protected Cursor doInBackground(Void... arg0) {
-        //                return filterCursor();
-        //            }
-        //
-        //            @Override
-        //            protected void onPostExecute(Cursor cursor) {
-        //                resetAdapter(cursor);
-        //                getActivity().getParent()
-        //                        .setProgressBarIndeterminateVisibility(false);
-        //            }
-        //        }.execute();
-    }
-
-    protected void resetAdapter(Cursor c) {
-        // XXX
-        //        startManagingCursor(c);
-        SearchHistoryAdapter adapter = new SearchHistoryAdapter(getActivity(),
-                c);
-        setListAdapter(adapter);
     }
 
     @Override
@@ -82,8 +53,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
             @Override
             protected void onPreExecute() {
-                getActivity().getParent()
-                        .setProgressBarIndeterminateVisibility(true);
+                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -118,8 +88,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
             @Override
             protected void onPostExecute(Boolean result) {
                 refresh();
-                getActivity().getParent()
-                        .setProgressBarIndeterminateVisibility(false);
+                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -194,8 +163,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
             @Override
             protected void onPreExecute() {
-                getActivity().getParent()
-                        .setProgressBarIndeterminateVisibility(true);
+                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -258,8 +226,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                             String.format(message, errMessage),
                             Toast.LENGTH_SHORT).show();
                 }
-                getActivity().getParent()
-                        .setProgressBarIndeterminateVisibility(false);
+                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -272,8 +239,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
             @Override
             protected void onPreExecute() {
-                getActivity().getParent()
-                        .setProgressBarIndeterminateVisibility(true);
+                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -342,8 +308,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
                 refresh();
 
-                getActivity().getParent()
-                        .setProgressBarIndeterminateVisibility(false);
+                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -365,7 +330,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        HistoryLoader loader = new HistoryLoader(getActivity(), db);
+        SearchHistoryLoader loader = new SearchHistoryLoader(getActivity(), db);
         loader.setSelectedFilter(selectedFilter);
 
         return loader;
@@ -373,8 +338,8 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-    	getActivity().setProgressBarIndeterminateVisibility(false);
-    	
+        getActivity().setProgressBarIndeterminateVisibility(false);
+
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(data);
 
@@ -388,8 +353,8 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-    	getActivity().setProgressBarIndeterminateVisibility(false);
-    	
+        getActivity().setProgressBarIndeterminateVisibility(false);
+
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(null);
     }

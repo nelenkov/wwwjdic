@@ -84,13 +84,9 @@ public abstract class HistoryFragmentBase extends ListFragment implements
 
         db = HistoryDbHelper.getInstance(getActivity());
 
-        // getActivity().requestWindowFeature(
-        // Window.FEATURE_INDETERMINATE_PROGRESS);
-
         clipboardManager = (ClipboardManager) getActivity().getSystemService(
                 Context.CLIPBOARD_SERVICE);
 
-        // setContentView(getContentView());
         getListView().setOnCreateContextMenuListener(this);
 
         Intent intent = getActivity().getIntent();
@@ -130,8 +126,6 @@ public abstract class HistoryFragmentBase extends ListFragment implements
 
     protected abstract void setupAdapter();
 
-    protected abstract void resetAdapter(Cursor c);
-
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         lookupCurrentItem();
@@ -144,14 +138,6 @@ public abstract class HistoryFragmentBase extends ListFragment implements
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.history_favorites, menu);
-        //		menu.add(0, MENU_ITEM_IMPORT, IMPORT_ITEM_IDX, R.string.import_items)
-        //				.setIcon(R.drawable.ic_menu_import);
-        //		menu.add(0, MENU_ITEM_EXPORT, EXPORT_ITEM_IDX, R.string.export_items)
-        //				.setIcon(R.drawable.ic_menu_export);
-        //		menu.add(0, MENU_ITEM_FILTER, FILTER_ITEM_IDX, R.string.filter)
-        //				.setIcon(R.drawable.ic_menu_filter);
-        //		menu.add(0, MENU_ITEM_DELETE_ALL, DELETE_ALL_ITEM_IDX,
-        //				R.string.delete_all).setIcon(android.R.drawable.ic_menu_delete);
     }
 
     @Override
@@ -192,26 +178,35 @@ public abstract class HistoryFragmentBase extends ListFragment implements
     }
 
     private void showFilterDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.select_filter_type);
-        builder.setNegativeButton(R.string.cancel,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+        new DialogFragment() {
 
-                    }
-                });
-        builder.setSingleChoiceItems(getFilterTypes(), selectedFilter + 1,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        selectedFilter = item - 1;
-                        filter();
-                        dialog.dismiss();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(
+                        getActivity());
+                builder.setTitle(R.string.select_filter_type);
+                builder.setNegativeButton(R.string.cancel,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                    int which) {
+                                dialog.dismiss();
+
+                            }
+                        });
+                builder.setSingleChoiceItems(getFilterTypes(),
+                        selectedFilter + 1,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int item) {
+                                selectedFilter = item - 1;
+                                filter();
+                                dialog.dismiss();
+                            }
+                        });
+
+                return builder.create();
+            }
+        }.show(getFragmentManager(), "filterDialog");
     }
 
     protected abstract String[] getFilterTypes();
@@ -230,24 +225,31 @@ public abstract class HistoryFragmentBase extends ListFragment implements
             return;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.import_and_overwrite)
-                .setCancelable(false)
-                .setPositiveButton(R.string.yes,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                doImport(filename);
-                            }
-                        })
-                .setNegativeButton(R.string.no,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        new DialogFragment() {
 
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(
+                        getActivity());
+                builder.setMessage(R.string.import_and_overwrite)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.yes,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                            int id) {
+                                        doImport(filename);
+                                    }
+                                })
+                        .setNegativeButton(R.string.no,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                            int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                return builder.create();
+            }
+        }.show(getFragmentManager(), "overwriteImportDialog");
     }
 
     protected abstract void doImport(String filename);
@@ -269,37 +271,39 @@ public abstract class HistoryFragmentBase extends ListFragment implements
             return;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        String message = getResources().getString(R.string.overwrite_file);
-        builder.setMessage(String.format(message, filename))
-                .setCancelable(false)
-                .setPositiveButton(R.string.yes,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                doExport(filename);
-                            }
-                        })
-                .setNegativeButton(R.string.no,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        new DialogFragment() {
+
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(
+                        getActivity());
+                String message = getResources().getString(
+                        R.string.overwrite_file);
+                builder.setMessage(String.format(message, filename))
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.yes,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                            int id) {
+                                        doExport(filename);
+                                    }
+                                })
+                        .setNegativeButton(R.string.no,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                            int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                return builder.create();
+            }
+        }.show(getFragmentManager(), "overwriteExportDialog");
     }
 
     protected abstract void doExport(String filename);
 
     private void filter() {
         getLoaderManager().restartLoader(0, null, this);
-
-        // Cursor c = filterCursor();
-        // CursorAdapter adapter = (CursorAdapter) getListAdapter();
-        // adapter.changeCursor(c);
-        // // XXX
-        // //startManagingCursor(c);
-        // refresh();
     }
 
     protected abstract Cursor filterCursor();
@@ -366,25 +370,8 @@ public abstract class HistoryFragmentBase extends ListFragment implements
     public void onResume() {
         super.onResume();
 
-        // XXX
-        // refresh();
+        refresh();
     }
-
-    // XXX
-    // @Override
-    // protected Dialog onCreateDialog(int id) {
-    // Dialog dialog = null;
-    //
-    // switch (id) {
-    // case CONFIRM_DELETE_DIALOG_ID:
-    // dialog = createConfirmDeleteDialog();
-    // break;
-    // default:
-    // dialog = null;
-    // }
-    //
-    // return dialog;
-    // }
 
     static class ConfirmDeleteDialog extends DialogFragment {
 
@@ -428,13 +415,8 @@ public abstract class HistoryFragmentBase extends ListFragment implements
         }
     }
 
-    // since the adapter is already bound, refresh() has to unfortunately be
-    // called on the UI thread
     protected void refresh() {
-        Cursor cursor = getCursor();
-        cursor.requery();
-        CursorAdapter adapter = (CursorAdapter) getListAdapter();
-        adapter.notifyDataSetChanged();
+        getLoaderManager().restartLoader(0, null, this);
     }
 
     protected void createWwwjdicDirIfNecessary() {
