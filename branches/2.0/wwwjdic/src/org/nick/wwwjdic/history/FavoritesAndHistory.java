@@ -33,6 +33,21 @@ public class FavoritesAndHistory extends FragmentActivity {
 
         tabManager = new TabManager(this, tabHost, R.id.realtabcontent);
 
+        Intent intent = getIntent();
+        int filterType = intent.getIntExtra(Constants.FILTER_TYPE,
+                HistoryBase.FILTER_ALL);
+        int tabIdx = intent.getIntExtra(
+                Constants.FAVORITES_HISTORY_SELECTED_TAB_IDX, 0);
+
+        Bundle favoritesArgs = new Bundle();
+        Bundle historyArgs = new Bundle();
+        if (tabIdx == 0) {
+            favoritesArgs.putInt(Constants.FILTER_TYPE, filterType);
+        }
+        if (tabIdx == 1) {
+            historyArgs.putInt(Constants.FILTER_TYPE, filterType);
+        }
+
         tabManager.addTab(
                 tabHost.newTabSpec("favorites")
                         .setIndicator(
@@ -46,52 +61,17 @@ public class FavoritesAndHistory extends FragmentActivity {
                         getResources().getDrawable(R.drawable.ic_tab_history)),
                 SearchHistoryFragment.class, null);
 
+        tabHost.setCurrentTab(tabIdx);
         if (savedInstanceState != null) {
             tabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
         }
 
-        //        Intent intent = getIntent();
-        //        int filterType = intent.getIntExtra(Constants.FILTER_TYPE,
-        //                HistoryBase.FILTER_ALL);
-        //        int tabIdx = intent.getIntExtra(
-        //                Constants.FAVORITES_HISTORY_SELECTED_TAB_IDX, 0);
-        //
-        //        setupTabs(tabIdx, filterType);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("tab", tabHost.getCurrentTabTag());
-    }
-
-    private void setupTabs(int tabIdx, int filterType) {
-        //        TabHost tabHost = getTabHost();
-
-        Intent favoritesIntent = new Intent(this, Favorites.class);
-        if (tabIdx == 0) {
-            favoritesIntent.putExtra(Constants.FILTER_TYPE, filterType);
-        }
-        tabHost.addTab(tabHost
-                .newTabSpec("favorites")
-                .setIndicator(getResources().getString(R.string.favorites),
-                        getResources().getDrawable(R.drawable.ic_tab_favorites))
-                .setContent(favoritesIntent));
-
-        Intent historyIntent = new Intent(this, SearchHistory.class);
-        if (tabIdx == 1) {
-            historyIntent.putExtra(Constants.FILTER_TYPE, filterType);
-        }
-        tabHost.addTab(tabHost
-                .newTabSpec("history")
-                .setIndicator(
-                        getResources().getString(R.string.search_history),
-                        getResources().getDrawable(R.drawable.ic_tab_history))
-                .setContent(historyIntent));
-
-        //        tabHost.setOnTabChangedListener(this);
-
-        tabHost.setCurrentTab(tabIdx);
     }
 
     //    @Override
