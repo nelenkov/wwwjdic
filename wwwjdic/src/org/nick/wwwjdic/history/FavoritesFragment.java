@@ -26,6 +26,7 @@ import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Dialogs;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -38,6 +39,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.text.format.DateFormat;
@@ -135,40 +137,50 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                 R.string.tips_favorites_export);
     }
 
-    // XXX
-    //    @Override
-    //    protected Dialog onCreateDialog(int id) {
-    //        switch (id) {
-    //        case CONFIRM_DELETE_DIALOG_ID:
-    //            return super.onCreateDialog(id);
-    //        case ACCOUNTS_DIALOG_ID:
-    //            final AccountManagerWrapper manager = AccountManagerWrapper
-    //                    .getInstance(getActivity());
-    //            final String[] accountNames = manager.getGoogleAccounts();
-    //            int size = accountNames.length;
-    //
-    //            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-    //            if (size == 0) {
-    //                Toast t = Toast.makeText(getActivity(),
-    //                        R.string.no_google_accounts, Toast.LENGTH_LONG);
-    //                t.show();
-    //
-    //                return null;
-    //            }
-    //
-    //            builder.setTitle(R.string.select_google_account);
-    //            builder.setItems(accountNames,
-    //                    new DialogInterface.OnClickListener() {
-    //                        public void onClick(DialogInterface dialog, int which) {
-    //                            gotAccount(manager, accountNames[which]);
-    //                        }
-    //                    });
-    //            return builder.create();
-    //        default:
-    //            // do nothing
-    //        }
-    //        return null;
-    //    }
+    static class AccountsDialog extends DialogFragment {
+
+        private FavoritesFragment favoritesFragment;
+
+        AccountsDialog(FavoritesFragment favoritesFragment) {
+            this.favoritesFragment = favoritesFragment;
+        }
+
+        public static AccountsDialog newInstance(
+                FavoritesFragment favoritesFragment) {
+            return new AccountsDialog(favoritesFragment);
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            return createAccountsDialog();
+        }
+
+        private Dialog createAccountsDialog() {
+            final AccountManagerWrapper manager = AccountManagerWrapper
+                    .getInstance(getActivity());
+            final String[] accountNames = manager.getGoogleAccounts();
+            int size = accountNames.length;
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            if (size == 0) {
+                Toast t = Toast.makeText(getActivity(),
+                        R.string.no_google_accounts, Toast.LENGTH_LONG);
+                t.show();
+
+                return null;
+            }
+
+            builder.setTitle(R.string.select_google_account);
+            builder.setItems(accountNames,
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            favoritesFragment.gotAccount(manager,
+                                    accountNames[which]);
+                        }
+                    });
+            return builder.create();
+        }
+    }
 
     private void gotAccount(boolean tokenExpired) {
         String accountName = WwwjdicPreferences
@@ -192,8 +204,8 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         // handle this here to avoid IAE on 2.0
         // ('Activity#onCreateDialog did not create a dialog for id 1')
         if (accountNames.length != 0) {
-            // XXX
-            //            showDialog(ACCOUNTS_DIALOG_ID);
+            DialogFragment acountsDialog = AccountsDialog.newInstance(this);
+            acountsDialog.show(getFragmentManager(), "accountsDialog");
         } else {
             // clean up temporary file
             if (uploadData != null) {
@@ -478,8 +490,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {
-                getActivity().getParent()
-                        .setProgressBarIndeterminateVisibility(true);
+                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -503,8 +514,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
             @Override
             protected void onPostExecute(Void v) {
                 refresh();
-                getActivity().getParent()
-                        .setProgressBarIndeterminateVisibility(false);
+                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -801,8 +811,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
             @Override
             protected void onPreExecute() {
-                getActivity().getParent()
-                        .setProgressBarIndeterminateVisibility(true);
+                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -848,8 +857,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                             Toast.LENGTH_SHORT).show();
                 }
 
-                getActivity().getParent()
-                        .setProgressBarIndeterminateVisibility(false);
+                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -948,8 +956,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
             @Override
             protected void onPreExecute() {
-                getActivity().getParent()
-                        .setProgressBarIndeterminateVisibility(true);
+                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -994,8 +1001,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                             String.format(message, errMessage),
                             Toast.LENGTH_SHORT).show();
                 }
-                getActivity().getParent()
-                        .setProgressBarIndeterminateVisibility(false);
+                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -1008,8 +1014,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
             @Override
             protected void onPreExecute() {
-                getActivity().getParent()
-                        .setProgressBarIndeterminateVisibility(true);
+                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -1075,8 +1080,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                             Toast.LENGTH_SHORT).show();
                 }
 
-                getActivity().getParent()
-                        .setProgressBarIndeterminateVisibility(false);
+                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -1089,8 +1093,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
             @Override
             protected void onPreExecute() {
-                getActivity().getParent()
-                        .setProgressBarIndeterminateVisibility(true);
+                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -1155,8 +1158,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
                 refresh();
 
-                getActivity().getParent()
-                        .setProgressBarIndeterminateVisibility(false);
+                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -1186,8 +1188,8 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-    	getActivity().setProgressBarIndeterminateVisibility(false);
-    	
+        getActivity().setProgressBarIndeterminateVisibility(false);
+
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(data);
 
@@ -1201,8 +1203,8 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-    	getActivity().setProgressBarIndeterminateVisibility(false);
-    	
+        getActivity().setProgressBarIndeterminateVisibility(false);
+
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(null);
     }
