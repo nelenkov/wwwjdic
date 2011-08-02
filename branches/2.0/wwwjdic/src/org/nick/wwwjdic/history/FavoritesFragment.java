@@ -25,6 +25,7 @@ import org.nick.wwwjdic.history.gdocs.Namespace;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -120,14 +121,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         // for wire debugging
         // Logger.getLogger("com.google.api.client").setLevel(Level.ALL);
     }
-
-    //    @Override
-    //    protected void onCreate(Bundle savedInstanceState) {
-    //        super.onCreate(savedInstanceState);
-    //
-    //        Dialogs.showTipOnce(this, FAVORITES_EXPORT_TIP_DIALOG,
-    //                R.string.tips_favorites_export);
-    //    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -269,12 +262,12 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
         case REQUEST_AUTHENTICATE:
-            // XXXX
-            //            if (resultCode == RESULT_OK) {
-            //                gotAccount(false);
-            //            } else {
-            //                showDialog(ACCOUNTS_DIALOG_ID);
-            //            }
+            if (resultCode == Activity.RESULT_OK) {
+                gotAccount(false);
+            } else {
+                DialogFragment acountsDialog = AccountsDialog.newInstance(this);
+                acountsDialog.show(getFragmentManager(), "accountsDialog");
+            }
             break;
         }
     }
@@ -448,41 +441,12 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     protected void setupAdapter() {
         MatrixCursor cursor = new MatrixCursor(
                 HistoryDbHelper.FAVORITES_ALL_COLUMNS, 0);
-        // XXX
-        //        startManagingCursor(cursor);
         FavoritesAdapter adapter = new FavoritesAdapter(getActivity(), cursor,
                 this);
         setListAdapter(adapter);
 
+        getActivity().setProgressBarIndeterminateVisibility(true);
         getLoaderManager().initLoader(0, null, this);
-
-        //        new AsyncTask<Void, Void, Cursor>() {
-        //            @Override
-        //            protected void onPreExecute() {
-        //                getActivity().getParent()
-        //                        .setProgressBarIndeterminateVisibility(true);
-        //            }
-        //
-        //            @Override
-        //            protected Cursor doInBackground(Void... arg0) {
-        //                return filterCursor();
-        //            }
-        //
-        //            @Override
-        //            protected void onPostExecute(Cursor cursor) {
-        //                resetAdapter(cursor);
-        //                getActivity().getParent()
-        //                        .setProgressBarIndeterminateVisibility(false);
-        //            }
-        //        }.execute();
-    }
-
-    protected void resetAdapter(Cursor cursor) {
-        // XXX
-        //        startManagingCursor(cursor);
-        FavoritesAdapter adapter = new FavoritesAdapter(getActivity(), cursor,
-                this);
-        setListAdapter(adapter);
     }
 
     @Override
@@ -1180,7 +1144,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        FavoritesLoader loader = new FavoritesLoader(getActivity(), db);
+        HistoryLoaderBase loader = new FavoritesLoader(getActivity(), db);
         loader.setSelectedFilter(selectedFilter);
 
         return loader;
