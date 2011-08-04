@@ -330,6 +330,10 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     }
 
     private void ocrKanji() {
+        if (!hasStrokes()) {
+            return;
+        }
+
         Bitmap bitmap = drawingToBitmap();
         OcrTask task = new OcrTask(bitmap, handler);
         String message = getResources().getString(R.string.doing_hkr);
@@ -411,6 +415,9 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     }
 
     private void recognizeKanji() {
+        if (!hasStrokes()) {
+            return;
+        }
         List<Stroke> strokes = drawView.getStrokes();
 
         if (WwwjdicPreferences.isUseKanjiRecognizer(this)) {
@@ -425,6 +432,12 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         } else {
             recognizeWs(strokes);
         }
+    }
+
+    private boolean hasStrokes() {
+        List<Stroke> strokes = drawView.getStrokes();
+
+        return strokes != null && !strokes.isEmpty();
     }
 
     private void recognizeWs(List<Stroke> strokes) {
