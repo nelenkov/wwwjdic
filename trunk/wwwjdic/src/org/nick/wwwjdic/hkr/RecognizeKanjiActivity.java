@@ -245,8 +245,10 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                                         int id) {
                                     Intent intent = new Intent(
                                             Intent.ACTION_VIEW,
-                                            Uri.parse("market://details?id="
-                                                    + WwwjdicPreferences.KR_PACKAGE));
+                                            Uri.parse(activity
+                                                    .getResources()
+                                                    .getString(
+                                                            R.string.kr_download_uri)));
                                     activity.startActivity(intent);
                                 }
                             })
