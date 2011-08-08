@@ -363,6 +363,16 @@ public class StrokePath {
 
     public static List<StrokePath> parseKangiVgXml(File f) {
         List<StrokePath> strokes = new ArrayList<StrokePath>();
+        parseKangiVgXml(f, strokes);
+
+        return strokes;
+    }
+
+    public static void tryParseKangiVgXml(File f) {
+        parseKangiVgXml(f, null);
+    }
+
+    private static void parseKangiVgXml(File f, List<StrokePath> strokePaths) {
         XmlPullParser parser = Xml.newPullParser();
 
         try {
@@ -383,7 +393,9 @@ public class StrokePath {
                         Log.d(TAG, "parsing " + path);
                         if (path != null && !"".equals(path)) {
                             StrokePath strokePath = StrokePath.parsePath(path);
-                            strokes.add(strokePath);
+                            if (strokePaths != null) {
+                                strokePaths.add(strokePath);
+                            }
                         }
                     }
                     if (name.equalsIgnoreCase("kanji")) {
@@ -401,9 +413,8 @@ public class StrokePath {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        return strokes;
     }
+
 
     public List<Path> getSegments() {
         return segments;

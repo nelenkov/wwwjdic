@@ -19,21 +19,21 @@ public class DictionaryEntryTest {
     @Test
     public void testParse() {
         String edictStr = "先生方 [せんせいがた] /(n) doctors/teachers/";
-        DictionaryEntry entry = DictionaryEntry.parseEdict(edictStr);
+        DictionaryEntry entry = DictionaryEntry.parseEdict(edictStr, "1");
 
         assertEquals("先生方", entry.getWord());
         assertEquals("せんせいがた", entry.getReading());
         assertEquals(2, entry.getMeanings().size());
         assertEquals("(n) doctors", entry.getMeanings().get(0));
         assertEquals("teachers", entry.getMeanings().get(1));
-        assertEquals("[せんせいがた]  (n) doctors teachers", entry
-                .getTranslationString());
+        assertEquals("[せんせいがた]  (n) doctors teachers",
+                entry.getTranslationString());
     }
 
     @Test
     public void testNoReading() {
         String edictStr = "ソルティドッグ /(n) salty dog (cocktail)/";
-        DictionaryEntry entry = DictionaryEntry.parseEdict(edictStr);
+        DictionaryEntry entry = DictionaryEntry.parseEdict(edictStr, "1");
 
         assertEquals("ソルティドッグ", entry.getWord());
         assertNull(entry.getReading());
@@ -116,7 +116,7 @@ public class DictionaryEntryTest {
             }
 
             System.out.println("parsing : " + l);
-            DictionaryEntry e = DictionaryEntry.parseEdict(l);
+            DictionaryEntry e = DictionaryEntry.parseEdict(l, "1");
             assertNotNull(e);
             assertNotNull(e.getWord());
             assertNotNull(e.getTranslationString());

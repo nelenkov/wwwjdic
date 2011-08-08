@@ -54,7 +54,8 @@ public class StrokePathTest extends TestCase {
     }
 
     public void testParseAll() throws Exception {
-        StrokePath.parseKangiVgXml(new File(
-                "/sdcard/wwwjdic/kanjivg-20100513.xml"));
+        StrokePath.tryParseKangiVgXml(new File(
+        //                "/sdcard/wwwjdic/kanjivg-20100513.xml"));
+                "/sdcard/wwwjdic/kanjivg-20100823.xml"));
     }
 }
