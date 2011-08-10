@@ -4,8 +4,8 @@ import static org.nick.wwwjdic.Constants.DICTIONARY_TAB_IDX;
 import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v4.view.Menu;
+import android.support.v4.view.MenuItem;
 
 public class DictionaryEntryDetail extends DetailActivity {
 

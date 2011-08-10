@@ -5,8 +5,8 @@ import org.nick.wwwjdic.history.HistoryDbHelper;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v4.view.Menu;
+import android.support.v4.view.MenuItem;
 
 public abstract class DetailActivity extends FragmentActivity {
 
