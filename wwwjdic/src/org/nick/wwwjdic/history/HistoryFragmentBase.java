@@ -22,15 +22,14 @@ import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.view.Menu;
 import android.support.v4.widget.CursorAdapter;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -132,6 +131,8 @@ public abstract class HistoryFragmentBase extends ListFragment implements
     }
 
     protected abstract void lookupCurrentItem();
+    
+    
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -154,7 +155,7 @@ public abstract class HistoryFragmentBase extends ListFragment implements
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
         switch (item.getItemId()) {
         case R.id.menu_import:
             importItems();
@@ -340,7 +341,7 @@ public abstract class HistoryFragmentBase extends ListFragment implements
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(android.view.MenuItem item) {
         switch (item.getItemId()) {
         case MENU_ITEM_LOOKUP:
             lookupCurrentItem();
