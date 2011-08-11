@@ -3,7 +3,6 @@ package org.nick.wwwjdic.history;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
 
 import android.content.Context;
@@ -14,11 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class FavoritesAndHistorySummaryView extends ListView implements
         OnItemClickListener {
@@ -74,8 +73,8 @@ public class FavoritesAndHistorySummaryView extends ListView implements
         }
 
         Intent intent = new Intent(context, FavoritesAndHistory.class);
-        intent.putExtra(Constants.FAVORITES_HISTORY_SELECTED_TAB_IDX, tabIdx);
-        intent.putExtra(Constants.FILTER_TYPE, filterType);
+        intent.putExtra(FavoritesAndHistory.EXTRA_SELECTED_TAB_IDX, tabIdx);
+        intent.putExtra(FavoritesAndHistory.EXTRA_FILTER_TYPE, filterType);
         context.startActivity(intent);
     }
 

@@ -7,8 +7,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.utils.Analytics;
 
 import android.app.AlertDialog;
@@ -89,7 +89,8 @@ public abstract class HistoryFragmentBase extends ListFragment implements
         getListView().setOnCreateContextMenuListener(this);
 
         Intent intent = getActivity().getIntent();
-        selectedFilter = intent.getIntExtra(Constants.FILTER_TYPE, FILTER_ALL);
+        selectedFilter = intent.getIntExtra(
+                FavoritesAndHistory.EXTRA_FILTER_TYPE, FILTER_ALL);
 
         setupAdapter();
     }
@@ -131,8 +132,7 @@ public abstract class HistoryFragmentBase extends ListFragment implements
     }
 
     protected abstract void lookupCurrentItem();
-    
-    
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -157,6 +157,11 @@ public abstract class HistoryFragmentBase extends ListFragment implements
     @Override
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         switch (item.getItemId()) {
+        case android.R.id.home:
+            Intent intent = new Intent(getActivity(), Wwwjdic.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            break;
         case R.id.menu_import:
             importItems();
             break;

@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.utils.Analytics;
 
@@ -83,7 +82,8 @@ public abstract class HistoryBase extends ListActivity {
         getListView().setOnCreateContextMenuListener(this);
 
         Intent intent = getIntent();
-        selectedFilter = intent.getIntExtra(Constants.FILTER_TYPE, FILTER_ALL);
+        selectedFilter = intent.getIntExtra(
+                FavoritesAndHistory.EXTRA_FILTER_TYPE, FILTER_ALL);
 
         setupAdapter();
     }
@@ -428,8 +428,7 @@ public abstract class HistoryBase extends ListActivity {
         String messageTemplate = getResources().getString(
                 R.string.copied_to_clipboard);
         Toast t = Toast.makeText(this,
-                String.format(messageTemplate, headword),
-                Toast.LENGTH_SHORT);
+                String.format(messageTemplate, headword), Toast.LENGTH_SHORT);
         t.show();
     }
 
