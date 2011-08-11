@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+     <item android:id="@+id/menu_ocr"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="@string/ocr"
+        android:orderInCategory="0"
+        android:showAsAction="always" />
+    <item android:id="@+id/menu_draw"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/write_kanji"
+        android:orderInCategory="1"
+        android:showAsAction="always" />
+   <item android:id="@+id/menu_favorites_history"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        android:title="@string/favorites_hist"
+        android:orderInCategory="2"
+        android:showAsAction="never" />
+   <item android:id="@+id/menu_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/settings"
+        android:orderInCategory="3"
+        android:showAsAction="never" />
+   <item android:id="@+id/menu_about"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="@string/about"
+        android:orderInCategory="4"
+        android:showAsAction="never" />                    
+</menu>

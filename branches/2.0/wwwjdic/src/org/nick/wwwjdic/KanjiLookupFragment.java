@@ -14,6 +14,7 @@ import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.IntentSpan;
 import org.nick.wwwjdic.utils.StringUtils;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,8 +25,10 @@ import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -36,10 +39,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-public class KanjiLookup extends WwwjdicActivityBase implements
+public class KanjiLookupFragment extends WwwjdicFragmentBase implements
         OnClickListener, OnItemSelectedListener {
 
-    private static final String TAG = KanjiLookup.class.getSimpleName();
+    private static final String TAG = KanjiLookupFragment.class.getSimpleName();
 
     private static final int NUM_RECENT_HISTORY_ENTRIES = 5;
 
@@ -58,10 +61,8 @@ public class KanjiLookup extends WwwjdicActivityBase implements
     private HistoryDbHelper dbHelper;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.kanji_lookup);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         populateIdxToCode();
 
@@ -71,7 +72,7 @@ public class KanjiLookup extends WwwjdicActivityBase implements
         setupTabOrder();
         toggleRadicalStrokeCountPanel(false);
 
-        Bundle extras = getIntent().getExtras();
+        Bundle extras = getArguments();
         if (extras != null) {
             String searchKey = extras.getString(Constants.SEARCH_TEXT_KEY);
             int searchType = extras.getInt(Constants.SEARCH_TYPE);
@@ -87,11 +88,19 @@ public class KanjiLookup extends WwwjdicActivityBase implements
             }
         }
 
-        dbHelper = HistoryDbHelper.getInstance(this);
+        dbHelper = HistoryDbHelper.getInstance(getActivity());
 
         setupKanjiSummary();
 
         setupClickableLinks();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.kanji_lookup, container, false);
+
+        return v;
     }
 
     private void populateIdxToCode() {
@@ -105,28 +114,31 @@ public class KanjiLookup extends WwwjdicActivityBase implements
     }
 
     private void setupClickableLinks() {
-        View historyView = findViewById(R.id.kanji_history_summary);
+        View historyView = getView().findViewById(R.id.kanji_history_summary);
         historyView.setNextFocusDownId(R.id.hwrSearchLink);
 
-        TextView textView = (TextView) findViewById(R.id.hwrSearchLink);
-        makeClickable(textView, new Intent(this, RecognizeKanjiActivity.class));
+        TextView textView = (TextView) getView().findViewById(
+                R.id.hwrSearchLink);
+        makeClickable(textView, new Intent(getActivity(),
+                RecognizeKanjiActivity.class));
         textView.setNextFocusUpId(R.id.kanji_history_summary);
         textView.setNextFocusDownId(R.id.ocrSearchLink);
 
-        textView = (TextView) findViewById(R.id.ocrSearchLink);
-        makeClickable(textView, new Intent(this, OcrActivity.class));
+        textView = (TextView) getView().findViewById(R.id.ocrSearchLink);
+        makeClickable(textView, new Intent(getActivity(), OcrActivity.class));
         textView.setNextFocusUpId(R.id.hwrSearchLink);
         textView.setNextFocusDownId(R.id.multiRadicalSearchLink);
 
-        textView = (TextView) findViewById(R.id.multiRadicalSearchLink);
-        makeClickable(textView, new Intent(this, KradChart.class));
+        textView = (TextView) getView().findViewById(
+                R.id.multiRadicalSearchLink);
+        makeClickable(textView, new Intent(getActivity(), KradChart.class));
         textView.setNextFocusUpId(R.id.ocrSearchLink);
     }
 
     private void makeClickable(TextView textView, Intent intent) {
         String text = textView.getText().toString();
         SpannableString str = new SpannableString(text);
-        str.setSpan(new IntentSpan(this, intent), 0, text.length(),
+        str.setSpan(new IntentSpan(getActivity(), intent), 0, text.length(),
                 Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
 
         textView.setText(str);
@@ -140,12 +152,12 @@ public class KanjiLookup extends WwwjdicActivityBase implements
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         setupKanjiSummary();
@@ -176,7 +188,7 @@ public class KanjiLookup extends WwwjdicActivityBase implements
     }
 
     private void setupListeners() {
-        View kanjiSearchButton = findViewById(R.id.kanjiSearchButton);
+        View kanjiSearchButton = getView().findViewById(R.id.kanjiSearchButton);
         kanjiSearchButton.setOnClickListener(this);
 
         // kanjiInputText.setOnFocusChangeListener(this);
@@ -185,8 +197,8 @@ public class KanjiLookup extends WwwjdicActivityBase implements
 
     private void setupSpinners() {
         ArrayAdapter<CharSequence> kajiSearchTypeAdapter = ArrayAdapter
-                .createFromResource(this, R.array.kanji_search_types_array,
-                        R.layout.spinner_text);
+                .createFromResource(getActivity(),
+                        R.array.kanji_search_types_array, R.layout.spinner_text);
         kajiSearchTypeAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         kanjiSearchTypeSpinner.setAdapter(kajiSearchTypeAdapter);
@@ -242,14 +254,15 @@ public class KanjiLookup extends WwwjdicActivityBase implements
                 SearchCriteria criteria = SearchCriteria.createWithStrokeCount(
                         kanjiInput, searchType, minStrokeCount, maxStrokeCount);
 
-                Intent intent = new Intent(this, KanjiResultListView.class);
+                Intent intent = new Intent(getActivity(),
+                        KanjiResultListView.class);
                 intent.putExtra(Constants.CRITERIA_KEY, criteria);
 
                 if (!StringUtils.isEmpty(criteria.getQueryString())) {
                     dbHelper.addSearchCriteria(criteria);
                 }
 
-                Analytics.event("kanjiSearch", this);
+                Analytics.event("kanjiSearch", getActivity());
 
                 startActivity(intent);
             } catch (RejectedExecutionException e) {
@@ -257,7 +270,7 @@ public class KanjiLookup extends WwwjdicActivityBase implements
             }
             break;
         case R.id.selectRadicalButton:
-            Intent i = new Intent(this, RadicalChart.class);
+            Intent i = new Intent(getActivity(), RadicalChart.class);
 
             startActivityForResult(i, Constants.RADICAL_RETURN_RESULT);
             break;
@@ -275,10 +288,9 @@ public class KanjiLookup extends WwwjdicActivityBase implements
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-            Intent intent) {
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == Constants.RADICAL_RETURN_RESULT) {
-            if (resultCode == RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 Radical radical = (Radical) intent.getExtras().getSerializable(
                         Constants.RADICAL_KEY);
                 kanjiInputText.setText(Integer.toString(radical.getNumber()));
@@ -288,15 +300,21 @@ public class KanjiLookup extends WwwjdicActivityBase implements
     }
 
     private void findViews() {
-        kanjiInputText = (EditText) findViewById(R.id.kanjiInputText);
-        kanjiSearchTypeSpinner = (Spinner) findViewById(R.id.kanjiSearchTypeSpinner);
+        kanjiInputText = (EditText) getView().findViewById(R.id.kanjiInputText);
+        kanjiSearchTypeSpinner = (Spinner) getView().findViewById(
+                R.id.kanjiSearchTypeSpinner);
 
-        radicalEditText = (EditText) findViewById(R.id.radicalInputText);
-        strokeCountMinInput = (EditText) findViewById(R.id.strokeCountMinInput);
-        strokeCountMaxInput = (EditText) findViewById(R.id.strokeCountMaxInput);
-        selectRadicalButton = (Button) findViewById(R.id.selectRadicalButton);
+        radicalEditText = (EditText) getView().findViewById(
+                R.id.radicalInputText);
+        strokeCountMinInput = (EditText) getView().findViewById(
+                R.id.strokeCountMinInput);
+        strokeCountMaxInput = (EditText) getView().findViewById(
+                R.id.strokeCountMaxInput);
+        selectRadicalButton = (Button) getView().findViewById(
+                R.id.selectRadicalButton);
 
-        kanjiHistorySummary = (FavoritesAndHistorySummaryView) findViewById(R.id.kanji_history_summary);
+        kanjiHistorySummary = (FavoritesAndHistorySummaryView) getView()
+                .findViewById(R.id.kanji_history_summary);
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int position,

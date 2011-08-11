@@ -5,27 +5,54 @@ import static org.nick.wwwjdic.Constants.EXAMPLE_SEARRCH_TAB_IDX;
 import static org.nick.wwwjdic.Constants.KANJI_TAB_IDX;
 import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
 
+import org.nick.wwwjdic.history.FavoritesAndHistory;
+import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
+import org.nick.wwwjdic.ocr.OcrActivity;
 import org.nick.wwwjdic.utils.Analytics;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActionBar;
+import android.support.v4.app.ActionBar.Tab;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.Menu;
+import android.support.v4.view.MenuItem;
+import android.view.MenuInflater;
 import android.view.Window;
-import android.widget.TabHost;
 
-public class Wwwjdic extends TabActivity {
+public class Wwwjdic extends FragmentActivity {
 
     private static final int WHATS_NEW_DIALOG_ID = 1;
     private static final int DONATION_THANKS_DIALOG_ID = 2;
 
-    private static final String DICTIONARY_TAB = "dictionaryTab";
-    private static final String KANJI_TAB = "kanjiTab";
-    private static final String EXAMPLE_SEARCH_TAB = "exampleSearchTab";
-
     private static final String DONATE_VERSION_PACKAGE = "org.nick.wwwjdic.donate";
+
+    private class WwwjdicTabListener implements ActionBar.TabListener {
+        private WwwjdicFragmentBase fragment;
+
+        public WwwjdicTabListener(WwwjdicFragmentBase fragment) {
+            this.fragment = fragment;
+        }
+
+        public void onTabSelected(Tab tab, FragmentTransaction ft) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content, fragment).commit();
+        }
+
+        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+            getSupportFragmentManager().beginTransaction().remove(fragment)
+                    .commit();
+        }
+
+        public void onTabReselected(Tab tab, FragmentTransaction ft) {
+            // do nothing
+        }
+
+    }
 
     /** Called when the activity is first created. */
     @Override
@@ -38,12 +65,57 @@ public class Wwwjdic extends TabActivity {
 
         setupTabs();
 
+        invalidateOptionsMenu();
+
         if (!isDonateVersion()
                 || WwwjdicPreferences.isDonationThanksShown(this)) {
             showWhatsNew();
         }
 
         showDonationThanks();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+
+        inflater.inflate(R.menu.main, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.menu_about:
+            Intent intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
+            return true;
+        case R.id.menu_ocr:
+            intent = new Intent(this, OcrActivity.class);
+
+            startActivity(intent);
+            return true;
+        case R.id.menu_settings:
+            intent = new Intent(this, WwwjdicPreferences.class);
+
+            startActivity(intent);
+            return true;
+        case R.id.menu_draw:
+            intent = new Intent(this, RecognizeKanjiActivity.class);
+
+            startActivity(intent);
+            return true;
+        case R.id.menu_favorites_history:
+            intent = new Intent(this, FavoritesAndHistory.class);
+
+            startActivity(intent);
+            return true;
+        default:
+            // do nothing
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void showDonationThanks() {
@@ -93,44 +165,45 @@ public class Wwwjdic extends TabActivity {
     }
 
     private void setupTabs() {
-        TabHost tabHost = getTabHost();
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
         Bundle extras = getIntent().getExtras();
 
-        Intent dictionaryIntent = new Intent(this, Dictionary.class);
+        ActionBar.Tab dictionaryTab = getSupportActionBar().newTab();
+        DictionaryFragment dictionary = new DictionaryFragment();
         if (extras != null) {
-            dictionaryIntent.putExtras(extras);
+            dictionary.setArguments(extras);
         }
-        tabHost.addTab(tabHost
-                .newTabSpec(DICTIONARY_TAB)
-                .setIndicator(getResources().getText(R.string.dictionary),
-                        getResources().getDrawable(R.drawable.ic_tab_dict))
-                .setContent(dictionaryIntent));
+        //        dictionaryTab.setText(R.string.dictionary)
+        dictionaryTab.setIcon(R.drawable.ic_tab_dict).setTabListener(
+                new WwwjdicTabListener(dictionary));
+        getSupportActionBar().addTab(dictionaryTab);
 
-        Intent kanjiLookup = new Intent(this, KanjiLookup.class);
+        ActionBar.Tab kanjiTab = getSupportActionBar().newTab();
+        KanjiLookupFragment kanjiLookup = new KanjiLookupFragment();
         if (extras != null) {
-            kanjiLookup.putExtras(extras);
+            kanjiLookup.setArguments(extras);
         }
-        tabHost.addTab(tabHost
-                .newTabSpec(KANJI_TAB)
-                .setIndicator(getResources().getText(R.string.kanji_lookup),
-                        getResources().getDrawable(R.drawable.ic_tab_kanji))
-                .setContent(kanjiLookup));
+        //        kanjiTab.setText(R.string.kanji_lookup)
+        kanjiTab.setIcon(R.drawable.ic_tab_kanji).setTabListener(
+                new WwwjdicTabListener(kanjiLookup));
+        getSupportActionBar().addTab(kanjiTab);
 
-        Intent exampleSearch = new Intent(this, ExampleSearch.class);
+        ActionBar.Tab examplesTab = getSupportActionBar().newTab();
+        ExampleSearchFragment exampleSearch = new ExampleSearchFragment();
         if (extras != null) {
-            exampleSearch.putExtras(extras);
+            exampleSearch.setArguments(extras);
         }
-        tabHost.addTab(tabHost
-                .newTabSpec(EXAMPLE_SEARCH_TAB)
-                .setIndicator(getResources().getText(R.string.example_search),
-                        getResources().getDrawable(R.drawable.ic_tab_example))
-                .setContent(exampleSearch));
+        //        examplesTab.setText(R.string.example_search)
+        examplesTab.setIcon(R.drawable.ic_tab_example).setTabListener(
+                new WwwjdicTabListener(exampleSearch));
+        getSupportActionBar().addTab(examplesTab);
 
-        tabHost.setCurrentTab(DICTIONARY_TAB_IDX);
+        getSupportActionBar().setSelectedNavigationItem(DICTIONARY_TAB_IDX);
         if (extras != null) {
             int selectedTab = extras.getInt(SELECTED_TAB_IDX, -1);
             if (selectedTab != -1) {
-                tabHost.setCurrentTab(selectedTab);
+                getSupportActionBar().setSelectedNavigationItem(selectedTab);
             }
 
             String searchKey = extras.getString(Constants.SEARCH_TEXT_KEY);
@@ -138,13 +211,16 @@ public class Wwwjdic extends TabActivity {
             if (searchKey != null) {
                 switch (searchType) {
                 case SearchCriteria.CRITERIA_TYPE_DICT:
-                    tabHost.setCurrentTab(DICTIONARY_TAB_IDX);
+                    getSupportActionBar().setSelectedNavigationItem(
+                            DICTIONARY_TAB_IDX);
                     break;
                 case SearchCriteria.CRITERIA_TYPE_KANJI:
-                    tabHost.setCurrentTab(KANJI_TAB_IDX);
+                    getSupportActionBar().setSelectedNavigationItem(
+                            KANJI_TAB_IDX);
                     break;
                 case SearchCriteria.CRITERIA_TYPE_EXAMPLES:
-                    tabHost.setCurrentTab(EXAMPLE_SEARRCH_TAB_IDX);
+                    getSupportActionBar().setSelectedNavigationItem(
+                            EXAMPLE_SEARRCH_TAB_IDX);
                     break;
                 default:
                     // do nothing

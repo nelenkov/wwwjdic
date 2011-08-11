@@ -10,9 +10,10 @@ import org.nick.wwwjdic.utils.StringUtils;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -21,7 +22,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-public class ExampleSearch extends WwwjdicActivityBase implements
+public class ExampleSearchFragment extends WwwjdicFragmentBase implements
         OnClickListener, OnItemSelectedListener {
 
     private EditText exampleSearchInputText;
@@ -35,12 +36,8 @@ public class ExampleSearch extends WwwjdicActivityBase implements
     private HistoryDbHelper dbHelper;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        setContentView(R.layout.example_search);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         findViews();
         setupListeners();
@@ -48,7 +45,7 @@ public class ExampleSearch extends WwwjdicActivityBase implements
 
         exampleSearchInputText.requestFocus();
 
-        Bundle extras = getIntent().getExtras();
+        Bundle extras = getArguments();
         if (extras != null) {
             String searchKey = extras.getString(Constants.SEARCH_TEXT_KEY);
             int searchType = extras.getInt(Constants.SEARCH_TYPE);
@@ -64,18 +61,26 @@ public class ExampleSearch extends WwwjdicActivityBase implements
             }
         }
 
-        dbHelper = HistoryDbHelper.getInstance(this);
+        dbHelper = HistoryDbHelper.getInstance(getActivity());
 
         setupExamplesSummary();
     }
 
     @Override
-    protected void onDestroy() {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.example_search, container, false);
+
+        return v;
+    }
+
+    @Override
+    public void onDestroy() {
         super.onDestroy();
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         setupExamplesSummary();
@@ -99,13 +104,14 @@ public class ExampleSearch extends WwwjdicActivityBase implements
     }
 
     private void setupListeners() {
-        View exampleSearchButton = findViewById(R.id.exampleSearchButton);
+        View exampleSearchButton = getView().findViewById(
+                R.id.exampleSearchButton);
         exampleSearchButton.setOnClickListener(this);
     }
 
     private void setupSpinners() {
         ArrayAdapter<CharSequence> sentenceModeAdapter = ArrayAdapter
-                .createFromResource(this, R.array.sentence_modes,
+                .createFromResource(getActivity(), R.array.sentence_modes,
                         R.layout.spinner_text);
         sentenceModeAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -134,21 +140,23 @@ public class ExampleSearch extends WwwjdicActivityBase implements
                         .createForExampleSearch(queryString,
                                 exampleExactMatchCb.isChecked(), numMaxResults);
 
-                Intent intent = new Intent(this, ExamplesResultListView.class);
+                Intent intent = new Intent(getActivity(),
+                        ExamplesResultListView.class);
                 intent.putExtra(Constants.CRITERIA_KEY, criteria);
 
                 if (!StringUtils.isEmpty(criteria.getQueryString())) {
                     dbHelper.addSearchCriteria(criteria);
                 }
 
-                Analytics.event("exampleSearch", this);
+                Analytics.event("exampleSearch", getActivity());
 
                 startActivity(intent);
             } else {
-                Intent intent = new Intent(this, SentenceBreakdown.class);
+                Intent intent = new Intent(getActivity(),
+                        SentenceBreakdown.class);
                 intent.putExtra(SentenceBreakdown.EXTRA_SENTENCE, queryString);
 
-                Analytics.event("sentenceTranslation", this);
+                Analytics.event("sentenceTranslation", getActivity());
 
                 startActivity(intent);
             }
@@ -159,13 +167,19 @@ public class ExampleSearch extends WwwjdicActivityBase implements
     }
 
     private void findViews() {
-        exampleSearchInputText = (EditText) findViewById(R.id.exampleInputText);
-        maxNumExamplesText = (EditText) findViewById(R.id.maxExamplesInput);
-        exampleExactMatchCb = (CheckBox) findViewById(R.id.exampleExactMatchCb);
-        sentenceModeSpinner = (Spinner) findViewById(R.id.modeSpinner);
-        exampleSearchButton = (Button) findViewById(R.id.exampleSearchButton);
+        exampleSearchInputText = (EditText) getView().findViewById(
+                R.id.exampleInputText);
+        maxNumExamplesText = (EditText) getView().findViewById(
+                R.id.maxExamplesInput);
+        exampleExactMatchCb = (CheckBox) getView().findViewById(
+                R.id.exampleExactMatchCb);
+        sentenceModeSpinner = (Spinner) getView()
+                .findViewById(R.id.modeSpinner);
+        exampleSearchButton = (Button) getView().findViewById(
+                R.id.exampleSearchButton);
 
-        examplesHistorySummary = (FavoritesAndHistorySummaryView) findViewById(R.id.examples_history_summary);
+        examplesHistorySummary = (FavoritesAndHistorySummaryView) getView()
+                .findViewById(R.id.examples_history_summary);
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int position,
