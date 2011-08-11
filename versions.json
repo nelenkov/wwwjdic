@@ -16,8 +16,8 @@
 {
     packageName: "org.nick.wwwjdic", 
     marketName: "AmazonAppStore", 
-    versionCode: "42", 
-    versionName: "1.8.5",
+    versionCode: "43", 
+    versionName: "1.8.6",
     downloadUrl: "http://www.amazon.com/gp/mas/dl/android?p=org.nick.wwwjdic"
 }
 ]
