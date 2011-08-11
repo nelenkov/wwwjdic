@@ -14,9 +14,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -27,10 +29,11 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
-        OnFocusChangeListener, OnCheckedChangeListener, OnItemSelectedListener {
+public class DictionaryFragment extends WwwjdicFragmentBase implements
+        OnClickListener, OnFocusChangeListener, OnCheckedChangeListener,
+        OnItemSelectedListener {
 
-    private static final String TAG = Dictionary.class.getSimpleName();
+    private static final String TAG = DictionaryFragment.class.getSimpleName();
 
     private static final Map<Integer, String> IDX_TO_DICT_CODE = new HashMap<Integer, String>();
 
@@ -45,10 +48,8 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
     private HistoryDbHelper dbHelper;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.dict_lookup);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         populateIdxToDictCode();
 
@@ -59,7 +60,7 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         inputText.requestFocus();
         selectDictionary(savedInstanceState);
 
-        Bundle extras = getIntent().getExtras();
+        Bundle extras = getArguments();
         if (extras != null) {
             String searchKey = extras.getString(Constants.SEARCH_TEXT_KEY);
             int searchType = extras.getInt(Constants.SEARCH_TYPE);
@@ -75,7 +76,7 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
             }
         }
 
-        dbHelper = HistoryDbHelper.getInstance(this);
+        dbHelper = HistoryDbHelper.getInstance(getActivity());
 
         setupDictSummary();
 
@@ -86,6 +87,14 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
                 inputText.requestFocus();
             }
         });
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.dict_lookup, container, false);
+
+        return v;
     }
 
     private void populateIdxToDictCode() {
@@ -101,11 +110,6 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
     private void selectDictionary(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             int idx = savedInstanceState.getInt(
@@ -113,12 +117,12 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
             dictSpinner.setSelection(idx);
         } else {
             dictSpinner.setSelection(WwwjdicPreferences
-                    .getDefaultDictionaryIdx(this));
+                    .getDefaultDictionaryIdx(getActivity()));
         }
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         setupDictSummary();
@@ -127,7 +131,7 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putInt(Constants.SELECTED_DICTIONARY_IDX,
@@ -135,17 +139,19 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
     }
 
     private void findViews() {
-        inputText = (EditText) findViewById(R.id.inputText);
-        exactMatchCb = (CheckBox) findViewById(R.id.exactMatchCb);
-        commonWordsCb = (CheckBox) findViewById(R.id.commonWordsCb);
-        romanizedJapaneseCb = (CheckBox) findViewById(R.id.romanizedCb);
-        dictSpinner = (Spinner) findViewById(R.id.dictionarySpinner);
+        inputText = (EditText) getView().findViewById(R.id.inputText);
+        exactMatchCb = (CheckBox) getView().findViewById(R.id.exactMatchCb);
+        commonWordsCb = (CheckBox) getView().findViewById(R.id.commonWordsCb);
+        romanizedJapaneseCb = (CheckBox) getView().findViewById(
+                R.id.romanizedCb);
+        dictSpinner = (Spinner) getView().findViewById(R.id.dictionarySpinner);
 
-        dictHistorySummary = (FavoritesAndHistorySummaryView) findViewById(R.id.dict_history_summary);
+        dictHistorySummary = (FavoritesAndHistorySummaryView) getView()
+                .findViewById(R.id.dict_history_summary);
     }
 
     private void setupListeners() {
-        View translateButton = findViewById(R.id.translateButton);
+        View translateButton = getView().findViewById(R.id.translateButton);
         translateButton.setOnClickListener(this);
 
         // inputText.setOnFocusChangeListener(this);
@@ -157,7 +163,8 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
 
     private void setupSpinners() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.dictionaries_array, R.layout.spinner_text);
+                getActivity(), R.array.dictionaries_array,
+                R.layout.spinner_text);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dictSpinner.setAdapter(adapter);
         dictSpinner.setOnItemSelectedListener(this);
@@ -200,14 +207,15 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
                         romanizedJapaneseCb.isChecked(),
                         commonWordsCb.isChecked(), dict);
 
-                Intent intent = new Intent(this, DictionaryResultListView.class);
+                Intent intent = new Intent(getActivity(),
+                        DictionaryResultListView.class);
                 intent.putExtra(Constants.CRITERIA_KEY, criteria);
 
                 if (!StringUtils.isEmpty(criteria.getQueryString())) {
                     dbHelper.addSearchCriteria(criteria);
                 }
 
-                Analytics.event("dictSearch", this);
+                Analytics.event("dictSearch", getActivity());
 
                 startActivity(intent);
             } catch (RejectedExecutionException e) {
@@ -282,14 +290,16 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
     }
 
     private void hideKeyboard() {
-        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager mgr = (InputMethodManager) getActivity()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
         mgr.hideSoftInputFromWindow(inputText.getWindowToken(), 0);
     }
 
     private void showKeyboard() {
-        EditText editText = (EditText) findViewById(R.id.inputText);
+        EditText editText = (EditText) getView().findViewById(R.id.inputText);
         editText.requestFocus();
-        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager mgr = (InputMethodManager) getActivity()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
         mgr.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
