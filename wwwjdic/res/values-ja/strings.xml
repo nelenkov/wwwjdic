@@ -387,4 +387,7 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     <string name="grade_elementary">小学校 %s年生</string>
     <string name="grade_secondary">中学校</string>
     <string name="grade_jinmeiyou">人名用漢字</string>
+    <string name="pref_random_examples">ランダムな例文</string>
+    <string name="pref_random_examples_summary">チェックされたときは、例文検索するたびに
+    10つのランダムな例文を返す。</string>
 </resources>

@@ -20,6 +20,10 @@
             android:key="pref_default_dict" android:defaultValue="0"
             android:entries="@array/dictionaries_array"
             android:entryValues="@array/dictionary_idxs_array" />
+        <CheckBoxPreference android:key="pref_random_examples"
+            android:title="@string/pref_random_examples"
+            android:summary="@string/pref_random_examples_summary"
+            android:defaultValue="false" />    
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_ocr">
         <ListPreference android:key="pref_weocr_url"
