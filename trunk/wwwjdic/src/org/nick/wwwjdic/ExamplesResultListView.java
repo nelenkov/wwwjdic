@@ -165,7 +165,8 @@ public class ExamplesResultListView extends ResultListViewBase<ExampleSentence> 
         SearchTask<ExampleSentence> searchTask = null;
         if (useBackdoor) {
             searchTask = new ExampleSearchTaskBackdoor(getWwwjdicUrl(),
-                    getHttpTimeoutSeconds(), this, criteria);
+                    getHttpTimeoutSeconds(), this, criteria,
+                    WwwjdicPreferences.isReturnRandomExamples(this));
         } else {
             searchTask = new ExampleSearchTask(getWwwjdicUrl()
                     + EXAMPLE_SEARCH_QUERY_STR, getHttpTimeoutSeconds(), this,

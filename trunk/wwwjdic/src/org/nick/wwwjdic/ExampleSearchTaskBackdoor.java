@@ -18,10 +18,13 @@ public class ExampleSearchTaskBackdoor extends
 
     private ExampleSentence lastSentence;
 
+    private boolean randomExamples;
+
     public ExampleSearchTaskBackdoor(String url, int timeoutSeconds,
             ResultListView<ExampleSentence> resultView,
-            SearchCriteria searchCriteria) {
+            SearchCriteria searchCriteria, boolean randomExamples) {
         super(url, timeoutSeconds, resultView, searchCriteria);
+        this.randomExamples = randomExamples;
     }
 
     @Override
@@ -76,10 +79,13 @@ public class ExampleSearchTaskBackdoor extends
             throw new RuntimeException(e);
         }
 
-        // up to 100 sentences starting at 0
-        buff.append("=0=");
-        // use =1= to get random examples
-        //        buff.append("=1=");
+        if (randomExamples) {
+            // use =1= to get random examples
+            buff.append("=1=");
+        } else {
+            // up to 100 sentences starting at 0
+            buff.append("=0=");
+        }
 
         System.out.println("searchString: " + buff.toString());
         return buff.toString();
