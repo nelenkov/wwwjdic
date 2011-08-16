@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.DictionaryEntry;
 import org.nick.wwwjdic.DictionaryEntryDetail;
 import org.nick.wwwjdic.KanjiEntry;
@@ -520,12 +519,12 @@ public class Favorites extends HistoryBase implements
         Intent intent = null;
         if (entry.isKanji()) {
             intent = new Intent(this, KanjiEntryDetail.class);
-            intent.putExtra(Constants.KANJI_ENTRY_KEY, entry);
-            intent.putExtra(Constants.IS_FAVORITE, true);
+            intent.putExtra(KanjiEntryDetail.EXTRA_KANJI_ENTRY, entry);
+            intent.putExtra(KanjiEntryDetail.EXTRA_IS_FAVORITE, true);
         } else {
             intent = new Intent(this, DictionaryEntryDetail.class);
-            intent.putExtra(Constants.ENTRY_KEY, entry);
-            intent.putExtra(Constants.IS_FAVORITE, true);
+            intent.putExtra(DictionaryEntryDetail.EXTRA_DICTIONARY_ENTRY, entry);
+            intent.putExtra(DictionaryEntryDetail.EXTRA_IS_FAVORITE, true);
         }
 
         Analytics.event("lookupFromFavorites", this);

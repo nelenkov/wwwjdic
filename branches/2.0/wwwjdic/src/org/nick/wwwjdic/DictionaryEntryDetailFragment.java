@@ -46,7 +46,8 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         // Supply index input as an argument.
         Bundle args = new Bundle();
         args.putInt("index", index);
-        args.putSerializable(Constants.ENTRY_KEY, entry);
+        args.putSerializable(DictionaryEntryDetail.EXTRA_DICTIONARY_ENTRY,
+                entry);
         f.setArguments(args);
 
         return f;
@@ -63,10 +64,10 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         checkTtsAvailability();
 
         entry = (DictionaryEntry) getArguments().getSerializable(
-                Constants.ENTRY_KEY);
+                DictionaryEntryDetail.EXTRA_DICTIONARY_ENTRY);
         wwwjdicEntry = entry;
         isFavorite = getActivity().getIntent().getBooleanExtra(
-                Constants.IS_FAVORITE, false);
+                DictionaryEntryDetail.EXTRA_IS_FAVORITE, false);
 
         String message = getResources().getString(R.string.details_for);
         getActivity().setTitle(String.format(message, entry.getWord()));

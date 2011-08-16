@@ -47,23 +47,23 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
     private LinearLayout translationsCodesLayout;
 
     private KanjiEntry entry;
-    
+
     public static KanjiEntryDetailFragment newInstance(int index,
-    		KanjiEntry entry) {
-    	KanjiEntryDetailFragment f = new KanjiEntryDetailFragment();
+            KanjiEntry entry) {
+        KanjiEntryDetailFragment f = new KanjiEntryDetailFragment();
 
-		// Supply index input as an argument.
-		Bundle args = new Bundle();
-		args.putInt("index", index);
-		args.putSerializable(Constants.KANJI_ENTRY_KEY, entry);
-		f.setArguments(args);
+        // Supply index input as an argument.
+        Bundle args = new Bundle();
+        args.putInt("index", index);
+        args.putSerializable(KanjiEntryDetail.EXTRA_KANJI_ENTRY, entry);
+        f.setArguments(args);
 
-		return f;
-	}
+        return f;
+    }
 
-	public int getShownIndex() {
-		return getArguments().getInt("index", 0);
-	}
+    public int getShownIndex() {
+        return getArguments().getInt("index", 0);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -72,9 +72,10 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
         checkTtsAvailability();
 
         entry = (KanjiEntry) getArguments().getSerializable(
-                Constants.KANJI_ENTRY_KEY);
+                KanjiEntryDetail.EXTRA_KANJI_ENTRY);
         wwwjdicEntry = entry;
-        isFavorite = getArguments().getBoolean(Constants.IS_FAVORITE, false);
+        isFavorite = getArguments().getBoolean(
+                KanjiEntryDetail.EXTRA_IS_FAVORITE, false);
         boolean kodWidgetClicked = getArguments().getBoolean(
                 Constants.KOD_WIDGET_CLICK, false);
         if (kodWidgetClicked) {

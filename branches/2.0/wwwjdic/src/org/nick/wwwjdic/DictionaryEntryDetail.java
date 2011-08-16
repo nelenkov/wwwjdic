@@ -2,12 +2,17 @@ package org.nick.wwwjdic;
 
 import static org.nick.wwwjdic.Constants.DICTIONARY_TAB_IDX;
 import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
+
+import org.nick.wwwjdic.history.FavoritesAndHistory;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 
 public class DictionaryEntryDetail extends DetailActivity {
+
+    public static final String EXTRA_DICTIONARY_ENTRY = "org.nick.wwwjdic.DICTIONARY_ENTRY";
 
     private static final int ITEM_ID_LOOKUP_KANJI = 1;
 
@@ -16,7 +21,7 @@ public class DictionaryEntryDetail extends DetailActivity {
         super.onCreate(savedInstanceState);
 
         DictionaryEntry entry = (DictionaryEntry) getIntent()
-                .getSerializableExtra(Constants.ENTRY_KEY);
+                .getSerializableExtra(EXTRA_DICTIONARY_ENTRY);
         wwwjdicEntry = entry;
 
         if (savedInstanceState == null) {
@@ -25,6 +30,8 @@ public class DictionaryEntryDetail extends DetailActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(android.R.id.content, details).commit();
         }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -39,6 +46,25 @@ public class DictionaryEntryDetail extends DetailActivity {
                 android.R.drawable.ic_menu_search);
 
         return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            Intent intent = new Intent(this,
+                    isFavorite ? FavoritesAndHistory.class
+                            : DictionaryResultListView.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            return true;
+        default:
+            // do nothing
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
