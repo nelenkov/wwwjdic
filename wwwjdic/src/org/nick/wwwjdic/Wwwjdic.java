@@ -5,6 +5,8 @@ import static org.nick.wwwjdic.Constants.EXAMPLE_SEARRCH_TAB_IDX;
 import static org.nick.wwwjdic.Constants.KANJI_TAB_IDX;
 import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
 
+import java.util.ArrayList;
+
 import org.nick.wwwjdic.history.FavoritesAndHistory;
 import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
 import org.nick.wwwjdic.ocr.OcrActivity;
@@ -17,10 +19,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBar;
 import android.support.v4.app.ActionBar.Tab;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
+import android.support.v4.view.ViewPager;
 import android.view.MenuInflater;
 import android.view.Window;
 
@@ -31,28 +36,69 @@ public class Wwwjdic extends FragmentActivity {
 
     private static final String DONATE_VERSION_PACKAGE = "org.nick.wwwjdic.donate";
 
-    private class WwwjdicTabListener implements ActionBar.TabListener {
-        private WwwjdicFragmentBase fragment;
+    public static class TabsAdapter extends FragmentPagerAdapter implements
+            ViewPager.OnPageChangeListener, ActionBar.TabListener {
+        //        private final Context context;
+        private final ActionBar actionBar;
+        private final ViewPager viewPager;
+        private final ArrayList<WwwjdicFragmentBase> tabs = new ArrayList<WwwjdicFragmentBase>();
 
-        public WwwjdicTabListener(WwwjdicFragmentBase fragment) {
-            this.fragment = fragment;
+        public TabsAdapter(FragmentActivity activity, ActionBar actionBar,
+                ViewPager pager) {
+            super(activity.getSupportFragmentManager());
+            //            this.context = activity;
+            this.actionBar = actionBar;
+            this.viewPager = pager;
+            this.viewPager.setAdapter(this);
+            this.viewPager.setOnPageChangeListener(this);
         }
 
+        public void addTab(ActionBar.Tab tab, WwwjdicFragmentBase tabFragment) {
+            tabs.add(tabFragment);
+            actionBar.addTab(tab.setTabListener(this));
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return tabs.size();
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return tabs.get(position);
+        }
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset,
+                int positionOffsetPixels) {
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            actionBar.setSelectedNavigationItem(position);
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+        }
+
+        @Override
         public void onTabSelected(Tab tab, FragmentTransaction ft) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content, fragment).commit();
+            viewPager.setCurrentItem(tab.getPosition());
         }
 
-        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-            getSupportFragmentManager().beginTransaction().remove(fragment)
-                    .commit();
-        }
-
+        @Override
         public void onTabReselected(Tab tab, FragmentTransaction ft) {
-            // do nothing
         }
 
+        @Override
+        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+        }
     }
+
+    private ViewPager viewPager;
+    private TabsAdapter tabsAdapter;
 
     /** Called when the activity is first created. */
     @Override
@@ -175,9 +221,11 @@ public class Wwwjdic extends FragmentActivity {
             dictionary.setArguments(extras);
         }
         //        dictionaryTab.setText(R.string.dictionary)
-        dictionaryTab.setIcon(R.drawable.ic_tab_dict).setTabListener(
-                new WwwjdicTabListener(dictionary));
-        getSupportActionBar().addTab(dictionaryTab);
+        dictionaryTab.setIcon(R.drawable.ic_tab_dict);
+        viewPager = (ViewPager) findViewById(R.id.content);
+        tabsAdapter = new TabsAdapter(this, getSupportActionBar(), viewPager);
+        tabsAdapter.addTab(dictionaryTab, dictionary);
+        //
 
         ActionBar.Tab kanjiTab = getSupportActionBar().newTab();
         KanjiLookupFragment kanjiLookup = new KanjiLookupFragment();
@@ -185,9 +233,8 @@ public class Wwwjdic extends FragmentActivity {
             kanjiLookup.setArguments(extras);
         }
         //        kanjiTab.setText(R.string.kanji_lookup)
-        kanjiTab.setIcon(R.drawable.ic_tab_kanji).setTabListener(
-                new WwwjdicTabListener(kanjiLookup));
-        getSupportActionBar().addTab(kanjiTab);
+        kanjiTab.setIcon(R.drawable.ic_tab_kanji);
+        tabsAdapter.addTab(kanjiTab, kanjiLookup);
 
         ActionBar.Tab examplesTab = getSupportActionBar().newTab();
         ExampleSearchFragment exampleSearch = new ExampleSearchFragment();
@@ -195,9 +242,8 @@ public class Wwwjdic extends FragmentActivity {
             exampleSearch.setArguments(extras);
         }
         //        examplesTab.setText(R.string.example_search)
-        examplesTab.setIcon(R.drawable.ic_tab_example).setTabListener(
-                new WwwjdicTabListener(exampleSearch));
-        getSupportActionBar().addTab(examplesTab);
+        examplesTab.setIcon(R.drawable.ic_tab_example);
+        tabsAdapter.addTab(examplesTab, exampleSearch);
 
         getSupportActionBar().setSelectedNavigationItem(DICTIONARY_TAB_IDX);
         if (extras != null) {
