@@ -160,7 +160,7 @@ public abstract class ResultListFragmentBase<T> extends ListFragment implements
     protected void setFavoriteId(Intent intent, WwwjdicEntry entry) {
         Long favoriteId = db.getFavoriteId(entry.getHeadword());
         if (favoriteId != null) {
-            intent.putExtra(Constants.IS_FAVORITE, true);
+            intent.putExtra(DetailActivity.EXTRA_IS_FAVORITE, true);
             entry.setId(favoriteId);
         }
     }

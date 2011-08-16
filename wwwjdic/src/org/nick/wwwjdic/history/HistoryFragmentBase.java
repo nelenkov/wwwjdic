@@ -23,6 +23,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.view.Menu;
+import android.support.v4.view.MenuItem;
 import android.support.v4.widget.CursorAdapter;
 import android.text.ClipboardManager;
 import android.util.Log;
@@ -155,7 +156,7 @@ public abstract class HistoryFragmentBase extends ListFragment implements
     }
 
     @Override
-    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
             Intent intent = new Intent(getActivity(), Wwwjdic.class);

@@ -19,6 +19,8 @@ public class SentenceBreakdown extends ResultListViewBase {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.sentence_breakdown);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -28,6 +30,22 @@ public class SentenceBreakdown extends ResultListViewBase {
                 android.R.drawable.ic_menu_compass);
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            Intent intent = new Intent(this, ExamplesResultListView.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            return true;
+        default:
+            // do nothing
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

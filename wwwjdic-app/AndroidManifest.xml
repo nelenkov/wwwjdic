@@ -25,7 +25,8 @@
         <activity android:name="org.nick.wwwjdic.DictionaryResultListView"
             android:label="@string/dict_search" 
             android:configChanges="orientation|keyboardHidden|keyboard" 
-            android:taskAffinity="">
+            android:taskAffinity="" 
+            android:theme="@style/Theme.Sherlock">
              <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />            
                 <action android:name="android.intent.action.SEARCH" />
@@ -33,39 +34,48 @@
             <meta-data android:name="android.app.searchable"
                        android:resource="@xml/searchable"/>
         </activity>
-        <activity android:name="org.nick.wwwjdic.DictionaryEntryDetail"></activity>
+        <activity android:name="org.nick.wwwjdic.DictionaryEntryDetail" 
+        android:theme="@style/Theme.Sherlock"/>
         <activity android:name="org.nick.wwwjdic.KanjiResultListView"
-            android:label="@string/searching" android:configChanges="orientation|keyboardHidden|keyboard"></activity>
+            android:label="@string/searching" 
+            android:configChanges="orientation|keyboardHidden|keyboard" 
+            android:theme="@style/Theme.Sherlock"/>
         <activity android:name="org.nick.wwwjdic.ExamplesResultListView"
-            android:label="@string/searching" android:configChanges="orientation|keyboardHidden|keyboard"></activity>
+            android:label="@string/searching" 
+            android:configChanges="orientation|keyboardHidden|keyboard" 
+            android:theme="@style/Theme.Sherlock"/>
         <activity android:name="org.nick.wwwjdic.SentenceBreakdown"
-            android:configChanges="orientation|keyboardHidden|keyboard"></activity>
+            android:configChanges="orientation|keyboardHidden|keyboard" 
+            android:theme="@style/Theme.Sherlock"/>
         <activity android:name="org.nick.wwwjdic.KanjiEntryDetail"
-            android:taskAffinity=""></activity>
-        <activity android:name="org.nick.wwwjdic.RadicalChart"></activity>
-        <activity android:name="org.nick.wwwjdic.WwwjdicPreferences"></activity>
+            android:taskAffinity="" 
+            android:theme="@style/Theme.Sherlock"/>
+        <activity android:name="org.nick.wwwjdic.RadicalChart"/>
+        <activity android:name="org.nick.wwwjdic.WwwjdicPreferences"/>
         <activity android:name="org.nick.wwwjdic.ocr.OcrActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard"></activity>
+            android:configChanges="orientation|keyboardHidden|keyboard"/>
         <activity android:name="org.nick.wwwjdic.ocr.crop.CropImage"
-            android:configChanges="orientation|keyboardHidden|keyboard"></activity>
+            android:configChanges="orientation|keyboardHidden|keyboard"/>
         <activity android:name="org.nick.wwwjdic.hkr.RecognizeKanjiActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"
-            android:exported="false">
+            android:exported="false" 
+            android:theme="@style/Theme.Sherlock">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="org.nick.wwwjdic.hkr.HkrCandidates"></activity>
+        <activity android:name="org.nick.wwwjdic.hkr.HkrCandidates" 
+            android:theme="@style/Theme.Sherlock"/>
         <activity android:name="org.nick.wwwjdic.history.Favorites"
-            android:configChanges="orientation|keyboardHidden|keyboard"></activity>
+            android:configChanges="orientation|keyboardHidden|keyboard"/>
         <activity android:name="org.nick.wwwjdic.history.SearchHistory"
-            android:configChanges="orientation|keyboardHidden|keyboard"></activity>
+            android:configChanges="orientation|keyboardHidden|keyboard"/>
         <activity android:name="org.nick.wwwjdic.history.FavoritesAndHistory"
             android:configChanges="orientation|keyboardHidden|keyboard" 
              android:theme="@style/Theme.Sherlock"/>
         <activity android:name="org.nick.wwwjdic.sod.SodActivity"/>
         <activity android:name="org.nick.wwwjdic.krad.KradChart"
-            android:configChanges="orientation|keyboardHidden|keyboard"></activity>        
+            android:configChanges="orientation|keyboardHidden|keyboard"/>        
             
         <activity android:name="org.nick.wwwjdic.widgets.KodWidgetConfigure" 
             android:label="@string/kod_widget_configuration">

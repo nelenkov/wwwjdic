@@ -131,7 +131,7 @@ public class KodWidgetProvider extends AppWidgetProvider {
         String kod = entry.getHeadword();
         Log.d(TAG, "KOD: " + kod);
         Intent intent = new Intent(context, KanjiEntryDetail.class);
-        intent.putExtra(Constants.KANJI_ENTRY_KEY, entries.get(0));
+        intent.putExtra(KanjiEntryDetail.EXTRA_KANJI_ENTRY, entries.get(0));
         intent.putExtra(Constants.KOD_WIDGET_CLICK, true);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TOP);
