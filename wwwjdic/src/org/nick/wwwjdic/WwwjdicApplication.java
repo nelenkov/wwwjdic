@@ -31,8 +31,10 @@ import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
 
-@ReportsCrashes(formKey = "dDA0N2Z5TWdReHdCaC1vOVB4WEpCZEE6MQ", mode = ReportingInteractionMode.SILENT, resToastText = R.string.crash_toast_text)
+@ReportsCrashes(formKey = "dDA0N2Z5TWdReHdCaC1vOVB4WEpCZEE6MQ", mode = ReportingInteractionMode.TOAST, resToastText = R.string.crash_toast_text)
+//@ReportsCrashes(formUri = "http://www.bugsense.com/api/acra?api_key=f156b97b", formKey = "", mode = ReportingInteractionMode.TOAST, resToastText = R.string.crash_toast_text)
 public class WwwjdicApplication extends Application {
+
 
     private static final String TAG = WwwjdicApplication.class.getSimpleName();
 
