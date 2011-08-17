@@ -18,24 +18,13 @@
             android:background="@drawable/ic_flash" android:textOn=""
             android:textOff="" android:focusable="false"/>
     </LinearLayout>
-    <LinearLayout android:id="@+id/pick_image_button_group"
-        android:layout_height="wrap_content" 
-        android:layout_width="wrap_content"
-        android:visibility="visible" 
-        android:orientation="vertical"
+    <Button android:id="@+id/pick_image"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:layout_marginTop="42dp"
-        android:layout_marginLeft="4dip">
-        <Button android:id="@+id/pick_image"
-            android:layout_width="wrap_content" 
-            android:layout_height="wrap_content"
-            android:paddingBottom="14dip" 
-            android:paddingTop="14dip"
-            android:paddingLeft="8dip" 
-            android:paddingRight="8dip"
-            android:background="@android:drawable/ic_menu_gallery"
-            android:textSize="32sp" /> 
-    </LinearLayout>
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="4dip"
+        android:background="@android:drawable/ic_menu_gallery" /> 
     <LinearLayout android:id="@+id/button_group"
         android:layout_height="wrap_content" android:layout_width="wrap_content"
         android:visibility="visible" android:orientation="vertical"
