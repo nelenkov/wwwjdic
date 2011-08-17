@@ -22,8 +22,6 @@ public class Constants {
 
     public static final int RADICAL_RETURN_RESULT = 0;
 
-    public static final int CROP_RETURN_RESULT = 1;
-
     public static final String IS_FAVORITE = "org.nick.wwwjdic.isFavorite";
 
     public static final String FILTER_TYPE = "org.nick.wwwjdic.filterType";
