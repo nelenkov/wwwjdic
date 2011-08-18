@@ -1,6 +1,5 @@
 package org.nick.wwwjdic;
 
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.regex.Matcher;
@@ -14,7 +13,9 @@ public class ExampleSearchTaskBackdoor extends
     private static final Pattern BREAKDOWN_PATTERN = Pattern
             .compile("^B:\\s.+\\{(\\S+)\\}.*$");
     private static final Pattern FORM_MATCHER = Pattern
-            .compile("(\\S+)\\{(\\S+)\\}");
+            .compile(
+                    "(\\S+?)(?:\\(\\p{InHiragana}+\\))?(?:\\[\\d+\\])?(?:\\{(\\S+)\\})?~?",
+                    Pattern.COMMENTS);
 
     private ExampleSentence lastSentence;
 
@@ -45,15 +46,23 @@ public class ExampleSearchTaskBackdoor extends
 
         m = BREAKDOWN_PATTERN.matcher(entryStr);
         if (m.matches()) {
-            Matcher formMatcher = FORM_MATCHER.matcher(entryStr);
-            while (formMatcher.find()) {
-                String queryForm = query.getQueryString();
-                String basicForm = formMatcher.group(1);
-                String formInSentence = formMatcher.group(2);
-                if (queryForm.equals(basicForm)) {
-                    lastSentence.addMatch(formInSentence);
-                } else if (queryForm.equals(formInSentence)) {
-                    lastSentence.addMatch(formInSentence);
+            String[] words = entryStr.substring(3).split(" ");
+            for (String word : words) {
+                Matcher formMatcher = FORM_MATCHER.matcher(word);
+                if (formMatcher.matches()) {
+                    String queryForm = query.getQueryString();
+                    String basicForm = formMatcher.group(1);
+                    String formInSentence = formMatcher.group(2);
+                    if (formInSentence != null) {
+                        if (queryForm.equals(basicForm)
+                                || queryForm.equals(formInSentence)) {
+                            lastSentence.addMatch(formInSentence);
+                        }
+                    } else {
+                        if (queryForm.equals(basicForm)) {
+                            lastSentence.addMatch(basicForm);
+                        }
+                    }
                 }
             }
         }
