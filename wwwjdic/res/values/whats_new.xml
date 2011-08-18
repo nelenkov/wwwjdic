@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Use new Sweden mirror site\n* Updated third-party libraries</string>
+    <string name="whats_new">* Use new example search: automatically matches inflected, differently spelled words\n* Support OCR for gallery images\n* Bug fixes</string>
 </resources>
