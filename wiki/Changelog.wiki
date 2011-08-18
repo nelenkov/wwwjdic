@@ -1,7 +1,7 @@
 #summary Full changelog
 
 = Changelog =
-* v1.8.7 (2011/8/17) New example search
+ * v1.8.7 (2011/8/17) New example search
   * Use new example search: automatically matches inflected, differently spelled words
   * Support OCR for gallery images
   * Bug fixes
