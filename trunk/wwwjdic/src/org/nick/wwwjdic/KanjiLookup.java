@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
 import android.util.Log;
@@ -223,6 +224,9 @@ public class KanjiLookup extends WwwjdicActivityBase implements
             // hideKeyboard();
 
             String kanjiInput = kanjiInputText.getText().toString();
+            if (TextUtils.isEmpty(kanjiInput)) {
+                return;
+            }
 
             try {
                 int searchTypeIdx = kanjiSearchTypeSpinner
@@ -240,7 +244,8 @@ public class KanjiLookup extends WwwjdicActivityBase implements
                 Integer minStrokeCount = tryParseInt(minStr);
                 Integer maxStrokeCount = tryParseInt(maxStr);
                 SearchCriteria criteria = SearchCriteria.createWithStrokeCount(
-                        kanjiInput, searchType, minStrokeCount, maxStrokeCount);
+                        kanjiInput.trim(), searchType, minStrokeCount,
+                        maxStrokeCount);
 
                 Intent intent = new Intent(this, KanjiResultListView.class);
                 intent.putExtra(Constants.CRITERIA_KEY, criteria);
