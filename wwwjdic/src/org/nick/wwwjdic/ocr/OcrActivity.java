@@ -767,7 +767,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
             sdDir = new File("/emmc");
         }
 
-        File wwwjdicDir = new File(sdDir.getAbsolutePath() + "/wwwjdic");
+        File wwwjdicDir = new File(sdDir, "wwwjdic");
         if (!wwwjdicDir.exists()) {
             wwwjdicDir.mkdir();
         }
