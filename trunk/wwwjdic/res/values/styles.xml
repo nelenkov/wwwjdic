@@ -58,8 +58,17 @@
         <item name="android:textSize">12sp</item>
     </style>
     
-      <style name="kod_loading">
+    <style name="kod_loading">
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/semi_white</item>
+    </style>
+    
+    <style name="ocr_button">
+        <item name="android:layout_width">wrap_content</item> 
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">8dip</item> 
+        <item name="android:paddingRight">8dip</item>
+        <item name="android:textSize">32sp</item> 
+        <item name="android:background">@null</item>
     </style>
 </resources>

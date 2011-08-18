@@ -391,4 +391,5 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     <string name="pref_random_examples_summary">チェックされたときは、例文検索するたびに
     10つのランダムな例文を返す。</string>
     <string name="ocr_select_image">画像を選択してください</string>
+    <string name="gallery">ギャラリー</string>
 </resources>
