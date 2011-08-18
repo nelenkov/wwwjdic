@@ -12,7 +12,7 @@ public class ExampleSearchTaskBackdoor extends
             .compile("^A:\\s(\\S+)\t(.+)#.*$");
     private static final Pattern BREAKDOWN_PATTERN = Pattern
             .compile("^B:\\s.+\\{(\\S+)\\}.*$");
-    private static final Pattern FORM_MATCHER = Pattern
+    private static final Pattern WORD_FORM_PATTERN = Pattern
             .compile(
                     "(\\S+?)(?:\\(\\p{InHiragana}+\\))?(?:\\[\\d+\\])?(?:\\{(\\S+)\\})?~?",
                     Pattern.COMMENTS);
@@ -47,10 +47,10 @@ public class ExampleSearchTaskBackdoor extends
         m = BREAKDOWN_PATTERN.matcher(entryStr);
         if (m.matches()) {
             String[] words = entryStr.substring(3).split(" ");
+            String queryForm = query.getQueryString();
             for (String word : words) {
-                Matcher formMatcher = FORM_MATCHER.matcher(word);
+                Matcher formMatcher = WORD_FORM_PATTERN.matcher(word);
                 if (formMatcher.matches()) {
-                    String queryForm = query.getQueryString();
                     String basicForm = formMatcher.group(1);
                     String formInSentence = formMatcher.group(2);
                     if (formInSentence != null) {
@@ -96,7 +96,6 @@ public class ExampleSearchTaskBackdoor extends
             buff.append("=0=");
         }
 
-        System.out.println("searchString: " + buff.toString());
         return buff.toString();
     }
 }
