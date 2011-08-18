@@ -558,4 +558,5 @@
     <string name="pref_random_examples_summary">When checked will return 10 
     random example sentences on each search.</string>
     <string name="ocr_select_image">Select image file</string>
+    <string name="gallery">Gallery</string>
 </resources>
