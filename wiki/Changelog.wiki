@@ -1,6 +1,10 @@
 #summary Full changelog
 
 = Changelog =
+* v1.8.7 (2011/8/17) New example search
+  * Use new example search: automatically matches inflected, differently spelled words
+  * Support OCR for gallery images
+  * Bug fixes
  * v1.8.6 (2011/7/31) New Sweden mirror
   * Use new Sweden mirror site
   * Updated third-party libraries
