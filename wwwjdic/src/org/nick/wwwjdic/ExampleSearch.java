@@ -131,7 +131,7 @@ public class ExampleSearch extends WwwjdicActivityBase implements
                 } catch (NumberFormatException e) {
                 }
                 SearchCriteria criteria = SearchCriteria
-                        .createForExampleSearch(queryString,
+                        .createForExampleSearch(queryString.trim(),
                                 exampleExactMatchCb.isChecked(), numMaxResults);
 
                 Intent intent = new Intent(this, ExamplesResultListView.class);

@@ -13,6 +13,7 @@ import org.nick.wwwjdic.utils.StringUtils;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -190,13 +191,16 @@ public class Dictionary extends WwwjdicActivityBase implements OnClickListener,
             hideKeyboard();
 
             String input = inputText.getText().toString();
+            if (TextUtils.isEmpty(input)) {
+                return;
+            }
 
             try {
                 int dictIdx = dictSpinner.getSelectedItemPosition();
                 String dict = getDictionaryFromSelection(dictIdx);
 
                 SearchCriteria criteria = SearchCriteria.createForDictionary(
-                        input, exactMatchCb.isChecked(),
+                        input.trim(), exactMatchCb.isChecked(),
                         romanizedJapaneseCb.isChecked(),
                         commonWordsCb.isChecked(), dict);
 
