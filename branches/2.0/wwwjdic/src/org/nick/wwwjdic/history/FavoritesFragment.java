@@ -445,6 +445,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         setListAdapter(adapter);
 
         getActivity().setProgressBarIndeterminateVisibility(true);
+        //        LoaderManager.enableDebugLogging(true);
         getLoaderManager().initLoader(0, null, this);
     }
 

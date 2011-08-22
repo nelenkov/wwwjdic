@@ -4,110 +4,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.HttpClientFactory;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.utils.Analytics;
+import org.nick.wwwjdic.utils.LoaderBase;
+import org.nick.wwwjdic.utils.Pair;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.os.AsyncTask;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class SodActivity extends Activity implements OnClickListener {
+public class SodActivity extends FragmentActivity implements OnClickListener,
+        LoaderManager.LoaderCallbacks<Pair<String, Boolean>> {
 
-    static class GetSodTask extends AsyncTask<String, Void, String> {
+    static class SodLoader extends LoaderBase<Pair<String, Boolean>> {
 
-        private SodActivity sodActivity;
+        private String unicodeNumber;
         private boolean animate;
+
         private HttpClient httpClient;
-        private ResponseHandler<String> responseHandler;
 
-        GetSodTask(SodActivity sodActivity, boolean animate) {
-            this.sodActivity = sodActivity;
+        SodLoader(Context context, String unicodeNumber, boolean animate) {
+            super(context);
+            this.unicodeNumber = unicodeNumber;
             this.animate = animate;
-            this.httpClient = createHttpClient();
-            this.responseHandler = HttpClientFactory
-                    .createWwwjdicResponseHandler();
-        }
-
-        private HttpClient createHttpClient() {
-            return HttpClientFactory.createSodHttpClient(WwwjdicPreferences
-                    .getSodServerTimeout(sodActivity));
+            this.httpClient = HttpClientFactory
+                    .createSodHttpClient(WwwjdicPreferences
+                            .getSodServerTimeout(context));
         }
 
         @Override
-        protected void onPreExecute() {
-            if (sodActivity == null) {
-                return;
-            }
-
-            String message = sodActivity.getResources().getString(
-                    R.string.getting_sod_info);
-            sodActivity.showProgressDialog(message);
+        protected void releaseResult(Pair<String, Boolean> result) {
+            // just a string, nothing to do
         }
 
         @Override
-        protected String doInBackground(String... params) {
-            String unicodeNumber = params[0];
+        public Pair<String, Boolean> load() throws Exception {
             String lookupUrl = STROKE_PATH_LOOKUP_URL + unicodeNumber;
             HttpGet get = new HttpGet(lookupUrl);
 
-            try {
-                String responseStr = httpClient.execute(get, responseHandler);
-                Log.d(TAG, "got SOD response: " + responseStr);
+            String responseStr = httpClient.execute(get,
+                    HttpClientFactory.createWwwjdicResponseHandler());
+            Log.d(TAG, "got SOD response: " + responseStr);
 
-                return responseStr;
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage(), e);
-
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if (sodActivity == null) {
-                return;
-            }
-
-            sodActivity.dismissProgressDialog();
-            if (result != null) {
-                sodActivity.setStrokePathsStr(result);
-                StrokedCharacter character = parseWsReply(result);
-                if (character != null) {
-                    if (animate) {
-                        sodActivity.animate(character);
-                    } else {
-                        sodActivity.drawSod(character);
-                    }
-                } else {
-                    Toast t = Toast.makeText(sodActivity, String.format(
-                            sodActivity.getString(R.string.no_sod_data),
-                            sodActivity.getKanji()), Toast.LENGTH_SHORT);
-                    t.show();
-                }
-            } else {
-                Toast t = Toast.makeText(sodActivity,
-                        R.string.getting_sod_data_failed, Toast.LENGTH_SHORT);
-                t.show();
-            }
-        }
-
-        void attach(SodActivity sodActivity) {
-            this.sodActivity = sodActivity;
-        }
-
-        void detach() {
-            sodActivity = null;
+            return new Pair<String, Boolean>(responseStr, animate);
         }
     }
 
@@ -116,8 +67,6 @@ public class SodActivity extends Activity implements OnClickListener {
     private static final String STROKE_PATH_LOOKUP_URL = "http://wwwjdic-android.appspot.com/kanji/";
 
     private static final String NOT_FOUND_STATUS = "not found";
-
-    private static final String EXTRA_RIGHT_STROKE_PATHS_STRING = "org.nick.recognizer.quiz.RIGHT_STROKE_PATHS_STRING";
 
     private static final float KANJIVG_SIZE = 109f;
 
@@ -133,8 +82,6 @@ public class SodActivity extends Activity implements OnClickListener {
     private StrokedCharacter character;
     private String strokePathsStr;
 
-    private GetSodTask getSodTask;
-    private boolean isRotating = false;
     private ProgressDialog progressDialog;
 
     @Override
@@ -156,31 +103,15 @@ public class SodActivity extends Activity implements OnClickListener {
         String message = getResources().getString(R.string.sod_for);
         setTitle(String.format(message, kanji));
 
-        getSodTask = (GetSodTask) getLastNonConfigurationInstance();
-        if (getSodTask != null) {
-            getSodTask.attach(this);
-        }
+        // we need to call this here to initialize the loader
+        // otherwise bad stuff happens: loader is not started, state is not 
+        // properly retained
+        getStrokes();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        if (getSodTask != null && !isRotating) {
-            getSodTask.cancel(true);
-            getSodTask = null;
-        }
-    }
-
-    @Override
-    public Object onRetainNonConfigurationInstance() {
-        isRotating = true;
-
-        if (getSodTask != null) {
-            getSodTask.detach();
-        }
-
-        return getSodTask;
     }
 
     @Override
@@ -203,28 +134,6 @@ public class SodActivity extends Activity implements OnClickListener {
         super.onStop();
 
         Analytics.endSession(this);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            strokePathsStr = savedInstanceState
-                    .getString(EXTRA_RIGHT_STROKE_PATHS_STRING);
-            character = parseWsReply(strokePathsStr);
-            if (character != null) {
-                strokeOrderView.setCharacter(character);
-                strokeOrderView.invalidate();
-            }
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putString(EXTRA_RIGHT_STROKE_PATHS_STRING, strokePathsStr);
     }
 
     void drawSod(StrokedCharacter character) {
@@ -263,12 +172,16 @@ public class SodActivity extends Activity implements OnClickListener {
             animate();
             break;
         case R.id.clear_sod_button:
-            strokeOrderView.clear();
-            strokeOrderView.invalidate();
+            clear();
             break;
         default:
             // do nothing
         }
+    }
+
+    private void clear() {
+        strokeOrderView.clear();
+        strokeOrderView.invalidate();
     }
 
     private void drawSod() {
@@ -282,11 +195,17 @@ public class SodActivity extends Activity implements OnClickListener {
     }
 
     private void getStrokes() {
-        if (getSodTask != null) {
-            getSodTask.cancel(true);
+        Bundle args = new Bundle();
+        args.putBoolean("animate", false);
+        args.putString("unicodeNumber", unicodeNumber);
+
+        Loader<Pair<String, Boolean>> loader = getSupportLoaderManager()
+                .initLoader(0, args, this);
+        if (loader.isStarted()) {
+            String message = getResources()
+                    .getString(R.string.getting_sod_info);
+            showProgressDialog(message);
         }
-        getSodTask = new GetSodTask(this, false);
-        getSodTask.execute(unicodeNumber);
     }
 
     private void animate() {
@@ -357,5 +276,53 @@ public class SodActivity extends Activity implements OnClickListener {
             progressDialog.dismiss();
             progressDialog = null;
         }
+    }
+
+    @Override
+    public Loader<Pair<String, Boolean>> onCreateLoader(int id, Bundle args) {
+        String unicodeNumber = args.getString("unicodeNumber");
+        boolean animate = args.getBoolean("animate");
+
+        return new SodLoader(this, unicodeNumber, animate);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Pair<String, Boolean>> loader,
+            Pair<String, Boolean> data) {
+        dismissProgressDialog();
+
+        boolean isFailed = ((LoaderBase<Pair<String, Boolean>>) loader)
+                .isFailed();
+        if (isFailed) {
+            Toast.makeText(this, R.string.getting_sod_data_failed,
+                    Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+
+        String result = data.getFirst();
+        boolean animate = data.getSecond();
+
+        if (result != null) {
+            setStrokePathsStr(result);
+            StrokedCharacter character = parseWsReply(result);
+            if (character != null) {
+                if (animate) {
+                    animate(character);
+                } else {
+                    drawSod(character);
+                }
+            } else {
+                Toast t = Toast.makeText(this, String.format(
+                        getString(R.string.no_sod_data), getKanji()),
+                        Toast.LENGTH_SHORT);
+                t.show();
+            }
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Pair<String, Boolean>> loader) {
+        clear();
     }
 }
