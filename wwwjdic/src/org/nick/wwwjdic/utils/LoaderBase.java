@@ -31,7 +31,7 @@ public abstract class LoaderBase<T> extends AsyncTaskLoader<T> {
             super.deliverResult(result);
         }
 
-        if (oldResult != null && oldResult != result) {
+        if (oldResult != null && oldResult != result && isActive(result)) {
             releaseResult(oldResult);
         }
     }
@@ -56,7 +56,7 @@ public abstract class LoaderBase<T> extends AsyncTaskLoader<T> {
     public void onCanceled(T result) {
         super.onCanceled(result);
 
-        if (result != null) {
+        if (result != null && isActive(result)) {
             releaseResult(result);
         }
     }
@@ -67,7 +67,7 @@ public abstract class LoaderBase<T> extends AsyncTaskLoader<T> {
 
         onStopLoading();
 
-        if (lastResult != null) {
+        if (lastResult != null && isActive(lastResult)) {
             releaseResult(lastResult);
         }
         lastResult = null;
@@ -88,6 +88,8 @@ public abstract class LoaderBase<T> extends AsyncTaskLoader<T> {
     protected abstract T load() throws Exception;
 
     protected abstract void releaseResult(T result);
+
+    protected abstract boolean isActive(T result);
 
     public Exception getError() {
         return error;

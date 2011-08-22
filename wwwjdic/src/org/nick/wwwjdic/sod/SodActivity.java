@@ -60,6 +60,11 @@ public class SodActivity extends FragmentActivity implements OnClickListener,
 
             return new Pair<String, Boolean>(responseStr, animate);
         }
+
+        @Override
+        protected boolean isActive(Pair<String, Boolean> result) {
+            return false;
+        }
     }
 
     private static final String TAG = SodActivity.class.getSimpleName();

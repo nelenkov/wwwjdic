@@ -1,10 +1,11 @@
 package org.nick.wwwjdic.history;
 
+import org.nick.wwwjdic.utils.LoaderBase;
+
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.content.AsyncTaskLoader;
 
-public abstract class HistoryLoaderBase extends AsyncTaskLoader<Cursor> {
+public abstract class HistoryLoaderBase extends LoaderBase<Cursor> {
 
     public static final int FILTER_ALL = -1;
     public static final int FILTER_DICT = 0;
@@ -22,63 +23,14 @@ public abstract class HistoryLoaderBase extends AsyncTaskLoader<Cursor> {
     }
 
     @Override
-    public void deliverResult(Cursor cursor) {
-        if (isReset()) {
-            if (cursor != null) {
-                cursor.close();
-            }
-            return;
-        }
-
-        Cursor oldCursor = lastCursor;
-        lastCursor = cursor;
-
-        if (isStarted()) {
-            super.deliverResult(cursor);
-        }
-
-        if (oldCursor != null && oldCursor != cursor && !oldCursor.isClosed()) {
-            oldCursor.close();
-        }
+    protected void releaseResult(Cursor result) {
+        result.close();
     }
 
     @Override
-    protected void onStartLoading() {
-        if (lastCursor != null) {
-            deliverResult(lastCursor);
-        }
-
-        if (takeContentChanged() || lastCursor == null) {
-            forceLoad();
-        }
+    protected boolean isActive(Cursor result) {
+        return !result.isClosed();
     }
-
-    @Override
-    protected void onStopLoading() {
-        cancelLoad();
-    }
-
-    @Override
-    public void onCanceled(Cursor cursor) {
-        super.onCanceled(cursor);
-
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
-    }
-
-    @Override
-    protected void onReset() {
-        super.onReset();
-
-        onStopLoading();
-
-        if (lastCursor != null && !lastCursor.isClosed()) {
-            lastCursor.close();
-        }
-        lastCursor = null;
-    }
-
 
     public int getSelectedFilter() {
         return selectedFilter;
