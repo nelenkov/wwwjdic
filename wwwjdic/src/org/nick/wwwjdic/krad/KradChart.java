@@ -21,13 +21,13 @@ import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Dialogs;
 import org.nick.wwwjdic.utils.IntentSpan;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -45,7 +45,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class KradChart extends Activity implements OnClickListener,
+public class KradChart extends FragmentActivity implements OnClickListener,
         OnItemClickListener {
 
     private static final int NUM_SUMMARY_CHARS = 10;

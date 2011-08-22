@@ -50,7 +50,8 @@
         <activity android:name="org.nick.wwwjdic.KanjiEntryDetail"
             android:taskAffinity="" 
             android:theme="@style/Theme.Sherlock"/>
-        <activity android:name="org.nick.wwwjdic.RadicalChart"/>
+        <activity android:name="org.nick.wwwjdic.RadicalChart" 
+            android:theme="@style/Theme.Sherlock"/>
         <activity android:name="org.nick.wwwjdic.WwwjdicPreferences"/>
         <activity android:name="org.nick.wwwjdic.ocr.OcrActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"/>
@@ -73,9 +74,11 @@
         <activity android:name="org.nick.wwwjdic.history.FavoritesAndHistory"
             android:configChanges="orientation|keyboardHidden|keyboard" 
              android:theme="@style/Theme.Sherlock"/>
-        <activity android:name="org.nick.wwwjdic.sod.SodActivity"/>
+        <activity android:name="org.nick.wwwjdic.sod.SodActivity" 
+            android:theme="@style/Theme.Sherlock"/>
         <activity android:name="org.nick.wwwjdic.krad.KradChart"
-            android:configChanges="orientation|keyboardHidden|keyboard"/>        
+            android:configChanges="orientation|keyboardHidden|keyboard" 
+            android:theme="@style/Theme.Sherlock"/>        
             
         <activity android:name="org.nick.wwwjdic.widgets.KodWidgetConfigure" 
             android:label="@string/kod_widget_configuration">
