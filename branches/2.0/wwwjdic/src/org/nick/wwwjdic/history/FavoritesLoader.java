@@ -10,7 +10,7 @@ public class FavoritesLoader extends HistoryLoaderBase {
     }
 
     @Override
-    public Cursor loadInBackground() {
+    public Cursor load() {
         if (selectedFilter == FILTER_ALL) {
             lastCursor = db.getFavorites();
 
