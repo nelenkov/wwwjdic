@@ -1,13 +1,13 @@
 package org.nick.wwwjdic.history;
 
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.TabsPagerAdapter;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBar;
-import android.support.v4.app.ActionBar.Tab;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.view.Window;
 
 public class FavoritesAndHistory extends FragmentActivity {
@@ -16,28 +16,8 @@ public class FavoritesAndHistory extends FragmentActivity {
 
     public static final String EXTRA_SELECTED_TAB_IDX = "org.nick.wwwjdic.favoritesAndHistorySelectedTabIdx";
 
-    private class HistoryTabListener implements ActionBar.TabListener {
-        private HistoryFragmentBase fragment;
-
-        public HistoryTabListener(HistoryFragmentBase fragment) {
-            this.fragment = fragment;
-        }
-
-        public void onTabSelected(Tab tab, FragmentTransaction ft) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content, fragment).commit();
-        }
-
-        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-            getSupportFragmentManager().beginTransaction().remove(fragment)
-                    .commit();
-        }
-
-        public void onTabReselected(Tab tab, FragmentTransaction ft) {
-            // do nothing
-        }
-
-    }
+    private ViewPager viewPager;
+    private TabsPagerAdapter tabsAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,22 +41,27 @@ public class FavoritesAndHistory extends FragmentActivity {
             historyArgs.putInt(EXTRA_FILTER_TYPE, filterType);
         }
 
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        viewPager = (ViewPager) findViewById(R.id.content);
+        tabsAdapter = new TabsPagerAdapter(this, getSupportActionBar(),
+                viewPager);
         ActionBar.Tab favoritesTab = getSupportActionBar().newTab();
         FavoritesFragment favoritesFragment = new FavoritesFragment();
         favoritesFragment.setArguments(favoritesArgs);
-        favoritesTab.setText(R.string.favorites)
-                .setIcon(R.drawable.ic_tab_history)
-                .setTabListener(new HistoryTabListener(favoritesFragment));
-        getSupportActionBar().addTab(favoritesTab);
+        favoritesTab.setText(R.string.favorites).setIcon(
+                R.drawable.ic_tab_history);
+        tabsAdapter.addTab(favoritesTab, favoritesFragment);
 
         ActionBar.Tab historyTab = getSupportActionBar().newTab();
         SearchHistoryFragment historyFragment = new SearchHistoryFragment();
         historyFragment.setArguments(historyArgs);
-        historyTab.setIcon(R.drawable.ic_tab_favorites)
-                .setText(R.string.history)
-                .setTabListener(new HistoryTabListener(historyFragment));
-        getSupportActionBar().addTab(historyTab);
+        historyTab.setIcon(R.drawable.ic_tab_favorites).setText(
+                R.string.history);
+        tabsAdapter.addTab(historyTab, historyFragment);
+
         getSupportActionBar().setSelectedNavigationItem(tabIdx);
     }
 
