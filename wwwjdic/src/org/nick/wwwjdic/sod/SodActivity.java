@@ -11,6 +11,7 @@ import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.LoaderBase;
+import org.nick.wwwjdic.utils.LoaderResult;
 import org.nick.wwwjdic.utils.Pair;
 
 import android.app.ProgressDialog;
@@ -26,7 +27,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class SodActivity extends FragmentActivity implements OnClickListener,
-        LoaderManager.LoaderCallbacks<Pair<String, Boolean>> {
+        LoaderManager.LoaderCallbacks<LoaderResult<Pair<String, Boolean>>> {
 
     static class SodLoader extends LoaderBase<Pair<String, Boolean>> {
 
@@ -45,7 +46,7 @@ public class SodActivity extends FragmentActivity implements OnClickListener,
         }
 
         @Override
-        protected void releaseResult(Pair<String, Boolean> result) {
+        protected void releaseResult(LoaderResult<Pair<String, Boolean>> result) {
             // just a string, nothing to do
         }
 
@@ -62,7 +63,7 @@ public class SodActivity extends FragmentActivity implements OnClickListener,
         }
 
         @Override
-        protected boolean isActive(Pair<String, Boolean> result) {
+        protected boolean isActive(LoaderResult<Pair<String, Boolean>> result) {
             return false;
         }
     }
@@ -204,7 +205,7 @@ public class SodActivity extends FragmentActivity implements OnClickListener,
         args.putBoolean("animate", false);
         args.putString("unicodeNumber", unicodeNumber);
 
-        Loader<Pair<String, Boolean>> loader = getSupportLoaderManager()
+        Loader<LoaderResult<Pair<String, Boolean>>> loader = getSupportLoaderManager()
                 .initLoader(0, args, this);
         if (loader.isStarted()) {
             String message = getResources()
@@ -284,7 +285,8 @@ public class SodActivity extends FragmentActivity implements OnClickListener,
     }
 
     @Override
-    public Loader<Pair<String, Boolean>> onCreateLoader(int id, Bundle args) {
+    public Loader<LoaderResult<Pair<String, Boolean>>> onCreateLoader(int id,
+            Bundle args) {
         String unicodeNumber = args.getString("unicodeNumber");
         boolean animate = args.getBoolean("animate");
 
@@ -292,12 +294,12 @@ public class SodActivity extends FragmentActivity implements OnClickListener,
     }
 
     @Override
-    public void onLoadFinished(Loader<Pair<String, Boolean>> loader,
-            Pair<String, Boolean> data) {
+    public void onLoadFinished(
+            Loader<LoaderResult<Pair<String, Boolean>>> loader,
+            LoaderResult<Pair<String, Boolean>> data) {
         dismissProgressDialog();
 
-        boolean isFailed = ((LoaderBase<Pair<String, Boolean>>) loader)
-                .isFailed();
+        boolean isFailed = data.isFailed();
         if (isFailed) {
             Toast.makeText(this, R.string.getting_sod_data_failed,
                     Toast.LENGTH_SHORT).show();
@@ -305,12 +307,13 @@ public class SodActivity extends FragmentActivity implements OnClickListener,
             return;
         }
 
-        String result = data.getFirst();
-        boolean animate = data.getSecond();
-
+        Pair<String, Boolean> result = data.getData();
         if (result != null) {
-            setStrokePathsStr(result);
-            StrokedCharacter character = parseWsReply(result);
+            String strokePathStr = result.getFirst();
+            boolean animate = result.getSecond();
+
+            setStrokePathsStr(strokePathStr);
+            StrokedCharacter character = parseWsReply(strokePathStr);
             if (character != null) {
                 if (animate) {
                     animate(character);
@@ -327,7 +330,7 @@ public class SodActivity extends FragmentActivity implements OnClickListener,
     }
 
     @Override
-    public void onLoaderReset(Loader<Pair<String, Boolean>> loader) {
+    public void onLoaderReset(Loader<LoaderResult<Pair<String, Boolean>>> loader) {
         clear();
     }
 }

@@ -12,6 +12,7 @@ import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.SearchCriteria;
 import org.nick.wwwjdic.SearchSuggestionProvider;
 import org.nick.wwwjdic.utils.Analytics;
+import org.nick.wwwjdic.utils.LoaderResult;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -329,7 +330,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    public Loader<LoaderResult<Cursor>> onCreateLoader(int id, Bundle args) {
         SearchHistoryLoader loader = new SearchHistoryLoader(getActivity(), db);
         loader.setSelectedFilter(selectedFilter);
 
@@ -337,11 +338,12 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<LoaderResult<Cursor>> loader,
+            LoaderResult<Cursor> data) {
         getActivity().setProgressBarIndeterminateVisibility(false);
 
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
-        adapter.swapCursor(data);
+        adapter.swapCursor(data.getData());
 
         // The list should now be shown.
         //        if (isResumed()) {
@@ -352,7 +354,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(Loader<LoaderResult<Cursor>> loader) {
         getActivity().setProgressBarIndeterminateVisibility(false);
 
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
