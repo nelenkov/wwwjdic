@@ -103,6 +103,24 @@ public class SentenceBreakdownFragment extends
     private static final int HILIGHT_COLOR1 = 0xff427ad7;
     private static final int HILIGHT_COLOR2 = 0xfff97600;
 
+    public static SentenceBreakdownFragment newInstance(int index,
+            String senteceStr, String sentenceTranslation) {
+        SentenceBreakdownFragment f = new SentenceBreakdownFragment();
+
+        // Supply index input as an argument.
+        Bundle args = new Bundle();
+        args.putInt("index", index);
+        args.putString(EXTRA_SENTENCE, senteceStr);
+        args.putString(EXTRA_SENTENCE_TRANSLATION, sentenceTranslation);
+        f.setArguments(args);
+
+        return f;
+    }
+
+    public int getShownIndex() {
+        return getArguments().getInt("index", 0);
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
