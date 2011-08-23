@@ -16,6 +16,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBar;
 import android.support.v4.app.ActionBar.Tab;
@@ -27,312 +28,319 @@ import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.support.v4.view.ViewPager;
 import android.view.MenuInflater;
-import android.view.Window;
 
 public class Wwwjdic extends FragmentActivity {
 
-    private static final int WHATS_NEW_DIALOG_ID = 1;
-    private static final int DONATION_THANKS_DIALOG_ID = 2;
+	private static final int WHATS_NEW_DIALOG_ID = 1;
+	private static final int DONATION_THANKS_DIALOG_ID = 2;
 
-    private static final String DONATE_VERSION_PACKAGE = "org.nick.wwwjdic.donate";
+	private static final String DONATE_VERSION_PACKAGE = "org.nick.wwwjdic.donate";
 
-    public static class TabsAdapter extends FragmentPagerAdapter implements
-            ViewPager.OnPageChangeListener, ActionBar.TabListener {
-        //        private final Context context;
-        private final ActionBar actionBar;
-        private final ViewPager viewPager;
-        private final ArrayList<WwwjdicFragmentBase> tabs = new ArrayList<WwwjdicFragmentBase>();
+	private static final boolean IS_HONEYCOMB = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 
-        public TabsAdapter(FragmentActivity activity, ActionBar actionBar,
-                ViewPager pager) {
-            super(activity.getSupportFragmentManager());
-            //            this.context = activity;
-            this.actionBar = actionBar;
-            this.viewPager = pager;
-            this.viewPager.setAdapter(this);
-            this.viewPager.setOnPageChangeListener(this);
-        }
+	public static class TabsAdapter extends FragmentPagerAdapter implements
+			ViewPager.OnPageChangeListener, ActionBar.TabListener {
+		// private final Context context;
+		private final ActionBar actionBar;
+		private final ViewPager viewPager;
+		private final ArrayList<WwwjdicFragmentBase> tabs = new ArrayList<WwwjdicFragmentBase>();
 
-        public void addTab(ActionBar.Tab tab, WwwjdicFragmentBase tabFragment) {
-            tabs.add(tabFragment);
-            actionBar.addTab(tab.setTabListener(this));
-            notifyDataSetChanged();
-        }
+		public TabsAdapter(FragmentActivity activity, ActionBar actionBar,
+				ViewPager pager) {
+			super(activity.getSupportFragmentManager());
+			// this.context = activity;
+			this.actionBar = actionBar;
+			this.viewPager = pager;
+			this.viewPager.setAdapter(this);
+			this.viewPager.setOnPageChangeListener(this);
+		}
 
-        @Override
-        public int getCount() {
-            return tabs.size();
-        }
+		public void addTab(ActionBar.Tab tab, WwwjdicFragmentBase tabFragment) {
+			tabs.add(tabFragment);
+			actionBar.addTab(tab.setTabListener(this));
+			notifyDataSetChanged();
+		}
 
-        @Override
-        public Fragment getItem(int position) {
-            return tabs.get(position);
-        }
+		@Override
+		public int getCount() {
+			return tabs.size();
+		}
 
-        @Override
-        public void onPageScrolled(int position, float positionOffset,
-                int positionOffsetPixels) {
-        }
+		@Override
+		public Fragment getItem(int position) {
+			return tabs.get(position);
+		}
 
-        @Override
-        public void onPageSelected(int position) {
-            actionBar.setSelectedNavigationItem(position);
-        }
+		@Override
+		public void onPageScrolled(int position, float positionOffset,
+				int positionOffsetPixels) {
+		}
 
-        @Override
-        public void onPageScrollStateChanged(int state) {
-        }
+		@Override
+		public void onPageSelected(int position) {
+			actionBar.setSelectedNavigationItem(position);
+		}
 
-        @Override
-        public void onTabSelected(Tab tab, FragmentTransaction ft) {
-            viewPager.setCurrentItem(tab.getPosition());
-        }
+		@Override
+		public void onPageScrollStateChanged(int state) {
+		}
 
-        @Override
-        public void onTabReselected(Tab tab, FragmentTransaction ft) {
-        }
+		@Override
+		public void onTabSelected(Tab tab, FragmentTransaction ft) {
+			viewPager.setCurrentItem(tab.getPosition());
+		}
 
-        @Override
-        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-        }
-    }
+		@Override
+		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		}
 
-    private ViewPager viewPager;
-    private TabsAdapter tabsAdapter;
+		@Override
+		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+		}
+	}
 
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	private ViewPager viewPager;
+	private TabsAdapter tabsAdapter;
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.main);
+		setContentView(R.layout.main);
 
-        setupTabs();
+		setupTabs();
 
-        invalidateOptionsMenu();
+		invalidateOptionsMenu();
 
-        if (!isDonateVersion()
-                || WwwjdicPreferences.isDonationThanksShown(this)) {
-            showWhatsNew();
-        }
+		if (!isDonateVersion()
+				|| WwwjdicPreferences.isDonationThanksShown(this)) {
+			showWhatsNew();
+		}
 
-        showDonationThanks();
-    }
+		showDonationThanks();
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
 
-        inflater.inflate(R.menu.main, menu);
+		inflater.inflate(R.menu.main, menu);
 
-        return super.onCreateOptionsMenu(menu);
-    }
+		return super.onCreateOptionsMenu(menu);
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.menu_about:
-            Intent intent = new Intent(this, AboutActivity.class);
-            startActivity(intent);
-            return true;
-        case R.id.menu_ocr:
-            intent = new Intent(this, OcrActivity.class);
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_about:
+			Intent intent = new Intent(this, AboutActivity.class);
+			startActivity(intent);
+			return true;
+		case R.id.menu_ocr:
+			intent = new Intent(this, OcrActivity.class);
 
-            startActivity(intent);
-            return true;
-        case R.id.menu_settings:
-            intent = new Intent(this, WwwjdicPreferences.class);
+			startActivity(intent);
+			return true;
+		case R.id.menu_settings:
+			intent = new Intent(this, WwwjdicPreferences.class);
 
-            startActivity(intent);
-            return true;
-        case R.id.menu_draw:
-            intent = new Intent(this, RecognizeKanjiActivity.class);
+			startActivity(intent);
+			return true;
+		case R.id.menu_draw:
+			intent = new Intent(this, RecognizeKanjiActivity.class);
 
-            startActivity(intent);
-            return true;
-        case R.id.menu_favorites_history:
-            intent = new Intent(this, FavoritesAndHistory.class);
+			startActivity(intent);
+			return true;
+		case R.id.menu_favorites_history:
+			intent = new Intent(this, FavoritesAndHistory.class);
 
-            startActivity(intent);
-            return true;
-        default:
-            // do nothing
-        }
+			startActivity(intent);
+			return true;
+		default:
+			// do nothing
+		}
 
-        return super.onOptionsItemSelected(item);
-    }
+		return super.onOptionsItemSelected(item);
+	}
 
-    private void showDonationThanks() {
-        if (!isDonateVersion()) {
-            return;
-        }
+	private void showDonationThanks() {
+		if (!isDonateVersion()) {
+			return;
+		}
 
-        boolean thanksShown = WwwjdicPreferences.isDonationThanksShown(this);
-        if (!thanksShown) {
-            WwwjdicPreferences.setDonationThanksShown(this);
-            showDialog(DONATION_THANKS_DIALOG_ID);
-        }
-    }
+		boolean thanksShown = WwwjdicPreferences.isDonationThanksShown(this);
+		if (!thanksShown) {
+			WwwjdicPreferences.setDonationThanksShown(this);
+			showDialog(DONATION_THANKS_DIALOG_ID);
+		}
+	}
 
-    private boolean isDonateVersion() {
-        String appPackage = getApplication().getPackageName();
+	private boolean isDonateVersion() {
+		String appPackage = getApplication().getPackageName();
 
-        return DONATE_VERSION_PACKAGE.equals(appPackage);
-    }
+		return DONATE_VERSION_PACKAGE.equals(appPackage);
+	}
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+	@Override
+	protected void onStart() {
+		super.onStart();
 
-        Analytics.startSession(this);
-    }
+		Analytics.startSession(this);
+	}
 
-    @Override
-    protected void onStop() {
-        super.onStop();
+	@Override
+	protected void onStop() {
+		super.onStop();
 
-        Analytics.endSession(this);
-    }
+		Analytics.endSession(this);
+	}
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
 
-    private void showWhatsNew() {
-        boolean whatsNewShown = WwwjdicPreferences.isWhatsNewShown(this,
-                getVersionName());
-        if (!whatsNewShown) {
-            WwwjdicPreferences.setWhantsNewShown(this, getVersionName());
-            showDialog(WHATS_NEW_DIALOG_ID);
-        }
-    }
+	private void showWhatsNew() {
+		boolean whatsNewShown = WwwjdicPreferences.isWhatsNewShown(this,
+				getVersionName());
+		if (!whatsNewShown) {
+			WwwjdicPreferences.setWhantsNewShown(this, getVersionName());
+			showDialog(WHATS_NEW_DIALOG_ID);
+		}
+	}
 
-    private void setupTabs() {
-        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
-        Bundle extras = getIntent().getExtras();
+	private void setupTabs() {
+		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		getSupportActionBar().setDisplayShowHomeEnabled(false);
+		Bundle extras = getIntent().getExtras();
 
-        ActionBar.Tab dictionaryTab = getSupportActionBar().newTab();
-        DictionaryFragment dictionary = new DictionaryFragment();
-        if (extras != null) {
-            dictionary.setArguments(extras);
-        }
-        //        dictionaryTab.setText(R.string.dictionary)
-        dictionaryTab.setIcon(R.drawable.ic_tab_dict);
-        viewPager = (ViewPager) findViewById(R.id.content);
-        tabsAdapter = new TabsAdapter(this, getSupportActionBar(), viewPager);
-        tabsAdapter.addTab(dictionaryTab, dictionary);
-        //
+		ActionBar.Tab dictionaryTab = getSupportActionBar().newTab();
+		DictionaryFragment dictionary = new DictionaryFragment();
+		if (extras != null) {
+			dictionary.setArguments(extras);
+		}
 
-        ActionBar.Tab kanjiTab = getSupportActionBar().newTab();
-        KanjiLookupFragment kanjiLookup = new KanjiLookupFragment();
-        if (extras != null) {
-            kanjiLookup.setArguments(extras);
-        }
-        //        kanjiTab.setText(R.string.kanji_lookup)
-        kanjiTab.setIcon(R.drawable.ic_tab_kanji);
-        tabsAdapter.addTab(kanjiTab, kanjiLookup);
+		dictionaryTab.setIcon(R.drawable.ic_tab_dict);
+		if (IS_HONEYCOMB) {
+			dictionaryTab.setText(R.string.dictionary);
+		}
+		viewPager = (ViewPager) findViewById(R.id.content);
+		tabsAdapter = new TabsAdapter(this, getSupportActionBar(), viewPager);
+		tabsAdapter.addTab(dictionaryTab, dictionary);
 
-        ActionBar.Tab examplesTab = getSupportActionBar().newTab();
-        ExampleSearchFragment exampleSearch = new ExampleSearchFragment();
-        if (extras != null) {
-            exampleSearch.setArguments(extras);
-        }
-        //        examplesTab.setText(R.string.example_search)
-        examplesTab.setIcon(R.drawable.ic_tab_example);
-        tabsAdapter.addTab(examplesTab, exampleSearch);
+		ActionBar.Tab kanjiTab = getSupportActionBar().newTab();
+		KanjiLookupFragment kanjiLookup = new KanjiLookupFragment();
+		if (extras != null) {
+			kanjiLookup.setArguments(extras);
+		}
 
-        getSupportActionBar().setSelectedNavigationItem(DICTIONARY_TAB_IDX);
-        if (extras != null) {
-            int selectedTab = extras.getInt(SELECTED_TAB_IDX, -1);
-            if (selectedTab != -1) {
-                getSupportActionBar().setSelectedNavigationItem(selectedTab);
-            }
+		kanjiTab.setIcon(R.drawable.ic_tab_kanji);
+		if (IS_HONEYCOMB) {
+			kanjiTab.setText(R.string.kanji_lookup);
+		}
+		tabsAdapter.addTab(kanjiTab, kanjiLookup);
 
-            String searchKey = extras.getString(Constants.SEARCH_TEXT_KEY);
-            int searchType = extras.getInt(Constants.SEARCH_TYPE);
-            if (searchKey != null) {
-                switch (searchType) {
-                case SearchCriteria.CRITERIA_TYPE_DICT:
-                    getSupportActionBar().setSelectedNavigationItem(
-                            DICTIONARY_TAB_IDX);
-                    break;
-                case SearchCriteria.CRITERIA_TYPE_KANJI:
-                    getSupportActionBar().setSelectedNavigationItem(
-                            KANJI_TAB_IDX);
-                    break;
-                case SearchCriteria.CRITERIA_TYPE_EXAMPLES:
-                    getSupportActionBar().setSelectedNavigationItem(
-                            EXAMPLE_SEARRCH_TAB_IDX);
-                    break;
-                default:
-                    // do nothing
-                }
-            }
-        }
-    }
+		ActionBar.Tab examplesTab = getSupportActionBar().newTab();
+		ExampleSearchFragment exampleSearch = new ExampleSearchFragment();
+		if (extras != null) {
+			exampleSearch.setArguments(extras);
+		}
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        Dialog dialog = null;
+		examplesTab.setIcon(R.drawable.ic_tab_example);
+		if (IS_HONEYCOMB) {
+			examplesTab.setText(R.string.example_search);
+		}
+		tabsAdapter.addTab(examplesTab, exampleSearch);
 
-        switch (id) {
-        case WHATS_NEW_DIALOG_ID:
-            dialog = createWhatsNewDialog();
-            break;
-        case DONATION_THANKS_DIALOG_ID:
-            dialog = createDonationThanksDialog();
-            break;
-        default:
-            dialog = null;
-        }
+		getSupportActionBar().setSelectedNavigationItem(DICTIONARY_TAB_IDX);
+		if (extras != null) {
+			int selectedTab = extras.getInt(SELECTED_TAB_IDX, -1);
+			if (selectedTab != -1) {
+				getSupportActionBar().setSelectedNavigationItem(selectedTab);
+			}
 
-        return dialog;
-    }
+			String searchKey = extras.getString(Constants.SEARCH_TEXT_KEY);
+			int searchType = extras.getInt(Constants.SEARCH_TYPE);
+			if (searchKey != null) {
+				switch (searchType) {
+				case SearchCriteria.CRITERIA_TYPE_DICT:
+					getSupportActionBar().setSelectedNavigationItem(
+							DICTIONARY_TAB_IDX);
+					break;
+				case SearchCriteria.CRITERIA_TYPE_KANJI:
+					getSupportActionBar().setSelectedNavigationItem(
+							KANJI_TAB_IDX);
+					break;
+				case SearchCriteria.CRITERIA_TYPE_EXAMPLES:
+					getSupportActionBar().setSelectedNavigationItem(
+							EXAMPLE_SEARRCH_TAB_IDX);
+					break;
+				default:
+					// do nothing
+				}
+			}
+		}
+	}
 
-    private Dialog createDonationThanksDialog() {
-        DialogInterface.OnClickListener okAction = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                showWhatsNew();
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		Dialog dialog = null;
 
-            }
-        };
-        return createInfoDialog(R.string.donation_thanks_title,
-                R.string.donation_thanks, okAction);
-    }
+		switch (id) {
+		case WHATS_NEW_DIALOG_ID:
+			dialog = createWhatsNewDialog();
+			break;
+		case DONATION_THANKS_DIALOG_ID:
+			dialog = createDonationThanksDialog();
+			break;
+		default:
+			dialog = null;
+		}
 
-    private Dialog createWhatsNewDialog() {
-        DialogInterface.OnClickListener okAction = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+		return dialog;
+	}
 
-            }
-        };
-        return createInfoDialog(R.string.whats_new_title, R.string.whats_new,
-                okAction);
-    }
+	private Dialog createDonationThanksDialog() {
+		DialogInterface.OnClickListener okAction = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				showWhatsNew();
 
-    private Dialog createInfoDialog(int titleId, int messageId,
-            DialogInterface.OnClickListener okAction) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String titleTemplate = getResources().getString(titleId);
-        String title = String.format(titleTemplate, getVersionName());
-        builder.setTitle(title);
-        builder.setIcon(android.R.drawable.ic_dialog_info);
-        builder.setMessage(messageId);
-        builder.setPositiveButton(R.string.ok, okAction);
+			}
+		};
+		return createInfoDialog(R.string.donation_thanks_title,
+				R.string.donation_thanks, okAction);
+	}
 
-        return builder.create();
-    }
+	private Dialog createWhatsNewDialog() {
+		DialogInterface.OnClickListener okAction = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
 
-    private String getVersionName() {
-        return WwwjdicApplication.getVersion();
-    }
+			}
+		};
+		return createInfoDialog(R.string.whats_new_title, R.string.whats_new,
+				okAction);
+	}
+
+	private Dialog createInfoDialog(int titleId, int messageId,
+			DialogInterface.OnClickListener okAction) {
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		String titleTemplate = getResources().getString(titleId);
+		String title = String.format(titleTemplate, getVersionName());
+		builder.setTitle(title);
+		builder.setIcon(android.R.drawable.ic_dialog_info);
+		builder.setMessage(messageId);
+		builder.setPositiveButton(R.string.ok, okAction);
+
+		return builder.create();
+	}
+
+	private String getVersionName() {
+		return WwwjdicApplication.getVersion();
+	}
 
 }
