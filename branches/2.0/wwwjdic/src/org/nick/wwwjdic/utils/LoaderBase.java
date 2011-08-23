@@ -4,19 +4,18 @@ import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
-public abstract class LoaderBase<T> extends AsyncTaskLoader<T> {
+public abstract class LoaderBase<T> extends AsyncTaskLoader<LoaderResult<T>> {
 
     private static final String TAG = LoaderBase.class.getSimpleName();
 
-    protected T lastResult;
-    protected Exception error;
+    protected LoaderResult<T> lastResult;
 
     protected LoaderBase(Context context) {
         super(context);
     }
 
     @Override
-    public void deliverResult(T result) {
+    public void deliverResult(LoaderResult<T> result) {
         if (isReset()) {
             if (result != null) {
                 releaseResult(result);
@@ -24,7 +23,7 @@ public abstract class LoaderBase<T> extends AsyncTaskLoader<T> {
             return;
         }
 
-        T oldResult = lastResult;
+        LoaderResult<T> oldResult = lastResult;
         lastResult = result;
 
         if (isStarted()) {
@@ -53,7 +52,7 @@ public abstract class LoaderBase<T> extends AsyncTaskLoader<T> {
     }
 
     @Override
-    public void onCanceled(T result) {
+    public void onCanceled(LoaderResult<T> result) {
         super.onCanceled(result);
 
         if (result != null && isActive(result)) {
@@ -74,32 +73,20 @@ public abstract class LoaderBase<T> extends AsyncTaskLoader<T> {
     }
 
     @Override
-    public T loadInBackground() {
+    public LoaderResult<T> loadInBackground() {
         try {
-            return load();
+            return LoaderResult.create(load());
         } catch (Exception e) {
             Log.e(TAG, "Error loading data: " + e.getMessage(), e);
-            error = e;
 
-            return null;
+            return LoaderResult.createFailed(e);
         }
     }
 
     protected abstract T load() throws Exception;
 
-    protected abstract void releaseResult(T result);
+    protected abstract void releaseResult(LoaderResult<T> result);
 
-    protected abstract boolean isActive(T result);
+    protected abstract boolean isActive(LoaderResult<T> result);
 
-    public Exception getError() {
-        return error;
-    }
-
-    public boolean isSuccessful() {
-        return error == null;
-    }
-
-    public boolean isFailed() {
-        return !isSuccessful();
-    }
 }

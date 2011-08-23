@@ -1,6 +1,7 @@
 package org.nick.wwwjdic.history;
 
 import org.nick.wwwjdic.utils.LoaderBase;
+import org.nick.wwwjdic.utils.LoaderResult;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -23,13 +24,21 @@ public abstract class HistoryLoaderBase extends LoaderBase<Cursor> {
     }
 
     @Override
-    protected void releaseResult(Cursor result) {
-        result.close();
+    protected void releaseResult(LoaderResult<Cursor> result) {
+        Cursor cursor = result.getData();
+        if (cursor != null) {
+            cursor.close();
+        }
     }
 
     @Override
-    protected boolean isActive(Cursor result) {
-        return !result.isClosed();
+    protected boolean isActive(LoaderResult<Cursor> result) {
+        Cursor cursor = result.getData();
+        if (cursor == null) {
+            return false;
+        }
+
+        return !cursor.isClosed();
     }
 
     public int getSelectedFilter() {

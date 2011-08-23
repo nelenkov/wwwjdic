@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.utils.Analytics;
+import org.nick.wwwjdic.utils.LoaderResult;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -40,7 +41,7 @@ import android.widget.Toast;
 import au.com.bytecode.opencsv.CSVReader;
 
 public abstract class HistoryFragmentBase extends ListFragment implements
-        LoaderManager.LoaderCallbacks<Cursor> {
+        LoaderManager.LoaderCallbacks<LoaderResult<Cursor>> {
 
     private static final int IMPORT_ITEM_IDX = 0;
     private static final int EXPORT_ITEM_IDX = 1;

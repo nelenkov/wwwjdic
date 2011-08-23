@@ -23,6 +23,7 @@ import org.nick.wwwjdic.history.gdocs.DocsUrl;
 import org.nick.wwwjdic.history.gdocs.Namespace;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Dialogs;
+import org.nick.wwwjdic.utils.LoaderResult;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -1143,7 +1144,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    public Loader<LoaderResult<Cursor>> onCreateLoader(int id, Bundle args) {
         HistoryLoaderBase loader = new FavoritesLoader(getActivity(), db);
         loader.setSelectedFilter(selectedFilter);
 
@@ -1151,11 +1152,12 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<LoaderResult<Cursor>> loader,
+            LoaderResult<Cursor> data) {
         getActivity().setProgressBarIndeterminateVisibility(false);
 
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
-        adapter.swapCursor(data);
+        adapter.swapCursor(data.getData());
 
         // The list should now be shown.
         //        if (isResumed()) {
@@ -1166,7 +1168,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(Loader<LoaderResult<Cursor>> loader) {
         getActivity().setProgressBarIndeterminateVisibility(false);
 
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
