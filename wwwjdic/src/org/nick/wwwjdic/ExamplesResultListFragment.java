@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.text.ClipboardManager;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -136,6 +137,9 @@ public class ExamplesResultListFragment extends
 
     private ClipboardManager clipboardManager;
 
+    private boolean dualPane;
+    private int currentCheckPosition = 0;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -144,6 +148,10 @@ public class ExamplesResultListFragment extends
                 Context.CLIPBOARD_SERVICE);
 
         getListView().setOnCreateContextMenuListener(this);
+
+        View detailsFrame = getActivity().findViewById(R.id.details);
+        dualPane = detailsFrame != null
+                && detailsFrame.getVisibility() == View.VISIBLE;
 
         extractSearchCriteria();
         SearchTask<ExampleSentence> searchTask = new ExampleSearchTask(
@@ -184,7 +192,7 @@ public class ExamplesResultListFragment extends
 
         switch (item.getItemId()) {
         case MENU_ITEM_BREAK_DOWN:
-            breakDown(info.id);
+            breakDown(getCurrentSentence(info.position), info.position);
             return true;
         case MENU_ITEM_LOOKUP_ALL_KANJI:
             lookupAllKanji(info.id);
@@ -201,19 +209,36 @@ public class ExamplesResultListFragment extends
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        breakDown(id);
+        ExampleSentence sentence = getCurrentSentence(id);
+        breakDown(sentence, position);
     }
 
-    private void breakDown(long id) {
+    private void breakDown(ExampleSentence sentence, int index) {
         Analytics.event("sentenceBreakdown", getActivity());
 
-        Intent intent = new Intent(getActivity(), SentenceBreakdown.class);
-        ExampleSentence sentence = getCurrentSentence(id);
-        intent.putExtra(SentenceBreakdown.EXTRA_SENTENCE,
-                sentence.getJapanese());
-        intent.putExtra(SentenceBreakdown.EXTRA_SENTENCE_TRANSLATION,
-                sentence.getEnglish());
-        startActivity(intent);
+        if (dualPane) {
+            getListView().setItemChecked(index, true);
+
+            SentenceBreakdownFragment breakdown = (SentenceBreakdownFragment) getFragmentManager()
+                    .findFragmentById(R.id.details);
+            if (breakdown == null || breakdown.getShownIndex() != index) {
+                breakdown = SentenceBreakdownFragment.newInstance(index,
+                        sentence.getJapanese(), sentence.getEnglish());
+
+                FragmentTransaction ft = getFragmentManager()
+                        .beginTransaction();
+                ft.replace(R.id.details, breakdown);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.commit();
+            }
+        } else {
+            Intent intent = new Intent(getActivity(), SentenceBreakdown.class);
+            intent.putExtra(SentenceBreakdown.EXTRA_SENTENCE,
+                    sentence.getJapanese());
+            intent.putExtra(SentenceBreakdown.EXTRA_SENTENCE_TRANSLATION,
+                    sentence.getEnglish());
+            startActivity(intent);
+        }
     }
 
     private void copyEnglish(long id) {
@@ -253,6 +278,12 @@ public class ExamplesResultListFragment extends
                 getActivity().setTitle(
                         String.format(message, sentences.size(),
                                 criteria.getQueryString()));
+
+                if (dualPane) {
+                    getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+                    breakDown(sentences.get(currentCheckPosition),
+                            currentCheckPosition);
+                }
                 dismissProgressDialog();
             }
         });

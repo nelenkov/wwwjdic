@@ -3,6 +3,7 @@ package org.nick.wwwjdic;
 import java.util.List;
 
 import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
+import org.nick.wwwjdic.history.HistoryBase;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.StringUtils;
@@ -64,6 +65,8 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
         dbHelper = HistoryDbHelper.getInstance(getActivity());
 
         setupExamplesSummary();
+
+        setupFavoritesHistoryFragments(HistoryBase.FILTER_EXAMPLES);
     }
 
     @Override
@@ -87,6 +90,10 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
     }
 
     private void setupExamplesSummary() {
+        if (examplesHistorySummary == null) {
+            return;
+        }
+
         dbHelper.beginTransaction();
         try {
             long numAllHistory = dbHelper.getExamplesHistoryCount();

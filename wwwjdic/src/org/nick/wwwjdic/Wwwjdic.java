@@ -164,7 +164,7 @@ public class Wwwjdic extends FragmentActivity {
         tabsAdapter.addTab(dictionaryTab, dictionary);
 
         ActionBar.Tab kanjiTab = getSupportActionBar().newTab();
-        KanjiLookupFragment kanjiLookup = new KanjiLookupFragment();
+        WwwjdicFragmentBase kanjiLookup = new KanjiLookupFragment();
         if (extras != null) {
             kanjiLookup.setArguments(extras);
         }

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
 import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
+import org.nick.wwwjdic.history.HistoryBase;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
 import org.nick.wwwjdic.krad.KradChart;
@@ -92,6 +93,8 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
 
         setupKanjiSummary();
 
+        setupFavoritesHistoryFragments(HistoryBase.FILTER_KANJI);
+
         setupClickableLinks();
     }
 
@@ -166,6 +169,10 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
     }
 
     private void setupKanjiSummary() {
+        if (kanjiHistorySummary == null) {
+            return;
+        }
+
         dbHelper.beginTransaction();
         try {
             long numAllFavorites = dbHelper.getKanjiFavoritesCount();
