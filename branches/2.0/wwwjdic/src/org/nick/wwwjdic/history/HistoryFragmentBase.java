@@ -311,7 +311,7 @@ public abstract class HistoryFragmentBase extends ListFragment implements
 
     protected abstract void doExport(String filename);
 
-    private void filter() {
+    public void filter() {
         getLoaderManager().restartLoader(0, null, this);
     }
 
@@ -468,6 +468,14 @@ public abstract class HistoryFragmentBase extends ListFragment implements
         Toast t = Toast.makeText(getActivity(),
                 String.format(messageTemplate, headword), Toast.LENGTH_SHORT);
         t.show();
+    }
+
+    public int getSelectedFilter() {
+        return selectedFilter;
+    }
+
+    public void setSelectedFilter(int selectedFilter) {
+        this.selectedFilter = selectedFilter;
     }
 
 }

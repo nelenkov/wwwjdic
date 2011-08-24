@@ -10,7 +10,9 @@ import java.util.List;
 
 import org.nick.wwwjdic.history.FavoritesAndHistory;
 import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
+import org.nick.wwwjdic.history.HistoryBase;
 import org.nick.wwwjdic.history.HistoryDbHelper;
+import org.nick.wwwjdic.history.HistoryFragmentBase;
 import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
 import org.nick.wwwjdic.ocr.OcrActivity;
 import org.nick.wwwjdic.utils.Analytics;
@@ -57,10 +59,8 @@ public class Wwwjdic extends FragmentActivity {
 
         private final ActionBar actionBar;
         private final ViewPager viewPager;
-        private final List<Fragment> tabs = new ArrayList<Fragment>();
 
         private final List<Integer> tabLayouts = new ArrayList<Integer>();
-        private final List<View> tabViews = new ArrayList<View>();
 
         public WwwjdicTabsPagerAdapter(FragmentActivity activity,
                 ActionBar actionBar, ViewPager pager) {
@@ -84,7 +84,9 @@ public class Wwwjdic extends FragmentActivity {
 
         @Override
         public void onTabSelected(Tab tab, FragmentTransaction ft) {
-            viewPager.setCurrentItem(tab.getPosition());
+            int position = tab.getPosition();
+            viewPager.setCurrentItem(position);
+            filterHistoryFragments(position);
         }
 
         @Override
@@ -99,6 +101,7 @@ public class Wwwjdic extends FragmentActivity {
         @Override
         public void onPageSelected(int position) {
             actionBar.setSelectedNavigationItem(position);
+            filterHistoryFragments(position);
         }
 
         @Override
@@ -121,13 +124,53 @@ public class Wwwjdic extends FragmentActivity {
             LayoutInflater inflater = activity.getLayoutInflater();
             View view = inflater.inflate(tabLayouts.get(position), null);
 
-            setupDictSummary(view);
-            setupKanjiSummary(view);
-            setupExamplesSummary(view);
+            setupHistorySummary(position, view);
+
+            filterHistoryFragments(position);
 
             ((ViewPager) container).addView(view, 0);
 
             return view;
+        }
+
+        private void setupHistorySummary(int position, View view) {
+            switch (position) {
+            case 0:
+                setupDictSummary(view);
+                break;
+            case 1:
+                setupKanjiSummary(view);
+                break;
+            case 2:
+                setupExamplesSummary(view);
+                break;
+            default:
+                // do nothing
+            }
+        }
+
+        private void filterHistoryFragments(int position) {
+            switch (position) {
+            case 0:
+                filterFavoritesHistoryFragment(R.id.favorites_fragment,
+                        HistoryBase.FILTER_DICT);
+                filterFavoritesHistoryFragment(R.id.history_fragment,
+                        HistoryBase.FILTER_DICT);
+                break;
+            case 1:
+                filterFavoritesHistoryFragment(R.id.kanji_favorites_fragment,
+                        HistoryBase.FILTER_KANJI);
+                filterFavoritesHistoryFragment(R.id.kanji_history_fragment,
+                        HistoryBase.FILTER_KANJI);
+                break;
+            case 2:
+                filterFavoritesHistoryFragment(R.id.examples_history_fragment,
+                        HistoryBase.FILTER_EXAMPLES);
+                break;
+            default:
+                // do nothing
+            }
+
         }
 
         @Override
@@ -138,7 +181,6 @@ public class Wwwjdic extends FragmentActivity {
                 currentTransaction = fragmentManager.beginTransaction();
             }
 
-            // XXX
             switch (position) {
             case 0:
                 Fragment fragment = fragmentManager
@@ -534,6 +576,15 @@ public class Wwwjdic extends FragmentActivity {
             dbHelper.setTransactionSuccessful();
         } finally {
             dbHelper.endTransaction();
+        }
+    }
+
+    private void filterFavoritesHistoryFragment(int fragmentId, int filterType) {
+        HistoryFragmentBase fragment = (HistoryFragmentBase) getSupportFragmentManager()
+                .findFragmentById(fragmentId);
+        if (fragment != null) {
+            fragment.setSelectedFilter(filterType);
+            fragment.filter();
         }
     }
 
