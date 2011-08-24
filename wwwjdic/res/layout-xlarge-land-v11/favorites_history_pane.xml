@@ -18,7 +18,7 @@
             android:textColor="#FFFF"
             android:gravity="center_vertical" 
             android:layout_gravity="center_vertical"/>
-            <fragment class="org.nick.wwwjdic.history.SearchHistoryFragment"
+            <FrameLayout
                 android:id="@+id/history_fragment"
                 android:layout_width="fill_parent" 
                 android:layout_weight="1"
@@ -37,10 +37,10 @@
             android:textColor="#FFFF"
             android:gravity="center_vertical" 
             android:layout_gravity="center_vertical"/>
-        <fragment class="org.nick.wwwjdic.history.FavoritesFragment"
-            android:id="@+id/favorites_fragment"
-            android:layout_width="fill_parent" 
-            android:layout_weight="1"
-            android:layout_height="0px" />
+        <FrameLayout
+                android:id="@+id/favorites_fragment"
+                android:layout_width="fill_parent" 
+                android:layout_weight="1"
+                android:layout_height="0px" />
     </LinearLayout>
 </LinearLayout>     
