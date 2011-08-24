@@ -26,8 +26,8 @@
 	            android:text="@string/favorites"
 	            android:textSize="16sp" 
 	            android:textColor="#FFFF"
-	            android:gravity="center_vertical" 
-	            android:layout_gravity="center_vertical"/>
+	            android:layout_gravity="center_vertical" 
+	            android:gravity="center"/>
 	            <fragment class="org.nick.wwwjdic.history.FavoritesFragment"
 	                android:id="@+id/kanji_favorites_fragment"
 	                android:layout_width="fill_parent" 
@@ -45,8 +45,8 @@
 	            android:text="@string/search_history"
 	            android:textSize="16sp" 
 	            android:textColor="#FFFF"
-	            android:gravity="center_vertical" 
-	            android:layout_gravity="center_vertical"/>
+	            android:layout_gravity="center_vertical" 
+	            android:gravity="center"/>
 	        <fragment class="org.nick.wwwjdic.history.SearchHistoryFragment"
 	                android:id="@+id/kanji_history_fragment"
 	                android:layout_width="fill_parent" 

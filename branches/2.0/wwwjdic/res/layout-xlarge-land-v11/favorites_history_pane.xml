@@ -17,7 +17,7 @@
             android:text="@string/favorites"
             android:textSize="16sp" 
             android:textColor="#FFFF"
-            android:gravity="center_vertical" 
+            android:gravity="center" 
             android:layout_gravity="center_vertical"/>
             <fragment class="org.nick.wwwjdic.history.FavoritesFragment"
                 android:id="@+id/favorites_fragment"
@@ -36,7 +36,7 @@
             android:text="@string/search_history"
             android:textSize="16sp" 
             android:textColor="#FFFF"
-            android:gravity="center_vertical" 
+            android:gravity="center" 
             android:layout_gravity="center_vertical"/>
         <fragment class="org.nick.wwwjdic.history.SearchHistoryFragment"
                 android:id="@+id/history_fragment"

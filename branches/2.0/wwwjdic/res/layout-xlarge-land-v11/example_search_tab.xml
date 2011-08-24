@@ -26,7 +26,7 @@
                 android:text="@string/search_history"
                 android:textSize="16sp" 
                 android:textColor="#FFFF"
-                android:gravity="center_vertical" 
+                android:gravity="center" 
                 android:layout_gravity="center_vertical"/>
             <fragment class="org.nick.wwwjdic.history.SearchHistoryFragment"
                     android:id="@+id/examples_history_fragment"
