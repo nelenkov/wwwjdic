@@ -1,11 +1,9 @@
 package org.nick.wwwjdic;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
-import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
 import org.nick.wwwjdic.history.HistoryBase;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
@@ -45,8 +43,6 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
 
     private static final String TAG = KanjiLookupFragment.class.getSimpleName();
 
-    private static final int NUM_RECENT_HISTORY_ENTRIES = 5;
-
     private static final Map<Integer, String> IDX_TO_CODE = new HashMap<Integer, String>();
 
     private EditText kanjiInputText;
@@ -56,8 +52,6 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
     private Button selectRadicalButton;
     private EditText strokeCountMinInput;
     private EditText strokeCountMaxInput;
-
-    private FavoritesAndHistorySummaryView kanjiHistorySummary;
 
     private HistoryDbHelper dbHelper;
 
@@ -91,8 +85,6 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
 
         dbHelper = HistoryDbHelper.getInstance(getActivity());
 
-        setupKanjiSummary();
-
         setupFavoritesHistoryFragments(HistoryBase.FILTER_KANJI);
 
         setupClickableLinks();
@@ -118,7 +110,9 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
 
     private void setupClickableLinks() {
         View historyView = getView().findViewById(R.id.kanji_history_summary);
-        historyView.setNextFocusDownId(R.id.hwrSearchLink);
+        if (historyView != null) {
+            historyView.setNextFocusDownId(R.id.hwrSearchLink);
+        }
 
         TextView textView = (TextView) getView().findViewById(
                 R.id.hwrSearchLink);
@@ -163,35 +157,7 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
     public void onResume() {
         super.onResume();
 
-        setupKanjiSummary();
-
         setupClickableLinks();
-    }
-
-    private void setupKanjiSummary() {
-        if (kanjiHistorySummary == null) {
-            return;
-        }
-
-        dbHelper.beginTransaction();
-        try {
-            long numAllFavorites = dbHelper.getKanjiFavoritesCount();
-            List<String> recentFavorites = dbHelper
-                    .getRecentKanjiFavorites(NUM_RECENT_HISTORY_ENTRIES);
-            long numAllHistory = dbHelper.getKanjiHistoryCount();
-            List<String> recentHistory = dbHelper
-                    .getRecentKanjiHistory(NUM_RECENT_HISTORY_ENTRIES);
-
-            kanjiHistorySummary
-                    .setFavoritesFilterType(HistoryDbHelper.FAVORITES_TYPE_KANJI);
-            kanjiHistorySummary
-                    .setHistoryFilterType(HistoryDbHelper.HISTORY_SEARCH_TYPE_KANJI);
-            kanjiHistorySummary.setRecentEntries(numAllFavorites,
-                    recentFavorites, numAllHistory, recentHistory);
-            dbHelper.setTransactionSuccessful();
-        } finally {
-            dbHelper.endTransaction();
-        }
     }
 
     private void setupListeners() {
@@ -319,9 +285,6 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
                 R.id.strokeCountMaxInput);
         selectRadicalButton = (Button) getView().findViewById(
                 R.id.selectRadicalButton);
-
-        kanjiHistorySummary = (FavoritesAndHistorySummaryView) getView()
-                .findViewById(R.id.kanji_history_summary);
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int position,
