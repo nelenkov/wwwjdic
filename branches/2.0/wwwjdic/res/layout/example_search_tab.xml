@@ -3,8 +3,18 @@
     android:layout_width="fill_parent" 
     android:layout_height="fill_parent"
     android:fillViewport="true">
-    <fragment class="org.nick.wwwjdic.ExampleSearchFragment"
-            android:id="@+id/example_search_fragment"
-            android:layout_width="fill_parent" 
-            android:layout_height="fill_parent" />
+     <LinearLayout android:orientation="vertical" 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+	    <fragment class="org.nick.wwwjdic.ExampleSearchFragment"
+	            android:id="@+id/example_search_fragment"
+	            android:layout_width="fill_parent" 
+	            android:layout_height="wrap_content" />
+	    <org.nick.wwwjdic.history.FavoritesAndHistorySummaryView
+	            android:id="@+id/examples_history_summary"
+	            android:layout_width="fill_parent" 
+	            android:layout_height="60dp" 
+	            android:paddingLeft="15dp" 
+	            android:paddingRight="15dp" />
+   </LinearLayout>               
 </ScrollView>

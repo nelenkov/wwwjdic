@@ -1,11 +1,9 @@
 package org.nick.wwwjdic;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
-import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
 import org.nick.wwwjdic.history.HistoryBase;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.utils.Analytics;
@@ -44,8 +42,6 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
     private CheckBox romanizedJapaneseCb;
     private Spinner dictSpinner;
 
-    private FavoritesAndHistorySummaryView dictHistorySummary;
-
     private HistoryDbHelper dbHelper;
 
     @Override
@@ -78,8 +74,6 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
         }
 
         dbHelper = HistoryDbHelper.getInstance(getActivity());
-
-        setupDictSummary();
 
         setupFavoritesHistoryFragments(HistoryBase.FILTER_DICT);
 
@@ -128,8 +122,6 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
     public void onResume() {
         super.onResume();
 
-        setupDictSummary();
-
         // selectDictionary();
     }
 
@@ -148,9 +140,6 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
         romanizedJapaneseCb = (CheckBox) getView().findViewById(
                 R.id.romanizedCb);
         dictSpinner = (Spinner) getView().findViewById(R.id.dictionarySpinner);
-
-        dictHistorySummary = (FavoritesAndHistorySummaryView) getView()
-                .findViewById(R.id.dict_history_summary);
     }
 
     private void setupListeners() {
@@ -171,31 +160,6 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dictSpinner.setAdapter(adapter);
         dictSpinner.setOnItemSelectedListener(this);
-    }
-
-    private void setupDictSummary() {
-        if (dictHistorySummary == null) {
-            return;
-        }
-
-        dbHelper.beginTransaction();
-        try {
-            long numAllFavorites = dbHelper.getDictFavoritesCount();
-            List<String> recentFavorites = dbHelper
-                    .getRecentDictFavorites(NUM_RECENT_HISTORY_ENTRIES);
-            long numAllHistory = dbHelper.getDictHistoryCount();
-            List<String> recentHistory = dbHelper
-                    .getRecentDictHistory(NUM_RECENT_HISTORY_ENTRIES);
-            dictHistorySummary
-                    .setFavoritesFilterType(HistoryDbHelper.FAVORITES_TYPE_DICT);
-            dictHistorySummary
-                    .setHistoryFilterType(HistoryDbHelper.HISTORY_SEARCH_TYPE_DICT);
-            dictHistorySummary.setRecentEntries(numAllFavorites,
-                    recentFavorites, numAllHistory, recentHistory);
-            dbHelper.setTransactionSuccessful();
-        } finally {
-            dbHelper.endTransaction();
-        }
     }
 
     public void onClick(View v) {

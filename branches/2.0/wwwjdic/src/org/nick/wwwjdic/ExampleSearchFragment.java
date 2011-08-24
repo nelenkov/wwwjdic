@@ -1,7 +1,5 @@
 package org.nick.wwwjdic;
 
-import java.util.List;
-
 import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
 import org.nick.wwwjdic.history.HistoryBase;
 import org.nick.wwwjdic.history.HistoryDbHelper;
@@ -31,8 +29,6 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
     private CheckBox exampleExactMatchCb;
     private Spinner sentenceModeSpinner;
     private Button exampleSearchButton;
-
-    private FavoritesAndHistorySummaryView examplesHistorySummary;
 
     private HistoryDbHelper dbHelper;
 
@@ -64,8 +60,6 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
 
         dbHelper = HistoryDbHelper.getInstance(getActivity());
 
-        setupExamplesSummary();
-
         setupFavoritesHistoryFragments(HistoryBase.FILTER_EXAMPLES);
     }
 
@@ -85,29 +79,6 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
     @Override
     public void onResume() {
         super.onResume();
-
-        setupExamplesSummary();
-    }
-
-    private void setupExamplesSummary() {
-        if (examplesHistorySummary == null) {
-            return;
-        }
-
-        dbHelper.beginTransaction();
-        try {
-            long numAllHistory = dbHelper.getExamplesHistoryCount();
-            List<String> recentHistory = dbHelper
-                    .getRecentExamplesHistory(NUM_RECENT_HISTORY_ENTRIES);
-
-            examplesHistorySummary
-                    .setHistoryFilterType(HistoryDbHelper.HISTORY_SEARCH_TYPE_EXAMPLES);
-            examplesHistorySummary.setRecentEntries(0, null, numAllHistory,
-                    recentHistory);
-            dbHelper.setTransactionSuccessful();
-        } finally {
-            dbHelper.endTransaction();
-        }
     }
 
     private void setupListeners() {
@@ -184,9 +155,6 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
                 .findViewById(R.id.modeSpinner);
         exampleSearchButton = (Button) getView().findViewById(
                 R.id.exampleSearchButton);
-
-        examplesHistorySummary = (FavoritesAndHistorySummaryView) getView()
-                .findViewById(R.id.examples_history_summary);
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int position,
