@@ -1,44 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
     android:id="@+id/dictLookupTab"
-    android:orientation="vertical" android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:padding="15dip"
-    android:layout_gravity="top" android:minHeight="200px">
+    android:orientation="vertical" 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:padding="15dip"
+    android:layout_gravity="top" 
+    android:minHeight="200px">
     <EditText android:layout_height="wrap_content"
-        android:layout_width="fill_parent" android:id="@+id/inputText"
-        android:inputType="text" android:lines="1"
-        android:hint="@string/enter_eng_or_jap" android:imeOptions="actionDone"></EditText>
+        android:layout_width="fill_parent" 
+        android:id="@+id/inputText"
+        android:inputType="text" 
+        android:lines="1"
+        android:hint="@string/enter_eng_or_jap" android:imeOptions="actionDone"/>
     <LinearLayout android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:orientation="horizontal"
-        android:id="@+id/dictSelectionLayout" android:gravity="center_vertical|center_horizontal"
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal"
+        android:id="@+id/dictSelectionLayout" 
+        android:gravity="center_vertical|center_horizontal"
         android:layout_gravity="center_vertical|center_horizontal">
         <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/dictLabel"
+            android:layout_height="wrap_content" 
+            android:id="@+id/dictLabel"
             android:text="@string/dictionary_label"
-            android:textSize="16sp" android:textColor="#FFFF"
-            android:gravity="center_vertical"></TextView>
+            android:textSize="16sp" 
+            android:textColor="#FFFF"
+            android:gravity="center_vertical"/>
         <Spinner android:layout_height="wrap_content"
             android:id="@+id/dictionarySpinner"
             android:layout_width="wrap_content"
             android:layout_marginLeft="5px" android:minWidth="320px"
-            android:prompt="@string/select_dictionary"></Spinner>
+            android:prompt="@string/select_dictionary"/>
     </LinearLayout>
     <LinearLayout android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:orientation="horizontal"
-        android:id="@+id/optionsLayout" android:layout_gravity="center_horizontal">
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal"
+        android:id="@+id/optionsLayout" 
+        android:layout_gravity="center_horizontal">
         <CheckBox android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/commonWordsCb"
-            android:text="@string/common_words" android:textSize="12sp"
-            android:layout_gravity="center_vertical"></CheckBox>
+            android:layout_height="wrap_content" 
+            android:id="@+id/commonWordsCb"
+            android:text="@string/common_words" 
+            android:textSize="12sp"
+            android:layout_gravity="center_vertical"/>
         <CheckBox android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/exactMatchCb"
-            android:text="@string/exact_match_nl" android:textSize="12sp"
-            android:layout_gravity="center_vertical"></CheckBox>
+            android:layout_height="wrap_content" 
+            android:id="@+id/exactMatchCb"
+            android:text="@string/exact_match_nl" 
+            android:textSize="12sp"
+            android:layout_gravity="center_vertical"/>
         <CheckBox android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/romanizedCb"
-            android:text="@string/romanized_jap" android:textSize="12sp"
-            android:layout_gravity="center_vertical"></CheckBox>
+            android:layout_height="wrap_content" 
+            android:id="@+id/romanizedCb"
+            android:text="@string/romanized_jap" 
+            android:textSize="12sp"
+            android:layout_gravity="center_vertical"/>
     </LinearLayout>
-    <Button android:layout_height="wrap_content" android:id="@+id/translateButton"
-        android:layout_width="fill_parent" android:text="@string/search"></Button>
+    <Button android:layout_height="wrap_content" 
+        android:id="@+id/translateButton"
+        android:layout_width="fill_parent" 
+        android:text="@string/search"/>
 </LinearLayout>
