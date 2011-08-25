@@ -3,17 +3,16 @@ package org.nick.wwwjdic;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class RadicalChart extends Activity implements OnItemClickListener {
 
@@ -26,8 +25,7 @@ public class RadicalChart extends Activity implements OnItemClickListener {
         radicalChartGrid.setOnItemClickListener(this);
 
         Radicals radicals = Radicals.getInstance();
-        GridView gridview = (GridView) findViewById(R.id.radicalChartGrid);
-        gridview.setAdapter(new RadicalAdapter(this, radicals));
+        radicalChartGrid.setAdapter(new RadicalAdapter(this, radicals));
 
         setTitle(R.string.select_radical);
     }
@@ -57,34 +55,41 @@ public class RadicalChart extends Activity implements OnItemClickListener {
         public View getView(int position, View convertView, ViewGroup parent) {
             Radical radical = radicals.getRadical(position);
 
-            LinearLayout radicalLayout = new LinearLayout(context);
-            radicalLayout.setOrientation(LinearLayout.HORIZONTAL);
+            RadicalView result = null;
+            if (convertView == null) {
+                result = new RadicalView(context);
+            } else {
+                result = (RadicalView) convertView;
+            }
 
-            LinearLayout numberStrokesLayout = new LinearLayout(context);
-            numberStrokesLayout.setOrientation(LinearLayout.VERTICAL);
-            LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT,
-                    LayoutParams.FILL_PARENT);
-            numberStrokesLayout.setLayoutParams(params);
+            result.populate(radical);
 
-            TextView numberText = new TextView(context);
-            numberText.setText(Integer.toString(radical.getNumber()));
-            numberText.setTextSize(12f);
-            numberStrokesLayout.addView(numberText);
+            return result;
+        }
+    }
 
-            TextView numStrokesText = new TextView(context);
+    static class RadicalView extends LinearLayout {
+
+
+        private TextView radicalNumberText;
+        private TextView numStrokesText;
+        private TextView radicalText;
+
+        RadicalView(Context context) {
+            super(context);
+
+            LayoutInflater inflater = LayoutInflater.from(context);
+            inflater.inflate(R.layout.radicals_item, this);
+
+            radicalNumberText = (TextView) findViewById(R.id.radical_number_text);
+            numStrokesText = (TextView) findViewById(R.id.num_strokes_text);
+            radicalText = (TextView) findViewById(R.id.radical_text);
+        }
+
+        void populate(Radical radical) {
+            radicalNumberText.setText(Integer.toString(radical.getNumber()));
             numStrokesText.setText(Integer.toString(radical.getNumStrokes()));
-            numStrokesText.setTextSize(12f);
-            numberStrokesLayout.addView(numStrokesText);
-
-            radicalLayout.addView(numberStrokesLayout);
-
-            TextView glyphText = new TextView(context);
-            glyphText.setText(radical.getGlyph());
-            glyphText.setTextSize(34f);
-            glyphText.setTextColor(Color.WHITE);
-            radicalLayout.addView(glyphText);
-
-            return radicalLayout;
+            radicalText.setText(radical.getGlyph());
         }
     }
 
