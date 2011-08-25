@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="krad_chart_text_size">48dp</dimen>
+    <dimen name="krad_chart_text_size">48sp</dimen>
 </resources>

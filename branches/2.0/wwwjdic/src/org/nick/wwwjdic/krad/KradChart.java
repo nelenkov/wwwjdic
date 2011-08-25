@@ -34,6 +34,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -254,7 +255,7 @@ public class KradChart extends FragmentActivity implements OnClickListener,
             result.setBackgroundColor(Color.TRANSPARENT);
             float textSize = getResources().getDimension(
                     R.dimen.krad_chart_text_size);
-            result.setTextSize(textSize);
+            result.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
 
             String modelStr = getItem(position);
             if (isStrokeNumLabel(modelStr)) {
