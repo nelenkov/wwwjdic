@@ -15,7 +15,7 @@
       android:layout_margin="5dp"
       android:gravity="center"
       android:text="@string/no_matches"
-      android:textSize="20dp"
+      android:textSize="@dimen/krad_chart_matched_kanji_size"
       android:singleLine="true" />
     <LinearLayout
       android:layout_width="fill_parent"
@@ -27,6 +27,7 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:text="0"
+        android:textSize="@dimen/krad_chart_total_kanji_size"
         android:gravity="center"
         android:layout_gravity="center_vertical"
         android:singleLine="true" />
@@ -60,7 +61,7 @@
     android:layout_width="fill_parent"
     android:layout_height="0px"
     android:layout_weight="1"
-    android:columnWidth="32dp"
+    android:columnWidth="@dimen/krad_chart_column_width"
     android:numColumns="auto_fit"
     android:verticalSpacing="2dp"
     android:horizontalSpacing="2dp"

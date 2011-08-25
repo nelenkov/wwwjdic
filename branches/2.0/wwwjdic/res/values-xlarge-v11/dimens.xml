@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="krad_chart_text_size">48sp</dimen>
+    <dimen name="krad_chart_text_size">36sp</dimen>
+    <dimen name="krad_chart_column_width">48dp</dimen>
+    <dimen name="krad_chart_matched_kanji_size">32sp</dimen>
+    <dimen name="krad_chart_total_kanji_size">28sp</dimen>
 </resources>
