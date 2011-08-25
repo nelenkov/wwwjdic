@@ -102,6 +102,7 @@ public class KradChart extends FragmentActivity implements OnClickListener,
 
     private ProgressDialog progressDialog;
 
+    private int maxNumSummaryChars = NUM_SUMMARY_CHARS;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -120,6 +121,9 @@ public class KradChart extends FragmentActivity implements OnClickListener,
 
         radicalChartGrid = (GridView) findViewById(R.id.kradChartGrid);
         radicalChartGrid.setOnItemClickListener(this);
+
+        maxNumSummaryChars = getResources().getInteger(
+                R.integer.krad_max_candidates);
 
         setTitle(R.string.kanji_multi_radical_search);
 
@@ -211,7 +215,6 @@ public class KradChart extends FragmentActivity implements OnClickListener,
 
         outState.putSerializable(STATE_KEY, state);
     }
-
 
     private void displayTotalMatches() {
         String totalMatchesTemplate = getResources().getString(
@@ -347,7 +350,7 @@ public class KradChart extends FragmentActivity implements OnClickListener,
                 .toArray(new String[state.matchingKanjis.size()]);
         Arrays.sort(matchingChars);
 
-        String[] charsToDisplay = new String[NUM_SUMMARY_CHARS];
+        String[] charsToDisplay = new String[maxNumSummaryChars];
         if (matchingChars.length < charsToDisplay.length) {
             charsToDisplay = new String[matchingChars.length];
         }
