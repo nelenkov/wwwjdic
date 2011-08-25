@@ -252,7 +252,9 @@ public class KradChart extends FragmentActivity implements OnClickListener,
                     viewGroup);
             result.setTextColor(Color.WHITE);
             result.setBackgroundColor(Color.TRANSPARENT);
-            result.setTextSize(24f);
+            float textSize = getResources().getDimension(
+                    R.dimen.krad_chart_text_size);
+            result.setTextSize(textSize);
 
             String modelStr = getItem(position);
             if (isStrokeNumLabel(modelStr)) {
