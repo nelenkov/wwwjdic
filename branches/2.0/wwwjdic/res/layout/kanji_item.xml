@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="horizontal"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent" 
+  style="@style/listViewActivatedStyle">
+  <TextView android:id="@+id/kanji_text" 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginRight="3dp"
+    android:layout_marginBottom="0dp"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:textSize="42sp" 
+    android:singleLine="true"
+    android:ellipsize="end"
+    style="@style/kanji_list_heading" />
+  <LinearLayout android:id="@+id/reading_meanings_layout"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView android:id="@+id/onyomi_text" 
+        style="@style/kanji_list_reading" />
+     <TextView android:id="@+id/kunyomi_text" 
+        style="@style/kanji_list_reading" />
+     <TextView android:id="@+id/translation_text" 
+        style="@style/kanji_list_translation" />   
+  </LinearLayout>
+</LinearLayout>
