@@ -33,22 +33,12 @@
         android:singleLine="true" />
       <Button
         android:id="@+id/show_all_button"
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:text="@string/show_all"
-        android:background="@android:drawable/btn_default_small"
-        android:layout_gravity="center_vertical"
-        android:gravity="center" />
+        style="@style/krad_chart_button"
+        android:text="@string/show_all"/>
       <Button
         android:id="@+id/clear_button"
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:text="@string/clear"
-        android:background="@android:drawable/btn_default_small"
-        android:layout_gravity="center_vertical"
-        android:gravity="center" />
+        style="@style/krad_chart_button"
+        android:text="@string/clear"/>
     </LinearLayout>
   </LinearLayout>
   <View
