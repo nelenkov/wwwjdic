@@ -114,4 +114,19 @@
   </style>
 
   <style name="listViewActivatedStyle" />
+  
+  <style name="hkr_toolbar_button">
+    <item name="android:layout_height">fill_parent</item> 
+    <item name="android:layout_width">0px</item>
+    <item name="android:layout_weight">1</item> 
+    <item name="android:background">@android:drawable/btn_default_small</item>
+    <item name="android:textSize">12dp</item> 
+  </style>
+  
+  <style name="hkr_toolbar_checbox">
+    <item name="android:layout_height">wrap_content</item> 
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_gravity">center_vertical</item>
+    <item name="android:textSize">12dp</item> 
+  </style>
 </resources>
