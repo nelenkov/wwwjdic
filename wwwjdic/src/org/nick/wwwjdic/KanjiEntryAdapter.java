@@ -3,8 +3,7 @@ package org.nick.wwwjdic;
 import java.util.List;
 
 import android.content.Context;
-import android.text.TextUtils.TruncateAt;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -36,17 +35,19 @@ public class KanjiEntryAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         KanjiEntry entry = entries.get(position);
 
+        KanjiEntryView result = null;
         if (convertView == null) {
-            return new KanjiEntryView(context, entry);
+            result = new KanjiEntryView(context, entry);
+        } else {
+            result = (KanjiEntryView) convertView;
         }
+        result.populate(entry);
 
-        KanjiEntryView entryView = (KanjiEntryView) convertView;
-        entryView.populate(entry);
-
-        return entryView;
+        return result;
     }
 
     private static final class KanjiEntryView extends LinearLayout {
+
         private TextView entryText;
         private TextView onyomiText;
         private TextView kunyomiText;
@@ -54,56 +55,14 @@ public class KanjiEntryAdapter extends BaseAdapter {
 
         public KanjiEntryView(Context context, KanjiEntry entry) {
             super(context);
-            setOrientation(LinearLayout.HORIZONTAL);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(5, 3, 5, 0);
 
-            LinearLayout readingMeaningsLayout = new LinearLayout(context);
-            readingMeaningsLayout.setOrientation(LinearLayout.VERTICAL);
-            params = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(5, 3, 5, 0);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            inflater.inflate(R.layout.kanji_item, this);
 
-            LinearLayout.LayoutParams entryParams = new LinearLayout.LayoutParams(
-                    params);
-            entryParams.gravity = Gravity.CENTER;
-            entryText = createTextView(context, R.style.kanji_list_heading,
-                    entry.getKanji());
-            entryText.setGravity(Gravity.CENTER);
-            entryText.setTextSize(42f);
-            addView(entryText, entryParams);
-
-            onyomiText = createTextView(context, R.style.kanji_list_reading, "");
-            readingMeaningsLayout.addView(onyomiText, params);
-            if (entry.getOnyomi() != null) {
-                onyomiText.setText(entry.getOnyomi());
-            }
-
-            kunyomiText = createTextView(context, R.style.kanji_list_reading,
-                    "");
-            readingMeaningsLayout.addView(kunyomiText, params);
-            if (entry.getKunyomi() != null) {
-                kunyomiText.setText(entry.getKunyomi());
-            }
-
-            String meaningsStr = entry.getMeaningsAsString();
-            translationText = createTextView(context,
-                    R.style.kanji_list_translation, meaningsStr);
-            readingMeaningsLayout.addView(translationText, params);
-
-            addView(readingMeaningsLayout);
-        }
-
-        private TextView createTextView(Context context, int style, String text) {
-            TextView result = new TextView(context, null, style);
-            result.setSingleLine(true);
-            result.setEllipsize(TruncateAt.END);
-            result.setText(text);
-
-            return result;
+            entryText = (TextView) findViewById(R.id.kanji_text);
+            onyomiText = (TextView) findViewById(R.id.onyomi_text);
+            kunyomiText = (TextView) findViewById(R.id.kunyomi_text);
+            translationText = (TextView) findViewById(R.id.translation_text);
         }
 
         void populate(KanjiEntry entry) {
