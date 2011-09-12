@@ -5,4 +5,5 @@
     <color name="semi_white">#f888</color>
     <color name="semi_black">#f666</color>
     <color name="yellow">#ffffffaa</color>
+    <color name="grey">#888888</color>
 </resources>

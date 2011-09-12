@@ -14,7 +14,6 @@ import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Pair;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -44,7 +43,8 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
     private static final List<String> JINMEIYOU_GRADES = Arrays
             .asList(new String[] { "9", "10" });
 
-    private LinearLayout translationsCodesLayout;
+    private LinearLayout translationsLayout;
+    private LinearLayout codesLayout;
 
     private KanjiEntry entry;
 
@@ -143,15 +143,13 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
                 R.id.readingLayout);
 
         if (entry.getReading() != null) {
-            TextView onyomiView = new TextView(getActivity(), null,
-                    R.style.dict_detail_reading);
+            TextView onyomiView = (TextView) getActivity().findViewById(
+                    R.id.details_onyomi_text);
             onyomiView.setText(entry.getOnyomi());
-            readingLayout.addView(onyomiView);
 
-            TextView kunyomiView = new TextView(getActivity(), null,
-                    R.style.dict_detail_reading);
+            TextView kunyomiView = (TextView) getActivity().findViewById(
+                    R.id.details_kunyomi_text);
             kunyomiView.setText(entry.getKunyomi());
-            readingLayout.addView(kunyomiView);
         }
 
         if (!TextUtils.isEmpty(entry.getNanori())) {
@@ -171,6 +169,8 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
             TextView textView = new TextView(getActivity(), null,
                     R.style.dict_detail_reading);
             textView.setText(entry.getNanori());
+            textView.setTextSize(getResources().getDimension(
+                    R.dimen.details_reading_size));
             layout.addView(textView, lp);
 
             readingLayout.addView(layout);
@@ -198,13 +198,15 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
             readingLayout.addView(layout);
         }
 
-        translationsCodesLayout = (LinearLayout) getActivity().findViewById(
+        translationsLayout = (LinearLayout) getActivity().findViewById(
                 R.id.translations_layout);
+        codesLayout = (LinearLayout) getActivity().findViewById(
+                R.id.codes_layout);
 
         if (entry.getMeanings().isEmpty()) {
             TextView text = new TextView(getActivity(), null,
                     R.style.dict_detail_meaning);
-            translationsCodesLayout.addView(text);
+            translationsLayout.addView(text);
         } else {
             for (String meaning : entry.getMeanings()) {
                 final Pair<LinearLayout, TextView> translationViews = createMeaningTextView(
@@ -217,18 +219,12 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
                     makeClickable(translationViews.getSecond(), start, end,
                             crossRefIntent);
                 }
-                translationsCodesLayout.addView(translationViews.getFirst());
+                translationsLayout.addView(translationViews.getFirst());
             }
         }
 
-        TextView moreLabel = new TextView(getActivity());
-        moreLabel.setText(R.string.codes_more);
-        moreLabel.setTextColor(Color.WHITE);
-        moreLabel.setBackgroundColor(Color.GRAY);
-        translationsCodesLayout.addView(moreLabel);
-
         List<Pair<String, String>> codesData = createCodesData(entry);
-        addCodesTable(translationsCodesLayout, codesData);
+        addCodesTable(codesLayout, codesData);
 
         CheckBox starCb = (CheckBox) getActivity()
                 .findViewById(R.id.star_kanji);
@@ -424,9 +420,9 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
     }
 
     private void toggleTtsButtons(boolean show) {
-        int childCount = translationsCodesLayout.getChildCount();
+        int childCount = translationsLayout.getChildCount();
         for (int i = 0; i < childCount; i++) {
-            View view = translationsCodesLayout.getChildAt(i);
+            View view = translationsLayout.getChildAt(i);
             if (view instanceof Button) {
                 if (show) {
                     view.setVisibility(View.VISIBLE);

@@ -281,8 +281,10 @@ public class ExamplesResultListFragment extends
 
                 if (dualPane) {
                     getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-                    breakDown(sentences.get(currentCheckPosition),
-                            currentCheckPosition);
+                    if (!sentences.isEmpty()) {
+                        breakDown(sentences.get(currentCheckPosition),
+                                currentCheckPosition);
+                    }
                 }
                 dismissProgressDialog();
             }

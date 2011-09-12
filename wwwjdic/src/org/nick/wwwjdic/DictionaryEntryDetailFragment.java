@@ -84,6 +84,8 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
             TextView readingView = new TextView(getActivity(), null,
                     R.style.dict_detail_reading);
             readingView.setText(entry.getReading());
+            readingView.setTextSize(getResources().getDimension(
+                    R.dimen.details_reading_size));
             wordReadingLayout.addView(readingView);
         }
 
