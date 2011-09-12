@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="horizontal"
   android:layout_width="match_parent"
-  android:layout_height="match_parent" 
+  android:layout_height="match_parent"
   style="@style/listViewActivatedStyle">
   <TextView android:id="@+id/kanji_text" 
     style="@style/kanji_list_heading" />
