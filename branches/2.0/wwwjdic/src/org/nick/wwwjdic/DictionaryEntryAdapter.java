@@ -5,7 +5,7 @@ import java.util.List;
 import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Context;
-import android.text.TextUtils.TruncateAt;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -37,53 +37,32 @@ public class DictionaryEntryAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         DictionaryEntry entry = entries.get(position);
 
+        DictionaryEntryView result = null;
         if (convertView == null) {
-            return new DictionaryEntryView(context, entry);
+            result = new DictionaryEntryView(context, entry);
+        } else {
+            result = (DictionaryEntryView) convertView;
         }
+        result.populate(entry);
 
-        DictionaryEntryView entryView = (DictionaryEntryView) convertView;
-        entryView.populate(entry);
-
-        return entryView;
+        return result;
     }
 
     private final class DictionaryEntryView extends LinearLayout {
+
         private TextView entryText;
         private TextView readingText;
         private TextView translationText;
 
         public DictionaryEntryView(Context context, DictionaryEntry entry) {
             super(context);
-            setOrientation(LinearLayout.VERTICAL);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(5, 3, 5, 0);
 
-            entryText = createTextView(context, R.style.dict_list_heading,
-                    entry.getWord());
-            addView(entryText, params);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            inflater.inflate(R.layout.dict_item, this);
 
-            readingText = createTextView(context, R.style.dict_list_reading, "");
-            addView(readingText, params);
-            if (entry.getReading() != null) {
-                readingText.setText(entry.getReading());
-            }
-
-            String translationStr = StringUtils.join(entry.getMeanings(), "/",
-                    0);
-            translationText = createTextView(context,
-                    R.style.dict_list_translation, translationStr);
-            addView(translationText, params);
-        }
-
-        private TextView createTextView(Context context, int style, String text) {
-            TextView result = new TextView(context, null, style);
-            result.setSingleLine(true);
-            result.setEllipsize(TruncateAt.END);
-            result.setText(text);
-
-            return result;
+            entryText = (TextView) findViewById(R.id.entry_text);
+            readingText = (TextView) findViewById(R.id.reading_text);
+            translationText = (TextView) findViewById(R.id.translation_text);
         }
 
         void populate(DictionaryEntry entry) {
