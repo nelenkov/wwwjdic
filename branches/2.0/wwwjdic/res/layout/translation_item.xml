@@ -13,7 +13,7 @@
         android:layout_weight="1"
         android:layout_height="wrap_content" 
         style="@style/dict_detail_meaning" 
-        android:paddingRight="2dip" />
+        android:paddingRight="2dp" />
     <Button android:id="@+id/speak_button" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
@@ -21,7 +21,7 @@
         android:background="@android:drawable/ic_lock_silent_mode_off"
         android:gravity="center_vertical"
         android:layout_gravity="center_vertical" 
-        android:paddingRight="4dip"
+        android:paddingRight="4dp"
         android:visibility="invisible"/>
 </LinearLayout>
 

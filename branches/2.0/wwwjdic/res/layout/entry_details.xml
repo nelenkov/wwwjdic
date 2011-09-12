@@ -1,40 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/detailLayout" android:layout_width="fill_parent"
-    android:layout_height="wrap_content" android:orientation="vertical"
-    android:paddingLeft="6dip">
+    android:id="@+id/detailLayout"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+    android:paddingLeft="6dp">
     <LinearLayout android:id="@+id/wordReadingLayout"
-        android:orientation="horizontal" android:layout_width="fill_parent"
+        android:orientation="horizontal" 
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5px">
+        android:layout_marginBottom="5dp">
         <LinearLayout android:id="@+id/word_reading_layout"
-            android:layout_width="0dip" android:layout_weight="1"
-            android:layout_height="wrap_content" android:orientation="vertical">
-            <TextView android:layout_height="fill_parent"
-                android:layout_width="fill_parent" android:id="@+id/wordText"
-                style="@style/dict_detail_heading"></TextView>
+            android:layout_width="0dp" 
+            android:layout_weight="1"
+            android:layout_height="wrap_content" 
+            android:orientation="vertical">
+            <TextView android:id="@+id/wordText" 
+                android:layout_height="fill_parent"
+                android:layout_width="fill_parent" 
+                style="@style/dict_detail_heading"/>
         </LinearLayout>
-        <LinearLayout android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:orientation="vertical">
+        <LinearLayout android:orientation="vertical" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
             <CheckBox android:id="@+id/star_word"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:focusable="false"
+                android:layout_height="wrap_content" 
+                android:focusable="false"
                 android:button="@android:drawable/btn_star"
                 android:gravity="center" android:layout_gravity="center" />
             <Button android:id="@+id/examples_button"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent" android:text="@string/ex"
-                android:background="@android:drawable/btn_default_small"
-                android:gravity="center" android:layout_gravity="center" />
+                android:layout_width="wrap_content"
+                android:gravity="center" 
+                android:layout_gravity="center"
+                style="@style/small_button"
+                android:text="@string/ex"/>
         </LinearLayout>
     </LinearLayout>
     <TextView android:text="@string/translation"
-        android:layout_width="fill_parent" android:layout_height="wrap_content"
-        android:background="#ff888888" android:textColor="#ffffffff" />
+        style="@style/details_separator" />
     <ScrollView android:layout_width="fill_parent"
         android:layout_height="fill_parent">
         <LinearLayout android:id="@+id/translations_layout"
-            android:layout_width="fill_parent" android:layout_height="fill_parent"
+            android:layout_width="fill_parent" 
+            android:layout_height="fill_parent"
             android:orientation="vertical">
         </LinearLayout>
     </ScrollView>

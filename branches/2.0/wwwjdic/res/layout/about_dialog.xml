@@ -26,10 +26,13 @@
             android:layout_height="fill_parent" android:text="@string/buy_donate_version"
             android:textColor="#FFF" android:layout_marginBottom="4dip"
             android:gravity="center_horizontal" android:layout_gravity="center_horizontal"></TextView>
-        <Button android:layout_width="wrap_content" android:id="@+id/buy_donate"
-            android:layout_height="fill_parent" android:text="@string/donate_version"
-            android:background="@android:drawable/btn_default_small"
-            android:gravity="center_horizontal" android:layout_gravity="center_horizontal"></Button>
+        <Button android:id="@+id/buy_donate"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent" 
+            android:gravity="center" 
+            android:layout_gravity="center"
+            android:text="@string/donate_version" 
+            style="@style/small_button" />
         <TextView android:layout_width="wrap_content"
             android:id="@+id/bugtrackingText" android:layout_height="fill_parent"
             android:text="@string/about_bugtracking" android:textColor="#FFF"></TextView>
