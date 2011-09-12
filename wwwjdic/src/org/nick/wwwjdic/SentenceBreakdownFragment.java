@@ -126,9 +126,9 @@ public class SentenceBreakdownFragment extends
         super.onActivityCreated(savedInstanceState);
 
 
-        Bundle extras = getActivity().getIntent().getExtras();
-        String sentenceStr = extras.getString(EXTRA_SENTENCE);
-        String sentenceTranslation = extras
+        Bundle args = getArguments();
+        String sentenceStr = args.getString(EXTRA_SENTENCE);
+        String sentenceTranslation = args
                 .getString(EXTRA_SENTENCE_TRANSLATION);
         markedSentence = new SpannableString(sentenceStr);
 
