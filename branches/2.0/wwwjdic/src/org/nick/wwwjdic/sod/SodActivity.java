@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.HttpClientFactory;
 import org.nick.wwwjdic.R;
@@ -52,7 +55,8 @@ public class SodActivity extends FragmentActivity implements OnClickListener,
 
         @Override
         public Pair<String, Boolean> load() throws Exception {
-            String lookupUrl = STROKE_PATH_LOOKUP_URL + unicodeNumber;
+            String lookupUrl = STROKE_PATH_LOOKUP_URL + unicodeNumber
+                    + "?f=json";
             HttpGet get = new HttpGet(lookupUrl);
 
             String responseStr = httpClient.execute(get,
@@ -230,22 +234,30 @@ public class SodActivity extends FragmentActivity implements OnClickListener,
             return null;
         }
 
-        if (reply.startsWith(NOT_FOUND_STATUS)) {
+        try {
+            // XXX fixme: should return valid JSON even if not found
+            if (reply.startsWith(NOT_FOUND_STATUS)) {
+                return null;
+            }
+
+            JSONObject jsonObj = new JSONObject(reply);
+            JSONArray strokes = jsonObj.getJSONArray("paths");
+            int numStrokes = strokes.length();
+            List<StrokePath> result = new ArrayList<StrokePath>();
+            for (int i = 0; i < numStrokes; i++) {
+                String line = strokes.getString(i);
+                if (line != null && !"".equals(line)) {
+                    StrokePath strokePath = StrokePath.parsePath(line.trim());
+                    result.add(strokePath);
+                }
+            }
+
+            return result;
+        } catch (JSONException e) {
+            // XXX do something smarter, need to show message if
+            // format is wrong!
             return null;
         }
-
-        String[] lines = reply.split("\n");
-
-        List<StrokePath> result = new ArrayList<StrokePath>();
-        for (int i = 1; i < lines.length; i++) {
-            String line = lines[i];
-            if (line != null && !"".equals(line)) {
-                StrokePath strokePath = StrokePath.parsePath(line.trim());
-                result.add(strokePath);
-            }
-        }
-
-        return result;
     }
 
     private static StrokedCharacter parseWsReply(String reply) {
