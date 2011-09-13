@@ -32,6 +32,8 @@ public class ExamplesResultListFragment extends
     private static final String TAG = ExamplesResultListFragment.class
             .getSimpleName();
 
+    public static String EXTRA_EXAMPLES_BACKDOOR_SEARCH = "orgk.nick.wwwjdic.EXAMPLES_BACKDOOR_SEARCH";
+
     private static final String EXAMPLE_SEARCH_QUERY_STR = "?11";
 
     private static final int MENU_ITEM_BREAK_DOWN = 0;
@@ -96,8 +98,17 @@ public class ExamplesResultListFragment extends
             void populate(ExampleSentence sentence, String queryString) {
                 SpannableString english = markQueryString(
                         sentence.getEnglish(), queryString, true);
-                SpannableString japanese = markQueryString(
-                        sentence.getJapanese(), queryString, false);
+                SpannableString japanese = null;
+                if (sentence.getMatches().isEmpty()) {
+                    japanese = markQueryString(sentence.getJapanese(),
+                            queryString, false);
+                } else {
+                    japanese = new SpannableString(sentence.getJapanese());
+                    for (String match : sentence.getMatches()) {
+                        markQueryString(japanese, sentence.getJapanese(),
+                                match, false);
+                    }
+                }
 
                 japaneseSentenceText.setText(japanese);
                 englishSentenceText.setText(english);
@@ -106,7 +117,13 @@ public class ExamplesResultListFragment extends
             private SpannableString markQueryString(String sentenceStr,
                     String queryString, boolean italicize) {
                 SpannableString result = new SpannableString(sentenceStr);
+                markQueryString(result, sentenceStr, queryString, italicize);
 
+                return result;
+            }
+
+            private void markQueryString(SpannableString result,
+                    String sentenceStr, String queryString, boolean italicize) {
                 String sentenceUpper = sentenceStr.toUpperCase();
                 String queryUpper = queryString.toUpperCase();
 
@@ -126,8 +143,6 @@ public class ExamplesResultListFragment extends
                         break;
                     }
                 }
-
-                return result;
             }
         }
 
@@ -154,10 +169,20 @@ public class ExamplesResultListFragment extends
                 && detailsFrame.getVisibility() == View.VISIBLE;
 
         extractSearchCriteria();
-        SearchTask<ExampleSentence> searchTask = new ExampleSearchTask(
-                getWwwjdicUrl() + EXAMPLE_SEARCH_QUERY_STR,
-                getHttpTimeoutSeconds(), this, criteria,
-                criteria.getNumMaxResults());
+
+        boolean useBackdoor = getActivity().getIntent().getBooleanExtra(
+                EXTRA_EXAMPLES_BACKDOOR_SEARCH, false);
+        SearchTask<ExampleSentence> searchTask = null;
+        if (useBackdoor) {
+            searchTask = new ExampleSearchTaskBackdoor(getWwwjdicUrl(),
+                    getHttpTimeoutSeconds(), this, criteria,
+                    WwwjdicPreferences.isReturnRandomExamples(getActivity()));
+        } else {
+            searchTask = new ExampleSearchTask(getWwwjdicUrl()
+                    + EXAMPLE_SEARCH_QUERY_STR, getHttpTimeoutSeconds(), this,
+                    criteria, criteria.getNumMaxResults());
+        }
+
         submitSearchTask(searchTask);
     }
 
