@@ -14,4 +14,6 @@
     <dimen name="kanji_detail_heading_size">55sp</dimen>
     <dimen name="radical_size">42sp</dimen>
     <dimen name="radical_subscript_size">18sp</dimen>
+    
+    <dimen name="kanji_compound_link_size">24sp</dimen>
 </resources>
