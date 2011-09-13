@@ -73,20 +73,15 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         getActivity().setTitle(String.format(message, entry.getWord()));
 
         View v = getView();
-        LinearLayout wordReadingLayout = (LinearLayout) v
-                .findViewById(R.id.word_reading_layout);
 
-        entryView = (TextView) v.findViewById(R.id.wordText);
+        entryView = (TextView) v.findViewById(R.id.details_word_text);
         entryView.setText(entry.getWord());
         entryView.setOnLongClickListener(this);
 
         if (entry.getReading() != null) {
-            TextView readingView = new TextView(getActivity(), null,
-                    R.style.dict_detail_reading);
+            TextView readingView = (TextView) v
+                    .findViewById(R.id.details_word_reading_text);
             readingView.setText(entry.getReading());
-            readingView.setTextSize(getResources().getDimension(
-                    R.dimen.details_reading_size));
-            wordReadingLayout.addView(readingView);
         }
 
         translationsLayout = (LinearLayout) v

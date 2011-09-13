@@ -15,10 +15,14 @@
             android:layout_weight="1"
             android:layout_height="wrap_content" 
             android:orientation="vertical">
-            <TextView android:id="@+id/wordText" 
-                android:layout_height="fill_parent"
+            <TextView android:id="@+id/details_word_text" 
+                android:layout_height="wrap_content"
                 android:layout_width="fill_parent" 
                 style="@style/dict_detail_heading"/>
+            <TextView android:id="@+id/details_word_reading_text" 
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent" 
+                style="@style/dict_detail_reading"/>    
         </LinearLayout>
         <LinearLayout android:orientation="vertical" 
             android:layout_width="wrap_content"
