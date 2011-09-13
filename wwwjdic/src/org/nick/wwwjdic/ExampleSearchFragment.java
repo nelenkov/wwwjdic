@@ -1,6 +1,5 @@
 package org.nick.wwwjdic;
 
-import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
 import org.nick.wwwjdic.history.HistoryBase;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.utils.Analytics;
@@ -115,7 +114,7 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
                 } catch (NumberFormatException e) {
                 }
                 SearchCriteria criteria = SearchCriteria
-                        .createForExampleSearch(queryString,
+                        .createForExampleSearch(queryString.trim(),
                                 exampleExactMatchCb.isChecked(), numMaxResults);
 
                 Intent intent = new Intent(getActivity(),

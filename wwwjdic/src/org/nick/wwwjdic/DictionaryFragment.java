@@ -12,6 +12,7 @@ import org.nick.wwwjdic.utils.StringUtils;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -168,13 +169,16 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
             hideKeyboard();
 
             String input = inputText.getText().toString();
+            if (TextUtils.isEmpty(input)) {
+                return;
+            }
 
             try {
                 int dictIdx = dictSpinner.getSelectedItemPosition();
                 String dict = getDictionaryFromSelection(dictIdx);
 
                 SearchCriteria criteria = SearchCriteria.createForDictionary(
-                        input, exactMatchCb.isChecked(),
+                        input.trim(), exactMatchCb.isChecked(),
                         romanizedJapaneseCb.isChecked(),
                         commonWordsCb.isChecked(), dict);
 
