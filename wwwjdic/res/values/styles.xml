@@ -185,4 +185,24 @@
     <item name="abTitleTextStyle">@style/action_bar_title</item>
   </style>
   
+  <style name="search_input">
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">fill_parent</item>
+    <item name="android:inputType">text</item> 
+    <item name="android:lines">1</item>
+  </style>
+  
+  <style name="search_option">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textColor">@color/white</item>
+    <item name="android:textSize">@dimen/search_option_text_size</item>
+    <item name="android:layout_gravity">center_vertical</item>
+  </style> 
+  
+  <style name="search_button">
+    <item name="android:layout_height">wrap_content</item> 
+    <item name="android:layout_width">fill_parent</item>
+   </style> 
+  
 </resources>

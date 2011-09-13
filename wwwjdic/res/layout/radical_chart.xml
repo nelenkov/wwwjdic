@@ -3,7 +3,7 @@
     android:id="@+id/radicalChartGrid" 
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" 
-    android:numColumns="auto_fit"
+    android:numColumns="@integer/radical_chart_columns"
     android:verticalSpacing="3dp" 
     android:horizontalSpacing="3dp"
     android:stretchMode="columnWidth" 
