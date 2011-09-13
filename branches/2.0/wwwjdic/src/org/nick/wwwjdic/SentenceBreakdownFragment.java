@@ -86,9 +86,7 @@ public class SentenceBreakdownFragment extends
                 }
                 translationText.setText(entry.getTranslation());
             }
-
         }
-
     }
 
     public static final String EXTRA_SENTENCE = "org.nick.wwwjdic.SENTENCE";
@@ -125,11 +123,14 @@ public class SentenceBreakdownFragment extends
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
         Bundle args = getArguments();
+        if (args == null) {
+            args = new Bundle();
+            args.putAll(getActivity().getIntent().getExtras());
+        }
+
         String sentenceStr = args.getString(EXTRA_SENTENCE);
-        String sentenceTranslation = args
-                .getString(EXTRA_SENTENCE_TRANSLATION);
+        String sentenceTranslation = args.getString(EXTRA_SENTENCE_TRANSLATION);
         markedSentence = new SpannableString(sentenceStr);
 
         sentenceView.setText(markedSentence);
