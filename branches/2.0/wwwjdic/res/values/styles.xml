@@ -174,4 +174,15 @@
     <item name="android:textSize">32sp</item>
     <item name="android:background">@null</item>
   </style>
+  
+  <style name="action_bar_title">
+    <item name="android:textColor">@color/white</item>
+  </style>
+  
+  <style name="Theme.WwwjdicAb" parent="@style/Theme.Sherlock">
+    <item name="abBackground">@drawable/action_bar_bg</item>
+    <item name="abIcon">@drawable/ic_action_home</item> 
+    <item name="abTitleTextStyle">@style/action_bar_title</item>
+  </style>
+  
 </resources>

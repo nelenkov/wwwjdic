@@ -6,4 +6,7 @@
     <color name="semi_black">#f666</color>
     <color name="yellow">#ffffffaa</color>
     <color name="grey">#888888</color>
+    <color name="honeycombish_blue">#FF58BAED</color>
+    <color name="background">#FFEFEFEF</color>
+    <color name="ab_blue">#ff6595f9</color>
 </resources>
