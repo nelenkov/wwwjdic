@@ -38,7 +38,6 @@ public class DictionaryEntryDetail extends DetailActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-
     @Override
     protected void setHomeActivityExtras(Intent homeActivityIntent) {
         homeActivityIntent.putExtra(SELECTED_TAB_IDX, DICTIONARY_TAB_IDX);
