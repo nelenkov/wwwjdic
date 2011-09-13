@@ -16,4 +16,6 @@
     <dimen name="radical_subscript_size">18sp</dimen>
     
     <dimen name="kanji_compound_link_size">24sp</dimen>
+    
+    <dimen name="search_option_text_size">16sp</dimen>
 </resources>
