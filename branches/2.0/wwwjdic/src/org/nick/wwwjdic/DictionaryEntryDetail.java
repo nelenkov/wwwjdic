@@ -29,9 +29,15 @@ public class DictionaryEntryDetail extends DetailActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(android.R.id.content, details).commit();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
 
     @Override
     protected void setHomeActivityExtras(Intent homeActivityIntent) {
@@ -46,7 +52,6 @@ public class DictionaryEntryDetail extends DetailActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -56,7 +61,7 @@ public class DictionaryEntryDetail extends DetailActivity {
                             : DictionaryResultListView.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            //            setHomeActivityExtras(intent);
+            // setHomeActivityExtras(intent);
             startActivity(intent);
             return true;
         case R.id.menu_dict_detail_lookup_kanji:
