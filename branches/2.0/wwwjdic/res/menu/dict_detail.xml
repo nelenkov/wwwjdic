@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+     <item android:id="@+id/menu_dict_detail_lookup_kanji"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/lookup_kanji"
+        android:orderInCategory="0"
+        android:showAsAction="ifRoom|withText" />
+</menu>

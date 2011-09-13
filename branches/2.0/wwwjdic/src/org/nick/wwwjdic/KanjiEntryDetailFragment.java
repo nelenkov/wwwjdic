@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -169,8 +170,8 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
             TextView textView = new TextView(getActivity(), null,
                     R.style.dict_detail_reading);
             textView.setText(entry.getNanori());
-            textView.setTextSize(getResources().getDimension(
-                    R.dimen.details_reading_size));
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources()
+                    .getDimension(R.dimen.details_reading_size));
             layout.addView(textView, lp);
 
             readingLayout.addView(layout);
