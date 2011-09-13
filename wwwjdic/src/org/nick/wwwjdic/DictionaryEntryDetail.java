@@ -9,12 +9,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
+import android.view.MenuInflater;
 
 public class DictionaryEntryDetail extends DetailActivity {
 
     public static final String EXTRA_DICTIONARY_ENTRY = "org.nick.wwwjdic.DICTIONARY_ENTRY";
-
-    private static final int ITEM_ID_LOOKUP_KANJI = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,11 +40,10 @@ public class DictionaryEntryDetail extends DetailActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        menu.add(0, ITEM_ID_LOOKUP_KANJI, 0, R.string.lookup_kanji).setIcon(
-                android.R.drawable.ic_menu_search);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.dict_detail, menu);
 
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
 
@@ -58,35 +56,17 @@ public class DictionaryEntryDetail extends DetailActivity {
                             : DictionaryResultListView.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            //            setHomeActivityExtras(intent);
             startActivity(intent);
             return true;
-        default:
-            // do nothing
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        switch (item.getItemId()) {
-        case ITEM_ID_HOME:
-            Intent intent = new Intent(this, Wwwjdic.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            setHomeActivityExtras(intent);
-
-            startActivity(intent);
-            finish();
-
-            return true;
-        case ITEM_ID_LOOKUP_KANJI:
+        case R.id.menu_dict_detail_lookup_kanji:
             Activities.lookupKanji(this, db, wwwjdicEntry.getHeadword());
             return true;
         default:
             // do nothing
         }
 
-        return super.onMenuItemSelected(featureId, item);
+        return super.onOptionsItemSelected(item);
     }
 
 }
