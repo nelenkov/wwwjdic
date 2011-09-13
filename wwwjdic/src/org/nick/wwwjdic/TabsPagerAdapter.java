@@ -14,6 +14,7 @@ import android.support.v4.view.ViewPager;
 public class TabsPagerAdapter extends FragmentPagerAdapter implements
         ViewPager.OnPageChangeListener, ActionBar.TabListener {
 
+    private final FragmentActivity activity;
     private final ActionBar actionBar;
     private final ViewPager viewPager;
     private final List<Fragment> tabs = new ArrayList<Fragment>();
@@ -21,6 +22,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
     public TabsPagerAdapter(FragmentActivity activity, ActionBar actionBar,
             ViewPager pager) {
         super(activity.getSupportFragmentManager());
+        this.activity = activity;
         this.actionBar = actionBar;
         this.viewPager = pager;
         this.viewPager.setAdapter(this);
@@ -63,9 +65,10 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
         viewPager.setCurrentItem(tab.getPosition());
         for (int i = 0; i < tabs.size(); i++) {
             if (i != tab.getPosition()) {
-                tabs.get(i).setHasOptionsMenu(false);
+                //                tabs.get(i).setHasOptionsMenu(false);
             } else {
                 tabs.get(i).setHasOptionsMenu(true);
+                activity.invalidateOptionsMenu();
             }
         }
     }
