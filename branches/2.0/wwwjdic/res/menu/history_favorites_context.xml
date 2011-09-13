@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+     <item android:id="@+id/menu_context_history_lookup"
+        android:title="@string/look_up"
+        android:orderInCategory="0" />
+     <item android:id="@+id/menu_context_history_copy"
+        android:title="@string/copy"
+        android:orderInCategory="1" />
+     <item android:id="@+id/menu_context_history_delete"
+        android:title="@string/delete"
+        android:orderInCategory="2" />
+</menu>

@@ -50,14 +50,6 @@ public abstract class HistoryFragmentBase extends ListFragment implements
 
     private static final String TAG = HistoryFragmentBase.class.getSimpleName();
 
-    private static final int MENU_ITEM_DELETE_ALL = 0;
-    private static final int MENU_ITEM_LOOKUP = 1;
-    private static final int MENU_ITEM_COPY = 2;
-    private static final int MENU_ITEM_DELETE = 3;
-    private static final int MENU_ITEM_EXPORT = 4;
-    private static final int MENU_ITEM_IMPORT = 5;
-    private static final int MENU_ITEM_FILTER = 6;
-
     protected static final int CONFIRM_DELETE_DIALOG_ID = 0;
 
     public static final int FILTER_ALL = -1;
@@ -167,9 +159,11 @@ public abstract class HistoryFragmentBase extends ListFragment implements
             break;
         case R.id.menu_import:
             importItems();
+            getSupportActivity().invalidateOptionsMenu();
             break;
         case R.id.menu_export:
             exportItems();
+            getSupportActivity().invalidateOptionsMenu();
             break;
         case R.id.menu_filter:
             showFilterDialog();
@@ -209,6 +203,7 @@ public abstract class HistoryFragmentBase extends ListFragment implements
                             public void onClick(DialogInterface dialog, int item) {
                                 selectedFilter = item - 1;
                                 filter();
+                                getSupportActivity().invalidateOptionsMenu();
                                 dialog.dismiss();
                             }
                         });
@@ -340,24 +335,20 @@ public abstract class HistoryFragmentBase extends ListFragment implements
             return;
         }
 
-        // menu.setHeaderTitle(cursor.getString(cursor
-        // .getColumnIndex("query_string")));
-
-        menu.add(0, MENU_ITEM_LOOKUP, 0, R.string.look_up);
-        menu.add(0, MENU_ITEM_COPY, 1, R.string.copy);
-        menu.add(0, MENU_ITEM_DELETE, 2, R.string.delete);
+        MenuInflater inflater = getSupportActivity().getMenuInflater();
+        inflater.inflate(R.menu.history_favorites_context, menu);
     }
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         switch (item.getItemId()) {
-        case MENU_ITEM_LOOKUP:
+        case R.id.menu_context_history_lookup:
             lookupCurrentItem();
             return true;
-        case MENU_ITEM_COPY:
+        case R.id.menu_context_history_copy:
             copyCurrentItem();
             return true;
-        case MENU_ITEM_DELETE: {
+        case R.id.menu_context_history_delete: {
             deleteCurrentItem();
             return true;
         }
@@ -409,6 +400,8 @@ public abstract class HistoryFragmentBase extends ListFragment implements
                                 public void onClick(DialogInterface dialog,
                                         int id) {
                                     historyFragment.deleteAll();
+                                    historyFragment.getSupportActivity()
+                                            .invalidateOptionsMenu();
                                 }
                             })
                     .setNegativeButton(R.string.no,
