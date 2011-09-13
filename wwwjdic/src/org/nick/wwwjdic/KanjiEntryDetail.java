@@ -27,6 +27,11 @@ public class KanjiEntryDetail extends DetailActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(android.R.id.content, details).commit();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

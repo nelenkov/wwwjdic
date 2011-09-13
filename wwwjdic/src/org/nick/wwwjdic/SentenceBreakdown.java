@@ -19,6 +19,11 @@ public class SentenceBreakdown extends ResultListViewBase {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.sentence_breakdown);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
