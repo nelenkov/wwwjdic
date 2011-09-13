@@ -516,6 +516,7 @@ public class Wwwjdic extends FragmentActivity {
             long numAllHistory = dbHelper.getDictHistoryCount();
             List<String> recentHistory = dbHelper
                     .getRecentDictHistory(NUM_RECENT_HISTORY_ENTRIES);
+
             dictHistorySummary
                     .setFavoritesFilterType(HistoryDbHelper.FAVORITES_TYPE_DICT);
             dictHistorySummary

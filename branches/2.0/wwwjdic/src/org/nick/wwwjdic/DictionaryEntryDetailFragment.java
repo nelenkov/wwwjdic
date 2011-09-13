@@ -109,7 +109,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         exampleSearchButton.setOnClickListener(this);
 
         exampleSearchKey = DictUtils.extractSearchKey(wwwjdicEntry);
-        disableExampleSearchIfSingleKanji();
+        //        disableExampleSearchIfSingleKanji();
     }
 
     @Override
@@ -157,6 +157,9 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
             SearchCriteria criteria = SearchCriteria.createForExampleSearch(
                     exampleSearchKey, false, DEFAULT_MAX_NUM_EXAMPLES);
             intent.putExtra(Constants.CRITERIA_KEY, criteria);
+            intent.putExtra(
+                    ExamplesResultListFragment.EXTRA_EXAMPLES_BACKDOOR_SEARCH,
+                    true);
 
             startActivity(intent);
             break;

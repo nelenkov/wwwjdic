@@ -91,6 +91,8 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     public static final String DEFAULT_STROKE_ANIMATION_DELAY = "150";
 
+    private static final String PREF_RANDOM_EXAMPLES_KEY = "pref_random_examples";
+
     private CheckBoxPreference useKrPreference;
     private CheckBoxPreference autoSelectMirrorPreference;
     private ListPreference mirrorPreference;
@@ -554,5 +556,11 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     public static long getLastKodUpdateError(Context context) {
         return getPrefs(context).getLong(PREF_LAST_KOD_UPDATE_ERROR_KEY, 0);
+    }
+
+    public static boolean isReturnRandomExamples(Context context) {
+        SharedPreferences preferences = getPrefs(context);
+
+        return preferences.getBoolean(PREF_RANDOM_EXAMPLES_KEY, false);
     }
 }

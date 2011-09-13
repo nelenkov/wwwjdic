@@ -1,6 +1,8 @@
 package org.nick.wwwjdic;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExampleSentence implements Serializable {
 
@@ -11,6 +13,8 @@ public class ExampleSentence implements Serializable {
 
     private String japanese;
     private String english;
+
+    private List<String> matches = new ArrayList<String>();
 
     public ExampleSentence(String japanese, String english) {
         this.japanese = japanese;
@@ -23,6 +27,14 @@ public class ExampleSentence implements Serializable {
 
     public String getEnglish() {
         return english;
+    }
+
+    public List<String> getMatches() {
+        return matches;
+    }
+
+    public void addMatch(String match) {
+        matches.add(match);
     }
 
 }

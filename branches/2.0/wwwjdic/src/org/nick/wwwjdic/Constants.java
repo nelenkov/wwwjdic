@@ -18,8 +18,6 @@ public class Constants {
 
     public static final int RADICAL_RETURN_RESULT = 0;
 
-    public static final int CROP_RETURN_RESULT = 1;
-
     public static final String KOD_WIDGET_CLICK = "org.nick.wwwjdic.kodWidgetClick";
 
     public static final String SELECTED_DICTIONARY_IDX = "org.nick.wwwjdic.selectedDict";

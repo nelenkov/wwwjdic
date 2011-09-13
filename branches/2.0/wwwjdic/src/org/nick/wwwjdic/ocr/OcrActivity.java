@@ -69,6 +69,9 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
     private static final String IMAGE_CAPTURE_URI_KEY = "ocr.imageCaptureUri";
 
+    private static final int CROP_REQUEST_CODE = 1;
+    private static final int SELECT_IMAGE_REQUEST_CODE = 2;
+
     private Camera camera;
     private Size previewSize;
     private Size pictureSize;
@@ -87,6 +90,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
     private Button dictSearchButton;
     private Button kanjidictSearchButton;
     private Button exampleSearchButton;
+
+    private Button pickImageButton;
 
     private ToggleButton flashToggle;
     private boolean supportsFlash = false;
@@ -126,6 +131,9 @@ public class OcrActivity extends WebServiceBackedActivity implements
         exampleSearchButton = (Button) findViewById(R.id.send_to_example_search);
         exampleSearchButton.setOnClickListener(this);
         toggleSearchButtons(false);
+
+        pickImageButton = (Button) findViewById(R.id.pick_image);
+        pickImageButton.setOnClickListener(this);
 
         flashToggle = (ToggleButton) findViewById(R.id.auto_flash_toggle);
         flashToggle.setOnCheckedChangeListener(this);
@@ -334,23 +342,26 @@ public class OcrActivity extends WebServiceBackedActivity implements
                                 path), Toast.LENGTH_SHORT).show();
             }
 
-            Intent intent = new Intent(this, CropImage.class);
-            Bundle extras = new Bundle();
-            // if we want to scale
-            // extras.putInt("outputX", 200);
-            // extras.putInt("outputY", 200);
-            // extras.putBoolean("scale", true);
-            intent.setDataAndType(imageCaptureUri, "image/jpeg");
-
-            intent.putExtras(extras);
-            startActivityForResult(intent, Constants.CROP_RETURN_RESULT);
-
+            callCropper(imageCaptureUri);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             Toast t = Toast.makeText(OcrActivity.this,
                     R.string.cant_start_cropper, Toast.LENGTH_SHORT);
             t.show();
         }
+    }
+
+    private void callCropper(Uri imageUri) {
+        Intent intent = new Intent(this, CropImage.class);
+        Bundle extras = new Bundle();
+        // if we want to scale
+        // extras.putInt("outputX", 200);
+        // extras.putInt("outputY", 200);
+        // extras.putBoolean("scale", true);
+        intent.setDataAndType(imageUri, "image/jpeg");
+
+        intent.putExtras(extras);
+        startActivityForResult(intent, CROP_REQUEST_CODE);
     }
 
     private void requestAutoFocus() {
@@ -377,7 +388,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.CROP_RETURN_RESULT) {
+        if (requestCode == CROP_REQUEST_CODE) {
             deleteTempFile();
 
             if (resultCode == RESULT_OK) {
@@ -407,6 +418,11 @@ public class OcrActivity extends WebServiceBackedActivity implements
                 Toast t = Toast.makeText(this, R.string.cancelled,
                         Toast.LENGTH_SHORT);
                 t.show();
+            }
+        } else if (requestCode == SELECT_IMAGE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Uri selectedImageUri = data.getData();
+                callCropper(selectedImageUri);
             }
         }
     }
@@ -713,6 +729,14 @@ public class OcrActivity extends WebServiceBackedActivity implements
                         SearchCriteria.CRITERIA_TYPE_EXAMPLES);
             }
             break;
+        case R.id.pick_image:
+            intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/*");
+            // only in API 11
+            intent.putExtra("android.intent.extra.LOCAL_ONLY", true);
+            startActivityForResult(intent, SELECT_IMAGE_REQUEST_CODE);
+            return;
         default:
             // do nothing
         }

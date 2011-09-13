@@ -60,7 +60,9 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
                 }
                 Log.d(TAG, "dic entry line: " + line);
                 T entry = parseEntry(line);
-                result.add(entry);
+                if (entry != null) {
+                    result.add(entry);
+                }
 
                 if (hasEndPre) {
                     break;
