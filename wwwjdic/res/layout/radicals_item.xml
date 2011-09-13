@@ -19,6 +19,7 @@
   </LinearLayout>
   <TextView android:id="@+id/radical_text" 
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent" 
+        android:layout_height="fill_parent"
+        android:textColor="@color/white" 
         android:textSize="@dimen/radical_text_size"/>    
 </LinearLayout>
