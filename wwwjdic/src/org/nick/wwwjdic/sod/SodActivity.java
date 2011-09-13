@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.HttpClientFactory;
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.LoaderBase;
@@ -19,10 +20,12 @@ import org.nick.wwwjdic.utils.Pair;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItem;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -344,5 +347,18 @@ public class SodActivity extends FragmentActivity implements OnClickListener,
     @Override
     public void onLoaderReset(Loader<LoaderResult<Pair<String, Boolean>>> loader) {
         clear();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            Intent intent = new Intent(this, Wwwjdic.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 }
