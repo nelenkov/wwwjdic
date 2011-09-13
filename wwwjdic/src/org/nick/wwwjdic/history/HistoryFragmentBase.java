@@ -43,11 +43,6 @@ import au.com.bytecode.opencsv.CSVReader;
 public abstract class HistoryFragmentBase extends ListFragment implements
         LoaderManager.LoaderCallbacks<LoaderResult<Cursor>> {
 
-    private static final int IMPORT_ITEM_IDX = 0;
-    private static final int EXPORT_ITEM_IDX = 1;
-    private static final int FILTER_ITEM_IDX = 2;
-    private static final int DELETE_ALL_ITEM_IDX = 3;
-
     private static final String TAG = HistoryFragmentBase.class.getSimpleName();
 
     protected static final int CONFIRM_DELETE_DIALOG_ID = 0;
@@ -144,9 +139,9 @@ public abstract class HistoryFragmentBase extends ListFragment implements
                 : adapter.getCount() > 0;
         File backupFile = new File(getImportExportFilename());
 
-        menu.getItem(IMPORT_ITEM_IDX).setEnabled(backupFile.exists());
-        menu.getItem(EXPORT_ITEM_IDX).setEnabled(hasItems);
-        menu.getItem(DELETE_ALL_ITEM_IDX).setEnabled(hasItems);
+        menu.findItem(R.id.menu_import).setEnabled(backupFile.exists());
+        menu.findItem(R.id.menu_export).setEnabled(hasItems);
+        menu.findItem(R.id.menu_delete).setEnabled(hasItems);
     }
 
     @Override
