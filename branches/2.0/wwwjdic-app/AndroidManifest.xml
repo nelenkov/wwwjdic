@@ -23,7 +23,6 @@
         <activity android:name="org.nick.wwwjdic.ExampleSearch"></activity>
 
         <activity android:name="org.nick.wwwjdic.AboutActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard" 
             android:theme="@style/Theme.WwwjdicAb"/>
         <activity android:name="org.nick.wwwjdic.DictionaryResultListView"
             android:label="@string/dict_search" 
@@ -71,7 +70,6 @@
         <activity android:name="org.nick.wwwjdic.hkr.HkrCandidates" 
             android:theme="@style/Theme.WwwjdicAb"/>
         <activity android:name="org.nick.wwwjdic.history.FavoritesAndHistory"
-            android:configChanges="orientation|keyboardHidden|keyboard" 
              android:theme="@style/Theme.Sherlock"/>
         <activity android:name="org.nick.wwwjdic.sod.SodActivity" 
             android:theme="@style/Theme.WwwjdicAb"/>

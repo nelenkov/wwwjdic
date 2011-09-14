@@ -7,8 +7,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 
-public abstract class WebServiceBackedActivity extends Activity {
+public abstract class WebServiceBackedActivity extends FragmentActivity {
 
     public static abstract class WsResultHandler extends Handler {
 
