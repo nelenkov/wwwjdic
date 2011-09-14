@@ -32,7 +32,7 @@ public class ExamplesResultListFragment extends
     private static final String TAG = ExamplesResultListFragment.class
             .getSimpleName();
 
-    public static String EXTRA_EXAMPLES_BACKDOOR_SEARCH = "orgk.nick.wwwjdic.EXAMPLES_BACKDOOR_SEARCH";
+    public static String EXTRA_EXAMPLES_BACKDOOR_SEARCH = "org.nick.wwwjdic.EXAMPLES_BACKDOOR_SEARCH";
 
     private static final String EXAMPLE_SEARCH_QUERY_STR = "?11";
 
