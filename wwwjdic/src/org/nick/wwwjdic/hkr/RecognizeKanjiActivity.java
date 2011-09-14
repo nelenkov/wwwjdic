@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.nick.kanjirecognizer.hkr.CharacterRecognizer;
-import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.WwwjdicPreferences;
@@ -490,7 +489,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     public void sendToDictionary(String[] results) {
         Intent intent = new Intent(this, HkrCandidates.class);
         Bundle extras = new Bundle();
-        extras.putStringArray(Constants.HKR_CANDIDATES_KEY, results);
+        extras.putStringArray(HkrCandidates.EXTRA_HKR_CANDIDATES, results);
         intent.putExtras(extras);
 
         startActivity(intent);
