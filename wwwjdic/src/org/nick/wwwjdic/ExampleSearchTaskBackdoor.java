@@ -1,7 +1,5 @@
 package org.nick.wwwjdic;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,30 +70,7 @@ public class ExampleSearchTaskBackdoor extends
 
     @Override
     protected String generateBackdoorCode(SearchCriteria criteria) {
-        StringBuffer buff = new StringBuffer();
-        // dictionary code always 1 for examples?
-        buff.append("1");
-        // raw
-        buff.append("Z");
-        // examples
-        buff.append("E");
-        // Unicode
-        buff.append("U");
-
-        try {
-            buff.append(URLEncoder.encode(criteria.getQueryString(), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (randomExamples) {
-            // use =1= to get random examples
-            buff.append("=1=");
-        } else {
-            // up to 100 sentences starting at 0
-            buff.append("=0=");
-        }
-
-        return buff.toString();
+        return WwwjdicClient.generateExamplesBackdoorCode(criteria,
+                randomExamples);
     }
 }

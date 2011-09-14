@@ -89,10 +89,10 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
 
             return responseStr;
         } catch (ClientProtocolException cpe) {
-            Log.e("WWWJDIC", "ClientProtocolException", cpe);
+            Log.e(TAG, "ClientProtocolException", cpe);
             throw new RuntimeException(cpe);
         } catch (IOException e) {
-            Log.e("WWWJDIC", "IOException", e);
+            Log.e(TAG, "IOException", e);
             throw new RuntimeException(e);
         }
     }
