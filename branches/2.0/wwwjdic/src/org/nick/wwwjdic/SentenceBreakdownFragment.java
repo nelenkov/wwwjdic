@@ -92,11 +92,13 @@ public class SentenceBreakdownFragment extends
     public static final String EXTRA_SENTENCE = "org.nick.wwwjdic.SENTENCE";
     public static final String EXTRA_SENTENCE_TRANSLATION = "org.nick.wwwjdic.SENTENCE_TRANSLATION";
 
+    private String sentenceStr;
+    private String sentenceTranslation;
     private List<SentenceBreakdownEntry> entries;
+    private SpannableString markedSentence;
 
     private TextView sentenceView;
     private TextView englishSentenceText;
-    private SpannableString markedSentence;
 
     private static final int HILIGHT_COLOR1 = 0xff427ad7;
     private static final int HILIGHT_COLOR2 = 0xfff97600;
@@ -130,11 +132,16 @@ public class SentenceBreakdownFragment extends
         }
 
         if (entries != null) {
+            setTitleAndMarkSentence();
+            if (StringUtils.isEmpty(sentenceTranslation)) {
+                englishSentenceText.setVisibility(View.GONE);
+            }
+
             return;
         }
 
-        String sentenceStr = args.getString(EXTRA_SENTENCE);
-        String sentenceTranslation = args.getString(EXTRA_SENTENCE_TRANSLATION);
+        sentenceStr = args.getString(EXTRA_SENTENCE);
+        sentenceTranslation = args.getString(EXTRA_SENTENCE_TRANSLATION);
         markedSentence = new SpannableString(sentenceStr);
 
         sentenceView.setText(markedSentence);
@@ -149,7 +156,6 @@ public class SentenceBreakdownFragment extends
                 getWwwjdicUrl(), getHttpTimeoutSeconds(), this, query);
         submitSearchTask(searchTask);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -209,14 +215,22 @@ public class SentenceBreakdownFragment extends
                         getActivity(), entries);
                 setListAdapter(adapter);
                 getListView().setTextFilterEnabled(true);
-                getActivity().setTitle(R.string.sentence_breakdown);
 
-                for (SentenceBreakdownEntry entry : entries) {
-                    markString(markedSentence, entry.getInflectedForm());
-                }
-                sentenceView.setText(markedSentence);
+                markSentence();
+                setTitleAndMarkSentence();
                 dismissProgressDialog();
             }
         });
+    }
+
+    private void setTitleAndMarkSentence() {
+        getActivity().setTitle(R.string.sentence_breakdown);
+        sentenceView.setText(markedSentence);
+    }
+
+    private void markSentence() {
+        for (SentenceBreakdownEntry entry : entries) {
+            markString(markedSentence, entry.getInflectedForm());
+        }
     }
 }

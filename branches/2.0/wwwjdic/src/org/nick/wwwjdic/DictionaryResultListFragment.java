@@ -1,6 +1,5 @@
 package org.nick.wwwjdic;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.nick.wwwjdic.history.HistoryUtils;
@@ -88,15 +87,6 @@ public class DictionaryResultListFragment extends
                 false);
 
         return v;
-    }
-
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putSerializable("dict_entries",
-                (ArrayList<DictionaryEntry>) entries);
     }
 
     @Override
