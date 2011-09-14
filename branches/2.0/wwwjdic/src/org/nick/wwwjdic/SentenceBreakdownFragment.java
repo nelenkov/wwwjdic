@@ -129,6 +129,10 @@ public class SentenceBreakdownFragment extends
             args.putAll(getActivity().getIntent().getExtras());
         }
 
+        if (entries != null) {
+            return;
+        }
+
         String sentenceStr = args.getString(EXTRA_SENTENCE);
         String sentenceTranslation = args.getString(EXTRA_SENTENCE_TRANSLATION);
         markedSentence = new SpannableString(sentenceStr);

@@ -168,6 +168,13 @@ public class ExamplesResultListFragment extends
         dualPane = detailsFrame != null
                 && detailsFrame.getVisibility() == View.VISIBLE;
 
+        if (sentences != null) {
+            // we are being re-created after rotation, use existing data
+            setTitleAndCurrentItem();
+
+            return;
+        }
+
         extractSearchCriteria();
 
         boolean useBackdoor = getActivity().getIntent().getBooleanExtra(
@@ -298,23 +305,26 @@ public class ExamplesResultListFragment extends
                         getActivity(), sentences, criteria.getQueryString());
                 setListAdapter(adapter);
                 getListView().setTextFilterEnabled(true);
-                String message = getResources()
-                        .getString(R.string.examples_for);
-                getActivity().setTitle(
-                        String.format(message, sentences.size(),
-                                criteria.getQueryString()));
-
-                if (dualPane) {
-                    getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-                    if (!sentences.isEmpty()) {
-                        breakDown(sentences.get(currentCheckPosition),
-                                currentCheckPosition);
-                    }
-                }
+                setTitleAndCurrentItem();
                 dismissProgressDialog();
             }
         });
 
+    }
+
+    private void setTitleAndCurrentItem() {
+        String message = getResources().getString(R.string.examples_for);
+        getActivity().setTitle(
+                String.format(message, sentences.size(),
+                        criteria.getQueryString()));
+
+        if (dualPane) {
+            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            if (!sentences.isEmpty()) {
+                breakDown(sentences.get(currentCheckPosition),
+                        currentCheckPosition);
+            }
+        }
     }
 
 }

@@ -44,6 +44,7 @@ public abstract class ResultListFragmentBase<T> extends ListFragment implements
     public void onCreate(Bundle state) {
         super.onCreate(state);
 
+        setRetainInstance(true);
         guiThread = new Handler();
         db = HistoryDbHelper.getInstance(getActivity());
     }
