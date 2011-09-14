@@ -583,7 +583,8 @@ public class Wwwjdic extends FragmentActivity {
     private void filterFavoritesHistoryFragment(int fragmentId, int filterType) {
         HistoryFragmentBase fragment = (HistoryFragmentBase) getSupportFragmentManager()
                 .findFragmentById(fragmentId);
-        if (fragment != null) {
+        if (fragment != null && !fragment.isDetached()
+                && fragment.getActivity() != null) {
             fragment.setSelectedFilter(filterType);
             fragment.filter();
         }
