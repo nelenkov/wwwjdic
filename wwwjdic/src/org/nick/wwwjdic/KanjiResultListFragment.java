@@ -44,6 +44,13 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry> 
         dualPane = detailsFrame != null
                 && detailsFrame.getVisibility() == View.VISIBLE;
 
+        if (entries != null) {
+            // we are being re-created after rotation, use existing data
+            setTitleAndCurrentItem();
+
+            return;
+        }
+
         extractSearchCriteria();
 
         SearchTask<KanjiEntry> searchTask = new KanjiSearchTask(
@@ -68,19 +75,13 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry> 
 
     private void showDetails(KanjiEntry entry, int index) {
         if (dualPane) {
-            // We can display everything in-place with fragments.
-            // Have the list highlight this item and show the data.
             getListView().setItemChecked(index, true);
 
-            // Check what fragment is shown, replace if needed.
             KanjiEntryDetailFragment details = (KanjiEntryDetailFragment) getFragmentManager()
                     .findFragmentById(R.id.details);
             if (details == null || details.getShownIndex() != index) {
-                // Make new fragment to show this selection.
                 details = KanjiEntryDetailFragment.newInstance(index, entry);
 
-                // Execute a transaction, replacing any existing
-                // fragment with this one inside the frame.
                 FragmentTransaction ft = getFragmentManager()
                         .beginTransaction();
                 ft.replace(R.id.details, details);
@@ -162,19 +163,22 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry> 
                         getActivity(), entries);
                 setListAdapter(adapter);
                 getListView().setTextFilterEnabled(true);
-                String message = getResources().getString(R.string.results_for,
-                        entries.size(), criteria.getQueryString());
-                getActivity().setTitle(message);
-                if (dualPane) {
-                    // In dual-pane mode, list view highlights selected item.
-                    getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-                    // Make sure our UI is in the correct state.
-                    showDetails(entries.get(currentCheckPosition),
-                            currentCheckPosition);
-                }
+                setTitleAndCurrentItem();
                 dismissProgressDialog();
             }
         });
+    }
+
+    private void setTitleAndCurrentItem() {
+        String message = getResources().getString(R.string.results_for,
+                entries.size(), criteria.getQueryString());
+        getActivity().setTitle(message);
+        if (dualPane) {
+            // In dual-pane mode, list view highlights selected item.
+            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            // Make sure our UI is in the correct state.
+            showDetails(entries.get(currentCheckPosition), currentCheckPosition);
+        }
     }
 
 }

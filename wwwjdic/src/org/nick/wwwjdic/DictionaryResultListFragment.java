@@ -1,5 +1,6 @@
 package org.nick.wwwjdic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.nick.wwwjdic.history.HistoryUtils;
@@ -54,6 +55,13 @@ public class DictionaryResultListFragment extends
         dualPane = detailsFrame != null
                 && detailsFrame.getVisibility() == View.VISIBLE;
 
+        if (entries != null) {
+            // we are being re-created after rotation, use existing data
+            setTitleAndCurrentItem();
+
+            return;
+        }
+
         Intent intent = getActivity().getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
@@ -80,6 +88,15 @@ public class DictionaryResultListFragment extends
                 false);
 
         return v;
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable("dict_entries",
+                (ArrayList<DictionaryEntry>) entries);
     }
 
     @Override
@@ -187,23 +204,26 @@ public class DictionaryResultListFragment extends
                         getActivity(), entries);
                 setListAdapter(adapter);
                 getListView().setTextFilterEnabled(true);
-                String message = getResources().getString(
-                        R.string.results_for_in_dict,
-                        entries.size(),
-                        criteria.getQueryString(),
-                        HistoryUtils.lookupDictionaryName(
-                                criteria.getDictionaryCode(), getActivity()));
-                getActivity().setTitle(message);
-
-                if (dualPane) {
-                    // In dual-pane mode, list view highlights selected item.
-                    getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-                    // Make sure our UI is in the correct state.
-                    showDetails(entries.get(currentCheckPosition),
-                            currentCheckPosition);
-                }
+                setTitleAndCurrentItem();
                 dismissProgressDialog();
             }
         });
+    }
+
+    private void setTitleAndCurrentItem() {
+        String message = getResources().getString(
+                R.string.results_for_in_dict,
+                entries.size(),
+                criteria.getQueryString(),
+                HistoryUtils.lookupDictionaryName(criteria.getDictionaryCode(),
+                        getActivity()));
+        getActivity().setTitle(message);
+
+        if (dualPane) {
+            // In dual-pane mode, list view highlights selected item.
+            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            // Make sure our UI is in the correct state.
+            showDetails(entries.get(currentCheckPosition), currentCheckPosition);
+        }
     }
 }

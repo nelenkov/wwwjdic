@@ -18,15 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.nick.wwwjdic.Dictionary"></activity>
-        <activity android:name="org.nick.wwwjdic.KanjiLookup"></activity>
-        <activity android:name="org.nick.wwwjdic.ExampleSearch"></activity>
 
         <activity android:name="org.nick.wwwjdic.AboutActivity"
             android:theme="@style/Theme.WwwjdicAb"/>
         <activity android:name="org.nick.wwwjdic.DictionaryResultListView"
             android:label="@string/dict_search" 
-            android:configChanges="orientation|keyboardHidden|keyboard" 
             android:taskAffinity="" 
             android:theme="@style/Theme.WwwjdicAb">
              <intent-filter>
@@ -40,14 +36,11 @@
             android:theme="@style/Theme.WwwjdicAb" />
         <activity android:name="org.nick.wwwjdic.KanjiResultListView"
             android:label="@string/searching" 
-            android:configChanges="orientation|keyboardHidden|keyboard" 
             android:theme="@style/Theme.WwwjdicAb"/>
         <activity android:name="org.nick.wwwjdic.ExamplesResultListView"
             android:label="@string/searching" 
-            android:configChanges="orientation|keyboardHidden|keyboard" 
             android:theme="@style/Theme.WwwjdicAb"/>
         <activity android:name="org.nick.wwwjdic.SentenceBreakdown"
-            android:configChanges="orientation|keyboardHidden|keyboard" 
             android:theme="@style/Theme.WwwjdicAb"/>
         <activity android:name="org.nick.wwwjdic.KanjiEntryDetail"
             android:taskAffinity="" 
