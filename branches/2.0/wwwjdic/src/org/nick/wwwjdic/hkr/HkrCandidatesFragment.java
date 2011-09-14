@@ -1,6 +1,5 @@
 package org.nick.wwwjdic.hkr;
 
-
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.List;
@@ -136,8 +135,9 @@ public class HkrCandidatesFragment extends ListFragment implements
     public void onDestroyView() {
         super.onDestroyView();
 
-        // The CursorLoader example doesn't do this, but if we get an update while the UI is
-        // destroyed, it will crash.  Why is this necessary?
+        // The CursorLoader example doesn't do this, but if we get an update
+        // while the UI is
+        // destroyed, it will crash. Why is this necessary?
         getLoaderManager().destroyLoader(0);
     }
 
@@ -258,16 +258,17 @@ public class HkrCandidatesFragment extends ListFragment implements
 
             KanjiEntryDetailFragment details = (KanjiEntryDetailFragment) getFragmentManager()
                     .findFragmentById(R.id.details);
+            KanjiEntry entry = result.getData();
             if (details == null || details.getShownIndex() != indexLoading) {
-                KanjiEntry entry = null;
                 details = KanjiEntryDetailFragment.newInstance(indexLoading,
                         entry);
 
                 FragmentTransaction ft = getFragmentManager()
                         .beginTransaction();
+
                 ft.replace(R.id.details, details);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.commit();
+                ft.commitAllowingStateLoss();
             }
         } else {
             if (result.getData() == null) {
