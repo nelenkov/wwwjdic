@@ -302,6 +302,10 @@ public abstract class HistoryFragmentBase extends ListFragment implements
     protected abstract void doExport(String filename);
 
     public void filter() {
+        if (isDetached() || getActivity() == null) {
+            return;
+        }
+
         getLoaderManager().restartLoader(0, null, this);
     }
 
