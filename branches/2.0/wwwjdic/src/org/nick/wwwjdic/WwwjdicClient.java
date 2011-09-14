@@ -43,14 +43,13 @@ public class WwwjdicClient {
     public List<KanjiEntry> findKanji(String kanjiOrReading) {
         SearchCriteria criteria = SearchCriteria
                 .createForKanjiOrReading(kanjiOrReading);
-        String html = query(criteria);
+        String html = queryKanji(criteria);
 
         return parseKanji(html);
     }
 
-    public String query(WwwjdicQuery query) {
+    private String queryKanji(SearchCriteria criteria) {
         try {
-            SearchCriteria criteria = (SearchCriteria) query;
             String lookupUrl = String.format("%s?%s", url,
                     generateKanjiBackdoorCode(criteria));
             Log.d(TAG, "WWWJDIC URL: " + lookupUrl);
@@ -68,7 +67,7 @@ public class WwwjdicClient {
         }
     }
 
-    public List<KanjiEntry> parseKanji(String html) {
+    private List<KanjiEntry> parseKanji(String html) {
         List<KanjiEntry> result = new ArrayList<KanjiEntry>();
 
         boolean isInPre = false;
