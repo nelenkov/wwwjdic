@@ -24,6 +24,8 @@ public class HkrCandidates extends ListActivity {
 
     private static final String TAG = HkrCandidates.class.getSimpleName();
 
+    public static final String EXTRA_HKR_CANDIDATES = "org.nick.wwwjdic.hkrCandidates";
+
     private static final int MENU_ITEM_DETAILS = 0;
     private static final int MENU_ITEM_COPY = 1;
     private static final int MENU_ITEM_APPEND = 2;
@@ -39,7 +41,7 @@ public class HkrCandidates extends ListActivity {
         super.onCreate(savedInstanceState);
 
         Bundle extras = getIntent().getExtras();
-        candidates = extras.getStringArray(Constants.HKR_CANDIDATES_KEY);
+        candidates = extras.getStringArray(EXTRA_HKR_CANDIDATES);
         setListAdapter(new ArrayAdapter<String>(this,
                 org.nick.wwwjdic.R.layout.text_list_item, candidates));
 

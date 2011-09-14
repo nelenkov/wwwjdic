@@ -460,7 +460,7 @@ public class KradChart extends FragmentActivity implements OnClickListener,
         Arrays.sort(matchingChars);
 
         Intent intent = new Intent(this, HkrCandidates.class);
-        intent.putExtra(Constants.HKR_CANDIDATES_KEY, matchingChars);
+        intent.putExtra(HkrCandidates.EXTRA_HKR_CANDIDATES, matchingChars);
         return intent;
     }
 }
