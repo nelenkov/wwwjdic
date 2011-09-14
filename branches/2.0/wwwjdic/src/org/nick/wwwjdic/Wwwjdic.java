@@ -364,7 +364,9 @@ public class Wwwjdic extends FragmentActivity {
 
     private void setupTabs() {
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        if (!IS_HONEYCOMB) {
+            getSupportActionBar().setDisplayShowHomeEnabled(false);
+        }
         Bundle extras = getIntent().getExtras();
 
         ActionBar.Tab dictionaryTab = getSupportActionBar().newTab();
