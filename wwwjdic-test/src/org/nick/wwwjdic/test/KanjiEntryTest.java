@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.history.FavoritesEntryParser;
+import org.nick.wwwjdic.model.KanjiEntry;
 
 public class KanjiEntryTest {
 
