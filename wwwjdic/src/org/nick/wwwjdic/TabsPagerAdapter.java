@@ -1,7 +1,10 @@
 package org.nick.wwwjdic;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.nick.wwwjdic.history.HistoryFragmentBase;
 
 import android.support.v4.app.ActionBar;
 import android.support.v4.app.ActionBar.Tab;
@@ -17,7 +20,9 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
     private final FragmentActivity activity;
     private final ActionBar actionBar;
     private final ViewPager viewPager;
-    private final List<Fragment> tabs = new ArrayList<Fragment>();
+    private final List<HistoryFragmentBase> tabs = new ArrayList<HistoryFragmentBase>();
+
+    private WeakReference<HistoryFragmentBase> lastFragment = null;
 
     public TabsPagerAdapter(FragmentActivity activity, ActionBar actionBar,
             ViewPager pager) {
@@ -29,7 +34,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
         this.viewPager.setOnPageChangeListener(this);
     }
 
-    public void addTab(ActionBar.Tab tab, Fragment tabFragment) {
+    public void addTab(ActionBar.Tab tab, HistoryFragmentBase tabFragment) {
         tabFragment.setHasOptionsMenu(false);
         tabs.add(tabFragment);
         actionBar.addTab(tab.setTabListener(this));
@@ -79,5 +84,19 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
 
     @Override
     public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+    }
+
+    // TODO
+    // workaround for https://github.com/JakeWharton/ActionBarSherlock/issues/56
+    // Cf. http://code.google.com/p/android/issues/detail?id=20065
+    @Override
+    public void onItemSelected(int position, Object object) {
+        super.onItemSelected(position, object);
+        if ((lastFragment != null) && (lastFragment.get() != null)) {
+            lastFragment.get().setSelected(false);
+        }
+        HistoryFragmentBase fragment = (HistoryFragmentBase) object;
+        fragment.setSelected(true);
+        lastFragment = new WeakReference<HistoryFragmentBase>(fragment);
     }
 }
