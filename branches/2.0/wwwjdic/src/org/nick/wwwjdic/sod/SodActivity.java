@@ -286,8 +286,8 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
 
             return result;
         } catch (JSONException e) {
-            // XXX do something smarter, need to show message if
-            // format is wrong!
+            Log.w(TAG, "error parsing SOD: " + e.getMessage(), e);
+
             return null;
         }
     }
@@ -340,35 +340,37 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
     @Override
     public void onLoadFinished(
             Loader<LoaderResult<Pair<String, Boolean>>> loader,
-            LoaderResult<Pair<String, Boolean>> data) {
+            LoaderResult<Pair<String, Boolean>> loaderResult) {
         dismissProgressDialog();
 
-        boolean isFailed = data.isFailed();
-        if (isFailed) {
-            Toast.makeText(this, R.string.getting_sod_data_failed,
+        if (loaderResult.isFailed()) {
+            String message = getResources().getString(
+                    R.string.getting_sod_data_failed,
+                    loaderResult.getError().getMessage());
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+
+        Pair<String, Boolean> result = loaderResult.getData();
+        if (result == null) {
+            Toast.makeText(this,
+                    String.format(getString(R.string.no_sod_data), getKanji()),
                     Toast.LENGTH_SHORT).show();
 
             return;
         }
 
-        Pair<String, Boolean> result = data.getData();
-        if (result != null) {
-            String strokePathStr = result.getFirst();
-            boolean animate = result.getSecond();
+        String strokePathStr = result.getFirst();
+        boolean animate = result.getSecond();
 
-            setStrokePathsStr(strokePathStr);
-            StrokedCharacter character = parseWsReply(strokePathStr);
-            if (character != null) {
-                if (animate) {
-                    animate(character);
-                } else {
-                    drawSod(character);
-                }
+        setStrokePathsStr(strokePathStr);
+        StrokedCharacter character = parseWsReply(strokePathStr);
+        if (character != null) {
+            if (animate) {
+                animate(character);
             } else {
-                Toast t = Toast.makeText(this, String.format(
-                        getString(R.string.no_sod_data), getKanji()),
-                        Toast.LENGTH_SHORT);
-                t.show();
+                drawSod(character);
             }
         }
     }
