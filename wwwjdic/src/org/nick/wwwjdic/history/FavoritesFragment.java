@@ -1,7 +1,6 @@
 package org.nick.wwwjdic.history;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,15 +18,11 @@ import org.nick.wwwjdic.WwwjdicApplication;
 import org.nick.wwwjdic.WwwjdicEntry;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.history.FavoritesItem.FavoriteStatusChangedListener;
-import org.nick.wwwjdic.history.gdocs.DocsUrl;
-import org.nick.wwwjdic.history.gdocs.Namespace;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Dialogs;
 import org.nick.wwwjdic.utils.LoaderResult;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -37,10 +32,8 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.text.format.DateFormat;
@@ -51,16 +44,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
-
-import com.google.api.client.apache.ApacheHttpTransport;
-import com.google.api.client.googleapis.GoogleHeaders;
-import com.google.api.client.googleapis.GoogleTransport;
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpResponse;
-import com.google.api.client.http.HttpResponseException;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.InputStreamContent;
-import com.google.api.client.xml.atom.AtomParser;
 
 public class FavoritesFragment extends HistoryFragmentBase implements
         FavoriteStatusChangedListener {
@@ -73,53 +56,15 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     private static final String DICT_CSV_EXPORT_FILENAME_BASE = "wwwjdic-favorites-dict";
     private static final String CSV_EXPORT_FILENAME_EXT = "csv";
 
-    // for google docs
-    private static final String AUTH_TOKEN_TYPE = "writely";
-    private static final String GDATA_VERSION = "3";
-
-    private static final int REQUEST_AUTHENTICATE = 0;
-
-    private static final int ACCOUNTS_DIALOG_ID = 1;
-
     private static final int EXPORT_LOCAL_BACKUP_IDX = 0;
     private static final int EXPORT_LOCAL_EXPORT_IDX = 1;
-    private static final int EXPORT_GDOCS_IDX = 2;
-    private static final int EXPORT_ANKI_IDX = 3;
+    private static final int EXPORT_ANKI_IDX = 2;
 
     private static final String FAVORITES_EXPORT_TIP_DIALOG = "tips_favorites_export";
-
-    private static final int ECLAIR_VERSION_CODE = 5;
-
-    private HttpTransport transport;
-
-    private String authToken;
 
     private ProgressDialog progressDialog;
 
     public FavoritesFragment() {
-        if (isPostEclair()) {
-            initGdocsTransport();
-        }
-    }
-
-    private static boolean isPostEclair() {
-        final int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
-
-        return sdkVersion >= ECLAIR_VERSION_CODE;
-    }
-
-    private void initGdocsTransport() {
-        HttpTransport.setLowLevelHttpTransport(ApacheHttpTransport.INSTANCE);
-        transport = GoogleTransport.create();
-        GoogleHeaders headers = (GoogleHeaders) transport.defaultHeaders;
-        headers.setApplicationName(WwwjdicApplication.getUserAgentString());
-        headers.gdataVersion = GDATA_VERSION;
-        AtomParser parser = new AtomParser();
-        parser.namespaceDictionary = Namespace.DICTIONARY;
-        transport.addParser(parser);
-
-        // for wire debugging
-        // Logger.getLogger("com.google.api.client").setLevel(Level.ALL);
     }
 
     @Override
@@ -128,314 +73,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
         Dialogs.showTipOnce(getActivity(), FAVORITES_EXPORT_TIP_DIALOG,
                 R.string.tips_favorites_export);
-    }
-
-    static class AccountsDialog extends DialogFragment {
-
-        private FavoritesFragment favoritesFragment;
-
-        AccountsDialog(FavoritesFragment favoritesFragment) {
-            this.favoritesFragment = favoritesFragment;
-        }
-
-        public static AccountsDialog newInstance(
-                FavoritesFragment favoritesFragment) {
-            return new AccountsDialog(favoritesFragment);
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            return createAccountsDialog();
-        }
-
-        private Dialog createAccountsDialog() {
-            final AccountManagerWrapper manager = AccountManagerWrapper
-                    .getInstance(getActivity());
-            final String[] accountNames = manager.getGoogleAccounts();
-            int size = accountNames.length;
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            if (size == 0) {
-                Toast t = Toast.makeText(getActivity(),
-                        R.string.no_google_accounts, Toast.LENGTH_LONG);
-                t.show();
-
-                return null;
-            }
-
-            builder.setTitle(R.string.select_google_account);
-            builder.setItems(accountNames,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            favoritesFragment.gotAccount(manager,
-                                    accountNames[which]);
-                        }
-                    });
-            return builder.create();
-        }
-    }
-
-    private void gotAccount(boolean tokenExpired) {
-        String accountName = WwwjdicPreferences
-                .getGoogleAcountName(getActivity());
-        AccountManagerWrapper manager = AccountManagerWrapper
-                .getInstance(getActivity());
-        String[] accountNames = manager.getGoogleAccounts();
-        if (accountName != null) {
-            int size = accountNames.length;
-            for (int i = 0; i < size; i++) {
-                if (accountName.equals(accountNames[i])) {
-                    if (tokenExpired) {
-                        manager.invalidateAuthToken(authToken);
-                    }
-                    gotAccount(manager, accountNames[i]);
-                    return;
-                }
-            }
-        }
-
-        // handle this here to avoid IAE on 2.0
-        // ('Activity#onCreateDialog did not create a dialog for id 1')
-        if (accountNames.length != 0) {
-            DialogFragment acountsDialog = AccountsDialog.newInstance(this);
-            acountsDialog.show(getFragmentManager(), "accountsDialog");
-        } else {
-            // clean up temporary file
-            if (uploadData != null) {
-                if (uploadData.localFilename != null) {
-                    File f = new File(uploadData.localFilename);
-                    f.delete();
-                }
-                uploadData = null;
-            }
-
-            Log.w(TAG, "No suitable Google accounts found");
-            Toast t = Toast.makeText(getActivity(),
-                    R.string.no_google_accounts, Toast.LENGTH_LONG);
-            t.show();
-        }
-    }
-
-    private void gotAccount(final AccountManagerWrapper manager,
-            final String accountName) {
-        WwwjdicPreferences.setGoogleAccountName(getActivity(), accountName);
-
-        new Thread() {
-
-            @Override
-            public void run() {
-                try {
-                    final Bundle bundle = manager.getAuthToken(accountName,
-                            AUTH_TOKEN_TYPE);
-                    getActivity().runOnUiThread(new Runnable() {
-
-                        public void run() {
-                            try {
-                                if (bundle
-                                        .containsKey(AccountManagerWrapper.KEY_INTENT)) {
-                                    Intent intent = bundle
-                                            .getParcelable(AccountManagerWrapper.KEY_INTENT);
-                                    int flags = intent.getFlags();
-                                    flags &= ~Intent.FLAG_ACTIVITY_NEW_TASK;
-                                    intent.setFlags(flags);
-                                    startActivityForResult(intent,
-                                            REQUEST_AUTHENTICATE);
-                                } else if (bundle
-                                        .containsKey(AccountManagerWrapper.KEY_AUTHTOKEN)) {
-                                    authenticatedClientLogin(bundle
-                                            .getString(AccountManagerWrapper.KEY_AUTHTOKEN));
-                                }
-                            } catch (Exception e) {
-                                handleException(e);
-                            }
-                        }
-                    });
-                } catch (Exception e) {
-                    handleException(e);
-                }
-            }
-        }.start();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-        case REQUEST_AUTHENTICATE:
-            if (resultCode == Activity.RESULT_OK) {
-                gotAccount(false);
-            } else {
-                DialogFragment acountsDialog = AccountsDialog.newInstance(this);
-                acountsDialog.show(getFragmentManager(), "accountsDialog");
-            }
-            break;
-        }
-    }
-
-    private void authenticatedClientLogin(String authToken) {
-        this.authToken = authToken;
-        ((GoogleHeaders) transport.defaultHeaders).setGoogleLogin(authToken);
-        authenticated();
-    }
-
-    static class UploadData {
-        String filename;
-        String localFilename;
-        String contentType;
-        long contentLength;
-
-        UploadData() {
-        }
-    }
-
-    private UploadData uploadData;
-
-    private class GDocsExportTask extends AsyncTask<Void, Object, Boolean> {
-
-        private Throwable error;
-        private boolean tokenExpired = false;
-
-        GDocsExportTask() {
-        }
-
-        @Override
-        protected void onPreExecute() {
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-
-            }
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setMessage(getString(R.string.uploading_to_gdocs));
-            progressDialog.setCancelable(true);
-            progressDialog.setButton(ProgressDialog.BUTTON_NEUTRAL,
-                    getString(R.string.cancel), new OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            cancel(true);
-                        }
-                    });
-            progressDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                HttpRequest request = transport.buildPostRequest();
-                request.url = DocsUrl.forDefaultPrivateFull();
-                ((GoogleHeaders) request.headers)
-                        .setSlugFromFileName(uploadData.filename);
-                InputStreamContent content = new InputStreamContent();
-                content.inputStream = new FileInputStream(
-                        uploadData.localFilename);
-                content.type = uploadData.contentType;
-                content.length = uploadData.contentLength;
-                request.content = content;
-                request.execute().ignore();
-
-                deleteTempFile();
-
-                Analytics.event("favoritesGDocsExport", getActivity());
-
-                return true;
-            } catch (HttpResponseException hre) {
-                Log.d(TAG, "Error uploading to Google docs", hre);
-
-                HttpResponse response = hre.response;
-                int statusCode = response.statusCode;
-                try {
-                    response.ignore();
-                    Log.e(TAG, response.parseAsString());
-                } catch (IOException e) {
-                    Log.w(TAG, "error parsing response", e);
-                }
-
-                if (statusCode == 401 || statusCode == 403) {
-                    tokenExpired = true;
-                }
-
-                return false;
-            } catch (IOException e) {
-                error = e;
-                Log.d(TAG, "Error uploading to Google docs", e);
-                deleteTempFile();
-
-                return false;
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-
-            deleteTempFile();
-        }
-
-        private void deleteTempFile() {
-            Log.d(TAG, "deleting temp files...");
-            File f = new File(uploadData.localFilename);
-            boolean success = f.delete();
-            if (success) {
-                Log.d(TAG, "successfully deleted " + f.getAbsolutePath());
-            } else {
-                Log.d(TAG, "failed to delet " + f.getAbsolutePath());
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-
-            if (tokenExpired) {
-                gotAccount(true);
-
-                return;
-            }
-
-            Resources r = getResources();
-            String template = result ? r
-                    .getString(R.string.gdocs_upload_success) : r
-                    .getString(R.string.gdocs_upload_failure);
-            String message = result ? String.format(template,
-                    uploadData.filename) : String.format(template,
-                    error.getMessage());
-            Toast t = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
-            uploadData = null;
-            t.show();
-        }
-    }
-
-    private void authenticated() {
-        if (uploadData != null && uploadData.filename != null) {
-            GDocsExportTask task = new GDocsExportTask();
-            task.execute(new Void[] {});
-        }
-    }
-
-    private void handleException(Exception e) {
-        Log.e(TAG, e.getMessage(), e);
-
-        if (e instanceof HttpResponseException) {
-            HttpResponse response = ((HttpResponseException) e).response;
-            int statusCode = response.statusCode;
-            try {
-                response.ignore();
-            } catch (IOException e1) {
-                Log.e(TAG, e.getMessage(), e1);
-            }
-            if (statusCode == 401 || statusCode == 403) {
-                gotAccount(true);
-                return;
-            }
-
-            try {
-                Log.e(TAG, response.parseAsString());
-            } catch (IOException parseException) {
-                Log.w(TAG, e.getMessage(), parseException);
-            }
-        }
     }
 
     protected void setupAdapter() {
@@ -569,9 +206,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                     break;
                 case EXPORT_LOCAL_EXPORT_IDX:
                     exportLocalCsv(isKanji);
-                    break;
-                case EXPORT_GDOCS_IDX:
-                    exportToGDocs(isKanji);
                     break;
                 case EXPORT_ANKI_IDX:
                     exportToAnkiDeckAsync(isKanji);
@@ -728,13 +362,11 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     private static class ExportItemsAdapter extends ArrayAdapter<String> {
 
         private boolean singleType;
-        private boolean isPostEclair;
 
         ExportItemsAdapter(Context context, String[] items, boolean singleType) {
             super(context, android.R.layout.select_dialog_item,
                     android.R.id.text1, items);
             this.singleType = singleType;
-            this.isPostEclair = isPostEclair();
         }
 
         @Override
@@ -749,8 +381,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                 return true;
             case EXPORT_LOCAL_EXPORT_IDX:
                 return singleType;
-            case EXPORT_GDOCS_IDX:
-                return singleType && isPostEclair;
             case EXPORT_ANKI_IDX:
                 return singleType;
             default:
@@ -902,73 +532,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                 isKanji ? KANJI_CSV_EXPORT_FILENAME_BASE
                         : DICT_CSV_EXPORT_FILENAME_BASE, dateStr,
                 CSV_EXPORT_FILENAME_EXT);
-    }
-
-    private void exportToGDocs(final boolean isKanji) {
-        AccountManagerWrapper manager = AccountManagerWrapper
-                .getInstance(getActivity());
-        String[] accountNames = manager.getGoogleAccounts();
-        if (accountNames.length == 0) {
-            Log.w(TAG, "No suitable Google accounts found");
-            Toast t = Toast.makeText(getActivity(),
-                    R.string.no_google_accounts, Toast.LENGTH_LONG);
-            t.show();
-            return;
-        }
-
-        new AsyncTask<Void, Void, Boolean>() {
-            Exception exception;
-
-            @Override
-            protected void onPreExecute() {
-                getActivity().setProgressBarIndeterminateVisibility(true);
-            }
-
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                try {
-                    Log.d(TAG, "exporting to Google docs...");
-                    String filename = getCsvExportFilename(isKanji);
-                    File tempFile = File.createTempFile("favorites-gdocs",
-                            ".csv", WwwjdicApplication.getWwwjdicDir());
-                    tempFile.deleteOnExit();
-                    Log.d(TAG, "temp file: " + tempFile.getAbsolutePath());
-                    Log.d(TAG, "document filename: " + filename);
-
-                    Writer writer = new FileWriter(tempFile, true);
-                    exportToCsv(tempFile.getAbsolutePath(), writer, false);
-
-                    uploadData = new UploadData();
-                    uploadData.contentLength = tempFile.length();
-                    uploadData.contentType = "text/csv";
-                    uploadData.filename = filename;
-                    uploadData.localFilename = tempFile.getAbsolutePath();
-
-                    return true;
-                } catch (Exception e) {
-                    Log.e(TAG, "error creating temporary favorites file", e);
-                    exception = e;
-
-                    return false;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(Boolean result) {
-                if (result) {
-                    gotAccount(false);
-                } else {
-                    String message = getResources().getString(
-                            R.string.export_error);
-                    String errMessage = exception == null ? "Error" : exception
-                            .getMessage();
-                    Toast.makeText(getActivity(),
-                            String.format(message, errMessage),
-                            Toast.LENGTH_SHORT).show();
-                }
-                getActivity().setProgressBarIndeterminateVisibility(false);
-            }
-        }.execute();
     }
 
     @Override

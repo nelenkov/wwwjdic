@@ -7,7 +7,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/opencsv"/>
 	<classpathentry kind="lib" path="lib/acra-4.2.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/gdocs-wwwjdic"/>
 	<classpathentry kind="src" path="com_actionbarsherlock_src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
