@@ -3,6 +3,7 @@ package org.nick.wwwjdic.app.kanjivg;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
@@ -32,56 +33,70 @@ public class KanjiStrokesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        String xuserAgent = req.getHeader("X-User-Agent");
-        if (xuserAgent != null) {
-            log.info("X-User-Agent: " + xuserAgent);
-        }
-
-        String xDeviceVersion = req.getHeader("X-Device-Version");
-        if (xDeviceVersion != null) {
-            log.info("X-Device-Version: " + xDeviceVersion);
-        }
-
-        boolean useJson = false;
-        String format = req.getParameter("f");
-        if (format != null && format.equals("json")) {
-            useJson = true;
-        }
-
-        String kanjiStr = req.getPathInfo().replace("/", "");
-        log.info("kanjiStr: " + kanjiStr);
-
-        String unicodeNumber = null;
         try {
-            Integer.parseInt(kanjiStr, 16);
-            unicodeNumber = kanjiStr;
-        } catch (NumberFormatException e) {
-            unicodeNumber = Integer.toHexString(kanjiStr.charAt(0) | 0x10000)
-                    .substring(1);
+            String xuserAgent = req.getHeader("X-User-Agent");
+            if (xuserAgent != null) {
+                log.info("X-User-Agent: " + xuserAgent);
+            }
+
+            String xDeviceVersion = req.getHeader("X-Device-Version");
+            if (xDeviceVersion != null) {
+                log.info("X-Device-Version: " + xDeviceVersion);
+            }
+
+            boolean useJson = false;
+            String format = req.getParameter("f");
+            if (format != null && format.equals("json")) {
+                useJson = true;
+            }
+
+            String kanjiStr = req.getPathInfo().replace("/", "");
+            log.info("kanjiStr: " + kanjiStr);
+
+            String unicodeNumber = null;
+            try {
+                Integer.parseInt(kanjiStr, 16);
+                unicodeNumber = kanjiStr;
+            } catch (NumberFormatException e) {
+                unicodeNumber = Integer.toHexString(
+                        kanjiStr.charAt(0) | 0x10000).substring(1);
+            }
+            log.info("got request for " + unicodeNumber);
+
+            if (useJson) {
+                String kanji = findKanjiJson(unicodeNumber);
+                if (kanji == null) {
+                    resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                    return;
+                }
+
+                resp.setCharacterEncoding("UTF-8");
+                resp.setContentType("application/x-javascript");
+
+                PrintWriter out = resp.getWriter();
+                out.write(kanji);
+                out.flush();
+                out.close();
+            } else {
+                String kanji = findKanji(unicodeNumber);
+
+                resp.setCharacterEncoding("UTF-8");
+                resp.setContentType("text/plain");
+
+                PrintWriter out = resp.getWriter();
+                out.write(kanji);
+                out.flush();
+                out.close();
+            }
+        } catch (Exception e) {
+            error(e.getMessage(), e);
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-        log.info("got request for " + unicodeNumber);
+    }
 
-        if (useJson) {
-            String kanji = findKanjiJson(unicodeNumber);
-
-            resp.setCharacterEncoding("UTF-8");
-            resp.setContentType("application/x-javascript");
-
-            PrintWriter out = resp.getWriter();
-            out.write(kanji);
-            out.flush();
-            out.close();
-        } else {
-            String kanji = findKanji(unicodeNumber);
-
-            resp.setCharacterEncoding("UTF-8");
-            resp.setContentType("text/plain");
-
-            PrintWriter out = resp.getWriter();
-            out.write(kanji);
-            out.flush();
-            out.close();
-        }
+    private static void error(String message, Throwable t) {
+        log.log(Level.SEVERE, message, t);
     }
 
     @SuppressWarnings("unchecked")
@@ -110,7 +125,7 @@ public class KanjiStrokesServlet extends HttpServlet {
                 if (kanjis.isEmpty()) {
                     log.info(String.format("KanjiVG data for %s not found",
                             unicodeNumber));
-                    return String.format("not found (%s)", unicodeNumber);
+                    return null;
                 }
 
                 k = kanjis.get(0);
