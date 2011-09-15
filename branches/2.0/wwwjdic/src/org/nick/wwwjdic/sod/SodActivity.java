@@ -3,8 +3,13 @@ package org.nick.wwwjdic.sod;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +40,10 @@ import android.widget.Toast;
 public class SodActivity extends ActionBarActivity implements OnClickListener,
         LoaderManager.LoaderCallbacks<LoaderResult<Pair<String, Boolean>>> {
 
+    private static final String TAG = SodActivity.class.getSimpleName();
+
+    private static final String STROKE_PATH_LOOKUP_URL = "http://7.wwwjdic-android.appspot.com/kanji/";
+
     static class SodLoader extends LoaderBase<Pair<String, Boolean>> {
 
         private String unicodeNumber;
@@ -62,8 +71,39 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
                     + "?f=json";
             HttpGet get = new HttpGet(lookupUrl);
 
-            String responseStr = httpClient.execute(get,
-                    HttpClientFactory.createWwwjdicResponseHandler());
+            HttpResponse response = httpClient.execute(get);
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                Log.d(TAG, String.format("SOD for %s not found", unicodeNumber));
+
+                return null;
+            }
+
+            HttpEntity entity = response.getEntity();
+            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                if (entity != null) {
+                    entity.consumeContent();
+                }
+                Log.w(TAG, "Got error status: " + response.getStatusLine());
+
+                throw new RuntimeException("Server error: "
+                        + response.getStatusLine());
+            }
+
+            Header contentType = entity.getContentType();
+            if (contentType == null
+                    || !contentType.getValue().contains(
+                            "application/x-javascript")) {
+                Log.w(TAG, "Invalid content type: " + contentType);
+                throw new RuntimeException(
+                        "Invalid response. Check your Internet connection using "
+                                + "a browser and make sure you are authenticated to your "
+                                + "proxy server, if using one.");
+            }
+
+            String responseStr = null;
+            if (entity != null) {
+                responseStr = EntityUtils.toString(entity);
+            }
             Log.d(TAG, "got SOD response: " + responseStr);
 
             return new Pair<String, Boolean>(responseStr, animate);
@@ -74,12 +114,6 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
             return false;
         }
     }
-
-    private static final String TAG = SodActivity.class.getSimpleName();
-
-    private static final String STROKE_PATH_LOOKUP_URL = "http://wwwjdic-android.appspot.com/kanji/";
-
-    private static final String NOT_FOUND_STATUS = "not found";
 
     private static final float KANJIVG_SIZE = 109f;
 
@@ -238,11 +272,6 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
         }
 
         try {
-            // XXX fixme: should return valid JSON even if not found
-            if (reply.startsWith(NOT_FOUND_STATUS)) {
-                return null;
-            }
-
             JSONObject jsonObj = new JSONObject(reply);
             JSONArray strokes = jsonObj.getJSONArray("paths");
             int numStrokes = strokes.length();
