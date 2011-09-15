@@ -9,8 +9,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
-import org.nick.wwwjdic.DictionaryEntry;
-import org.nick.wwwjdic.KanjiEntry;
+import org.nick.wwwjdic.model.DictionaryEntry;
+import org.nick.wwwjdic.model.KanjiEntry;
 
 import android.content.ContentValues;
 import android.content.Context;

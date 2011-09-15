@@ -9,15 +9,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.nick.wwwjdic.DictionaryEntry;
 import org.nick.wwwjdic.DictionaryEntryDetail;
-import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicApplication;
-import org.nick.wwwjdic.WwwjdicEntry;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.history.FavoritesItem.FavoriteStatusChangedListener;
+import org.nick.wwwjdic.model.DictionaryEntry;
+import org.nick.wwwjdic.model.KanjiEntry;
+import org.nick.wwwjdic.model.WwwjdicEntry;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Dialogs;
 import org.nick.wwwjdic.utils.LoaderResult;

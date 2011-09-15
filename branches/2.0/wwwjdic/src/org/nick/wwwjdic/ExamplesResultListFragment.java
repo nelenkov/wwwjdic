@@ -2,6 +2,8 @@ package org.nick.wwwjdic;
 
 import java.util.List;
 
+import org.nick.wwwjdic.model.ExampleSentence;
+import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.Analytics;
 
 import android.content.Context;

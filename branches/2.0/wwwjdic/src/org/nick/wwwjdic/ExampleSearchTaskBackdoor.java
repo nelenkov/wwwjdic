@@ -4,6 +4,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.nick.wwwjdic.client.WwwjdicClient;
+import org.nick.wwwjdic.model.ExampleSentence;
+import org.nick.wwwjdic.model.SearchCriteria;
 
 public class ExampleSearchTaskBackdoor extends
         BackdoorSearchTask<ExampleSentence> {

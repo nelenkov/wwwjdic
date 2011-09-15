@@ -9,6 +9,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
+import org.nick.wwwjdic.model.ExampleSentence;
+import org.nick.wwwjdic.model.SearchCriteria;
+import org.nick.wwwjdic.model.WwwjdicQuery;
 
 public class ExampleSearchTask extends SearchTask<ExampleSentence> {
 

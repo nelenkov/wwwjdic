@@ -3,8 +3,8 @@
  */
 package org.nick.wwwjdic.history;
 
-import org.nick.wwwjdic.WwwjdicEntry;
 import org.nick.wwwjdic.history.FavoritesItem.FavoriteStatusChangedListener;
+import org.nick.wwwjdic.model.WwwjdicEntry;
 
 import android.content.Context;
 import android.database.Cursor;

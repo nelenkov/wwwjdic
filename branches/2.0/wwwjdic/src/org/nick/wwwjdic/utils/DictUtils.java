@@ -4,7 +4,7 @@ import static org.nick.wwwjdic.Constants.DICT_COMMON_USAGE_MARKER;
 import static org.nick.wwwjdic.Constants.DICT_VARIATION_DELIMITER;
 
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.WwwjdicEntry;
+import org.nick.wwwjdic.model.WwwjdicEntry;
 
 import android.content.Context;
 

@@ -3,10 +3,10 @@ package org.nick.wwwjdic.history;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.nick.wwwjdic.DictionaryEntry;
-import org.nick.wwwjdic.KanjiEntry;
-import org.nick.wwwjdic.SearchCriteria;
-import org.nick.wwwjdic.WwwjdicEntry;
+import org.nick.wwwjdic.model.DictionaryEntry;
+import org.nick.wwwjdic.model.KanjiEntry;
+import org.nick.wwwjdic.model.SearchCriteria;
+import org.nick.wwwjdic.model.WwwjdicEntry;
 
 import android.content.ContentValues;
 import android.content.Context;

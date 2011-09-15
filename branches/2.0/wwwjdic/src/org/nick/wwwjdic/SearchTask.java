@@ -6,6 +6,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.protocol.HttpContext;
 import org.nick.wwwjdic.client.HttpClientFactory;
+import org.nick.wwwjdic.model.WwwjdicQuery;
 
 import android.util.Log;
 

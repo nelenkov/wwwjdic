@@ -1,6 +1,7 @@
-package org.nick.wwwjdic;
+package org.nick.wwwjdic.model;
 
 import java.io.Serializable;
+
 
 public class SearchCriteria extends WwwjdicQuery implements Serializable {
 

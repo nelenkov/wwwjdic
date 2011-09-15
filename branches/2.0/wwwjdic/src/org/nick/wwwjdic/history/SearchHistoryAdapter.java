@@ -3,7 +3,7 @@
  */
 package org.nick.wwwjdic.history;
 
-import org.nick.wwwjdic.SearchCriteria;
+import org.nick.wwwjdic.model.SearchCriteria;
 
 import android.content.Context;
 import android.database.Cursor;

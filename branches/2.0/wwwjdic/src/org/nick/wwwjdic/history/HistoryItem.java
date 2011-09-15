@@ -1,9 +1,9 @@
 package org.nick.wwwjdic.history;
 
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.Radical;
-import org.nick.wwwjdic.Radicals;
-import org.nick.wwwjdic.SearchCriteria;
+import org.nick.wwwjdic.model.Radical;
+import org.nick.wwwjdic.model.Radicals;
+import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Context;

@@ -14,6 +14,7 @@ import org.nick.wwwjdic.history.HistoryBase;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.history.HistoryFragmentBase;
 import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
+import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.ocr.OcrActivity;
 import org.nick.wwwjdic.utils.Analytics;
 

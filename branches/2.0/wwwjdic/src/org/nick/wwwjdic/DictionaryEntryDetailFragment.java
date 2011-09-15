@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 
+import org.nick.wwwjdic.model.DictionaryEntry;
+import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.DictUtils;
 import org.nick.wwwjdic.utils.Pair;
 import org.nick.wwwjdic.utils.StringUtils;
