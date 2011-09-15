@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 import org.nick.wwwjdic.history.HistoryDbHelper;
+import org.nick.wwwjdic.model.WwwjdicEntry;
 import org.nick.wwwjdic.utils.DictUtils;
 import org.nick.wwwjdic.utils.IntentSpan;
 import org.nick.wwwjdic.utils.Pair;

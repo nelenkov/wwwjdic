@@ -1,6 +1,8 @@
 package org.nick.wwwjdic;
 
 import org.nick.wwwjdic.client.WwwjdicClient;
+import org.nick.wwwjdic.model.KanjiEntry;
+import org.nick.wwwjdic.model.SearchCriteria;
 
 
 public class KanjiSearchTask extends BackdoorSearchTask<KanjiEntry> {

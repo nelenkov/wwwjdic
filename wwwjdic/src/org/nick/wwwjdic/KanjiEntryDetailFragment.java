@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 
+import org.nick.wwwjdic.model.JlptLevels;
+import org.nick.wwwjdic.model.KanjiEntry;
+import org.nick.wwwjdic.model.Radical;
+import org.nick.wwwjdic.model.Radicals;
+import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.DictUtils;
 import org.nick.wwwjdic.utils.Pair;

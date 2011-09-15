@@ -4,6 +4,7 @@ import static org.nick.wwwjdic.Constants.KANJI_TAB_IDX;
 import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
 
 import org.nick.wwwjdic.history.FavoritesAndHistory;
+import org.nick.wwwjdic.model.KanjiEntry;
 
 import android.content.Intent;
 import android.os.Bundle;

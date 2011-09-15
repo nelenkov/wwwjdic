@@ -18,11 +18,11 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
-import org.nick.wwwjdic.JlptLevels;
-import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.client.HttpClientFactory;
+import org.nick.wwwjdic.model.JlptLevels;
+import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.utils.StringUtils;
 
 import android.app.AlarmManager;

@@ -2,6 +2,8 @@ package org.nick.wwwjdic;
 
 import java.util.List;
 
+import org.nick.wwwjdic.model.SentenceBreakdownEntry;
+import org.nick.wwwjdic.model.WwwjdicQuery;
 import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Context;

@@ -8,6 +8,8 @@ import java.util.regex.Pattern;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.nick.wwwjdic.model.SearchCriteria;
+import org.nick.wwwjdic.model.WwwjdicQuery;
 import org.nick.wwwjdic.utils.StringUtils;
 
 import android.util.Log;

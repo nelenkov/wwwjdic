@@ -2,6 +2,9 @@ package org.nick.wwwjdic;
 
 import java.util.List;
 
+import org.nick.wwwjdic.model.KanjiEntry;
+import org.nick.wwwjdic.model.SearchCriteria;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;

@@ -2,6 +2,8 @@ package org.nick.wwwjdic;
 
 import java.util.List;
 
+import org.nick.wwwjdic.model.KanjiEntry;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

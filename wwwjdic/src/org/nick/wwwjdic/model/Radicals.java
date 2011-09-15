@@ -1,4 +1,4 @@
-package org.nick.wwwjdic;
+package org.nick.wwwjdic.model;
 
 import java.util.ArrayList;
 import java.util.List;

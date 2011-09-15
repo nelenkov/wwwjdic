@@ -4,11 +4,11 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.List;
 
-import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.KanjiEntryDetailFragment;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.client.WwwjdicClient;
+import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.utils.LoaderBase;
 import org.nick.wwwjdic.utils.LoaderResult;
 

@@ -1,7 +1,7 @@
 package org.nick.wwwjdic.history;
 
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.WwwjdicEntry;
+import org.nick.wwwjdic.model.WwwjdicEntry;
 
 import android.content.Context;
 import android.view.LayoutInflater;

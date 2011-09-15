@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
+import org.nick.wwwjdic.model.Radicals;
 import org.nick.wwwjdic.updates.UpdateCheckService;
 import org.nick.wwwjdic.utils.FileUtils;
 

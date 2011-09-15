@@ -1,8 +1,8 @@
 package org.nick.wwwjdic.history;
 
-import org.nick.wwwjdic.DictionaryEntry;
-import org.nick.wwwjdic.KanjiEntry;
-import org.nick.wwwjdic.WwwjdicEntry;
+import org.nick.wwwjdic.model.DictionaryEntry;
+import org.nick.wwwjdic.model.KanjiEntry;
+import org.nick.wwwjdic.model.WwwjdicEntry;
 import org.nick.wwwjdic.utils.StringUtils;
 
 public class FavoritesEntryParser {

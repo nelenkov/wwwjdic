@@ -12,9 +12,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
-import org.nick.wwwjdic.KanjiEntry;
-import org.nick.wwwjdic.SearchCriteria;
 import org.nick.wwwjdic.WwwjdicPreferences;
+import org.nick.wwwjdic.model.KanjiEntry;
+import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Context;

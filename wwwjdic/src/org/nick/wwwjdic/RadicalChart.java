@@ -1,5 +1,8 @@
 package org.nick.wwwjdic;
 
+import org.nick.wwwjdic.model.Radical;
+import org.nick.wwwjdic.model.Radicals;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;

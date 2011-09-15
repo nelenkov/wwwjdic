@@ -2,6 +2,7 @@ package org.nick.wwwjdic;
 
 import org.nick.wwwjdic.history.HistoryBase;
 import org.nick.wwwjdic.history.HistoryDbHelper;
+import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.StringUtils;
 

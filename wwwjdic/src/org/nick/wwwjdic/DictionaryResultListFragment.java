@@ -3,6 +3,8 @@ package org.nick.wwwjdic;
 import java.util.List;
 
 import org.nick.wwwjdic.history.HistoryUtils;
+import org.nick.wwwjdic.model.DictionaryEntry;
+import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.DictUtils;
 import org.nick.wwwjdic.utils.StringUtils;

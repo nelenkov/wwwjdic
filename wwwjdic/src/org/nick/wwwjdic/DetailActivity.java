@@ -1,6 +1,7 @@
 package org.nick.wwwjdic;
 
 import org.nick.wwwjdic.history.HistoryDbHelper;
+import org.nick.wwwjdic.model.WwwjdicEntry;
 
 import android.content.Context;
 import android.content.Intent;

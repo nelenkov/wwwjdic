@@ -4,10 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.nick.wwwjdic.Constants;
-import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicPreferences;
+import org.nick.wwwjdic.model.KanjiEntry;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

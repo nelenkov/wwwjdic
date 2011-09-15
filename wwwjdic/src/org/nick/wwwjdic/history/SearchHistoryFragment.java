@@ -9,8 +9,8 @@ import org.nick.wwwjdic.DictionaryResultListView;
 import org.nick.wwwjdic.ExamplesResultListView;
 import org.nick.wwwjdic.KanjiResultListView;
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.SearchCriteria;
 import org.nick.wwwjdic.SearchSuggestionProvider;
+import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.LoaderResult;
 

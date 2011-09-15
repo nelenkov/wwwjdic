@@ -1,6 +1,8 @@
 package org.nick.wwwjdic;
 
 import org.nick.wwwjdic.client.WwwjdicClient;
+import org.nick.wwwjdic.model.DictionaryEntry;
+import org.nick.wwwjdic.model.SearchCriteria;
 
 
 public class DictionarySearchTask extends BackdoorSearchTask<DictionaryEntry> {
