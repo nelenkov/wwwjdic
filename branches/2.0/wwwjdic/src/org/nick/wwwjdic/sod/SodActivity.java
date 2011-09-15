@@ -8,6 +8,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.nick.wwwjdic.ActionBarActivity;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.HttpClientFactory;
 import org.nick.wwwjdic.R;
@@ -22,7 +23,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItem;
@@ -32,7 +32,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class SodActivity extends FragmentActivity implements OnClickListener,
+public class SodActivity extends ActionBarActivity implements OnClickListener,
         LoaderManager.LoaderCallbacks<LoaderResult<Pair<String, Boolean>>> {
 
     static class SodLoader extends LoaderBase<Pair<String, Boolean>> {

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.nick.wwwjdic.ActionBarActivity;
 import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.KanjiResultListView;
 import org.nick.wwwjdic.R;
@@ -27,7 +28,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -46,7 +46,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class KradChart extends FragmentActivity implements OnClickListener,
+public class KradChart extends ActionBarActivity implements OnClickListener,
         OnItemClickListener {
 
     private static final int NUM_SUMMARY_CHARS = 10;

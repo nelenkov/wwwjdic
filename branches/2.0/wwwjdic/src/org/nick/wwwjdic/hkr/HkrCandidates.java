@@ -1,11 +1,11 @@
 package org.nick.wwwjdic.hkr;
 
+import org.nick.wwwjdic.ActionBarActivity;
 import org.nick.wwwjdic.R;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 
-public class HkrCandidates extends FragmentActivity {
+public class HkrCandidates extends ActionBarActivity {
 
     public static final String EXTRA_HKR_CANDIDATES = "org.nick.wwwjdic.hkrCandidates";
 
@@ -21,5 +21,6 @@ public class HkrCandidates extends FragmentActivity {
         setContentView(R.layout.hkr_candidates);
         setProgressBarIndeterminateVisibility(Boolean.FALSE);
     }
+
 
 }

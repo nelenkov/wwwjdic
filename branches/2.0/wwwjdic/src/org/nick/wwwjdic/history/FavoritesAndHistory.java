@@ -1,16 +1,16 @@
 package org.nick.wwwjdic.history;
 
+import org.nick.wwwjdic.ActionBarActivity;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.TabsPagerAdapter;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBar;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Window;
 
-public class FavoritesAndHistory extends FragmentActivity {
+public class FavoritesAndHistory extends ActionBarActivity {
 
     public static final String EXTRA_FILTER_TYPE = "org.nick.wwwjdic.filterType";
 

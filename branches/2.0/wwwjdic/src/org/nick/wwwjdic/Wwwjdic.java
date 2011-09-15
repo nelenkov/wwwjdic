@@ -39,7 +39,7 @@ import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 
-public class Wwwjdic extends FragmentActivity {
+public class Wwwjdic extends ActionBarActivity {
 
     private static final String TAG = Wwwjdic.class.getSimpleName();
 

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.nick.kanjirecognizer.hkr.CharacterRecognizer;
+import org.nick.wwwjdic.Activities;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.WwwjdicPreferences;
@@ -27,6 +28,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.v4.view.MenuItem;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -493,6 +495,19 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         intent.putExtras(extras);
 
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            Activities.home(this);
+            return true;
+        default:
+            // do nothing
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
