@@ -65,6 +65,8 @@ public abstract class HistoryFragmentBase extends ListFragment implements
 
     protected int selectedFilter = -1;
 
+    private boolean selected;
+
     protected HistoryFragmentBase() {
     }
 
@@ -72,8 +74,8 @@ public abstract class HistoryFragmentBase extends ListFragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // XXX double menus if on? 
-        //		setHasOptionsMenu(true);
+        // XXX double menus if on?
+        // setHasOptionsMenu(true);
 
         db = HistoryDbHelper.getInstance(getActivity());
 
@@ -338,17 +340,33 @@ public abstract class HistoryFragmentBase extends ListFragment implements
             return;
         }
 
+        // TODO
+        // workaround for
+        // https://github.com/JakeWharton/ActionBarSherlock/issues/56
+        // Cf. http://code.google.com/p/android/issues/detail?id=20065
+        if (!selected) {
+            return;
+        }
+
         menu.add(0, MENU_ITEM_LOOKUP, 0, R.string.look_up);
         menu.add(0, MENU_ITEM_COPY, 1, R.string.copy);
         menu.add(0, MENU_ITEM_DELETE, 2, R.string.delete);
 
-        // TODO -- will be fiex in ABS 3.2.2       
+        // TODO -- will be fiex in ABS 3.2.2
         // MenuInflater inflater = getSupportActivity().getMenuInflater();
         // inflater.inflate(R.menu.history_favorites_context, menu);
     }
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
+        // TODO
+        // workaround for
+        // https://github.com/JakeWharton/ActionBarSherlock/issues/56
+        // Cf. http://code.google.com/p/android/issues/detail?id=20065
+        if (!selected) {
+            return super.onContextItemSelected(item);
+        }
+
         switch (item.getItemId()) {
         case MENU_ITEM_LOOKUP:
             lookupCurrentItem();
@@ -477,6 +495,14 @@ public abstract class HistoryFragmentBase extends ListFragment implements
 
     public void setSelectedFilter(int selectedFilter) {
         this.selectedFilter = selectedFilter;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
 }
