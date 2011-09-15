@@ -2,11 +2,7 @@ package org.nick.wwwjdic;
 
 import org.nick.wwwjdic.utils.Analytics;
 
-import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.MenuItem;
-
-public abstract class ResultListViewBase extends FragmentActivity {
+public abstract class ResultListViewBase extends ActionBarActivity {
 
     protected ResultListViewBase() {
     }
@@ -25,16 +21,4 @@ public abstract class ResultListViewBase extends FragmentActivity {
         Analytics.endSession(this);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            Intent intent = new Intent(this, Wwwjdic.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
 }

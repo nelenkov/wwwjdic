@@ -5,11 +5,10 @@ import org.nick.wwwjdic.history.HistoryDbHelper;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.text.ClipboardManager;
 import android.widget.Toast;
 
-public abstract class DetailActivity extends FragmentActivity {
+public abstract class DetailActivity extends ActionBarActivity {
 
     public static final String EXTRA_IS_FAVORITE = "org.nick.wwwjdic.IS_FAVORITE";
 
