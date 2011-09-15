@@ -280,15 +280,9 @@
     <string-array name="favorites_export_dialog_items">
         <item>ローカルバックアップ</item>
         <item>ローカル CSV</item>
-        <item>Google ドキュメント</item>
         <item>Anki単語帳</item>
     </string-array>
     <string name="favorites_export_dialog_title">お気に入りエックスポート</string>
-    <string name="uploading_to_gdocs">Google ドキュメントにアップロード中...</string>
-    <string name="gdocs_upload_success">\'%s\'を Google ドキュメントにアップロードしました。</string>
-    <string name="gdocs_upload_failure">Google ドキュメントアップロードエラー: %s</string>
-    <string name="select_google_account">Google アカウント選択</string>
-    <string name="no_google_accounts">使用可能なGoogle アカウントはありません。</string>
     <string name="pref_auto_select_mirror">ミラーサイト自動選択</string>
     <string name="pref_auto_select_mirror_summary">現在位置に一番近いミラーサイトを自動的に選択します。</string>
     <string name="tips_favorites_export">
@@ -299,9 +293,6 @@
         *
         「ローカル CSV」: 全ての表示項目をカラムとしてエックスポートします。
         有効にするには、「辞書」、又は「漢字」でフィルタして下さい。\n
-        *
-        「Google ドキュメント」:
-        フォーマットは同上。要Android 2.0以上。
     </string>
     <string name="compounds">熟語</string>
     <string name="compound_search_starting">語頭字</string>

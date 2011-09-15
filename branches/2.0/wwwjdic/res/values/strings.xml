@@ -411,15 +411,9 @@
     <string-array name="favorites_export_dialog_items">
         <item>Local backup</item>
         <item>Local CSV</item>
-        <item>Google Docs</item>
         <item>Anki deck</item>
     </string-array>
     <string name="favorites_export_dialog_title">Export favorites to</string>
-    <string name="uploading_to_gdocs">Uploading to Google Docs...</string>
-    <string name="gdocs_upload_success">Uploaded \'%s\' to Google Docs.</string>
-    <string name="gdocs_upload_failure">Error uploading to Google Docs: %s</string>
-    <string name="select_google_account">Select a Google account</string>
-    <string name="no_google_accounts">No Google accoutns available.</string>
     <string name="pref_auto_select_mirror">Mirror auto select</string>
     <string name="pref_auto_select_mirror_summary">Automatically select closest WWWJDIC mirror.
     </string>
@@ -434,11 +428,6 @@
         transfer favorites to a PC or import
         into other
         programs.
-        Filter by \'Dictionary\'
-        or \'Kanji\'
-        to enable.\n* \'Google
-        Docs\': format as above. Needs Android 2.0
-        or later.
     </string>
     <string name="compounds">Compounds</string>
     <string name="compound_search_starting">Starting kanji</string>
