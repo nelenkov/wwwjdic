@@ -109,7 +109,8 @@ public class KanjiStrokesServlet extends HttpServlet {
         try {
             Kanji k = null;
 
-            Kanji cachedKanji = (Kanji) CacheController.get(unicodeNumber);
+            Kanji cachedKanji = (Kanji) CacheController.get("json_"
+                    + unicodeNumber);
             if (cachedKanji != null) {
                 k = cachedKanji;
                 log.info("Got kanji from cache: " + unicodeNumber);
@@ -129,8 +130,9 @@ public class KanjiStrokesServlet extends HttpServlet {
                 }
 
                 k = kanjis.get(0);
-                CacheController.put(unicodeNumber, k);
-                log.info("Put kanji in cache: " + unicodeNumber);
+                String key = "json_" + unicodeNumber;
+                CacheController.put(key, k);
+                log.info("Put kanji in cache: " + key);
             }
 
             try {
