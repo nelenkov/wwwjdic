@@ -6,9 +6,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
-import org.nick.wwwjdic.HttpClientFactory;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicPreferences;
+import org.nick.wwwjdic.client.HttpClientFactory;
 
 import android.app.IntentService;
 import android.app.Notification;

@@ -10,7 +10,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.AbstractHttpEntity;
-import org.nick.wwwjdic.EntityBasedHttpClient;
+import org.nick.wwwjdic.client.EntityBasedHttpClient;
 
 import android.graphics.Bitmap;
 import android.util.Log;

@@ -3,6 +3,8 @@ package org.nick.wwwjdic;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.nick.wwwjdic.client.WwwjdicClient;
+
 public class ExampleSearchTaskBackdoor extends
         BackdoorSearchTask<ExampleSentence> {
 

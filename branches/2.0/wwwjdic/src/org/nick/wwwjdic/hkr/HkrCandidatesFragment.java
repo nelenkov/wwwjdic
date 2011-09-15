@@ -8,7 +8,7 @@ import org.nick.wwwjdic.KanjiEntry;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.KanjiEntryDetailFragment;
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.WwwjdicClient;
+import org.nick.wwwjdic.client.WwwjdicClient;
 import org.nick.wwwjdic.utils.LoaderBase;
 import org.nick.wwwjdic.utils.LoaderResult;
 
