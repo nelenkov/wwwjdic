@@ -10,9 +10,11 @@ import java.util.regex.Matcher;
 
 import org.nick.wwwjdic.utils.DictUtils;
 import org.nick.wwwjdic.utils.Pair;
+import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -118,15 +120,6 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         View v = inflater.inflate(R.layout.entry_details, container, false);
 
         return v;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (tts != null) {
-            tts.shutdown();
-        }
     }
 
     private Intent createCrossRefIntent(String word) {
@@ -242,6 +235,53 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    protected void toggleJpTtsButtons(boolean show) {
+        View v = getView();
+        Button speakButton = (Button) v.findViewById(R.id.jp_speak_button);
+        speakButton.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+
+        if (show) {
+            if (jpTts == null) {
+                return;
+            }
+
+            Locale jp = Locale.JAPAN;
+            if (jpTts.isLanguageAvailable(jp) == TextToSpeech.LANG_MISSING_DATA
+                    && jpTts.isLanguageAvailable(jp) == TextToSpeech.LANG_NOT_SUPPORTED) {
+                speakButton.setVisibility(View.INVISIBLE);
+                return;
+            }
+
+            speakButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (jpTts == null) {
+                        return;
+                    }
+
+                    pronounce(entry.getReading());
+                }
+            });
+        }
+    }
+
+    private void pronounce(String text) {
+        if (StringUtils.isEmpty(text)) {
+            return;
+        }
+
+        String toSpeak = DictUtils.stripWwwjdicTags(getActivity(), text);
+        if (toSpeak.contains(".")) {
+            toSpeak = toSpeak.replaceAll("\\.", "");
+        }
+
+        String[] words = toSpeak.split(";");
+        for (String word : words) {
+            jpTts.speak(word, TextToSpeech.QUEUE_ADD, null);
         }
     }
 }

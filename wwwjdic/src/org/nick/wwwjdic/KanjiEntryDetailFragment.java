@@ -11,10 +11,13 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 
 import org.nick.wwwjdic.utils.Analytics;
+import org.nick.wwwjdic.utils.DictUtils;
 import org.nick.wwwjdic.utils.Pair;
+import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -243,15 +246,6 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
         return v;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (tts != null) {
-            tts.shutdown();
-        }
-    }
-
     private void addCodesTable(LinearLayout meaningsCodesLayout,
             List<Pair<String, String>> codesData) {
         TableLayout table = new TableLayout(getActivity());
@@ -444,6 +438,58 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    protected void toggleJpTtsButtons(boolean show) {
+        View v = getView();
+        Button speakButton = (Button) v.findViewById(R.id.jp_speak_button);
+        speakButton.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+
+        if (show) {
+            if (jpTts == null) {
+                return;
+            }
+
+            Locale jp = Locale.JAPAN;
+            if (jpTts.isLanguageAvailable(jp) == TextToSpeech.LANG_MISSING_DATA
+                    && jpTts.isLanguageAvailable(jp) == TextToSpeech.LANG_NOT_SUPPORTED) {
+                speakButton.setVisibility(View.INVISIBLE);
+                return;
+            }
+
+            speakButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (jpTts == null) {
+                        return;
+                    }
+
+                    pronounce(entry.getOnyomi());
+                    pronounce(entry.getKunyomi());
+                    pronounce(entry.getNanori());
+                }
+            });
+        }
+    }
+
+    private void pronounce(String text) {
+        if (StringUtils.isEmpty(text)) {
+            return;
+        }
+
+        String toSpeak = DictUtils.stripWwwjdicTags(getActivity(), text);
+        if (toSpeak.contains(";")) {
+            toSpeak = toSpeak.split(";")[0];
+        }
+        if (toSpeak.contains(".")) {
+            toSpeak = toSpeak.replaceAll("\\.", "");
+        }
+
+        String[] words = toSpeak.split(" ");
+        for (String word : words) {
+            jpTts.speak(word, TextToSpeech.QUEUE_ADD, null);
         }
     }
 

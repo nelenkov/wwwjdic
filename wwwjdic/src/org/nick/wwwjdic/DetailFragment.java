@@ -14,7 +14,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -44,6 +46,8 @@ public abstract class DetailFragment extends Fragment implements
     protected static final Pattern CROSS_REF_PATTERN = Pattern
             .compile("^.*\\(See (\\S+)\\).*$");
 
+    protected static final String N2_TTS_PACKAGE = "jp.kddilabs.n2tts";
+
     protected static final int ITEM_ID_HOME = 0;
 
     private static final String TAG = DetailFragment.class.getSimpleName();
@@ -55,6 +59,7 @@ public abstract class DetailFragment extends Fragment implements
     protected boolean isFavorite;
 
     protected TextToSpeech tts;
+    protected TextToSpeech jpTts;
 
     protected DetailFragment() {
     }
@@ -73,6 +78,19 @@ public abstract class DetailFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
 
         db = HistoryDbHelper.getInstance(getActivity());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (tts != null) {
+            tts.shutdown();
+        }
+
+        if (jpTts != null) {
+            jpTts.shutdown();
+        }
     }
 
     @Override
@@ -122,31 +140,55 @@ public abstract class DetailFragment extends Fragment implements
 
     @Override
     public void onInit(int status) {
+        // TODO should check which engine failed?
         if (status != TextToSpeech.SUCCESS) {
             hideTtsButtons();
+            toggleJpTtsButtons(false);
             return;
         }
 
-        Locale locale = getSpeechLocale();
-        if (locale == null) {
-            Log.w(TAG, "TTS locale " + locale + "not recognized");
-            hideTtsButtons();
-            return;
+        if (jpTts != null) {
+            if (!jpTts.getDefaultEngine().equals(N2_TTS_PACKAGE)) {
+                int rc = jpTts.setEngineByPackageName(N2_TTS_PACKAGE);
+                if (rc == TextToSpeech.ERROR) {
+                    Log.w(TAG, N2_TTS_PACKAGE + " not available?");
+                    jpTts.shutdown();
+                    jpTts = null;
+                    toggleJpTtsButtons(false);
+
+                    return;
+                }
+                jpTts.setLanguage(Locale.JAPAN);
+            }
+
+            toggleJpTtsButtons(true);
         }
 
-        if (tts.isLanguageAvailable(locale) != TextToSpeech.LANG_MISSING_DATA
-                && tts.isLanguageAvailable(locale) != TextToSpeech.LANG_NOT_SUPPORTED) {
-            tts.setLanguage(getSpeechLocale());
-            showTtsButtons();
-        } else {
-            Log.w(TAG, "TTS locale " + locale + " not available");
-            hideTtsButtons();
+
+        if (tts != null) {
+            Locale locale = getSpeechLocale();
+            if (locale == null) {
+                Log.w(TAG, "TTS locale " + locale + "not recognized");
+                hideTtsButtons();
+                return;
+            }
+
+            if (tts.isLanguageAvailable(locale) != TextToSpeech.LANG_MISSING_DATA
+                    && tts.isLanguageAvailable(locale) != TextToSpeech.LANG_NOT_SUPPORTED) {
+                tts.setLanguage(getSpeechLocale());
+                showTtsButtons();
+            } else {
+                Log.w(TAG, "TTS locale " + locale + " not available");
+                hideTtsButtons();
+            }
         }
     }
 
     protected abstract void showTtsButtons();
 
     protected abstract void hideTtsButtons();
+
+    protected abstract void toggleJpTtsButtons(boolean show);
 
     protected Pair<LinearLayout, TextView> createMeaningTextView(
             final Context ctx, String meaning) {
@@ -177,6 +219,16 @@ public abstract class DetailFragment extends Fragment implements
     protected abstract Locale getSpeechLocale();
 
     protected void checkTtsAvailability() {
+        PackageManager pm = getActivity().getPackageManager();
+        try {
+            PackageInfo pi = pm.getPackageInfo(N2_TTS_PACKAGE, 0);
+            if (pi != null) {
+                jpTts = new TextToSpeech(getActivity(), this);
+            }
+        } catch (NameNotFoundException e) {
+            Log.w(TAG, N2_TTS_PACKAGE + " not found");
+        }
+
         if (!isIntentAvailable(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA)) {
             return;
         }
