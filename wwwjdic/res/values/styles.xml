@@ -177,6 +177,7 @@
   
   <style name="action_bar_title">
     <item name="android:textColor">@color/white</item>
+    <item name="android:textSize">18sp</item>
   </style>
   
   <style name="Theme.WwwjdicAb" parent="@style/Theme.Sherlock">

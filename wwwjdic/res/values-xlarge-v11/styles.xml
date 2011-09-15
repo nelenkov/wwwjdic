@@ -53,4 +53,8 @@
     <item name="android:layout_marginLeft">100dp</item>
     <item name="android:layout_marginRight">100dp</item>
    </style> 
+   
+    <style name="action_bar_title">
+    <item name="android:textColor">@color/white</item>
+  </style>
 </resources>
