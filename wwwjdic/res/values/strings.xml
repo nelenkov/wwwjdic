@@ -380,7 +380,7 @@
     <string name="widget_loading">Loading...</string>
     <string name="getting_sod_info">Getting SOD info...</string>
     <string name="no_sod_data">No SOD data for \'%s\'</string>
-    <string name="getting_sod_data_failed">Getting SOD data failed</string>
+    <string name="getting_sod_data_failed">Getting SOD data failed: %s</string>
     <string-array name="dict_csv_headers">
         <item>Headword</item>
         <item>Reading(s)</item>

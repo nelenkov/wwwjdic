@@ -249,7 +249,7 @@
     <string name="widget_loading">読み込み中...</string>
     <string name="getting_sod_info">書き順情報取得中...</string>
     <string name="no_sod_data">\'%s\'の書き順情報はありません。</string>
-    <string name="getting_sod_data_failed">書き順情報取得は失敗しました。</string>
+    <string name="getting_sod_data_failed">書き順情報取得は失敗しました: %s</string>
     <string-array name="dict_csv_headers">
         <item>単語</item>
         <item>読み方</item>
