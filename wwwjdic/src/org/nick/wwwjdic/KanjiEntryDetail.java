@@ -7,7 +7,9 @@ import org.nick.wwwjdic.history.FavoritesAndHistory;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
+import android.view.MenuInflater;
 
 public class KanjiEntryDetail extends DetailActivity {
 
@@ -42,6 +44,14 @@ public class KanjiEntryDetail extends DetailActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.kanji_detail, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
@@ -51,6 +61,9 @@ public class KanjiEntryDetail extends DetailActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
+            return true;
+        case R.id.menu_kanji_detail_copy:
+            copy();
             return true;
         default:
             // do nothing

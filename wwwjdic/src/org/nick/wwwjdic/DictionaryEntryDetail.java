@@ -66,6 +66,9 @@ public class DictionaryEntryDetail extends DetailActivity {
         case R.id.menu_dict_detail_lookup_kanji:
             Activities.lookupKanji(this, db, wwwjdicEntry.getHeadword());
             return true;
+        case R.id.menu_dict_detail_copy:
+            copy();
+            return true;
         default:
             // do nothing
         }
