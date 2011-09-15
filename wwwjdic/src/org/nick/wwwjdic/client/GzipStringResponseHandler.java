@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.nick.wwwjdic;
+package org.nick.wwwjdic.client;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

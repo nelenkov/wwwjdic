@@ -14,7 +14,7 @@ import org.apache.http.params.HttpProtocolParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.nick.wwwjdic.EntityBasedHttpClient;
+import org.nick.wwwjdic.client.EntityBasedHttpClient;
 
 import android.util.Log;
 

@@ -1,4 +1,4 @@
-package org.nick.wwwjdic;
+package org.nick.wwwjdic.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
+import org.nick.wwwjdic.WwwjdicApplication;
 
 public abstract class EntityBasedHttpClient {
 

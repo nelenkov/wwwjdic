@@ -1,4 +1,4 @@
-package org.nick.wwwjdic;
+package org.nick.wwwjdic.client;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -12,6 +12,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.nick.wwwjdic.KanjiEntry;
+import org.nick.wwwjdic.SearchCriteria;
+import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Context;
