@@ -15,13 +15,21 @@ public class SentenceBreakdown extends ResultListViewBase {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        String sentence = getIntent().getExtras().getString(EXTRA_SENTENCE);
         String translation = getIntent().getExtras().getString(
                 EXTRA_SENTENCE_TRANSLATION);
         if (translation != null) {
             exampleBreakdown = true;
         }
 
-        setContentView(R.layout.sentence_breakdown);
+        // setContentView(R.layout.sentence_breakdown);
+        if (savedInstanceState == null) {
+            SentenceBreakdownFragment breakDown = SentenceBreakdownFragment
+                    .newInstance(0, sentence, translation);
+            breakDown.setArguments(getIntent().getExtras());
+            getSupportFragmentManager().beginTransaction()
+                    .add(android.R.id.content, breakDown).commit();
+        }
     }
 
     @Override

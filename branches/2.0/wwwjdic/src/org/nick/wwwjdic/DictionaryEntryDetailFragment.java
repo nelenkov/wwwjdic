@@ -77,6 +77,9 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         getActivity().setTitle(String.format(message, entry.getWord()));
 
         View v = getView();
+        if (v == null) {
+            return;
+        }
 
         entryView = (TextView) v.findViewById(R.id.details_word_text);
         entryView.setText(entry.getWord());
@@ -118,6 +121,10 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        if (container == null) {
+            return null;
+        }
+
         View v = inflater.inflate(R.layout.entry_details, container, false);
 
         return v;
@@ -207,6 +214,10 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
     }
 
     private void toggleTtsButtons(boolean show) {
+        if (translationsLayout == null) {
+            return;
+        }
+
         int childCount = translationsLayout.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View view = translationsLayout.getChildAt(i);
@@ -236,7 +247,6 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
     @Override
     protected void toggleJpTtsButtons(boolean show) {
         View v = getView();
-        // XXX -- called to early?
         if (v == null) {
             return;
         }

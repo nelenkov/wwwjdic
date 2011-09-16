@@ -119,13 +119,27 @@ public class SentenceBreakdownFragment extends
         return f;
     }
 
+    public SentenceBreakdownFragment() {
+        setRetainInstance(false);
+    }
+
     public int getShownIndex() {
         return getArguments().getInt("index", 0);
     }
 
     @Override
+    public void onCreate(Bundle state) {
+        super.onCreate(state);
+        setRetainInstance(false);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        if (getView() == null) {
+            return;
+        }
 
         Bundle args = getArguments();
         if (args == null) {
@@ -162,6 +176,10 @@ public class SentenceBreakdownFragment extends
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        if (container == null) {
+            return null;
+        }
+
         View v = inflater.inflate(R.layout.sentence_breakdown_fragment,
                 container, false);
         sentenceView = (TextView) v.findViewById(R.id.sentence);
@@ -210,6 +228,10 @@ public class SentenceBreakdownFragment extends
 
     @Override
     public void setResult(final List<SentenceBreakdownEntry> result) {
+        if (getView() == null) {
+            return;
+        }
+
         guiThread.post(new Runnable() {
             public void run() {
                 entries = (List<SentenceBreakdownEntry>) result;
