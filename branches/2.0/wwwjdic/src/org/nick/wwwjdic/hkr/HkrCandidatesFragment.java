@@ -97,7 +97,8 @@ public class HkrCandidatesFragment extends ListFragment implements
         Bundle extras = getActivity().getIntent().getExtras();
         candidates = extras.getStringArray(EXTRA_HKR_CANDIDATES);
         setListAdapter(new ArrayAdapter<String>(getActivity(),
-                org.nick.wwwjdic.R.layout.text_list_item, candidates));
+                org.nick.wwwjdic.R.layout.text_list_item, R.id.item_text,
+                candidates));
 
         getListView().setOnCreateContextMenuListener(this);
         getListView().setTextFilterEnabled(true);
