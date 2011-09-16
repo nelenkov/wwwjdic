@@ -108,6 +108,10 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
         getActivity().setTitle(String.format(message, entry.getKanji()));
 
         View v = getView();
+        if (v == null) {
+            return;
+        }
+
         TextView entryView = (TextView) v.findViewById(R.id.kanjiText);
         entryView.setText(entry.getKanji());
         entryView.setOnLongClickListener(this);
@@ -255,6 +259,10 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        if (container == null) {
+            return null;
+        }
+
         View v = inflater.inflate(R.layout.kanji_entry_details, container,
                 false);
 
@@ -437,6 +445,10 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
     }
 
     private void toggleTtsButtons(boolean show) {
+        if (translationsLayout == null) {
+            return;
+        }
+
         int childCount = translationsLayout.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View view = translationsLayout.getChildAt(i);
@@ -466,6 +478,10 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
     @Override
     protected void toggleJpTtsButtons(boolean show) {
         View v = getView();
+        // XXX -- called to early?
+        if (v == null) {
+            return;
+        }
         Button speakButton = (Button) v.findViewById(R.id.jp_speak_button);
         speakButton.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
 
