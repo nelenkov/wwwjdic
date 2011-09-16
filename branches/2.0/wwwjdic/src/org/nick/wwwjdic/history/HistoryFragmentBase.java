@@ -47,10 +47,6 @@ public abstract class HistoryFragmentBase extends ListFragment implements
 
     protected static final int CONFIRM_DELETE_DIALOG_ID = 0;
 
-    private static final int MENU_ITEM_LOOKUP = 0;
-    private static final int MENU_ITEM_COPY = 1;
-    private static final int MENU_ITEM_DELETE = 2;
-
     public static final int FILTER_ALL = -1;
     public static final int FILTER_DICT = 0;
     public static final int FILTER_KANJI = 1;
@@ -348,13 +344,8 @@ public abstract class HistoryFragmentBase extends ListFragment implements
             return;
         }
 
-        menu.add(0, MENU_ITEM_LOOKUP, 0, R.string.look_up);
-        menu.add(0, MENU_ITEM_COPY, 1, R.string.copy);
-        menu.add(0, MENU_ITEM_DELETE, 2, R.string.delete);
-
-        // TODO -- will be fiex in ABS 3.2.2
-        // MenuInflater inflater = getSupportActivity().getMenuInflater();
-        // inflater.inflate(R.menu.history_favorites_context, menu);
+        MenuInflater inflater = getSupportActivity().getMenuInflater();
+        inflater.inflate(R.menu.history_favorites_context, menu);
     }
 
     @Override
@@ -368,13 +359,13 @@ public abstract class HistoryFragmentBase extends ListFragment implements
         }
 
         switch (item.getItemId()) {
-        case MENU_ITEM_LOOKUP:
+        case R.id.menu_context_history_lookup:
             lookupCurrentItem();
             return true;
-        case MENU_ITEM_COPY:
+        case R.id.menu_context_history_copy:
             copyCurrentItem();
             return true;
-        case MENU_ITEM_DELETE:
+        case R.id.menu_context_history_delete:
             deleteCurrentItem();
             return true;
         }
