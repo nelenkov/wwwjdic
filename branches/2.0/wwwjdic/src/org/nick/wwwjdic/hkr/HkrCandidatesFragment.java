@@ -160,6 +160,8 @@ public class HkrCandidatesFragment extends ListFragment implements
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        getListView().setItemChecked(index, true);
         loadDetails(candidates[position], position);
     }
 

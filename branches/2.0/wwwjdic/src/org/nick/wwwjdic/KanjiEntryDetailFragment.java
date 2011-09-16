@@ -80,13 +80,25 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
 
         checkTtsAvailability();
 
-        entry = (KanjiEntry) getArguments().getSerializable(
-                KanjiEntryDetail.EXTRA_KANJI_ENTRY);
-        wwwjdicEntry = entry;
-        isFavorite = getArguments().getBoolean(
-                KanjiEntryDetail.EXTRA_IS_FAVORITE, false);
-        boolean kodWidgetClicked = getArguments().getBoolean(
-                Constants.KOD_WIDGET_CLICK, false);
+        if (savedInstanceState != null) {
+            entry = (KanjiEntry) savedInstanceState
+                    .getSerializable(KanjiEntryDetail.EXTRA_KANJI_ENTRY);
+            wwwjdicEntry = entry;
+            isFavorite = savedInstanceState.getBoolean(
+                    KanjiEntryDetail.EXTRA_IS_FAVORITE, false);
+        }
+
+        Bundle args = getArguments();
+        boolean kodWidgetClicked = false;
+        if (args != null) {
+            entry = (KanjiEntry) args
+                    .getSerializable(KanjiEntryDetail.EXTRA_KANJI_ENTRY);
+            wwwjdicEntry = entry;
+            isFavorite = args.getBoolean(KanjiEntryDetail.EXTRA_IS_FAVORITE,
+                    false);
+            kodWidgetClicked = args.getBoolean(Constants.KOD_WIDGET_CLICK,
+                    false);
+        }
         if (kodWidgetClicked) {
             Analytics.startSession(getActivity());
             Analytics.event("kodWidgetClicked", getActivity());
@@ -95,13 +107,13 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
         String message = getResources().getString(R.string.details_for);
         getActivity().setTitle(String.format(message, entry.getKanji()));
 
-        TextView entryView = (TextView) getActivity().findViewById(
-                R.id.kanjiText);
+        View v = getView();
+        TextView entryView = (TextView) v.findViewById(R.id.kanjiText);
         entryView.setText(entry.getKanji());
         entryView.setOnLongClickListener(this);
 
-        TextView radicalGlyphText = (TextView) getActivity().findViewById(
-                R.id.radicalGlyphText);
+        TextView radicalGlyphText = (TextView) v
+                .findViewById(R.id.radicalGlyphText);
         // radicalGlyphText.setTextSize(30f);
         Radicals radicals = Radicals.getInstance();
         Radical radical = radicals.getRadicalByNumber(entry.getRadicalNumber());
@@ -109,55 +121,55 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
             radicalGlyphText.setText(radical.getGlyph().substring(0, 1));
         }
 
-        TextView radicalNumberView = (TextView) getActivity().findViewById(
-                R.id.radicalNumberText);
+        TextView radicalNumberView = (TextView) v
+                .findViewById(R.id.radicalNumberText);
         radicalNumberView.setText(Integer.toString(entry.getRadicalNumber()));
 
-        TextView strokeCountView = (TextView) getActivity().findViewById(
-                R.id.strokeCountText);
+        TextView strokeCountView = (TextView) v
+                .findViewById(R.id.strokeCountText);
         strokeCountView.setText(Integer.toString(entry.getStrokeCount()));
 
-        Button sodButton = (Button) getActivity().findViewById(R.id.sod_button);
+        Button sodButton = (Button) v.findViewById(R.id.sod_button);
         sodButton.setOnClickListener(this);
         sodButton.setNextFocusDownId(R.id.compound_link_starting);
 
-        TextView compoundsLinkStarting = (TextView) getActivity().findViewById(
-                R.id.compound_link_starting);
+        TextView compoundsLinkStarting = (TextView) v
+                .findViewById(R.id.compound_link_starting);
         compoundsLinkStarting.setNextFocusDownId(R.id.compound_link_any);
         compoundsLinkStarting.setNextFocusUpId(R.id.sod_button);
         Intent intent = createCompoundSearchIntent(
                 SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_STARTING, false);
         makeClickable(compoundsLinkStarting, intent);
 
-        TextView compoundsLinkAny = (TextView) getActivity().findViewById(
-                R.id.compound_link_any);
+        TextView compoundsLinkAny = (TextView) v
+                .findViewById(R.id.compound_link_any);
         compoundsLinkAny.setNextFocusDownId(R.id.compound_link_common);
         compoundsLinkAny.setNextFocusUpId(R.id.compound_link_starting);
         intent = createCompoundSearchIntent(
                 SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_ANY, false);
         makeClickable(compoundsLinkAny, intent);
 
-        TextView compoundsLinkCommon = (TextView) getActivity().findViewById(
-                R.id.compound_link_common);
+        TextView compoundsLinkCommon = (TextView) v
+                .findViewById(R.id.compound_link_common);
         compoundsLinkCommon.setNextFocusUpId(R.id.compound_link_any);
         intent = createCompoundSearchIntent(
                 SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_NONE, true);
         makeClickable(compoundsLinkCommon, intent);
 
-        ScrollView meaningsScroll = (ScrollView) getActivity().findViewById(
-                R.id.meaningsScroll);
+        ScrollView meaningsScroll = (ScrollView) v
+                .findViewById(R.id.meaningsScroll);
         meaningsScroll.setNextFocusUpId(R.id.compound_link_common);
 
-        LinearLayout readingLayout = (LinearLayout) getActivity().findViewById(
-                R.id.readingLayout);
+        LinearLayout readingLayout = (LinearLayout) v
+                .findViewById(R.id.readingLayout);
 
         if (entry.getReading() != null) {
-            TextView onyomiView = (TextView) getActivity().findViewById(
-                    R.id.details_onyomi_text);
+            TextView onyomiView = (TextView) v
+                    .findViewById(R.id.details_onyomi_text);
             onyomiView.setText(entry.getOnyomi());
 
-            TextView kunyomiView = (TextView) getActivity().findViewById(
-                    R.id.details_kunyomi_text);
+            TextView kunyomiView = (TextView) v
+                    .findViewById(R.id.details_kunyomi_text);
             kunyomiView.setText(entry.getKunyomi());
         }
 
@@ -207,10 +219,9 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
             readingLayout.addView(layout);
         }
 
-        translationsLayout = (LinearLayout) getActivity().findViewById(
-                R.id.translations_layout);
-        codesLayout = (LinearLayout) getActivity().findViewById(
-                R.id.codes_layout);
+        translationsLayout = (LinearLayout) v
+                .findViewById(R.id.translations_layout);
+        codesLayout = (LinearLayout) v.findViewById(R.id.codes_layout);
 
         if (entry.getMeanings().isEmpty()) {
             TextView text = new TextView(getActivity(), null,
@@ -235,8 +246,7 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
         List<Pair<String, String>> codesData = createCodesData(entry);
         addCodesTable(codesLayout, codesData);
 
-        CheckBox starCb = (CheckBox) getActivity()
-                .findViewById(R.id.star_kanji);
+        CheckBox starCb = (CheckBox) v.findViewById(R.id.star_kanji);
         starCb.setOnCheckedChangeListener(null);
         starCb.setChecked(isFavorite);
         starCb.setOnCheckedChangeListener(this);
@@ -249,6 +259,13 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
                 false);
 
         return v;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(KanjiEntryDetail.EXTRA_KANJI_ENTRY, entry);
+        outState.putBoolean(KanjiEntryDetail.EXTRA_IS_FAVORITE, isFavorite);
     }
 
     private void addCodesTable(LinearLayout meaningsCodesLayout,
