@@ -1,42 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <style name="dict_list_heading">
+
+  <style name="list_item_base">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item>
+    <item name="android:singleLine">true</item>
+    <item name="android:ellipsize">end</item>
+    <item name="android:textColor">@color/white</item>
+  </style>
+  
+  <style name="dict_list_heading" parent="style/list_item_base">
     <item name="android:layout_marginLeft">5dp</item>
     <item name="android:layout_marginTop">3dp</item>
     <item name="android:layout_marginRight">5dp</item>
     <item name="android:layout_marginBottom">0dp</item>
-    <item name="android:singleLine">true</item>
-    <item name="android:ellipsize">end</item>
     <item name="android:textSize">20sp</item>
-    <item name="android:textColor">@color/white</item>
   </style>
 
-  <style name="dict_list_reading">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
+  <style name="dict_list_reading" parent="style/list_item_base">
     <item name="android:layout_marginLeft">5dp</item>
     <item name="android:layout_marginTop">2dp</item>
     <item name="android:layout_marginRight">3dp</item>
     <item name="android:layout_marginBottom">0dp</item>
-    <item name="android:singleLine">true</item>
-    <item name="android:ellipsize">end</item>
     <item name="android:textSize">18sp</item>
-    <item name="android:textColor">@color/white</item>
   </style>
 
-  <style name="dict_list_translation">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
+  <style name="dict_list_translation" parent="style/list_item_base">
     <item name="android:layout_marginLeft">5dp</item>
     <item name="android:layout_marginTop">2dp</item>
     <item name="android:layout_marginRight">3dp</item>
     <item name="android:layout_marginBottom">0dp</item>
-    <item name="android:singleLine">true</item>
-    <item name="android:ellipsize">end</item>
     <item name="android:textSize">16sp</item>
-    <item name="android:textColor">@color/white</item>
   </style>
 
   <style name="kanji_list_heading">
