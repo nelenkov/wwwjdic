@@ -113,7 +113,6 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         exampleSearchButton.setOnClickListener(this);
 
         exampleSearchKey = DictUtils.extractSearchKey(wwwjdicEntry);
-        //        disableExampleSearchIfSingleKanji();
     }
 
     @Override
@@ -135,12 +134,6 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
                 DictionaryResultListView.class);
         intent.putExtra(Constants.CRITERIA_KEY, criteria);
         return intent;
-    }
-
-    private void disableExampleSearchIfSingleKanji() {
-        if (exampleSearchKey.length() == 1) {
-            exampleSearchButton.setEnabled(false);
-        }
     }
 
     @Override
@@ -243,6 +236,10 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
     @Override
     protected void toggleJpTtsButtons(boolean show) {
         View v = getView();
+        // XXX -- called to early?
+        if (v == null) {
+            return;
+        }
         Button speakButton = (Button) v.findViewById(R.id.jp_speak_button);
         speakButton.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
 
