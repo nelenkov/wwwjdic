@@ -4,8 +4,6 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.List;
 
-import org.nick.wwwjdic.KanjiEntryDetail;
-import org.nick.wwwjdic.KanjiEntryDetailFragment;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.client.WwwjdicClient;
 import org.nick.wwwjdic.model.KanjiEntry;
@@ -13,11 +11,10 @@ import org.nick.wwwjdic.utils.LoaderBase;
 import org.nick.wwwjdic.utils.LoaderResult;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.SupportActivity;
 import android.support.v4.content.Loader;
 import android.text.ClipboardManager;
 import android.util.Log;
@@ -35,10 +32,13 @@ import android.widget.Toast;
 public class HkrCandidatesFragment extends ListFragment implements
         LoaderManager.LoaderCallbacks<LoaderResult<KanjiEntry>> {
 
+    interface HkrCandidateSelectedListener {
+        void onHkrCandidateSelected(KanjiEntry entry, int position);
+    }
+
     static class KanjiLoader extends LoaderBase<KanjiEntry> {
 
         private String kanji;
-
         private WwwjdicClient client;
 
         public KanjiLoader(Context context, String kanji) {
@@ -75,17 +75,20 @@ public class HkrCandidatesFragment extends ListFragment implements
     private static final String TAG = HkrCandidatesFragment.class
             .getSimpleName();
 
+    private static final String INDEX_KEY = "index";
+
     public static final String EXTRA_HKR_CANDIDATES = "org.nick.wwwjdic.hkrCandidates";
 
     private static final int MENU_ITEM_DETAILS = 0;
     private static final int MENU_ITEM_COPY = 1;
     private static final int MENU_ITEM_APPEND = 2;
 
-    private String[] candidates;
     protected ClipboardManager clipboard;
 
-    private boolean dualPane;
-    private int indexLoading = 0;
+    private String[] candidates;
+    private int index = 0;
+
+    private HkrCandidateSelectedListener candidateSelectedListener;
 
     public HkrCandidatesFragment() {
     }
@@ -103,25 +106,27 @@ public class HkrCandidatesFragment extends ListFragment implements
         getListView().setOnCreateContextMenuListener(this);
         getListView().setTextFilterEnabled(true);
 
-        String message = getResources().getString(R.string.candidates);
-        getActivity().setTitle(String.format(message, candidates.length));
+        getActivity().setTitle(
+                getResources()
+                        .getString(R.string.candidates, candidates.length));
 
         clipboard = (ClipboardManager) getActivity().getSystemService(
                 Context.CLIPBOARD_SERVICE);
 
-        View detailsFrame = getActivity().findViewById(R.id.details);
-        dualPane = detailsFrame != null
-                && detailsFrame.getVisibility() == View.VISIBLE;
-
-        Bundle args = new Bundle();
-        if (dualPane) {
-            String kanji = (String) getListAdapter().getItem(0);
-            args.putString("kanji", kanji);
+        if (savedInstanceState != null) {
+            index = savedInstanceState.getInt(INDEX_KEY, 0);
         }
 
-        getActivity().setProgressBarIndeterminateVisibility(Boolean.TRUE);
-        getLoaderManager().initLoader(0, args, this);
+        // just init don't try to load
+        getLoaderManager().initLoader(0, null, this);
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(INDEX_KEY, index);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -143,29 +148,35 @@ public class HkrCandidatesFragment extends ListFragment implements
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        String searchKey = candidates[position];
-        showDetails(searchKey, position);
+    public void onAttach(SupportActivity activity) {
+        super.onAttach(activity);
+        try {
+            candidateSelectedListener = (HkrCandidateSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnArticleSelectedListener");
+        }
     }
 
-    private void showDetails(String searchKey, int index) {
-        indexLoading = index;
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        loadDetails(candidates[position], position);
+    }
+
+    private void loadDetails(String searchKey, int position) {
+        index = position;
         Bundle args = new Bundle();
         args.putString("kanji", searchKey);
-        Loader<LoaderResult<KanjiEntry>> loader = getLoaderManager()
-                .restartLoader(0, args, this);
-        if (loader.isStarted()) {
-            getActivity().setProgressBarIndeterminateVisibility(Boolean.TRUE);
-        }
+        getActivity().setProgressBarIndeterminateVisibility(Boolean.TRUE);
+        getLoaderManager().restartLoader(0, args, this);
     }
 
     private void copy(String kanji) {
         clipboard.setText(kanji);
         String messageTemplate = getResources().getString(
                 R.string.copied_to_clipboard);
-        Toast t = Toast.makeText(getActivity(),
-                String.format(messageTemplate, kanji), Toast.LENGTH_SHORT);
-        t.show();
+        Toast.makeText(getActivity(), String.format(messageTemplate, kanji),
+                Toast.LENGTH_SHORT).show();
     }
 
     private void append(String kanji) {
@@ -175,9 +186,8 @@ public class HkrCandidatesFragment extends ListFragment implements
         clipboard.setText(clipboardText);
         String messageTemplate = getResources().getString(
                 R.string.appended_to_clipboard);
-        Toast t = Toast.makeText(getActivity(),
-                String.format(messageTemplate, kanji), Toast.LENGTH_SHORT);
-        t.show();
+        Toast.makeText(getActivity(), String.format(messageTemplate, kanji),
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -202,7 +212,7 @@ public class HkrCandidatesFragment extends ListFragment implements
         String kanji = candidates[info.position];
         switch (item.getItemId()) {
         case MENU_ITEM_DETAILS:
-            showDetails(kanji, info.position);
+            loadDetails(kanji, info.position);
             return true;
         case MENU_ITEM_COPY:
             copy(kanji);
@@ -230,66 +240,48 @@ public class HkrCandidatesFragment extends ListFragment implements
         getActivity().setProgressBarIndeterminateVisibility(Boolean.FALSE);
 
         if (result.isFailed()) {
-            String message = getResources().getString(R.string.error);
-            Exception ex = result.getError();
-            if (ex instanceof SocketTimeoutException
-                    || ex.getCause() instanceof SocketTimeoutException) {
-                message = getResources().getString(
-                        R.string.timeout_error_message);
-            } else if (ex instanceof SocketException
-                    || ex.getCause() instanceof SocketException) {
-                message = getResources().getString(
-                        R.string.socket_error_message);
-            } else {
-                message = getResources().getString(
-                        R.string.generic_error_message)
-                        + "(" + ex.getMessage() + ")";
-            }
-
+            String message = selectErrorMessage(result.getError());
             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 
             return;
         }
 
-        if (dualPane) {
-            if (result.getData() == null) {
-                return;
-            }
-            getListView().setItemChecked(indexLoading, true);
-
-            KanjiEntryDetailFragment details = (KanjiEntryDetailFragment) getFragmentManager()
-                    .findFragmentById(R.id.details);
-            KanjiEntry entry = result.getData();
-            if (details == null || details.getShownIndex() != indexLoading) {
-                details = KanjiEntryDetailFragment.newInstance(indexLoading,
-                        entry);
-
-                FragmentTransaction ft = getFragmentManager()
-                        .beginTransaction();
-
-                ft.replace(R.id.details, details);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.commitAllowingStateLoss();
-            }
-        } else {
-            if (result.getData() == null) {
-                return;
-            }
-
-            Bundle extras = new Bundle();
-            extras.putSerializable(KanjiEntryDetail.EXTRA_KANJI_ENTRY,
-                    result.getData());
-
-            Intent intent = new Intent(getActivity(), KanjiEntryDetail.class);
-            intent.putExtras(extras);
-
-            startActivity(intent);
+        if (result.getData() == null) {
+            return;
         }
+
+        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        getListView().setItemChecked(index, true);
+
+        candidateSelectedListener.onHkrCandidateSelected(result.getData(),
+                index);
+    }
+
+    private String selectErrorMessage(Exception ex) {
+        String message = getResources().getString(R.string.error);
+        if (ex instanceof SocketTimeoutException
+                || ex.getCause() instanceof SocketTimeoutException) {
+            message = getResources().getString(R.string.timeout_error_message);
+        } else if (ex instanceof SocketException
+                || ex.getCause() instanceof SocketException) {
+            message = getResources().getString(R.string.socket_error_message);
+        } else {
+            message = getResources().getString(R.string.generic_error_message)
+                    + "(" + ex.getMessage() + ")";
+        }
+        return message;
     }
 
     @Override
     public void onLoaderReset(Loader<LoaderResult<KanjiEntry>> loader) {
-        indexLoading = 0;
+    }
+
+    public void loadCurrentKanji() {
+        if (candidates == null || index >= candidates.length) {
+            return;
+        }
+
+        loadDetails(candidates[index], index);
     }
 
 }
