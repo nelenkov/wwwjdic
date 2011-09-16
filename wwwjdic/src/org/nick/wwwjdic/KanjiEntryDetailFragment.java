@@ -498,4 +498,8 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
         }
     }
 
+    public KanjiEntry getEntry() {
+        return entry;
+    }
+
 }

@@ -1,13 +1,22 @@
 package org.nick.wwwjdic.hkr;
 
 import org.nick.wwwjdic.ActionBarActivity;
+import org.nick.wwwjdic.KanjiEntryDetail;
+import org.nick.wwwjdic.KanjiEntryDetailFragment;
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.model.KanjiEntry;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.view.View;
 
-public class HkrCandidates extends ActionBarActivity {
+public class HkrCandidates extends ActionBarActivity implements
+        HkrCandidatesFragment.HkrCandidateSelectedListener {
 
     public static final String EXTRA_HKR_CANDIDATES = "org.nick.wwwjdic.hkrCandidates";
+
+    private boolean dualPane;
 
     public HkrCandidates() {
     }
@@ -20,7 +29,52 @@ public class HkrCandidates extends ActionBarActivity {
 
         setContentView(R.layout.hkr_candidates);
         setProgressBarIndeterminateVisibility(Boolean.FALSE);
+
+        View detailsFrame = findViewById(R.id.details);
+        dualPane = detailsFrame != null
+                && detailsFrame.getVisibility() == View.VISIBLE;
     }
 
+    @Override
+    public void onHkrCandidateSelected(KanjiEntry entry, int position) {
+        showKanjiDetails(entry, position);
+    }
+
+    private void showKanjiDetails(KanjiEntry entry, int position) {
+        if (dualPane) {
+            KanjiEntryDetailFragment details = (KanjiEntryDetailFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.details);
+            if (details == null
+                    || !details.getEntry().getKanji().equals(entry.getKanji())) {
+                details = KanjiEntryDetailFragment.newInstance(position, entry);
+
+                FragmentTransaction ft = getSupportFragmentManager()
+                        .beginTransaction();
+
+                ft.replace(R.id.details, details);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.commitAllowingStateLoss();
+            }
+        } else {
+            Bundle extras = new Bundle();
+            extras.putSerializable(KanjiEntryDetail.EXTRA_KANJI_ENTRY, entry);
+
+            Intent intent = new Intent(this, KanjiEntryDetail.class);
+            intent.putExtras(extras);
+
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (dualPane) {
+            HkrCandidatesFragment candidatesFragment = (HkrCandidatesFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.results_list);
+            candidatesFragment.loadCurrentKanji();
+        }
+    }
 
 }
