@@ -60,6 +60,10 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
         selectDictionary(savedInstanceState);
 
         Bundle extras = getArguments();
+        if (extras == null) {
+            extras = getActivity().getIntent().getExtras();
+        }
+
         if (extras != null) {
             String searchKey = extras.getString(Constants.SEARCH_TEXT_KEY);
             int searchType = extras.getInt(Constants.SEARCH_TYPE);
