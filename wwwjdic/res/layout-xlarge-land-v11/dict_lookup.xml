@@ -37,7 +37,20 @@
             style="@style/search_option"
             android:text="@string/romanized_jap" />
     </LinearLayout>
-    <Button android:id="@+id/translateButton" 
-        style="@style/search_button"
-        android:text="@string/search"/>
+    <LinearLayout  
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal">
+        <View android:layout_width="0px"
+            android:layout_weight="1"
+            android:layout_height="fill_parent" />
+        <Button android:id="@+id/translateButton" 
+            android:layout_width="0px"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:text="@string/search"/>
+         <View android:layout_width="0px"
+            android:layout_weight="1"
+            android:layout_height="fill_parent" />    
+    </LinearLayout>
 </LinearLayout>
