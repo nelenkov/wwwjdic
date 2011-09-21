@@ -5,6 +5,7 @@ import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.TabsPagerAdapter;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBar;
 import android.support.v4.view.ViewPager;
@@ -15,6 +16,8 @@ public class FavoritesAndHistory extends ActionBarActivity {
     public static final String EXTRA_FILTER_TYPE = "org.nick.wwwjdic.filterType";
 
     public static final String EXTRA_SELECTED_TAB_IDX = "org.nick.wwwjdic.favoritesAndHistorySelectedTabIdx";
+
+    private static final boolean IS_HONEYCOMB = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 
     private ViewPager viewPager;
     private TabsPagerAdapter tabsAdapter;
@@ -85,6 +88,9 @@ public class FavoritesAndHistory extends ActionBarActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        getSupportActionBar().setDisplayShowHomeEnabled(IS_HONEYCOMB);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
 }

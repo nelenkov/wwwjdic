@@ -6,25 +6,16 @@ import java.util.concurrent.RejectedExecutionException;
 
 import org.nick.wwwjdic.history.HistoryBase;
 import org.nick.wwwjdic.history.HistoryDbHelper;
-import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
-import org.nick.wwwjdic.krad.KradChart;
 import org.nick.wwwjdic.model.Radical;
 import org.nick.wwwjdic.model.SearchCriteria;
-import org.nick.wwwjdic.ocr.OcrActivity;
 import org.nick.wwwjdic.utils.Analytics;
-import org.nick.wwwjdic.utils.IntentSpan;
 import org.nick.wwwjdic.utils.StringUtils;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.method.MovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -93,8 +84,6 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
         dbHelper = HistoryDbHelper.getInstance(getActivity());
 
         setupFavoritesHistoryFragments(HistoryBase.FILTER_KANJI);
-
-        setupClickableLinks();
     }
 
     @Override
@@ -115,46 +104,6 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
         }
     }
 
-    private void setupClickableLinks() {
-        View historyView = getView().findViewById(R.id.kanji_history_summary);
-        if (historyView != null) {
-            historyView.setNextFocusDownId(R.id.hwrSearchLink);
-        }
-
-        TextView textView = (TextView) getView().findViewById(
-                R.id.hwrSearchLink);
-        makeClickable(textView, new Intent(getActivity(),
-                RecognizeKanjiActivity.class));
-        textView.setNextFocusUpId(R.id.kanji_history_summary);
-        textView.setNextFocusDownId(R.id.ocrSearchLink);
-
-        textView = (TextView) getView().findViewById(R.id.ocrSearchLink);
-        makeClickable(textView, new Intent(getActivity(), OcrActivity.class));
-        textView.setNextFocusUpId(R.id.hwrSearchLink);
-        textView.setNextFocusDownId(R.id.multiRadicalSearchLink);
-
-        textView = (TextView) getView().findViewById(
-                R.id.multiRadicalSearchLink);
-        makeClickable(textView, new Intent(getActivity(), KradChart.class));
-        textView.setNextFocusUpId(R.id.ocrSearchLink);
-    }
-
-    private void makeClickable(TextView textView, Intent intent) {
-        String text = textView.getText().toString();
-        SpannableString str = new SpannableString(text);
-        str.setSpan(new IntentSpan(getActivity(), intent), 0, text.length(),
-                Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-
-        textView.setText(str);
-        textView.setLinkTextColor(Color.WHITE);
-        MovementMethod m = textView.getMovementMethod();
-        if ((m == null) || !(m instanceof LinkMovementMethod)) {
-            if (textView.getLinksClickable()) {
-                textView.setMovementMethod(LinkMovementMethod.getInstance());
-            }
-        }
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -163,8 +112,6 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
     @Override
     public void onResume() {
         super.onResume();
-
-        setupClickableLinks();
     }
 
     private void setupListeners() {
