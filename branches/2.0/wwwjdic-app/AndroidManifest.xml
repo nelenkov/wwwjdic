@@ -49,9 +49,11 @@
             android:theme="@style/Theme.WwwjdicAb"/>
         <activity android:name="org.nick.wwwjdic.WwwjdicPreferences"/>
         <activity android:name="org.nick.wwwjdic.ocr.OcrActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard"/>
+            android:configChanges="orientation|keyboardHidden|keyboard" 
+            android:hardwareAccelerated="false"/>
         <activity android:name="org.nick.wwwjdic.ocr.crop.CropImage"
-            android:configChanges="orientation|keyboardHidden|keyboard"/>
+            android:configChanges="orientation|keyboardHidden|keyboard" 
+            android:hardwareAccelerated="false"/>
         <activity android:name="org.nick.wwwjdic.hkr.RecognizeKanjiActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"
             android:exported="false" 
