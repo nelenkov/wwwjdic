@@ -39,14 +39,14 @@
                 android:layout_centerHorizontal="true">
             <Button
                     android:id="@+id/save"
-                    android:layout_width="100dip"
+                    android:layout_width="120dip"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:text="@string/crop_save_text"
             />
             <Button
                     android:id="@+id/discard"
-                    android:layout_width="100dip"
+                    android:layout_width="120dip"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:text="@string/crop_discard_text"
