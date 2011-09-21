@@ -340,6 +340,8 @@ public class Wwwjdic extends ActionBarActivity {
         super.onStart();
 
         Analytics.startSession(this);
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     @Override
