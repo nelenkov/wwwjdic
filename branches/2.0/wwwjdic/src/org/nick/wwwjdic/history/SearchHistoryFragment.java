@@ -103,6 +103,10 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     protected void lookupCurrentItem() {
         SearchCriteria criteria = getCurrentCriteria();
 
+        lookup(criteria);
+    }
+
+    private void lookup(SearchCriteria criteria) {
         Intent intent = null;
         switch (criteria.getType()) {
         case SearchCriteria.CRITERIA_TYPE_DICT:
@@ -126,6 +130,17 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     }
 
     @Override
+    protected void lookup(int position) {
+        lookup(getCriteria(position));
+    }
+
+    private SearchCriteria getCriteria(int position) {
+        Cursor c = (Cursor) getListView().getAdapter().getItem(position);
+
+        return HistoryDbHelper.createCriteria(c);
+    }
+
+    @Override
     protected void deleteCurrentItem() {
         Cursor c = getCursor();
         int idx = c.getColumnIndex("_id");
@@ -136,11 +151,29 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     }
 
     @Override
+    protected void delete(int position) {
+        SearchCriteria criteria = getCriteria(position);
+        db.deleteHistoryItem(criteria.getId());
+
+        refresh();
+    }
+
+    @Override
     protected void copyCurrentItem() {
         SearchCriteria criteria = getCurrentCriteria();
+        copy(criteria);
+    }
+
+    @SuppressWarnings("deprecation")
+    private void copy(SearchCriteria criteria) {
         clipboardManager.setText(criteria.getQueryString());
 
         showCopiedToast(criteria.getQueryString());
+    }
+
+    @Override
+    protected void copy(int position) {
+        copy(getCriteria(position));
     }
 
     private SearchCriteria getCurrentCriteria() {
@@ -346,11 +379,11 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
         adapter.swapCursor(data.getData());
 
         // The list should now be shown.
-        //        if (isResumed()) {
-        //            setListShown(true);
-        //        } else {
-        //            setListShownNoAnimation(true);
-        //        }
+        // if (isResumed()) {
+        // setListShown(true);
+        // } else {
+        // setListShownNoAnimation(true);
+        // }
     }
 
     @Override

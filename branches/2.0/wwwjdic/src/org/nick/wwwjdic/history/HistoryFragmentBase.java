@@ -18,11 +18,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.view.ActionMode;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.support.v4.widget.CursorAdapter;
@@ -35,13 +37,15 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import au.com.bytecode.opencsv.CSVReader;
 
 public abstract class HistoryFragmentBase extends ListFragment implements
-        LoaderManager.LoaderCallbacks<LoaderResult<Cursor>> {
+        LoaderManager.LoaderCallbacks<LoaderResult<Cursor>>,
+        OnItemLongClickListener {
 
     private static final String TAG = HistoryFragmentBase.class.getSimpleName();
 
@@ -55,13 +59,18 @@ public abstract class HistoryFragmentBase extends ListFragment implements
     private static final byte[] UTF8_BOM = { (byte) 0xef, (byte) 0xbb,
             (byte) 0xbf };
 
+    private static final boolean IS_HONEYCOMB = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+
     protected HistoryDbHelper db;
 
+    @SuppressWarnings("deprecation")
     protected ClipboardManager clipboardManager;
 
     protected int selectedFilter = -1;
 
     private boolean selected;
+
+    private ActionMode currentActionMode;
 
     protected HistoryFragmentBase() {
     }
@@ -86,6 +95,9 @@ public abstract class HistoryFragmentBase extends ListFragment implements
         }
 
         setupAdapter();
+
+        getListView().setOnItemLongClickListener(this);
+        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }
 
     @Override
@@ -121,10 +133,13 @@ public abstract class HistoryFragmentBase extends ListFragment implements
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        getListView().setItemChecked(position, false);
         lookupCurrentItem();
     }
 
     protected abstract void lookupCurrentItem();
+
+    protected abstract void lookup(int position);
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -323,6 +338,11 @@ public abstract class HistoryFragmentBase extends ListFragment implements
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view,
             ContextMenuInfo menuInfo) {
+        if (IS_HONEYCOMB) {
+            // we use action modes on HC
+            return;
+        }
+
         AdapterView.AdapterContextMenuInfo info;
         try {
             info = (AdapterView.AdapterContextMenuInfo) menuInfo;
@@ -375,7 +395,11 @@ public abstract class HistoryFragmentBase extends ListFragment implements
 
     protected abstract void copyCurrentItem();
 
+    protected abstract void copy(int position);
+
     protected abstract void deleteCurrentItem();
+
+    protected abstract void delete(int position);
 
     protected Cursor getCursor() {
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
@@ -495,5 +519,67 @@ public abstract class HistoryFragmentBase extends ListFragment implements
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view,
+            int position, long id) {
+        if (!IS_HONEYCOMB) {
+            // not supported on pre-HC
+            return false;
+        }
+
+        if (currentActionMode != null) {
+            return false;
+        }
+
+        getListView().setItemChecked(position, true);
+        currentActionMode = getSupportActivity().startActionMode(
+                new ContextCallback(position));
+
+        return true;
+    }
+
+    class ContextCallback implements ActionMode.Callback {
+
+        private int position;
+
+        ContextCallback(int position) {
+            this.position = position;
+        }
+
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.history_favorites_context, menu);
+            return true;
+        }
+
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        public boolean onActionItemClicked(ActionMode actionMode,
+                MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+            case R.id.menu_context_history_lookup:
+                lookup(position);
+                actionMode.finish();
+                return true;
+            case R.id.menu_context_history_copy:
+                copy(position);
+                actionMode.finish();
+                return true;
+            case R.id.menu_context_history_delete:
+                delete(position);
+                actionMode.finish();
+                return true;
+            }
+            return false;
+        }
+
+        public void onDestroyActionMode(ActionMode actionMode) {
+            getListView().setItemChecked(position, false);
+            currentActionMode = null;
+        }
+    };
 
 }
