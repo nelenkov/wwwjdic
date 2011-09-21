@@ -75,21 +75,12 @@ public class FavoritesAndHistory extends ActionBarActivity {
                 .getSelectedNavigationIndex());
     }
 
-    // @Override
-    // public void onTabChanged(String tabId) {
-    // // XXX
-    // // HistoryBase history = (HistoryBase) getLocalActivityManager()
-    // // .getActivity(tabId);
-    // // if (history != null) {
-    // // history.refresh();
-    // // }
-    // }
-
     @Override
     protected void onStart() {
         super.onStart();
 
         getSupportActionBar().setDisplayShowHomeEnabled(IS_HONEYCOMB);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 

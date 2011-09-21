@@ -83,7 +83,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         setListAdapter(adapter);
 
         getActivity().setProgressBarIndeterminateVisibility(true);
-        //        LoaderManager.enableDebugLogging(true);
+        // LoaderManager.enableDebugLogging(true);
         getLoaderManager().initLoader(0, null, this);
     }
 
@@ -137,6 +137,17 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     }
 
     @Override
+    protected void delete(int position) {
+        delete(getEntry(position));
+    }
+
+    private void delete(WwwjdicEntry entry) {
+        db.deleteFavorite(entry.getId());
+        refresh();
+
+    }
+
+    @Override
     public void onStatusChanged(boolean isFavorite, WwwjdicEntry entry) {
         if (isFavorite) {
             db.addFavorite(entry);
@@ -149,7 +160,17 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     @Override
     protected void lookupCurrentItem() {
         WwwjdicEntry entry = getCurrentEntry();
+        lookup(entry);
+    }
 
+    @Override
+    protected void lookup(int position) {
+        WwwjdicEntry entry = getEntry(position);
+
+        lookup(entry);
+    }
+
+    private void lookup(WwwjdicEntry entry) {
         Intent intent = null;
         if (entry.isKanji()) {
             intent = new Intent(getActivity(), KanjiEntryDetail.class);
@@ -166,9 +187,25 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         startActivity(intent);
     }
 
+    private WwwjdicEntry getEntry(int position) {
+        Cursor c = (Cursor) getListView().getAdapter().getItem(position);
+
+        return HistoryDbHelper.createWwwjdicEntry(c);
+    }
+
     @Override
     protected void copyCurrentItem() {
         WwwjdicEntry entry = getCurrentEntry();
+        copy(entry);
+    }
+
+    @Override
+    protected void copy(int position) {
+        copy(getEntry(position));
+    }
+
+    @SuppressWarnings("deprecation")
+    private void copy(WwwjdicEntry entry) {
         clipboardManager.setText(entry.getHeadword());
 
         showCopiedToast(entry.getHeadword());
@@ -723,11 +760,11 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         adapter.swapCursor(data.getData());
 
         // The list should now be shown.
-        //        if (isResumed()) {
-        //            setListShown(true);
-        //        } else {
-        //            setListShownNoAnimation(true);
-        //        }
+        // if (isResumed()) {
+        // setListShown(true);
+        // } else {
+        // setListShownNoAnimation(true);
+        // }
     }
 
     @Override
@@ -737,4 +774,5 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(null);
     }
+
 }
