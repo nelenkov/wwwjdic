@@ -31,7 +31,7 @@
                 android:prompt="@string/select_mode"/>
             <TextView android:id="@+id/max_examples_label"
                 style="@style/search_option" 
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="20dp"
                 android:text="@string/max_num_examples"/>
             <EditText android:id="@+id/maxExamplesInput"
                 android:layout_width="wrap_content"  
@@ -51,8 +51,21 @@
                 android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content"/>    
         </LinearLayout>
-        <Button android:id="@+id/exampleSearchButton"
-            style="@style/search_button"
-            android:text="@string/search"/>
+        <LinearLayout  
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" 
+            android:orientation="horizontal">
+            <View android:layout_width="0px"
+                android:layout_weight="1"
+                android:layout_height="fill_parent" />
+            <Button android:id="@+id/exampleSearchButton"
+                android:layout_width="0px"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:text="@string/search"/>
+            <View android:layout_width="0px"
+                android:layout_weight="1"
+                android:layout_height="fill_parent" />
+        </LinearLayout> 
     </LinearLayout>
 </ScrollView>
