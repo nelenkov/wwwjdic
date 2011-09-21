@@ -18,4 +18,6 @@
     <dimen name="kanji_compound_link_size">24sp</dimen>
     
     <dimen name="search_option_text_size">16sp</dimen>
+    
+    <dimen name="favorites_hist_margin">40dp</dimen>
 </resources>

@@ -6,7 +6,9 @@
     <ListView android:id="@android:id/list"
         android:layout_width="fill_parent" 
         android:layout_height="fill_parent"
-        android:fastScrollEnabled="true" />
+        android:fastScrollEnabled="true" 
+        android:layout_marginLeft="@dimen/favorites_hist_margin"
+        android:layout_marginRight="@dimen/favorites_hist_margin"/>
     <TextView android:id="@android:id/empty"
         android:layout_width="fill_parent" 
         android:layout_height="fill_parent"

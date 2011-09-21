@@ -6,7 +6,7 @@
     android:layout_height="fill_parent" 
     android:padding="15dip"
     android:layout_gravity="top" 
-    android:minHeight="200px">
+    android:minHeight="200dp">
     <EditText android:id="@+id/inputText" 
         style="@style/search_input"
         android:hint="@string/enter_eng_or_jap" 

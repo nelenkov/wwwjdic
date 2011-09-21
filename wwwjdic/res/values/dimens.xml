@@ -21,4 +21,6 @@
     <dimen name="kanji_compound_link_size">14sp</dimen>
     
     <dimen name="search_option_text_size">12sp</dimen>
+    
+    <dimen name="favorites_hist_margin">0dp</dimen>
 </resources>

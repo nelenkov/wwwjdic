@@ -86,49 +86,5 @@
                 android:layout_weight="1"
                 android:layout_height="fill_parent" />
         </LinearLayout>   
-        <TextView android:id="@+id/extraSearchLabel" 
-            android:layout_width="fill_parent"
-             android:layout_height="wrap_content"
-             android:layout_marginTop="5dp"
-             android:layout_marginBottom="5dp" 
-             android:text="@string/kanji_extra_search"
-             android:textSize="18sp" 
-             android:textColor="#FFFF"
-             android:paddingLeft="5dp" 
-             android:gravity="left"/>   
-        <LinearLayout android:id="@+id/kanjiSearchLayout" 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" 
-            android:orientation="horizontal"
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp" 
-            android:gravity="center" 
-            android:layout_gravity="center">
-        <TextView android:id="@+id/hwrSearchLink" 
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" 
-            android:text="@string/hwr_search"
-            android:textSize="16sp"  
-            android:textColor="#FFFF" 
-            android:gravity="left" 
-            android:layout_gravity="center" />
-        <TextView android:id="@+id/ocrSearchLink" 
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" 
-            android:text="@string/ocr_search" 
-            android:textSize="16sp"  
-            android:textColor="#FFFF" 
-            android:gravity="center"/>
-        <TextView android:id="@+id/multiRadicalSearchLink" 
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" 
-            android:text="@string/multi_radical_search" 
-            android:textSize="16sp"  
-            android:textColor="#FFFF" 
-            android:gravity="left"/>
-         </LinearLayout>     
     </LinearLayout>
 </ScrollView>

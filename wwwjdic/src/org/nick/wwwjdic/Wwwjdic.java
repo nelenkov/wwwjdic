@@ -14,6 +14,7 @@ import org.nick.wwwjdic.history.HistoryBase;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.history.HistoryFragmentBase;
 import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
+import org.nick.wwwjdic.krad.KradChart;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.ocr.OcrActivity;
 import org.nick.wwwjdic.utils.Analytics;
@@ -307,6 +308,11 @@ public class Wwwjdic extends ActionBarActivity {
             return true;
         case R.id.menu_favorites_history:
             intent = new Intent(this, FavoritesAndHistory.class);
+
+            startActivity(intent);
+            return true;
+        case R.id.menu_multi_radical:
+            intent = new Intent(this, KradChart.class);
 
             startActivity(intent);
             return true;
