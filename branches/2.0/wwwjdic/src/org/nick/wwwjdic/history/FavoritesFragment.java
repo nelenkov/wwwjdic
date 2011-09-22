@@ -127,16 +127,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     }
 
     @Override
-    protected void deleteCurrentItem() {
-        Cursor c = getCursor();
-        int idx = c.getColumnIndex("_id");
-        int id = c.getInt(idx);
-        db.deleteFavorite(id);
-
-        refresh();
-    }
-
-    @Override
     protected void delete(int position) {
         delete(getEntry(position));
     }
@@ -155,12 +145,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         } else {
             db.deleteFavorite(entry.getId());
         }
-    }
-
-    @Override
-    protected void lookupCurrentItem() {
-        WwwjdicEntry entry = getCurrentEntry();
-        lookup(entry);
     }
 
     @Override
@@ -194,12 +178,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     }
 
     @Override
-    protected void copyCurrentItem() {
-        WwwjdicEntry entry = getCurrentEntry();
-        copy(entry);
-    }
-
-    @Override
     protected void copy(int position) {
         copy(getEntry(position));
     }
@@ -209,12 +187,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         clipboardManager.setText(entry.getHeadword());
 
         showCopiedToast(entry.getHeadword());
-    }
-
-    private WwwjdicEntry getCurrentEntry() {
-        Cursor c = getCursor();
-        WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
-        return entry;
     }
 
     @Override

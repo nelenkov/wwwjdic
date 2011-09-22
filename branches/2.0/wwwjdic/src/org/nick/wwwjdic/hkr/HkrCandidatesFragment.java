@@ -29,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+@SuppressWarnings("deprecation")
 public class HkrCandidatesFragment extends ListFragment implements
         LoaderManager.LoaderCallbacks<LoaderResult<KanjiEntry>> {
 

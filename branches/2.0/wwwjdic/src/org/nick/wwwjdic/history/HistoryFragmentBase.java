@@ -37,12 +37,14 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import au.com.bytecode.opencsv.CSVReader;
 
+@SuppressWarnings("deprecation")
 public abstract class HistoryFragmentBase extends ListFragment implements
         LoaderManager.LoaderCallbacks<LoaderResult<Cursor>>,
         OnItemLongClickListener {
@@ -63,7 +65,6 @@ public abstract class HistoryFragmentBase extends ListFragment implements
 
     protected HistoryDbHelper db;
 
-    @SuppressWarnings("deprecation")
     protected ClipboardManager clipboardManager;
 
     protected int selectedFilter = -1;
@@ -134,10 +135,8 @@ public abstract class HistoryFragmentBase extends ListFragment implements
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         getListView().setItemChecked(position, false);
-        lookupCurrentItem();
+        lookup(position);
     }
-
-    protected abstract void lookupCurrentItem();
 
     protected abstract void lookup(int position);
 
@@ -378,26 +377,25 @@ public abstract class HistoryFragmentBase extends ListFragment implements
             return super.onContextItemSelected(item);
         }
 
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+                .getMenuInfo();
+        int position = info.position;
         switch (item.getItemId()) {
         case R.id.menu_context_history_lookup:
-            lookupCurrentItem();
+            lookup(position);
             return true;
         case R.id.menu_context_history_copy:
-            copyCurrentItem();
+            copy(position);
             return true;
         case R.id.menu_context_history_delete:
-            deleteCurrentItem();
+            delete(position);
             return true;
         }
 
         return false;
     }
 
-    protected abstract void copyCurrentItem();
-
     protected abstract void copy(int position);
-
-    protected abstract void deleteCurrentItem();
 
     protected abstract void delete(int position);
 
