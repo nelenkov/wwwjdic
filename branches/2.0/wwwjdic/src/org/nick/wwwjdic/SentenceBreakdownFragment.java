@@ -2,21 +2,28 @@ package org.nick.wwwjdic;
 
 import java.util.List;
 
+import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.model.SentenceBreakdownEntry;
 import org.nick.wwwjdic.model.WwwjdicQuery;
 import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.Menu;
+import android.support.v4.view.MenuItem;
+import android.text.ClipboardManager;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+@SuppressWarnings("deprecation")
 public class SentenceBreakdownFragment extends
         ResultListFragmentBase<SentenceBreakdownEntry> {
 
@@ -105,6 +112,8 @@ public class SentenceBreakdownFragment extends
     private static final int HILIGHT_COLOR1 = 0xff427ad7;
     private static final int HILIGHT_COLOR2 = 0xfff97600;
 
+    private ClipboardManager clipboardManager;
+
     public static SentenceBreakdownFragment newInstance(int index,
             String senteceStr, String sentenceTranslation) {
         SentenceBreakdownFragment f = new SentenceBreakdownFragment();
@@ -121,6 +130,7 @@ public class SentenceBreakdownFragment extends
 
     public SentenceBreakdownFragment() {
         setRetainInstance(false);
+        setHasOptionsMenu(true);
     }
 
     public int getShownIndex() {
@@ -131,6 +141,8 @@ public class SentenceBreakdownFragment extends
     public void onCreate(Bundle state) {
         super.onCreate(state);
         setRetainInstance(false);
+        clipboardManager = (ClipboardManager) getActivity().getSystemService(
+                Context.CLIPBOARD_SERVICE);
     }
 
     @Override
@@ -186,6 +198,46 @@ public class SentenceBreakdownFragment extends
         englishSentenceText = (TextView) v.findViewById(R.id.englishSentence);
 
         return v;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.example_breakdown_context, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.menu_context_example_copy_jp:
+            copyJapanese();
+            return true;
+        case R.id.menu_context_example_copy_eng:
+            copyEnglish();
+            return true;
+        case R.id.menu_context_example_lookup_kanji:
+            lookupAllKanji();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void copyEnglish() {
+        if (sentenceTranslation != null) {
+            clipboardManager.setText(sentenceTranslation);
+        }
+    }
+
+    private void copyJapanese() {
+        clipboardManager.setText(sentenceStr);
+    }
+
+    private void lookupAllKanji() {
+        SearchCriteria criteria = SearchCriteria
+                .createForKanjiOrReading(sentenceStr);
+        Intent intent = new Intent(getActivity(), KanjiResultListView.class);
+        intent.putExtra(Constants.CRITERIA_KEY, criteria);
+        startActivity(intent);
     }
 
     private void markString(SpannableString spannable, String term) {
