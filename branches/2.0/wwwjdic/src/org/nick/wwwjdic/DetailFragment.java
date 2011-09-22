@@ -40,6 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressWarnings("deprecation")
 public abstract class DetailFragment extends Fragment implements
         OnCheckedChangeListener, OnLongClickListener,
         TextToSpeech.OnInitListener {
@@ -105,17 +106,9 @@ public abstract class DetailFragment extends Fragment implements
 
     @Override
     public boolean onLongClick(View v) {
-        ClipboardManager cm = (ClipboardManager) getActivity()
-                .getSystemService(Context.CLIPBOARD_SERVICE);
-        cm.setText(wwwjdicEntry.getHeadword());
-        String messageTemplate = getResources().getString(
-                R.string.copied_to_clipboard);
-        Toast t = Toast.makeText(getActivity(),
-                String.format(messageTemplate, wwwjdicEntry.getHeadword()),
-                Toast.LENGTH_SHORT);
-        t.show();
+        copy();
 
-        return false;
+        return true;
     }
 
     protected abstract void setHomeActivityExtras(Intent homeActivityIntent);
@@ -164,7 +157,6 @@ public abstract class DetailFragment extends Fragment implements
 
             toggleJpTtsButtons(true);
         }
-
 
         if (tts != null) {
             Locale locale = getSpeechLocale();
@@ -307,5 +299,16 @@ public abstract class DetailFragment extends Fragment implements
                         });
 
         return builder.create();
+    }
+
+    protected void copy() {
+        ClipboardManager cm = (ClipboardManager) getActivity()
+                .getSystemService(Context.CLIPBOARD_SERVICE);
+        cm.setText(wwwjdicEntry.getHeadword());
+        String messageTemplate = getResources().getString(
+                R.string.copied_to_clipboard);
+        Toast.makeText(getActivity(),
+                String.format(messageTemplate, wwwjdicEntry.getHeadword()),
+                Toast.LENGTH_SHORT).show();
     }
 }
