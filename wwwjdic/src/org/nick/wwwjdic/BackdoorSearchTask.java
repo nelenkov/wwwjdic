@@ -26,6 +26,8 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
 
     protected static final String PRE_END_TAG = "</pre>";
 
+    protected static final String FONT_TAG = "<font";
+
     public BackdoorSearchTask(String url, int timeoutSeconds,
             ResultListView<T> resultListView, SearchCriteria criteria) {
         super(url, timeoutSeconds, resultListView, criteria);
@@ -39,6 +41,10 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
         String[] lines = html.split("\n");
         for (String line : lines) {
             if (StringUtils.isEmpty(line)) {
+                continue;
+            }
+
+            if (line.startsWith(FONT_TAG)) {
                 continue;
             }
 
