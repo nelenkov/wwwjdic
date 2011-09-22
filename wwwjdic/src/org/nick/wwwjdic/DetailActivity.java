@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.ClipboardManager;
 import android.widget.Toast;
 
+@SuppressWarnings("deprecation")
 public abstract class DetailActivity extends ActionBarActivity {
 
     public static final String EXTRA_IS_FAVORITE = "org.nick.wwwjdic.IS_FAVORITE";

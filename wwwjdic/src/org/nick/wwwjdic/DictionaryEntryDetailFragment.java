@@ -17,8 +17,11 @@ import org.nick.wwwjdic.utils.StringUtils;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.support.v4.view.Menu;
+import android.support.v4.view.MenuItem;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -42,6 +45,10 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
 
     private DictionaryEntry entry;
     private String exampleSearchKey;
+
+    public DictionaryEntryDetailFragment() {
+        setHasOptionsMenu(true);
+    }
 
     public static DictionaryEntryDetailFragment newInstance(int index,
             DictionaryEntry entry) {
@@ -128,6 +135,26 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         View v = inflater.inflate(R.layout.entry_details, container, false);
 
         return v;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.dict_detail, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.menu_dict_detail_lookup_kanji:
+            Activities.lookupKanji(getActivity(), db,
+                    wwwjdicEntry.getHeadword());
+            return true;
+        case R.id.menu_dict_detail_copy:
+            copy();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private Intent createCrossRefIntent(String word) {

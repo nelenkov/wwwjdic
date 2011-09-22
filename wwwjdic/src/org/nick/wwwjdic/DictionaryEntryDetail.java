@@ -8,9 +8,7 @@ import org.nick.wwwjdic.model.DictionaryEntry;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
-import android.view.MenuInflater;
 
 public class DictionaryEntryDetail extends DetailActivity {
 
@@ -45,14 +43,6 @@ public class DictionaryEntryDetail extends DetailActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.dict_detail, menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
@@ -63,12 +53,6 @@ public class DictionaryEntryDetail extends DetailActivity {
                     | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             // setHomeActivityExtras(intent);
             startActivity(intent);
-            return true;
-        case R.id.menu_dict_detail_lookup_kanji:
-            Activities.lookupKanji(this, db, wwwjdicEntry.getHeadword());
-            return true;
-        case R.id.menu_dict_detail_copy:
-            copy();
             return true;
         default:
             // do nothing

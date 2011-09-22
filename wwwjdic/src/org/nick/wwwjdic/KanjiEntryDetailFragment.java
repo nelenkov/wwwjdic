@@ -23,11 +23,14 @@ import org.nick.wwwjdic.utils.StringUtils;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.support.v4.view.Menu;
+import android.support.v4.view.MenuItem;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -56,6 +59,10 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
     private LinearLayout codesLayout;
 
     private KanjiEntry entry;
+
+    public KanjiEntryDetailFragment() {
+        setHasOptionsMenu(true);
+    }
 
     public static KanjiEntryDetailFragment newInstance(int index,
             KanjiEntry entry) {
@@ -267,6 +274,22 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
                 false);
 
         return v;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.kanji_detail, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.menu_kanji_detail_copy:
+            copy();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
