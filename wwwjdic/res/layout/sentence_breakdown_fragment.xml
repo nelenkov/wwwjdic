@@ -6,13 +6,13 @@
     <TextView android:id="@+id/sentence" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" 
-        android:textAppearance="?android:attr/textAppearanceLarge" 
-        android:textColor="@color/white" />
+        android:textColor="@color/white" 
+        android:textSize="@dimen/details_heading_size"/>
     <TextView android:id="@+id/englishSentence"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="fill_parent" 
         android:layout_height="wrap_content" 
-        android:layout_below="@id/sentence" />    
+        android:layout_below="@id/sentence" 
+        android:textSize="@dimen/details_reading_size"/>    
     <TextView android:id="@+id/breakdown_text" 
         style="@style/details_separator"
         android:text="@string/sentence_words"
