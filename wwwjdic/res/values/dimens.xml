@@ -23,4 +23,5 @@
     <dimen name="search_option_text_size">12sp</dimen>
     
     <dimen name="favorites_hist_margin">0dp</dimen>
+    <dimen name="favorites_hist_pager_margin">0dp</dimen>
 </resources>
