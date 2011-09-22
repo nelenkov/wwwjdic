@@ -21,7 +21,8 @@
         android:background="@android:drawable/ic_lock_silent_mode_off"
         android:gravity="center_vertical"
         android:layout_gravity="center_vertical" 
-        android:paddingRight="4dp"
+        android:padding="4dp"
+        android:layout_marginRight="2dp"
         android:visibility="invisible"/>
 </LinearLayout>
 
