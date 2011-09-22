@@ -272,7 +272,8 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
                         return;
                     }
 
-                    pronounce(entry.getReading());
+                    pronounce(entry.getReading() != null ? entry.getReading()
+                            : entry.getHeadword());
                 }
             });
         }
