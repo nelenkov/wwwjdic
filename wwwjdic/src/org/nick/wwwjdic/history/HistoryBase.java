@@ -33,6 +33,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import au.com.bytecode.opencsv.CSVReader;
 
+@SuppressWarnings("deprecation")
 public abstract class HistoryBase extends ListActivity {
 
     private static final int IMPORT_ITEM_IDX = 0;

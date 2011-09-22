@@ -50,7 +50,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     @Override
     protected void deleteAll() {
         new AsyncTask<Void, Void, Boolean>() {
-            Exception exception;
 
             @Override
             protected void onPreExecute() {
@@ -78,7 +77,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                     return true;
                 } catch (Exception e) {
                     Log.e(TAG, "Error deleting history", e);
-                    exception = e;
 
                     return false;
                 } finally {
@@ -97,13 +95,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     @Override
     protected int getContentView() {
         return R.layout.search_history_fragment;
-    }
-
-    @Override
-    protected void lookupCurrentItem() {
-        SearchCriteria criteria = getCurrentCriteria();
-
-        lookup(criteria);
     }
 
     private void lookup(SearchCriteria criteria) {
@@ -141,27 +132,11 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     }
 
     @Override
-    protected void deleteCurrentItem() {
-        Cursor c = getCursor();
-        int idx = c.getColumnIndex("_id");
-        int id = c.getInt(idx);
-        db.deleteHistoryItem(id);
-
-        refresh();
-    }
-
-    @Override
     protected void delete(int position) {
         SearchCriteria criteria = getCriteria(position);
         db.deleteHistoryItem(criteria.getId());
 
         refresh();
-    }
-
-    @Override
-    protected void copyCurrentItem() {
-        SearchCriteria criteria = getCurrentCriteria();
-        copy(criteria);
     }
 
     @SuppressWarnings("deprecation")
@@ -174,12 +149,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     @Override
     protected void copy(int position) {
         copy(getCriteria(position));
-    }
-
-    private SearchCriteria getCurrentCriteria() {
-        Cursor c = getCursor();
-        SearchCriteria criteria = HistoryDbHelper.createCriteria(c);
-        return criteria;
     }
 
     @Override
