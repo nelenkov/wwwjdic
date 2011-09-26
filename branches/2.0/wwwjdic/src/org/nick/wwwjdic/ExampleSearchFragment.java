@@ -1,6 +1,5 @@
 package org.nick.wwwjdic;
 
-import org.nick.wwwjdic.history.HistoryBase;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.Analytics;
@@ -63,8 +62,6 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
         }
 
         dbHelper = HistoryDbHelper.getInstance(getActivity());
-
-        setupFavoritesHistoryFragments(HistoryBase.FILTER_EXAMPLES);
     }
 
     @Override

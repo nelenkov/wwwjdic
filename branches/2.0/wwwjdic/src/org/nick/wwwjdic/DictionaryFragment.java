@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
-import org.nick.wwwjdic.history.HistoryBase;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.Analytics;
@@ -82,8 +81,6 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
         }
 
         dbHelper = HistoryDbHelper.getInstance(getActivity());
-
-        setupFavoritesHistoryFragments(HistoryBase.FILTER_DICT);
 
         // delay focus request a bit, otherwise may fail
         // Cf. http://code.google.com/p/android/issues/detail?id=2705

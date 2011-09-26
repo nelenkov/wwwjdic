@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
-import org.nick.wwwjdic.history.HistoryBase;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.model.Radical;
 import org.nick.wwwjdic.model.SearchCriteria;
@@ -86,8 +85,6 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
         }
 
         dbHelper = HistoryDbHelper.getInstance(getActivity());
-
-        setupFavoritesHistoryFragments(HistoryBase.FILTER_KANJI);
     }
 
     @Override
@@ -189,8 +186,7 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
                         kanjiInput.trim(), searchType, minStrokeCount,
                         maxStrokeCount);
 
-                Intent intent = new Intent(getActivity(),
-                        KanjiResultList.class);
+                Intent intent = new Intent(getActivity(), KanjiResultList.class);
                 intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 
                 if (!StringUtils.isEmpty(criteria.getQueryString())) {

@@ -6,8 +6,6 @@ import org.nick.wwwjdic.model.Radicals;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.MenuItem;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class RadicalChart extends FragmentActivity implements
+public class RadicalChart extends ActionBarActivity implements
         OnItemClickListener {
 
     @Override
@@ -113,16 +111,4 @@ public class RadicalChart extends FragmentActivity implements
         finish();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            Intent intent = new Intent(this, Wwwjdic.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
 }
