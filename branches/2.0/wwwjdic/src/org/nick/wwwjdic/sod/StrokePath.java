@@ -41,6 +41,13 @@ public class StrokePath {
     private List<Path> segments;
     private int currentSegment;
 
+    public StrokePath(PointF firstPoint, Path path) {
+        this.moveTo = firstPoint;
+        this.strokePath = path;
+
+        initPaints();
+    }
+
     public StrokePath(PointF moveTo) {
         this.moveTo = moveTo;
 
@@ -458,6 +465,10 @@ public class StrokePath {
 
     public boolean isScaled() {
         return pathScaled;
+    }
+
+    public void setStrokePaintColor(int color) {
+        strokePaint.setColor(color);
     }
 
 }

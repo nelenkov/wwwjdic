@@ -192,4 +192,8 @@ public class Stroke {
 
         return result;
     }
+
+    public Path getPath() {
+        return path;
+    }
 }

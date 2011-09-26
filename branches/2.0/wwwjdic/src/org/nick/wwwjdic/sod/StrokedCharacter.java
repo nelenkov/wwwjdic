@@ -3,8 +3,11 @@ package org.nick.wwwjdic.sod;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nick.wwwjdic.hkr.Stroke;
+
 import android.graphics.Matrix;
 import android.graphics.Path;
+import android.graphics.PointF;
 import android.graphics.RectF;
 
 public class StrokedCharacter {
@@ -29,6 +32,15 @@ public class StrokedCharacter {
         this.strokes = strokes;
         this.canvasHeight = canvasHeight;
         this.canvasWidth = canvasWidth;
+    }
+
+    public StrokedCharacter(List<Stroke> strokesList) {
+        this.strokes = new ArrayList<StrokePath>();
+        for (Stroke s : strokesList) {
+            PointF fp = s.getPoints().get(0);
+            PointF firstPoint = new PointF(fp.x, fp.y);
+            strokes.add(new StrokePath(firstPoint, new Path(s.getPath())));
+        }
     }
 
     public List<StrokePath> getStrokes() {
