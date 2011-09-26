@@ -23,6 +23,7 @@ import android.text.ClipboardManager;
 import android.util.Log;
 import android.widget.Toast;
 
+@SuppressWarnings("deprecation")
 public abstract class ResultListFragmentBase<T> extends ListFragment implements
         ResultList<T> {
 
