@@ -216,6 +216,14 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
         outState.putSerializable(STATE_KEY, state);
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
     private void displayTotalMatches() {
         String totalMatchesTemplate = getResources().getString(
                 R.string.total_matches);
