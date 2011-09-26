@@ -1,5 +1,7 @@
 package org.nick.wwwjdic.ocr;
 
+import static org.nick.wwwjdic.WwwjdicPreferences.ACRA_DEBUG;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -202,10 +204,12 @@ public class OcrActivity extends WebServiceBackedActivity implements
             Log.e(TAG, e.getMessage(), e);
             deleteTempFile();
 
-            ErrorReporter.getInstance().handleException(e);
-            Toast t = Toast.makeText(OcrActivity.this,
-                    R.string.image_capture_failed, Toast.LENGTH_SHORT);
-            t.show();
+            if (ACRA_DEBUG) {
+                ErrorReporter.getInstance().handleException(e);
+            }
+
+            Toast.makeText(OcrActivity.this, R.string.image_capture_failed,
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -557,7 +561,9 @@ public class OcrActivity extends WebServiceBackedActivity implements
             startPreview();
         } catch (Exception e) {
             Log.e(TAG, "error initializing camera: " + e.getMessage(), e);
-            ErrorReporter.getInstance().handleException(e);
+            if (ACRA_DEBUG) {
+                ErrorReporter.getInstance().handleException(e);
+            }
             Dialogs.createErrorDialog(this, R.string.ocr_error).show();
         }
     }
@@ -630,7 +636,9 @@ public class OcrActivity extends WebServiceBackedActivity implements
             camera.setPreviewDisplay(holder);
         } catch (Exception e) {
             Log.e(TAG, "error initializing camera: " + e.getMessage(), e);
-            ErrorReporter.getInstance().handleException(e);
+            if (ACRA_DEBUG) {
+                ErrorReporter.getInstance().handleException(e);
+            }
             Dialogs.createErrorDialog(this, R.string.ocr_error).show();
         }
     }
