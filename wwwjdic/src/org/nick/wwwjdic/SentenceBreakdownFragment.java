@@ -235,7 +235,7 @@ public class SentenceBreakdownFragment extends
     private void lookupAllKanji() {
         SearchCriteria criteria = SearchCriteria
                 .createForKanjiOrReading(sentenceStr);
-        Intent intent = new Intent(getActivity(), KanjiResultListView.class);
+        Intent intent = new Intent(getActivity(), KanjiResultList.class);
         intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
         startActivity(intent);
     }

@@ -190,7 +190,7 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
                         maxStrokeCount);
 
                 Intent intent = new Intent(getActivity(),
-                        KanjiResultListView.class);
+                        KanjiResultList.class);
                 intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 
                 if (!StringUtils.isEmpty(criteria.getQueryString())) {

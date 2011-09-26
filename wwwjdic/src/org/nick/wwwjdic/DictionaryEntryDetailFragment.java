@@ -162,7 +162,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         SearchCriteria criteria = SearchCriteria.createForDictionary(word,
                 true, false, false, dictionary);
         Intent intent = new Intent(getActivity(),
-                DictionaryResultListView.class);
+                DictionaryResultList.class);
         intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
         return intent;
     }
@@ -172,7 +172,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         switch (v.getId()) {
         case R.id.examples_button:
             Intent intent = new Intent(getActivity(),
-                    ExamplesResultListView.class);
+                    ExamplesResultList.class);
             SearchCriteria criteria = SearchCriteria.createForExampleSearch(
                     exampleSearchKey, false, DEFAULT_MAX_NUM_EXAMPLES);
             intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);

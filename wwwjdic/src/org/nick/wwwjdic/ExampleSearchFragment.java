@@ -123,7 +123,7 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
                                 exampleExactMatchCb.isChecked(), numMaxResults);
 
                 Intent intent = new Intent(getActivity(),
-                        ExamplesResultListView.class);
+                        ExamplesResultList.class);
                 intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 
                 if (!StringUtils.isEmpty(criteria.getQueryString())) {

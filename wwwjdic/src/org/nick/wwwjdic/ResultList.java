@@ -2,7 +2,7 @@ package org.nick.wwwjdic;
 
 import java.util.List;
 
-public interface ResultListView<T> {
+public interface ResultList<T> {
 
     void setResult(final List<T> result);
 

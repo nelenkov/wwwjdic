@@ -30,7 +30,7 @@ public class ExampleSearchTask extends SearchTask<ExampleSentence> {
     private int maxNumExamples;
 
     public ExampleSearchTask(String url, int timeoutSeconds,
-            ResultListView<ExampleSentence> resultView,
+            ResultList<ExampleSentence> resultView,
             SearchCriteria searchCriteria, int maxNumExamples) {
         super(url, timeoutSeconds, resultView, searchCriteria);
         this.maxNumExamples = maxNumExamples;

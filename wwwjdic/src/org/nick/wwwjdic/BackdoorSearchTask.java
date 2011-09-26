@@ -29,7 +29,7 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
     protected static final String FONT_TAG = "<font";
 
     public BackdoorSearchTask(String url, int timeoutSeconds,
-            ResultListView<T> resultListView, SearchCriteria criteria) {
+            ResultList<T> resultListView, SearchCriteria criteria) {
         super(url, timeoutSeconds, resultListView, criteria);
     }
 

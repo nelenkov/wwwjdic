@@ -8,7 +8,7 @@ import org.nick.wwwjdic.model.SearchCriteria;
 public class KanjiSearchTask extends BackdoorSearchTask<KanjiEntry> {
 
     public KanjiSearchTask(String url, int timeoutSeconds,
-            ResultListView<KanjiEntry> resultListView, SearchCriteria criteria) {
+            ResultList<KanjiEntry> resultListView, SearchCriteria criteria) {
         super(url, timeoutSeconds, resultListView, criteria);
     }
 

@@ -24,7 +24,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 public abstract class ResultListFragmentBase<T> extends ListFragment implements
-        ResultListView<T> {
+        ResultList<T> {
 
     private static final String TAG = ResultListFragmentBase.class
             .getSimpleName();

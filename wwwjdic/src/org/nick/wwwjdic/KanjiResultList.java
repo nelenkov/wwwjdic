@@ -2,9 +2,9 @@ package org.nick.wwwjdic;
 
 import android.os.Bundle;
 
-public class KanjiResultListView extends ResultListViewBase {
+public class KanjiResultList extends ResultListBase {
 
-    public KanjiResultListView() {
+    public KanjiResultList() {
     }
 
     @Override

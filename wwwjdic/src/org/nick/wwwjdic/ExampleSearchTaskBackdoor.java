@@ -24,7 +24,7 @@ public class ExampleSearchTaskBackdoor extends
     private boolean randomExamples;
 
     public ExampleSearchTaskBackdoor(String url, int timeoutSeconds,
-            ResultListView<ExampleSentence> resultView,
+            ResultList<ExampleSentence> resultView,
             SearchCriteria searchCriteria, boolean randomExamples) {
         super(url, timeoutSeconds, resultView, searchCriteria);
         this.randomExamples = randomExamples;
