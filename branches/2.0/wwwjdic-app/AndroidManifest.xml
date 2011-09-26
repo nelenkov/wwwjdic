@@ -51,7 +51,8 @@
             android:theme="@style/Theme.WwwjdicAb"/>
         <activity android:name="org.nick.wwwjdic.ocr.OcrActivity"
             android:configChanges="orientation|keyboardHidden|keyboard" 
-            android:hardwareAccelerated="false"/>
+            android:hardwareAccelerated="false" 
+            android:theme="@style/WwwjdicAbTrans"/>
         <activity android:name="org.nick.wwwjdic.ocr.crop.CropImage"
             android:configChanges="orientation|keyboardHidden|keyboard" 
             android:hardwareAccelerated="false"/>

@@ -58,4 +58,8 @@
     <item name="android:textColor">@color/white</item>
     <item name="android:textSize">18sp</item>
   </style>
+  
+  <style name="WwwjdicAbTrans" parent="Theme.WwwjdicAb">
+    <item name="abBackground">@drawable/action_bar_bg_trans</item>
+  </style>
 </resources>

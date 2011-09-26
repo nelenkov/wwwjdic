@@ -6,24 +6,34 @@
     <org.nick.wwwjdic.ocr.GuideView
         android:id="@+id/guide_view" android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
-    <TextView android:text="" android:id="@+id/ocrredText"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:paddingTop="8dip" android:paddingLeft="8dip"></TextView>
+    <TextView android:id="@+id/ocrredText"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ocr_text_margin_top" 
+        android:layout_marginLeft="80dp"
+        android:text=""/>
     <LinearLayout android:id="@+id/flash_button_group"
-        android:layout_height="wrap_content" android:layout_width="wrap_content"
-        android:visibility="visible" android:orientation="vertical"
-        android:layout_gravity="right|top" android:layout_marginLeft="4dip">
+        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content"
+        android:visibility="visible" 
+        android:orientation="vertical"
+        android:layout_gravity="right" 
+        android:layout_marginLeft="4dp" 
+        android:layout_marginTop="@dimen/ocr_flash_margin_top">
         <ToggleButton android:id="@+id/auto_flash_toggle"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:background="@drawable/ic_flash" android:textOn=""
-            android:textOff="" android:focusable="false"/>
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_flash" 
+            android:textOn=""
+            android:textOff="" 
+            android:focusable="false"/>
     </LinearLayout>
     <Button android:id="@+id/pick_image"
         android:layout_width="wrap_content" 
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:layout_marginTop="60dp"
-        android:layout_marginLeft="4dip"
+        android:layout_marginTop="@dimen/ocr_gallery_margin_top"
+        android:layout_marginLeft="4dp"
         android:text="@string/gallery"
         android:drawableTop="@android:drawable/ic_menu_gallery" 
         android:background="@null"/> 
