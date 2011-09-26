@@ -35,6 +35,7 @@ import android.graphics.Rect;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -62,6 +63,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
         OnCheckedChangeListener {
 
     private static final String TAG = OcrActivity.class.getSimpleName();
+
+    private static final boolean IS_HONEYCOMB = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 
     // kind of arbitrary, but OCR seems to work fine with this, and we need to
     // keep picture size small for faster recognition
@@ -98,11 +101,19 @@ public class OcrActivity extends WebServiceBackedActivity implements
     private boolean supportsFlash = false;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     protected void activityOnCreate(Bundle icicle) {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (!IS_HONEYCOMB) {
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
         window.setFormat(PixelFormat.TRANSLUCENT);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);

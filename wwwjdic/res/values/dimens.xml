@@ -24,4 +24,8 @@
     
     <dimen name="favorites_hist_margin">0dp</dimen>
     <dimen name="favorites_hist_pager_margin">0dp</dimen>
+    
+    <dimen name="ocr_flash_margin_top">32dp</dimen>
+    <dimen name="ocr_gallery_margin_top">26dp</dimen>
+    <dimen name="ocr_text_margin_top">8dp</dimen>
 </resources>
