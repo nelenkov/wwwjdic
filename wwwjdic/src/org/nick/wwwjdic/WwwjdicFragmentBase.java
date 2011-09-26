@@ -18,21 +18,4 @@ public class WwwjdicFragmentBase extends Fragment {
         return (WwwjdicApplication) getActivity().getApplication();
     }
 
-    protected void setupFavoritesHistoryFragments(int filterType) {
-        // XXX fix!
-        //        SearchHistoryFragment historyFragment = (SearchHistoryFragment) getSupportFragmentManager()
-        //                .findFragmentById(R.id.history_fragment);
-        //        if (historyFragment != null) {
-        //            Bundle args = new Bundle();
-        //            args.putInt(FavoritesAndHistory.EXTRA_FILTER_TYPE, filterType);
-        //        }
-        //    
-        //        FavoritesFragment favoritesFragment = (FavoritesFragment) getSupportFragmentManager()
-        //                .findFragmentById(R.id.favorites_fragment);
-        //        if (favoritesFragment != null) {
-        //            Bundle args = new Bundle();
-        //            args.putInt(FavoritesAndHistory.EXTRA_FILTER_TYPE, filterType);
-        //        }
-    }
-
 }
