@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.nick.wwwjdic.DictionaryResultListView;
-import org.nick.wwwjdic.ExamplesResultListView;
-import org.nick.wwwjdic.KanjiResultListView;
+import org.nick.wwwjdic.DictionaryResultList;
+import org.nick.wwwjdic.ExamplesResultList;
+import org.nick.wwwjdic.KanjiResultList;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.SearchSuggestionProvider;
 import org.nick.wwwjdic.Wwwjdic;
@@ -101,13 +101,13 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
         Intent intent = null;
         switch (criteria.getType()) {
         case SearchCriteria.CRITERIA_TYPE_DICT:
-            intent = new Intent(getActivity(), DictionaryResultListView.class);
+            intent = new Intent(getActivity(), DictionaryResultList.class);
             break;
         case SearchCriteria.CRITERIA_TYPE_KANJI:
-            intent = new Intent(getActivity(), KanjiResultListView.class);
+            intent = new Intent(getActivity(), KanjiResultList.class);
             break;
         case SearchCriteria.CRITERIA_TYPE_EXAMPLES:
-            intent = new Intent(getActivity(), ExamplesResultListView.class);
+            intent = new Intent(getActivity(), ExamplesResultList.class);
             break;
         default:
             // do nothing?

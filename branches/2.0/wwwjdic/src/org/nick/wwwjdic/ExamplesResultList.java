@@ -2,7 +2,7 @@ package org.nick.wwwjdic;
 
 import android.os.Bundle;
 
-public class ExamplesResultListView extends ResultListViewBase {
+public class ExamplesResultList extends ResultListBase {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

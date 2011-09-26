@@ -26,13 +26,13 @@
         
         <activity android:name=".AboutActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
-        <activity android:name="DictionaryResultListView"
+        <activity android:name=".DictionaryResultList"
             android:label="@string/searching" android:configChanges="orientation|keyboardHidden|keyboard">
         </activity>
         <activity android:name="DictionaryEntryDetail"></activity>
-        <activity android:name="KanjiResultListView"
+        <activity android:name=".KanjiResultList"
             android:label="@string/searching" android:configChanges="orientation|keyboardHidden|keyboard"></activity>
-        <activity android:name="ExamplesResultListView"
+        <activity android:name=".ExamplesResultList"
             android:label="@string/searching" android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name="SentenceBreakdown"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>

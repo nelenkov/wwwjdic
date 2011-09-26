@@ -293,7 +293,7 @@ public class ExamplesResultListFragment extends
         ExampleSentence sentence = getCurrentSentence(id);
         SearchCriteria criteria = SearchCriteria
                 .createForKanjiOrReading(sentence.getJapanese());
-        Intent intent = new Intent(getActivity(), KanjiResultListView.class);
+        Intent intent = new Intent(getActivity(), KanjiResultList.class);
         intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
         startActivity(intent);
     }

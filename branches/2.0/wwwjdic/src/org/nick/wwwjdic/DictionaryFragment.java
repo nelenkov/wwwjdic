@@ -189,7 +189,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
                         commonWordsCb.isChecked(), dict);
 
                 Intent intent = new Intent(getActivity(),
-                        DictionaryResultListView.class);
+                        DictionaryResultList.class);
                 intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 
                 if (!StringUtils.isEmpty(criteria.getQueryString())) {

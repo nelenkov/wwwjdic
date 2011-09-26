@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.nick.wwwjdic.ActionBarActivity;
-import org.nick.wwwjdic.KanjiResultListView;
+import org.nick.wwwjdic.KanjiResultList;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.hkr.HkrCandidates;
@@ -402,7 +402,7 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
     }
 
     private Intent createCharDetailsIntent(String kanji) {
-        Intent intent = new Intent(this, KanjiResultListView.class);
+        Intent intent = new Intent(this, KanjiResultList.class);
         SearchCriteria criteria = SearchCriteria.createForKanjiOrReading(kanji);
         intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 

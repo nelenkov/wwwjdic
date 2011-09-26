@@ -323,7 +323,7 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
 
     private Intent createCrossRefIntent(String kanji) {
         SearchCriteria criteria = SearchCriteria.createForKanjiOrReading(kanji);
-        Intent intent = new Intent(getActivity(), KanjiResultListView.class);
+        Intent intent = new Intent(getActivity(), KanjiResultList.class);
         intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
         return intent;
     }
@@ -337,7 +337,7 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
         SearchCriteria criteria = SearchCriteria.createForKanjiCompounds(
                 entry.getKanji(), searchType, commonWordsOnly, dictionary);
         Intent intent = new Intent(getActivity(),
-                DictionaryResultListView.class);
+                DictionaryResultList.class);
         intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
         return intent;
     }

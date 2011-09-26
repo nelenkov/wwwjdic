@@ -2,9 +2,9 @@ package org.nick.wwwjdic;
 
 import org.nick.wwwjdic.utils.Analytics;
 
-public abstract class ResultListViewBase extends ActionBarActivity {
+public abstract class ResultListBase extends ActionBarActivity {
 
-    protected ResultListViewBase() {
+    protected ResultListBase() {
     }
 
     @Override

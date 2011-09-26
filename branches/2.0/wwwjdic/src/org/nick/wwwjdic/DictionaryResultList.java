@@ -2,9 +2,9 @@ package org.nick.wwwjdic;
 
 import android.os.Bundle;
 
-public class DictionaryResultListView extends ResultListViewBase {
+public class DictionaryResultList extends ResultListBase {
 
-    public DictionaryResultListView() {
+    public DictionaryResultList() {
     }
 
     @Override

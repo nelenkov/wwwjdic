@@ -8,7 +8,7 @@
         android:name="org.nick.wwwjdic.WwwjdicApplication" 
         android:hardwareAccelerated="true">
         <meta-data android:name="android.app.default_searchable"
-               android:value="org.nick.wwwjdic.DictionaryResultListView" />
+               android:value="org.nick.wwwjdic.DictionaryResultList" />
         <activity android:name="org.nick.wwwjdic.Wwwjdic"
             android:label="@string/app_name_short"
             android:windowSoftInputMode="stateVisible|adjustPan" 
@@ -21,7 +21,7 @@
 
         <activity android:name="org.nick.wwwjdic.AboutActivity"
             android:theme="@style/Theme.WwwjdicAb"/>
-        <activity android:name="org.nick.wwwjdic.DictionaryResultListView"
+        <activity android:name="org.nick.wwwjdic.DictionaryResultList"
             android:label="@string/dict_search" 
             android:taskAffinity="" 
             android:theme="@style/Theme.WwwjdicAb">
@@ -34,10 +34,10 @@
         </activity>
         <activity android:name="org.nick.wwwjdic.DictionaryEntryDetail" 
             android:theme="@style/Theme.WwwjdicAb" />
-        <activity android:name="org.nick.wwwjdic.KanjiResultListView"
+        <activity android:name="org.nick.wwwjdic.KanjiResultList"
             android:label="@string/searching" 
             android:theme="@style/Theme.WwwjdicAb"/>
-        <activity android:name="org.nick.wwwjdic.ExamplesResultListView"
+        <activity android:name="org.nick.wwwjdic.ExamplesResultList"
             android:label="@string/searching" 
             android:theme="@style/Theme.WwwjdicAb"/>
         <activity android:name="org.nick.wwwjdic.SentenceBreakdown"

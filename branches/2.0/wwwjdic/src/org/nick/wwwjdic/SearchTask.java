@@ -14,7 +14,7 @@ public abstract class SearchTask<T> implements Runnable {
 
     private static final String TAG = SearchTask.class.getSimpleName();
 
-    protected ResultListView<T> resultListView;
+    protected ResultList<T> resultListView;
     protected WwwjdicQuery query;
 
     protected String url;
@@ -25,7 +25,7 @@ public abstract class SearchTask<T> implements Runnable {
     protected ResponseHandler<String> responseHandler;
 
     public SearchTask(String url, int timeoutSeconds,
-            ResultListView<T> resultView, WwwjdicQuery query) {
+            ResultList<T> resultView, WwwjdicQuery query) {
         this.url = url;
         this.timeoutMillis = timeoutSeconds * 1000;
         this.resultListView = resultView;
@@ -53,11 +53,11 @@ public abstract class SearchTask<T> implements Runnable {
         return parseResult(payload);
     }
 
-    public ResultListView<T> getResultListView() {
+    public ResultList<T> getResultListView() {
         return resultListView;
     }
 
-    public void setResultListView(ResultListView<T> resultListView) {
+    public void setResultListView(ResultList<T> resultListView) {
         this.resultListView = resultListView;
     }
 

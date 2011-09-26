@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.util.List;
 
 import org.acra.ErrorReporter;
-import org.nick.wwwjdic.DictionaryResultListView;
-import org.nick.wwwjdic.ExamplesResultListView;
-import org.nick.wwwjdic.KanjiResultListView;
+import org.nick.wwwjdic.DictionaryResultList;
+import org.nick.wwwjdic.ExamplesResultList;
+import org.nick.wwwjdic.KanjiResultList;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.Wwwjdic;
@@ -704,7 +704,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
         case R.id.send_to_dict:
             if (isDirectSearch) {
                 criteria = SearchCriteria.createForDictionaryDefault(key);
-                intent = new Intent(this, DictionaryResultListView.class);
+                intent = new Intent(this, DictionaryResultList.class);
             } else {
                 extras.putInt(Wwwjdic.EXTRA_SEARCH_TYPE,
                         SearchCriteria.CRITERIA_TYPE_DICT);
@@ -713,7 +713,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
         case R.id.send_to_kanjidict:
             if (isDirectSearch) {
                 criteria = SearchCriteria.createForKanjiOrReading(key);
-                intent = new Intent(this, KanjiResultListView.class);
+                intent = new Intent(this, KanjiResultList.class);
             } else {
                 extras.putInt(Wwwjdic.EXTRA_SEARCH_TYPE,
                         SearchCriteria.CRITERIA_TYPE_KANJI);
@@ -722,7 +722,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
         case R.id.send_to_example_search:
             if (isDirectSearch) {
                 criteria = SearchCriteria.createForExampleSearchDefault(key);
-                intent = new Intent(this, ExamplesResultListView.class);
+                intent = new Intent(this, ExamplesResultList.class);
             } else {
                 extras.putInt(Wwwjdic.EXTRA_SEARCH_TYPE,
                         SearchCriteria.CRITERIA_TYPE_EXAMPLES);

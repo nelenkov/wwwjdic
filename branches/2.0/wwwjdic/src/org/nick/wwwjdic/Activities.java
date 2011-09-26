@@ -24,7 +24,7 @@ public class Activities {
             db.addSearchCriteria(criteria);
         }
 
-        Intent intent = new Intent(context, KanjiResultListView.class);
+        Intent intent = new Intent(context, KanjiResultList.class);
         intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 
         Analytics.event("kanjiSearch", context);
