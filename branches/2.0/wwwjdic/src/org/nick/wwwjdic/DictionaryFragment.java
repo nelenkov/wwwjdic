@@ -36,6 +36,8 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
 
     private static final String TAG = DictionaryFragment.class.getSimpleName();
 
+    private static final String SELECTED_DICTIONARY_IDX = "org.nick.wwwjdic.selectedDict";
+
     private static final Map<Integer, String> IDX_TO_DICT_CODE = new HashMap<Integer, String>();
 
     private EditText inputText;
@@ -65,8 +67,8 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
         }
 
         if (extras != null) {
-            String searchKey = extras.getString(Constants.SEARCH_TEXT_KEY);
-            int searchType = extras.getInt(Constants.SEARCH_TYPE);
+            String searchKey = extras.getString(Wwwjdic.EXTRA_SEARCH_TEXT);
+            int searchType = extras.getInt(Wwwjdic.EXTRA_SEARCH_TYPE);
             if (searchKey != null) {
                 switch (searchType) {
                 case SearchCriteria.CRITERIA_TYPE_DICT:
@@ -115,8 +117,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
 
     private void selectDictionary(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            int idx = savedInstanceState.getInt(
-                    Constants.SELECTED_DICTIONARY_IDX, 0);
+            int idx = savedInstanceState.getInt(SELECTED_DICTIONARY_IDX, 0);
             dictSpinner.setSelection(idx);
         } else {
             dictSpinner.setSelection(WwwjdicPreferences
@@ -135,7 +136,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt(Constants.SELECTED_DICTIONARY_IDX,
+        outState.putInt(SELECTED_DICTIONARY_IDX,
                 dictSpinner.getSelectedItemPosition());
     }
 
@@ -189,7 +190,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
 
                 Intent intent = new Intent(getActivity(),
                         DictionaryResultListView.class);
-                intent.putExtra(Constants.CRITERIA_KEY, criteria);
+                intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 
                 if (!StringUtils.isEmpty(criteria.getQueryString())) {
                     dbHelper.addSearchCriteria(criteria);

@@ -1,14 +1,15 @@
 package org.nick.wwwjdic.utils;
 
-import static org.nick.wwwjdic.Constants.DICT_COMMON_USAGE_MARKER;
-import static org.nick.wwwjdic.Constants.DICT_VARIATION_DELIMITER;
-
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.model.WwwjdicEntry;
 
 import android.content.Context;
 
 public class DictUtils {
+
+    private static final String DICT_COMMON_USAGE_MARKER = "(P)";
+
+    private static final String DICT_VARIATION_DELIMITER = ";";
 
     private DictUtils() {
     }

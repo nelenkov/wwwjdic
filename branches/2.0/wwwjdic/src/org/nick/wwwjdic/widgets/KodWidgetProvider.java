@@ -3,7 +3,6 @@ package org.nick.wwwjdic.widgets;
 import java.util.Date;
 import java.util.List;
 
-import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicPreferences;
@@ -132,7 +131,7 @@ public class KodWidgetProvider extends AppWidgetProvider {
         Log.d(TAG, "KOD: " + kod);
         Intent intent = new Intent(context, KanjiEntryDetail.class);
         intent.putExtra(KanjiEntryDetail.EXTRA_KANJI_ENTRY, entries.get(0));
-        intent.putExtra(Constants.KOD_WIDGET_CLICK, true);
+        intent.putExtra(KanjiEntryDetail.EXTRA_KOD_WIDGET_CLICK, true);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,

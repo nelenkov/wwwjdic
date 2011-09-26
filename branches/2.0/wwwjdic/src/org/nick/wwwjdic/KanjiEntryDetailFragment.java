@@ -1,8 +1,5 @@
 package org.nick.wwwjdic;
 
-import static org.nick.wwwjdic.Constants.KANJI_TAB_IDX;
-import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
-
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -103,8 +100,8 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
             wwwjdicEntry = entry;
             isFavorite = args.getBoolean(KanjiEntryDetail.EXTRA_IS_FAVORITE,
                     false);
-            kodWidgetClicked = args.getBoolean(Constants.KOD_WIDGET_CLICK,
-                    false);
+            kodWidgetClicked = args.getBoolean(
+                    KanjiEntryDetail.EXTRA_KOD_WIDGET_CLICK, false);
         }
         if (kodWidgetClicked) {
             Analytics.startSession(getActivity());
@@ -327,7 +324,7 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
     private Intent createCrossRefIntent(String kanji) {
         SearchCriteria criteria = SearchCriteria.createForKanjiOrReading(kanji);
         Intent intent = new Intent(getActivity(), KanjiResultListView.class);
-        intent.putExtra(Constants.CRITERIA_KEY, criteria);
+        intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
         return intent;
     }
 
@@ -341,7 +338,7 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
                 entry.getKanji(), searchType, commonWordsOnly, dictionary);
         Intent intent = new Intent(getActivity(),
                 DictionaryResultListView.class);
-        intent.putExtra(Constants.CRITERIA_KEY, criteria);
+        intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
         return intent;
     }
 
@@ -446,11 +443,6 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
         default:
             // do nothing
         }
-    }
-
-    @Override
-    protected void setHomeActivityExtras(Intent homeActivityIntent) {
-        homeActivityIntent.putExtra(SELECTED_TAB_IDX, KANJI_TAB_IDX);
     }
 
     @Override

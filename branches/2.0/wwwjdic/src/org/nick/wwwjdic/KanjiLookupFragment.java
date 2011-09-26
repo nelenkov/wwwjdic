@@ -37,6 +37,10 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
 
     private static final String TAG = KanjiLookupFragment.class.getSimpleName();
 
+    public static final String EXTRA_RADICAL_KEY = "org.nick.wwwjdic.radical";
+
+    private static final int RADICAL_RETURN_RESULT = 0;
+
     private static final Map<Integer, String> IDX_TO_CODE = new HashMap<Integer, String>();
 
     private EditText kanjiInputText;
@@ -67,8 +71,8 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
         }
 
         if (extras != null) {
-            String searchKey = extras.getString(Constants.SEARCH_TEXT_KEY);
-            int searchType = extras.getInt(Constants.SEARCH_TYPE);
+            String searchKey = extras.getString(Wwwjdic.EXTRA_SEARCH_TEXT);
+            int searchType = extras.getInt(Wwwjdic.EXTRA_SEARCH_TYPE);
             if (searchKey != null) {
                 switch (searchType) {
                 case SearchCriteria.CRITERIA_TYPE_KANJI:
@@ -187,7 +191,7 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
 
                 Intent intent = new Intent(getActivity(),
                         KanjiResultListView.class);
-                intent.putExtra(Constants.CRITERIA_KEY, criteria);
+                intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 
                 if (!StringUtils.isEmpty(criteria.getQueryString())) {
                     dbHelper.addSearchCriteria(criteria);
@@ -203,7 +207,7 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
         case R.id.selectRadicalButton:
             Intent i = new Intent(getActivity(), RadicalChart.class);
 
-            startActivityForResult(i, Constants.RADICAL_RETURN_RESULT);
+            startActivityForResult(i, RADICAL_RETURN_RESULT);
             break;
         default:
             // do nothing
@@ -220,10 +224,10 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == Constants.RADICAL_RETURN_RESULT) {
+        if (requestCode == RADICAL_RETURN_RESULT) {
             if (resultCode == Activity.RESULT_OK) {
                 Radical radical = (Radical) intent.getExtras().getSerializable(
-                        Constants.RADICAL_KEY);
+                        EXTRA_RADICAL_KEY);
                 kanjiInputText.setText(Integer.toString(radical.getNumber()));
                 radicalEditText.setText(radical.getGlyph().substring(0, 1));
             }

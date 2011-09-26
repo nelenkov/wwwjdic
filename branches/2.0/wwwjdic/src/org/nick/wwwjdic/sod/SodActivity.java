@@ -14,7 +14,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.nick.wwwjdic.ActionBarActivity;
-import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.WwwjdicPreferences;
@@ -42,6 +41,11 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
 
     private static final String TAG = SodActivity.class.getSimpleName();
 
+    public static final String EXTRA_KANJI_UNICODE_NUMBER = "unicodeNumber";
+
+    public static final String EXTRA_KANJI_GLYPH = "org.nick.wwwjdic.kanjiGlyph";
+
+    // TODO -- change to default URL
     private static final String STROKE_PATH_LOOKUP_URL = "http://7.wwwjdic-android.appspot.com/kanji/";
 
     static class SodLoader extends LoaderBase<Pair<String, Boolean>> {
@@ -144,8 +148,8 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
         animateButton.setOnClickListener(this);
 
         unicodeNumber = getIntent().getExtras().getString(
-                Constants.KANJI_UNICODE_NUMBER);
-        kanji = getIntent().getExtras().getString(Constants.KANJI_GLYPH);
+                EXTRA_KANJI_UNICODE_NUMBER);
+        kanji = getIntent().getExtras().getString(EXTRA_KANJI_GLYPH);
 
         String message = getResources().getString(R.string.sod_for);
         setTitle(String.format(message, kanji));

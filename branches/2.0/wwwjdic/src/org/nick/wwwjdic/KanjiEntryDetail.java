@@ -8,6 +8,8 @@ public class KanjiEntryDetail extends DetailActivity {
 
     public static final String EXTRA_KANJI_ENTRY = "org.nick.wwwjdic.KANJI_ENTRY";
 
+    public static final String EXTRA_KOD_WIDGET_CLICK = "org.nick.wwwjdic.kodWidgetClick";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

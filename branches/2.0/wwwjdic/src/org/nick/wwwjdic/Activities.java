@@ -25,7 +25,7 @@ public class Activities {
         }
 
         Intent intent = new Intent(context, KanjiResultListView.class);
-        intent.putExtra(Constants.CRITERIA_KEY, criteria);
+        intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 
         Analytics.event("kanjiSearch", context);
 
@@ -34,9 +34,9 @@ public class Activities {
 
     public static void showStrokeOrder(Context context, KanjiEntry entry) {
         Intent intent = new Intent(context, SodActivity.class);
-        intent.putExtra(Constants.KANJI_UNICODE_NUMBER,
+        intent.putExtra(SodActivity.EXTRA_KANJI_UNICODE_NUMBER,
                 entry.getUnicodeNumber());
-        intent.putExtra(Constants.KANJI_GLYPH, entry.getKanji());
+        intent.putExtra(SodActivity.EXTRA_KANJI_GLYPH, entry.getKanji());
 
         context.startActivity(intent);
     }
