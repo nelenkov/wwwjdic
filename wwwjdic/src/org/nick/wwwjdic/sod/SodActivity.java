@@ -166,6 +166,8 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
         super.onStart();
 
         Analytics.startSession(this);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
