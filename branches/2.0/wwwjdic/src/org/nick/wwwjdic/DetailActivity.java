@@ -4,7 +4,6 @@ import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.model.WwwjdicEntry;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.ClipboardManager;
 import android.widget.Toast;
@@ -39,7 +38,5 @@ public abstract class DetailActivity extends ActionBarActivity {
                 String.format(messageTemplate, wwwjdicEntry.getHeadword()),
                 Toast.LENGTH_SHORT).show();
     }
-
-    protected abstract void setHomeActivityExtras(Intent homeActivityIntent);
 
 }

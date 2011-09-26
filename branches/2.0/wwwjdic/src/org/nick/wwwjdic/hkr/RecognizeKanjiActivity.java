@@ -120,6 +120,8 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         } else {
             setTitle(R.string.online_hkr);
         }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     void bindToKanjiRecognizer() {
@@ -397,7 +399,8 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         RectF bounds = character.getBounds();
         int width = (int) bounds.width() + BOUNDS_PADDING;
         int height = (int) bounds.height() + BOUNDS_PADDING;
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(width, height,
+                Bitmap.Config.ARGB_8888);
         bitmap.eraseColor(Color.parseColor("#ff888888"));
         Canvas canvas = new Canvas(bitmap);
 
