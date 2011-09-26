@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+@SuppressWarnings("deprecation")
 public class ExamplesResultListFragment extends
         ResultListFragmentBase<ExampleSentence> {
 
