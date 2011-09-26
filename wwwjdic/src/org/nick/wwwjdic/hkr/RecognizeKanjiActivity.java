@@ -3,8 +3,11 @@ package org.nick.wwwjdic.hkr;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.nick.kanjirecognizer.hkr.CharacterRecognizer;
 import org.nick.wwwjdic.Activities;
@@ -62,6 +65,22 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     private static final int HKR_RESULT_TYPE_WS = 0;
     private static final int HKR_RESULT_TYPE_OCR = 1;
     private static final int HKR_RESULT_TYPE_KR = 2;
+
+    private static final Pattern KANJI_PATTERN = Pattern.compile(
+            "\\p{InCJKUnifiedIdeographs}", Pattern.COMMENTS);
+
+    private static String[] filterOutNonKanji(String[] results) {
+        List<String> kanjiCandidates = new ArrayList<String>();
+        for (String s : results) {
+            Matcher m = KANJI_PATTERN.matcher(s);
+            if (m != null && m.matches()) {
+                kanjiCandidates.add(s);
+            }
+        }
+        String[] candidates = kanjiCandidates
+                .toArray(new String[kanjiCandidates.size()]);
+        return candidates;
+    }
 
     private Button recognizeButton;
     private Button ocrButton;
@@ -192,7 +211,8 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
                 if (msg.arg1 == 1) {
                     String[] results = (String[]) msg.obj;
-                    krActivity.sendToDictionary(results);
+                    String[] candidates = filterOutNonKanji(results);
+                    krActivity.sendToDictionary(candidates);
                 } else {
                     if (msg.arg2 == HKR_RESULT_TYPE_WS) {
                         if (WwwjdicPreferences.isKrInstalled(krActivity,
@@ -417,9 +437,10 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         }
 
         drawToBitmap(character, canvas, dx, dy);
+        dumpBitmap(bitmap, "drawView.jpg");
 
         Bitmap resized = scaleBitmap(width, height, bitmap, canvas);
-        //        dumpBitmap(resized, "ocrView.jpg");
+        dumpBitmap(resized, "ocrView.jpg");
 
         return resized;
     }
@@ -431,7 +452,6 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
             s.setStrokePaintColor(Color.BLACK);
             s.draw(c, 1, dx, dy, 0, false);
         }
-        //        dumpBitmap(b, "drawView.jpg");
     }
 
     private Bitmap scaleBitmap(int width, int height, Bitmap b, Canvas c) {
