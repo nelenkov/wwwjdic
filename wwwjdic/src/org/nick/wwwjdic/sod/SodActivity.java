@@ -15,7 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.nick.wwwjdic.ActionBarActivity;
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.client.HttpClientFactory;
 import org.nick.wwwjdic.utils.Analytics;
@@ -25,11 +24,9 @@ import org.nick.wwwjdic.utils.Pair;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItem;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -155,7 +152,7 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
         setTitle(String.format(message, kanji));
 
         // we need to call this here to initialize the loader
-        // otherwise bad stuff happens: loader is not started, state is not 
+        // otherwise bad stuff happens: loader is not started, state is not
         // properly retained
         getStrokes();
     }
@@ -170,10 +167,7 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
         super.onStart();
 
         Analytics.startSession(this);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
 
     @Override
     protected void onResume() {
@@ -386,16 +380,4 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
         clear();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            Intent intent = new Intent(this, Wwwjdic.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
 }
