@@ -18,6 +18,8 @@
 // data to caller. Removed saving to file, MediaManager, unneeded options, etc.
 package org.nick.wwwjdic.ocr.crop;
 
+import static org.nick.wwwjdic.WwwjdicPreferences.ACRA_DEBUG;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -107,7 +109,10 @@ public class CropImage extends MonitoredActivity {
                 mBitmap = BitmapFactory.decodeStream(is);
             } catch (IOException e) {
                 Log.e(TAG, "error reading picture: " + e.getMessage(), e);
-                ErrorReporter.getInstance().handleException(e);
+                if (ACRA_DEBUG) {
+                    ErrorReporter.getInstance().handleException(e);
+                }
+
                 Toast.makeText(
                         this,
                         getResources().getString(R.string.read_picture_error,

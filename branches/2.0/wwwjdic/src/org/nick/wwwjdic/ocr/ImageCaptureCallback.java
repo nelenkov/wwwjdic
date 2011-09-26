@@ -1,5 +1,7 @@
 package org.nick.wwwjdic.ocr;
 
+import static org.nick.wwwjdic.WwwjdicPreferences.ACRA_DEBUG;
+
 import java.io.OutputStream;
 
 import org.acra.ErrorReporter;
@@ -36,7 +38,9 @@ public class ImageCaptureCallback implements PictureCallback {
 
         } catch (Exception ex) {
             Log.e(TAG, "onPictureTaken error: " + ex.getMessage(), ex);
-            ErrorReporter.getInstance().handleException(ex);
+            if (ACRA_DEBUG) {
+                ErrorReporter.getInstance().handleException(ex);
+            }
         }
     }
 }

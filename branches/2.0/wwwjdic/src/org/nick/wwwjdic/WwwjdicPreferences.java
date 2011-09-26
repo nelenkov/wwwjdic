@@ -29,6 +29,8 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     private static final String TAG = WwwjdicPreferences.class.getSimpleName();
 
+    public static final boolean ACRA_DEBUG = false;
+
     public static final String PREF_USE_KR_KEY = "pref_kr_use_kanji_recognizer";
 
     public static final String PREF_AUTO_SELECT_MIRROR_KEY = "pref_auto_select_mirror";
