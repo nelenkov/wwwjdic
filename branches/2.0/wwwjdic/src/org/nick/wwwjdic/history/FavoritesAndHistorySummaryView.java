@@ -23,6 +23,7 @@ public class FavoritesAndHistorySummaryView extends ListView implements
         OnItemClickListener {
 
     private static final int FAVORITES_ITEM_IDX = 0;
+    @SuppressWarnings("unused")
     private static final int HISTORY_ITEM_IDX = 1;
 
     private static final int FAVORITES_TAB_IDX = 0;
