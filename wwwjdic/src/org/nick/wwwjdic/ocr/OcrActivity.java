@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.acra.ErrorReporter;
-import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.DictionaryResultListView;
 import org.nick.wwwjdic.ExamplesResultListView;
 import org.nick.wwwjdic.KanjiResultListView;
@@ -707,7 +706,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
                 criteria = SearchCriteria.createForDictionaryDefault(key);
                 intent = new Intent(this, DictionaryResultListView.class);
             } else {
-                extras.putInt(Constants.SEARCH_TYPE,
+                extras.putInt(Wwwjdic.EXTRA_SEARCH_TYPE,
                         SearchCriteria.CRITERIA_TYPE_DICT);
             }
             break;
@@ -716,7 +715,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
                 criteria = SearchCriteria.createForKanjiOrReading(key);
                 intent = new Intent(this, KanjiResultListView.class);
             } else {
-                extras.putInt(Constants.SEARCH_TYPE,
+                extras.putInt(Wwwjdic.EXTRA_SEARCH_TYPE,
                         SearchCriteria.CRITERIA_TYPE_KANJI);
             }
             break;
@@ -725,7 +724,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
                 criteria = SearchCriteria.createForExampleSearchDefault(key);
                 intent = new Intent(this, ExamplesResultListView.class);
             } else {
-                extras.putInt(Constants.SEARCH_TYPE,
+                extras.putInt(Wwwjdic.EXTRA_SEARCH_TYPE,
                         SearchCriteria.CRITERIA_TYPE_EXAMPLES);
             }
             break;
@@ -742,9 +741,9 @@ public class OcrActivity extends WebServiceBackedActivity implements
         }
 
         if (isDirectSearch) {
-            extras.putSerializable(Constants.CRITERIA_KEY, criteria);
+            extras.putSerializable(Wwwjdic.EXTRA_CRITERIA, criteria);
         } else {
-            extras.putString(Constants.SEARCH_TEXT_KEY, key);
+            extras.putString(Wwwjdic.EXTRA_SEARCH_TEXT, key);
         }
 
         intent.putExtras(extras);

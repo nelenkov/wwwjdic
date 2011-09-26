@@ -1,8 +1,5 @@
 package org.nick.wwwjdic;
 
-import static org.nick.wwwjdic.Constants.DICTIONARY_TAB_IDX;
-import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -166,7 +163,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
                 true, false, false, dictionary);
         Intent intent = new Intent(getActivity(),
                 DictionaryResultListView.class);
-        intent.putExtra(Constants.CRITERIA_KEY, criteria);
+        intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
         return intent;
     }
 
@@ -178,7 +175,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
                     ExamplesResultListView.class);
             SearchCriteria criteria = SearchCriteria.createForExampleSearch(
                     exampleSearchKey, false, DEFAULT_MAX_NUM_EXAMPLES);
-            intent.putExtra(Constants.CRITERIA_KEY, criteria);
+            intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
             intent.putExtra(
                     ExamplesResultListFragment.EXTRA_EXAMPLES_BACKDOOR_SEARCH,
                     true);
@@ -188,11 +185,6 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         default:
             // do nothing
         }
-    }
-
-    @Override
-    protected void setHomeActivityExtras(Intent homeActivityIntent) {
-        homeActivityIntent.putExtra(SELECTED_TAB_IDX, DICTIONARY_TAB_IDX);
     }
 
     @Override

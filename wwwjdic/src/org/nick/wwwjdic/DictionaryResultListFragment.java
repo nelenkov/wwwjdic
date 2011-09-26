@@ -177,7 +177,7 @@ public class DictionaryResultListFragment extends
                 DictUtils.extractSearchKey(entry), false, NUM_EXAMPLE_RESULTS);
 
         Intent intent = new Intent(getActivity(), ExamplesResultListView.class);
-        intent.putExtra(Constants.CRITERIA_KEY, criteria);
+        intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 
         if (!StringUtils.isEmpty(criteria.getQueryString())) {
             db.addSearchCriteria(criteria);

@@ -294,7 +294,7 @@ public class ExamplesResultListFragment extends
         SearchCriteria criteria = SearchCriteria
                 .createForKanjiOrReading(sentence.getJapanese());
         Intent intent = new Intent(getActivity(), KanjiResultListView.class);
-        intent.putExtra(Constants.CRITERIA_KEY, criteria);
+        intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
         startActivity(intent);
     }
 

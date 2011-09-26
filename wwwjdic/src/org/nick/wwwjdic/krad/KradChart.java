@@ -13,9 +13,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.nick.wwwjdic.ActionBarActivity;
-import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.KanjiResultListView;
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.hkr.HkrCandidates;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.Analytics;
@@ -404,7 +404,7 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
     private Intent createCharDetailsIntent(String kanji) {
         Intent intent = new Intent(this, KanjiResultListView.class);
         SearchCriteria criteria = SearchCriteria.createForKanjiOrReading(kanji);
-        intent.putExtra(Constants.CRITERIA_KEY, criteria);
+        intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 
         return intent;
     }

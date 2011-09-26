@@ -135,7 +135,7 @@ public abstract class ResultListFragmentBase<T> extends ListFragment implements
 
     protected void extractSearchCriteria() {
         criteria = (SearchCriteria) getActivity().getIntent()
-                .getSerializableExtra(Constants.CRITERIA_KEY);
+                .getSerializableExtra(Wwwjdic.EXTRA_CRITERIA);
         if (criteria != null) {
             Log.d(TAG, "query string: " + criteria.getQueryString());
         }

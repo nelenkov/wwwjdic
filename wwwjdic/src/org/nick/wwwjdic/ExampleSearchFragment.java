@@ -48,8 +48,8 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
         }
 
         if (extras != null) {
-            String searchKey = extras.getString(Constants.SEARCH_TEXT_KEY);
-            int searchType = extras.getInt(Constants.SEARCH_TYPE);
+            String searchKey = extras.getString(Wwwjdic.EXTRA_SEARCH_TEXT);
+            int searchType = extras.getInt(Wwwjdic.EXTRA_SEARCH_TYPE);
             if (searchKey != null) {
                 switch (searchType) {
                 case SearchCriteria.CRITERIA_TYPE_EXAMPLES:
@@ -124,7 +124,7 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
 
                 Intent intent = new Intent(getActivity(),
                         ExamplesResultListView.class);
-                intent.putExtra(Constants.CRITERIA_KEY, criteria);
+                intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 
                 if (!StringUtils.isEmpty(criteria.getQueryString())) {
                     dbHelper.addSearchCriteria(criteria);

@@ -105,7 +105,7 @@ public class RadicalChart extends FragmentActivity implements
 
         Intent resultIntent = new Intent();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.RADICAL_KEY, radical);
+        bundle.putSerializable(KanjiLookupFragment.EXTRA_RADICAL_KEY, radical);
         resultIntent.putExtras(bundle);
 
         setResult(RESULT_OK, resultIntent);

@@ -153,7 +153,7 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry> 
                 dictionary);
         Intent intent = new Intent(getActivity(),
                 DictionaryResultListView.class);
-        intent.putExtra(Constants.CRITERIA_KEY, criteria);
+        intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 
         startActivity(intent);
     }

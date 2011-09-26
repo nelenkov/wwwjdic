@@ -1,10 +1,5 @@
 package org.nick.wwwjdic;
 
-import static org.nick.wwwjdic.Constants.DICTIONARY_TAB_IDX;
-import static org.nick.wwwjdic.Constants.EXAMPLE_SEARRCH_TAB_IDX;
-import static org.nick.wwwjdic.Constants.KANJI_TAB_IDX;
-import static org.nick.wwwjdic.Constants.SELECTED_TAB_IDX;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +39,15 @@ import android.view.View;
 public class Wwwjdic extends ActionBarActivity {
 
     private static final String TAG = Wwwjdic.class.getSimpleName();
+
+    public static final String EXTRA_SELECTED_TAB_IDX = "org.nick.wwwjdic.selectedTabIdx";
+    public static final int DICTIONARY_TAB_IDX = 0;
+    public static final int KANJI_TAB_IDX = 1;
+    public static final int EXAMPLE_SEARRCH_TAB_IDX = 2;
+
+    public static final String EXTRA_CRITERIA = "org.nick.wwwjdic.searchCriteria";
+    public static final String EXTRA_SEARCH_TEXT = "org.nick.wwwjdic.searchKey";
+    public static final String EXTRA_SEARCH_TYPE = "org.nick.wwwjdic.searchType";
 
     private static final int WHATS_NEW_DIALOG_ID = 1;
     private static final int DONATION_THANKS_DIALOG_ID = 2;
@@ -424,13 +428,13 @@ public class Wwwjdic extends ActionBarActivity {
 
         getSupportActionBar().setSelectedNavigationItem(DICTIONARY_TAB_IDX);
         if (extras != null) {
-            int selectedTab = extras.getInt(SELECTED_TAB_IDX, -1);
+            int selectedTab = extras.getInt(EXTRA_SELECTED_TAB_IDX, -1);
             if (selectedTab != -1) {
                 getSupportActionBar().setSelectedNavigationItem(selectedTab);
             }
 
-            String searchKey = extras.getString(Constants.SEARCH_TEXT_KEY);
-            int searchType = extras.getInt(Constants.SEARCH_TYPE);
+            String searchKey = extras.getString(EXTRA_SEARCH_TEXT);
+            int searchType = extras.getInt(EXTRA_SEARCH_TYPE);
             if (searchKey != null) {
                 switch (searchType) {
                 case SearchCriteria.CRITERIA_TYPE_DICT:

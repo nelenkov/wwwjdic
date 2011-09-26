@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.nick.wwwjdic.Constants;
 import org.nick.wwwjdic.DictionaryResultListView;
 import org.nick.wwwjdic.ExamplesResultListView;
 import org.nick.wwwjdic.KanjiResultListView;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.SearchSuggestionProvider;
+import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.LoaderResult;
@@ -113,7 +113,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
             // do nothing?
         }
 
-        intent.putExtra(Constants.CRITERIA_KEY, criteria);
+        intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 
         Analytics.event("lookupFromHistory", getActivity());
 

@@ -111,8 +111,6 @@ public abstract class DetailFragment extends Fragment implements
         return true;
     }
 
-    protected abstract void setHomeActivityExtras(Intent homeActivityIntent);
-
     protected WwwjdicApplication getApp() {
         return (WwwjdicApplication) getActivity().getApplication();
     }
