@@ -29,6 +29,7 @@ public class WwwjdicClient {
     private static final Pattern PRE_END_PATTERN = Pattern
             .compile("^</pre>.*$");
     private static final String PRE_END_TAG = "</pre>";
+    private static final String FONT_TAG = "<font";
 
     private String url;
     private int timeoutMillis;
@@ -77,6 +78,10 @@ public class WwwjdicClient {
         String[] lines = html.split("\n");
         for (String line : lines) {
             if (StringUtils.isEmpty(line)) {
+                continue;
+            }
+
+            if (line.startsWith(FONT_TAG)) {
                 continue;
             }
 
