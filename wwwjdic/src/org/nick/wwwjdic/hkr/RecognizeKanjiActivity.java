@@ -1,5 +1,8 @@
 package org.nick.wwwjdic.hkr;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,6 +12,8 @@ import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.ocr.WeOcrClient;
+import org.nick.wwwjdic.sod.StrokePath;
+import org.nick.wwwjdic.sod.StrokedCharacter;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Dialogs;
 
@@ -19,12 +24,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -382,31 +390,73 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         }
     }
 
+    private static final int BOUNDS_PADDING = 50;
+
     private Bitmap drawingToBitmap() {
-        Bitmap b = Bitmap.createBitmap(drawView.getWidth(),
-                drawView.getWidth(), Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
+        StrokedCharacter character = new StrokedCharacter(drawView.getStrokes());
+        RectF bounds = character.getBounds();
+        int width = (int) bounds.width() + BOUNDS_PADDING;
+        int height = (int) bounds.height() + BOUNDS_PADDING;
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        bitmap.eraseColor(Color.parseColor("#ff888888"));
+        Canvas canvas = new Canvas(bitmap);
 
-        boolean annotate = drawView.isAnnotateStrokes();
-        drawView.setAnnotateStrokes(false);
-        drawView.setBackgroundColor(0xff888888);
-        drawView.setStrokePaintColor(Color.BLACK);
+        float dx = 0;
+        float dy = 0;
+        RectF r = new RectF(0, 0, width, height);
+        dx = Math.abs(r.centerX() - bounds.centerX());
+        dy = Math.abs(r.centerY() - bounds.centerY());
+        if (r.centerX() < bounds.centerX()) {
+            dx *= -1;
+        }
+        if (r.centerY() < bounds.centerY()) {
+            dy *= -1;
+        }
 
-        drawView.draw(c);
+        drawToBitmap(character, canvas, dx, dy);
 
-        drawView.setAnnotateStrokes(annotate);
-        drawView.setBackgroundColor(Color.BLACK);
-        drawView.setStrokePaintColor(Color.WHITE);
+        Bitmap resized = scaleBitmap(width, height, bitmap, canvas);
+        //        dumpBitmap(resized, "ocrView.jpg");
 
-        int width = drawView.getWidth();
+        return resized;
+    }
+
+    private void drawToBitmap(StrokedCharacter character, Canvas c, float dx,
+            float dy) {
+        List<StrokePath> strokes = character.getStrokes();
+        for (StrokePath s : strokes) {
+            s.setStrokePaintColor(Color.BLACK);
+            s.draw(c, 1, dx, dy, 0, false);
+        }
+        //        dumpBitmap(b, "drawView.jpg");
+    }
+
+    private Bitmap scaleBitmap(int width, int height, Bitmap b, Canvas c) {
         int newWidth = OCR_IMAGE_WIDTH;
-        float scale = ((float) newWidth) / width;
+        int newHeight = OCR_IMAGE_WIDTH;
+        float scaleX = ((float) newWidth) / width;
+        float scaleY = ((float) newHeight) / height;
         Matrix matrix = new Matrix();
-        matrix.postScale(scale, scale);
-        c.scale(scale, scale);
-        Bitmap resized = Bitmap.createBitmap(b, 0, 0, width, width, matrix,
+        matrix.postScale(scaleX, scaleY);
+        c.scale(scaleX, scaleY);
+        Bitmap resized = Bitmap.createBitmap(b, 0, 0, width, height, matrix,
                 true);
         return resized;
+    }
+
+    @SuppressWarnings("unused")
+    private void dumpBitmap(Bitmap bitmap, String filename) {
+        try {
+            File f = new File(Environment.getExternalStorageDirectory(),
+                    "wwwjdic/" + filename);
+            FileOutputStream out = new FileOutputStream(f);
+            boolean rc = bitmap.compress(CompressFormat.JPEG, 90, out);
+            if (!rc) {
+                throw new RuntimeException("Failed to compress bitmap");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void clear() {
