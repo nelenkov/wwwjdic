@@ -80,7 +80,7 @@ public class FavoritesAndHistory extends ActionBarActivity {
         super.onStart();
 
         getSupportActionBar().setDisplayShowHomeEnabled(IS_HONEYCOMB);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(IS_HONEYCOMB);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
