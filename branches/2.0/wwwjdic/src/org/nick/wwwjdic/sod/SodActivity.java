@@ -42,8 +42,7 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
 
     public static final String EXTRA_KANJI_GLYPH = "org.nick.wwwjdic.kanjiGlyph";
 
-    // TODO -- change to default URL
-    private static final String STROKE_PATH_LOOKUP_URL = "http://7.wwwjdic-android.appspot.com/kanji/";
+    private static final String STROKE_PATH_LOOKUP_URL = "http://wwwjdic-android.appspot.com/kanji/";
 
     static class SodLoader extends LoaderBase<Pair<String, Boolean>> {
 
