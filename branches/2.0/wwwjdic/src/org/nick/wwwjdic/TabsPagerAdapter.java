@@ -1,6 +1,5 @@
 package org.nick.wwwjdic;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,17 +16,13 @@ import android.support.v4.view.ViewPager;
 public class TabsPagerAdapter extends FragmentPagerAdapter implements
         ViewPager.OnPageChangeListener, ActionBar.TabListener {
 
-    private final FragmentActivity activity;
     private final ActionBar actionBar;
     private final ViewPager viewPager;
     private final List<HistoryFragmentBase> tabs = new ArrayList<HistoryFragmentBase>();
 
-    private WeakReference<HistoryFragmentBase> lastFragment = null;
-
     public TabsPagerAdapter(FragmentActivity activity, ActionBar actionBar,
             ViewPager pager) {
         super(activity.getSupportFragmentManager());
-        this.activity = activity;
         this.actionBar = actionBar;
         this.viewPager = pager;
         this.viewPager.setAdapter(this);
@@ -35,7 +30,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
     }
 
     public void addTab(ActionBar.Tab tab, HistoryFragmentBase tabFragment) {
-        tabFragment.setHasOptionsMenu(false);
+        tabFragment.setHasOptionsMenu(true);
         tabs.add(tabFragment);
         actionBar.addTab(tab.setTabListener(this));
         notifyDataSetChanged();
@@ -68,14 +63,6 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
     @Override
     public void onTabSelected(Tab tab, FragmentTransaction ft) {
         viewPager.setCurrentItem(tab.getPosition());
-        for (int i = 0; i < tabs.size(); i++) {
-            if (i != tab.getPosition()) {
-                //                tabs.get(i).setHasOptionsMenu(false);
-            } else {
-                tabs.get(i).setHasOptionsMenu(true);
-                activity.invalidateOptionsMenu();
-            }
-        }
     }
 
     @Override
@@ -86,17 +73,4 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
     public void onTabUnselected(Tab tab, FragmentTransaction ft) {
     }
 
-    // TODO
-    // workaround for https://github.com/JakeWharton/ActionBarSherlock/issues/56
-    // Cf. http://code.google.com/p/android/issues/detail?id=20065
-    @Override
-    public void onItemSelected(int position, Object object) {
-        super.onItemSelected(position, object);
-        if ((lastFragment != null) && (lastFragment.get() != null)) {
-            lastFragment.get().setSelected(false);
-        }
-        HistoryFragmentBase fragment = (HistoryFragmentBase) object;
-        fragment.setSelected(true);
-        lastFragment = new WeakReference<HistoryFragmentBase>(fragment);
-    }
 }
