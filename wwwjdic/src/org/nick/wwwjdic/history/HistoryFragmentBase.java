@@ -24,6 +24,7 @@ import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.SupportActivity;
 import android.support.v4.view.ActionMode;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
@@ -80,9 +81,6 @@ public abstract class HistoryFragmentBase extends ListFragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // XXX double menus if on?
-        // setHasOptionsMenu(true);
-
         db = HistoryDbHelper.getInstance(getActivity());
 
         clipboardManager = (ClipboardManager) getActivity().getSystemService(
@@ -107,6 +105,19 @@ public abstract class HistoryFragmentBase extends ListFragment implements
         View v = inflater.inflate(getContentView(), container, false);
 
         return v;
+    }
+
+    @Override
+    public void onAttach(SupportActivity activity) {
+        super.onAttach(activity);
+        // XXX -- uglish, but calling setHasOptionsMenu() any later 
+        // than this may result in menu shown when restored (e.g., on rotate)
+        // Is there a better way?
+        // hasOptionsMenu has to be false by default, because we don't 
+        // want it when shown on the main screen (Wwwjdic.java)
+        if (activity.asActivity() instanceof FavoritesAndHistory) {
+            setHasOptionsMenu(true);
+        }
     }
 
     @Override
@@ -355,28 +366,12 @@ public abstract class HistoryFragmentBase extends ListFragment implements
             return;
         }
 
-        // TODO
-        // workaround for
-        // https://github.com/JakeWharton/ActionBarSherlock/issues/56
-        // Cf. http://code.google.com/p/android/issues/detail?id=20065
-        if (!selected) {
-            return;
-        }
-
         MenuInflater inflater = getSupportActivity().getMenuInflater();
         inflater.inflate(R.menu.history_favorites_context, menu);
     }
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
-        // TODO
-        // workaround for
-        // https://github.com/JakeWharton/ActionBarSherlock/issues/56
-        // Cf. http://code.google.com/p/android/issues/detail?id=20065
-        if (!selected) {
-            return super.onContextItemSelected(item);
-        }
-
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
                 .getMenuInfo();
         int position = info.position;
