@@ -70,8 +70,6 @@ public abstract class HistoryFragmentBase extends ListFragment implements
 
     protected int selectedFilter = -1;
 
-    private boolean selected;
-
     private ActionMode currentActionMode;
 
     protected HistoryFragmentBase() {
@@ -88,8 +86,13 @@ public abstract class HistoryFragmentBase extends ListFragment implements
 
         getListView().setOnCreateContextMenuListener(this);
 
-        if (getArguments() != null) {
+        if (getArguments() != null && savedInstanceState == null) {
             selectedFilter = getArguments().getInt(
+                    FavoritesAndHistory.EXTRA_FILTER_TYPE, FILTER_ALL);
+        }
+
+        if (savedInstanceState != null) {
+            selectedFilter = savedInstanceState.getInt(
                     FavoritesAndHistory.EXTRA_FILTER_TYPE, FILTER_ALL);
         }
 
@@ -118,6 +121,13 @@ public abstract class HistoryFragmentBase extends ListFragment implements
         if (activity.asActivity() instanceof FavoritesAndHistory) {
             setHasOptionsMenu(true);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(FavoritesAndHistory.EXTRA_FILTER_TYPE, selectedFilter);
     }
 
     @Override
@@ -503,14 +513,6 @@ public abstract class HistoryFragmentBase extends ListFragment implements
 
     public void setSelectedFilter(int selectedFilter) {
         this.selectedFilter = selectedFilter;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
     }
 
     @Override
