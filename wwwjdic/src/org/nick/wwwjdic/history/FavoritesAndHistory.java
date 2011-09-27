@@ -34,6 +34,9 @@ public class FavoritesAndHistory extends ActionBarActivity {
         int filterType = intent.getIntExtra(EXTRA_FILTER_TYPE,
                 HistoryBase.FILTER_ALL);
         int tabIdx = intent.getIntExtra(EXTRA_SELECTED_TAB_IDX, 0);
+        if (savedInstanceState != null) {
+            tabIdx = savedInstanceState.getInt(EXTRA_SELECTED_TAB_IDX, 0);
+        }
 
         Bundle favoritesArgs = new Bundle();
         Bundle historyArgs = new Bundle();
@@ -43,8 +46,6 @@ public class FavoritesAndHistory extends ActionBarActivity {
         if (tabIdx == 1) {
             historyArgs.putInt(EXTRA_FILTER_TYPE, filterType);
         }
-
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
 
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
