@@ -437,10 +437,10 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         }
 
         drawToBitmap(character, canvas, dx, dy);
-        dumpBitmap(bitmap, "drawView.jpg");
+        //        dumpBitmap(bitmap, "drawView.jpg");
 
         Bitmap resized = scaleBitmap(width, height, bitmap, canvas);
-        dumpBitmap(resized, "ocrView.jpg");
+        //        dumpBitmap(resized, "ocrView.jpg");
 
         return resized;
     }
