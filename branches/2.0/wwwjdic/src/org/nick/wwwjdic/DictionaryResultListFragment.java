@@ -100,20 +100,14 @@ public class DictionaryResultListFragment extends
 
     private void showDetails(DictionaryEntry entry, int index) {
         if (dualPane) {
-            // We can display everything in-place with fragments.
-            // Have the list highlight this item and show the data.
             getListView().setItemChecked(index, true);
 
-            // Check what fragment is shown, replace if needed.
             DictionaryEntryDetailFragment details = (DictionaryEntryDetailFragment) getFragmentManager()
                     .findFragmentById(R.id.details);
             if (details == null || details.getShownIndex() != index) {
-                // Make new fragment to show this selection.
                 details = DictionaryEntryDetailFragment.newInstance(index,
                         entry);
 
-                // Execute a transaction, replacing any existing
-                // fragment with this one inside the frame.
                 FragmentTransaction ft = getFragmentManager()
                         .beginTransaction();
                 ft.replace(R.id.details, details);
@@ -212,9 +206,7 @@ public class DictionaryResultListFragment extends
         getActivity().setTitle(message);
 
         if (dualPane) {
-            // In dual-pane mode, list view highlights selected item.
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            // Make sure our UI is in the correct state.
             showDetails(entries.get(currentCheckPosition), currentCheckPosition);
         }
     }

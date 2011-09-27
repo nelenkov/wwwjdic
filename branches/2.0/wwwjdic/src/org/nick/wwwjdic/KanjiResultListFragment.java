@@ -151,8 +151,7 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry> 
                 entry.getKanji(),
                 SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_ANY, false,
                 dictionary);
-        Intent intent = new Intent(getActivity(),
-                DictionaryResultList.class);
+        Intent intent = new Intent(getActivity(), DictionaryResultList.class);
         intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 
         startActivity(intent);
@@ -177,9 +176,7 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry> 
                 entries.size(), criteria.getQueryString());
         getActivity().setTitle(message);
         if (dualPane) {
-            // In dual-pane mode, list view highlights selected item.
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            // Make sure our UI is in the correct state.
             showDetails(entries.get(currentCheckPosition), currentCheckPosition);
         }
     }
