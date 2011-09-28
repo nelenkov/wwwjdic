@@ -177,6 +177,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
         super.onStart();
 
         Analytics.startSession(this);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(IS_HONEYCOMB);
     }
 
     @Override
