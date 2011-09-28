@@ -27,6 +27,7 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
 public class ExamplesResultListFragment extends
@@ -279,6 +280,8 @@ public class ExamplesResultListFragment extends
     private void copyEnglish(long id) {
         ExampleSentence sentence = getCurrentSentence(id);
         clipboardManager.setText(sentence.getEnglish());
+        Toast.makeText(getActivity(), R.string.copied_eng, Toast.LENGTH_SHORT)
+                .show();
     }
 
     private ExampleSentence getCurrentSentence(long id) {
@@ -288,6 +291,8 @@ public class ExamplesResultListFragment extends
     private void copyJapanese(long id) {
         ExampleSentence sentence = getCurrentSentence(id);
         clipboardManager.setText(sentence.getJapanese());
+        Toast.makeText(getActivity(), R.string.copied_jp, Toast.LENGTH_SHORT)
+                .show();
     }
 
     private void lookupAllKanji(long id) {

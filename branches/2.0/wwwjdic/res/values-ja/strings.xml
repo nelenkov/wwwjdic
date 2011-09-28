@@ -154,8 +154,11 @@
     <string name="break_down_jap">日本語文解析</string>
     <string name="look_up_all_kanji">漢字引き</string>
     <string name="copy_jp">日本語文コピー</string>
+    <string name="copied_jp">日本語文をコピーしました。</string>
     <string name="copy_eng">英語文コピー</string>
+    <string name="copied_eng">英語文コピーをコピーしました。</string>
     <string name="sentence_breakdown">例文解析</string>
+    <string name="sentence_translation">日本語文解析</string>
     <string name="sentence_words">単語</string>
     <string name="no_results">検索結果はありません</string>
     <string name="searching">検索中...</string>

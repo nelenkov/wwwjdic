@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
 public class SentenceBreakdownFragment extends
@@ -225,11 +226,15 @@ public class SentenceBreakdownFragment extends
     private void copyEnglish() {
         if (sentenceTranslation != null) {
             clipboardManager.setText(sentenceTranslation);
+            Toast.makeText(getActivity(), R.string.copied_eng,
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
     private void copyJapanese() {
         clipboardManager.setText(sentenceStr);
+        Toast.makeText(getActivity(), R.string.copied_jp, Toast.LENGTH_SHORT)
+                .show();
     }
 
     private void lookupAllKanji() {
@@ -300,7 +305,9 @@ public class SentenceBreakdownFragment extends
     }
 
     private void setTitleAndMarkSentence() {
-        getActivity().setTitle(R.string.sentence_breakdown);
+        getActivity().setTitle(
+                sentenceTranslation != null ? R.string.sentence_breakdown
+                        : R.string.sentence_translation);
         sentenceView.setText(markedSentence);
     }
 
