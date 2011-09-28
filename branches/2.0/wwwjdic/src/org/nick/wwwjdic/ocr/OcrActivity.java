@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.acra.ErrorReporter;
+import org.nick.wwwjdic.Activities;
 import org.nick.wwwjdic.DictionaryResultList;
 import org.nick.wwwjdic.ExamplesResultList;
 import org.nick.wwwjdic.KanjiResultList;
@@ -41,6 +42,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MenuItem;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -182,6 +184,19 @@ public class OcrActivity extends WebServiceBackedActivity implements
         super.onStop();
 
         Analytics.endSession(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            Activities.home(this);
+            return true;
+        default:
+            // do nothing
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void toggleSearchButtons(boolean enabled) {
