@@ -71,7 +71,6 @@
         <activity android:name="org.nick.wwwjdic.sod.SodActivity" 
             android:theme="@style/Theme.WwwjdicAb"/>
         <activity android:name="org.nick.wwwjdic.krad.KradChart"
-            android:configChanges="orientation|keyboardHidden|keyboard" 
             android:theme="@style/Theme.WwwjdicAb"/>        
             
         <activity android:name="org.nick.wwwjdic.widgets.KodWidgetConfigure" 

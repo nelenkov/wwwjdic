@@ -18,6 +18,19 @@ public class KradDb {
     private Map<String, Set<String>> radicalToKanjis = new HashMap<String, Set<String>>();
     private Map<String, Set<String>> kanjiToRadicals = new HashMap<String, Set<String>>();
 
+    private static KradDb instance;
+
+    public static KradDb getInstance() {
+        if (instance == null) {
+            instance = new KradDb();
+        }
+
+        return instance;
+    }
+
+    private KradDb() {
+    }
+
     public boolean isInitialized() {
         return !radicalToKanjis.isEmpty();
     }

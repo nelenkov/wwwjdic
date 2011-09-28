@@ -8,15 +8,20 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-    <TextView
-      android:id="@+id/matched_kanji"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:layout_margin="5dp"
-      android:gravity="center"
-      android:text="@string/no_matches"
-      android:textSize="@dimen/krad_chart_matched_kanji_size"
-      android:singleLine="true" />
+    <Gallery 
+        android:id="@+id/candidates_gallery"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/candidates_min_height"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp" 
+        android:spacing="4dp"
+        android:gravity="center" 
+        android:layout_gravity="center_vertical"
+        android:unselectedAlpha="1"
+        android:background="@drawable/candidates_border"/>   
     <LinearLayout
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
