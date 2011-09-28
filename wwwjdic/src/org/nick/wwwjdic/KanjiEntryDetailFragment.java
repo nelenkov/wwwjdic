@@ -232,9 +232,10 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
         codesLayout = (LinearLayout) v.findViewById(R.id.codes_layout);
 
         if (entry.getMeanings().isEmpty()) {
-            TextView text = new TextView(getActivity(), null,
-                    R.style.dict_detail_meaning);
-            translationsLayout.addView(text);
+            Pair<LinearLayout, TextView> translationViews = createMeaningTextView(
+                    getActivity(), getResources().getString(R.string.none),
+                    false);
+            translationsLayout.addView(translationViews.getFirst());
         } else {
             for (String meaning : entry.getMeanings()) {
                 final Pair<LinearLayout, TextView> translationViews = createMeaningTextView(
@@ -336,8 +337,7 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
                         .getCurrentDictionaryName(), dictionary));
         SearchCriteria criteria = SearchCriteria.createForKanjiCompounds(
                 entry.getKanji(), searchType, commonWordsOnly, dictionary);
-        Intent intent = new Intent(getActivity(),
-                DictionaryResultList.class);
+        Intent intent = new Intent(getActivity(), DictionaryResultList.class);
         intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
         return intent;
     }

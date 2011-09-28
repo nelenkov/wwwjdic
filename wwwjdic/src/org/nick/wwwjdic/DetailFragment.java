@@ -183,6 +183,11 @@ public abstract class DetailFragment extends Fragment implements
 
     protected Pair<LinearLayout, TextView> createMeaningTextView(
             final Context ctx, String meaning) {
+        return createMeaningTextView(ctx, meaning, true);
+    }
+
+    protected Pair<LinearLayout, TextView> createMeaningTextView(
+            final Context ctx, String meaning, boolean enableTts) {
         LayoutInflater inflater = LayoutInflater.from(ctx);
         LinearLayout translationLayout = (LinearLayout) inflater.inflate(
                 R.layout.translation_item, null);
@@ -191,16 +196,20 @@ public abstract class DetailFragment extends Fragment implements
         translationText.setText(meaning);
         Button speakButton = (Button) translationLayout
                 .findViewById(R.id.speak_button);
-        speakButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String toSpeak = DictUtils.stripWwwjdicTags(ctx,
-                        translationText.getText().toString());
-                if (tts != null) {
-                    tts.speak(toSpeak, TextToSpeech.QUEUE_ADD, null);
+        if (enableTts) {
+            speakButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String toSpeak = DictUtils.stripWwwjdicTags(ctx,
+                            translationText.getText().toString());
+                    if (tts != null) {
+                        tts.speak(toSpeak, TextToSpeech.QUEUE_ADD, null);
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            translationLayout.removeView(speakButton);
+        }
 
         Pair<LinearLayout, TextView> result = new Pair<LinearLayout, TextView>(
                 translationLayout, translationText);
