@@ -30,7 +30,8 @@
             <TextView android:id="@+id/details_kunyomi_text"
                 android:layout_width="fill_parent" 
                 android:layout_height="wrap_content" 
-                style="@style/kanji_detail_reading" /> 
+                style="@style/kanji_detail_reading" 
+                android:text=" "/> 
         </LinearLayout>
         <Button android:id="@+id/jp_speak_button" 
             android:layout_width="wrap_content"
