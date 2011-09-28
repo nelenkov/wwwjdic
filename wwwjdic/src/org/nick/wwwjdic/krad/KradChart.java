@@ -20,7 +20,6 @@ import org.nick.wwwjdic.hkr.HkrCandidates;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Dialogs;
-import org.nick.wwwjdic.utils.IntentSpan;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -28,13 +27,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.method.MovementMethod;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -42,14 +39,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Gallery;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class KradChart extends ActionBarActivity implements OnClickListener,
         OnItemClickListener {
-
-    private static final int NUM_SUMMARY_CHARS = 10;
 
     private static final String TAG = KradChart.class.getSimpleName();
 
@@ -73,8 +69,6 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
     private static final List<String> REPLACED_CHARS = Arrays
             .asList(new String[] { "邦", "阡", "尚", "个" });
 
-    private List<String> radicals = new ArrayList<String>();
-
     private static final String STATE_KEY = "org.nick.wwwjdic.kradChartState";
 
     static class State implements Serializable {
@@ -86,11 +80,12 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
         Set<String> selectedRadicals = new HashSet<String>();
         Set<String> enabledRadicals = new HashSet<String>();
         Set<String> matchingKanjis = new HashSet<String>();
+        List<String> radicals = new ArrayList<String>();
     }
 
     private State state = new State();
 
-    private TextView matchedKanjiText;
+    private Gallery candidatesGallery;
     private TextView totalMatchesText;
     private Button showAllButton;
     private Button clearButton;
@@ -98,18 +93,22 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
     private GridView radicalChartGrid;
     private KradAdapter adapter;
 
-    private KradDb kradDb = new KradDb();
+    private String[] candidates = new String[0];
+
+    private KradDb kradDb;
 
     private ProgressDialog progressDialog;
-
-    private int maxNumSummaryChars = NUM_SUMMARY_CHARS;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.krad_chart);
 
-        matchedKanjiText = (TextView) findViewById(R.id.matched_kanji);
+        candidatesGallery = (Gallery) findViewById(R.id.candidates_gallery);
+        candidatesGallery.setOnItemClickListener(this);
+        candidatesGallery.setGravity(Gravity.CENTER_VERTICAL);
+        candidatesGallery.setSelected(true);
+
         totalMatchesText = (TextView) findViewById(R.id.total_matches);
         displayTotalMatches();
 
@@ -122,10 +121,21 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
         radicalChartGrid = (GridView) findViewById(R.id.kradChartGrid);
         radicalChartGrid.setOnItemClickListener(this);
 
-        maxNumSummaryChars = getResources().getInteger(
-                R.integer.krad_max_candidates);
-
         setTitle(R.string.kanji_multi_radical_search);
+
+        kradDb = KradDb.getInstance();
+        if (savedInstanceState != null) {
+            state = (State) savedInstanceState.getSerializable(STATE_KEY);
+
+            enableAllRadicals();
+            adapter = new KradAdapter(KradChart.this, R.layout.krad_item,
+                    state.radicals);
+            radicalChartGrid.setAdapter(adapter);
+
+            updateRadicalsAndMatches();
+
+            return;
+        }
 
         new AsyncTask<Void, Void, Boolean>() {
 
@@ -152,14 +162,14 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
 
                         for (String numStrokesStr : NUM_STROKES) {
                             String labelStr = new String(numStrokesStr);
-                            radicals.add(labelStr);
+                            state.radicals.add(labelStr);
 
                             String arrayName = "_" + numStrokesStr + "_stroke";
                             Field field = R.array.class.getField(arrayName);
                             int resourceId = (Integer) field.get(null);
                             String[] radicalArr = getResources()
                                     .getStringArray(resourceId);
-                            radicals.addAll(Arrays.asList(radicalArr));
+                            state.radicals.addAll(Arrays.asList(radicalArr));
                         }
                     } catch (NoSuchFieldException e) {
                         throw new RuntimeException(e);
@@ -184,7 +194,7 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
                     if (result) {
                         enableAllRadicals();
                         adapter = new KradAdapter(KradChart.this,
-                                R.layout.krad_item, radicals);
+                                R.layout.krad_item, state.radicals);
                         radicalChartGrid.setAdapter(adapter);
 
                         Dialogs.showTipOnce(KradChart.this, MULTI_RADICAL_TIP,
@@ -202,6 +212,47 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
         }.execute();
     }
 
+    private void setupGallerySelection() {
+        if (candidatesGallery != null && candidatesGallery.getAdapter() != null) {
+            int numItems = candidatesGallery.getAdapter().getCount();
+            Display display = getWindowManager().getDefaultDisplay();
+            int galleryWidth = display.getWidth();
+            if (numItems > 0 && galleryWidth > 0) {
+                DisplayMetrics dm = new DisplayMetrics();
+                display.getMetrics(dm);
+
+                // 8 is padding, etc.
+                int itemWidth = (int) (getResources().getDimension(
+                        R.dimen.candidates_item_size) + dm.density * 8);
+                int numVisibleItems = galleryWidth / itemWidth;
+                int selectionIdx = numVisibleItems / 2;
+                if (numItems <= selectionIdx) {
+                    selectionIdx = numItems / 2;
+                }
+                candidatesGallery.setSelection(selectionIdx);
+            }
+        }
+    }
+
+    private void showCandidates(String[] candidates) {
+        if (candidates != null) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    R.layout.candidates_item, candidates);
+
+            candidatesGallery.setAdapter(adapter);
+            setupGallerySelection();
+        }
+    }
+
+    private void clearCandidates() {
+        candidates = new String[0];
+        if (candidatesGallery != null) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    R.layout.candidates_item, candidates);
+            candidatesGallery.setAdapter(adapter);
+        }
+    }
+
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -216,12 +267,17 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
         outState.putSerializable(STATE_KEY, state);
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupGallerySelection();
     }
 
     private void displayTotalMatches() {
@@ -244,7 +300,7 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
     }
 
     private void enableAllRadicals() {
-        for (String radical : radicals) {
+        for (String radical : state.radicals) {
             if (!isStrokeNumLabel(radical)) {
                 state.enabledRadicals.add(radical.trim());
             }
@@ -318,23 +374,43 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
 
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
-        Analytics.event("multiradicalSelect", this);
+        switch (parent.getId()) {
+        case R.id.candidates_gallery:
+            if (position >= 0 && position < candidates.length) {
+                String kanji = candidates[position];
+                Intent intent = createCharDetailsIntent(kanji);
+                startActivity(intent);
+            }
+            break;
+        case R.id.kradChartGrid:
+            Analytics.event("multiradicalSelect", this);
 
-        String radical = radicals.get(position).trim();
-        if (state.selectedRadicals.contains(radical)) {
-            state.selectedRadicals.remove(radical);
-        } else {
-            state.selectedRadicals.add(radical);
+            String radical = state.radicals.get(position).trim();
+            if (state.selectedRadicals.contains(radical)) {
+                state.selectedRadicals.remove(radical);
+            } else {
+                state.selectedRadicals.add(radical);
+            }
+
+            updateRadicalsAndMatches();
+            break;
+        default:
+            // do nothing
         }
+    }
 
+    private void updateRadicalsAndMatches() {
         if (state.selectedRadicals.isEmpty()) {
             enableAllRadicals();
             state.matchingKanjis.clear();
-            matchedKanjiText.setText(R.string.no_matches);
+            clearCandidates();
         } else {
             state.matchingKanjis = kradDb
                     .getKanjisForRadicals(state.selectedRadicals);
-            addClickableKanji(matchedKanjiText);
+            candidates = state.matchingKanjis
+                    .toArray(new String[state.matchingKanjis.size()]);
+            Arrays.sort(candidates);
+            showCandidates(candidates);
 
             Log.d(TAG, "matching kanjis: " + state.matchingKanjis);
             state.enabledRadicals = kradDb
@@ -347,58 +423,6 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
         displayTotalMatches();
 
         adapter.notifyDataSetChanged();
-    }
-
-    private void addClickableKanji(TextView textView) {
-        if (state.matchingKanjis.isEmpty()) {
-            return;
-        }
-
-        String[] matchingChars = state.matchingKanjis
-                .toArray(new String[state.matchingKanjis.size()]);
-        Arrays.sort(matchingChars);
-
-        String[] charsToDisplay = new String[maxNumSummaryChars];
-        if (matchingChars.length < charsToDisplay.length) {
-            charsToDisplay = new String[matchingChars.length];
-        }
-        System.arraycopy(matchingChars, 0, charsToDisplay, 0,
-                charsToDisplay.length);
-        String text = TextUtils.join(" ", charsToDisplay);
-        String ellipsis = "...";
-        if (matchingChars.length > charsToDisplay.length) {
-            text += " " + ellipsis;
-        }
-        SpannableString str = new SpannableString(text);
-
-        for (String c : charsToDisplay) {
-            int idx = text.indexOf(c);
-            if (idx != -1) {
-                Intent intent = createCharDetailsIntent(c);
-                int end = idx + 1;
-                if (end > str.length() - 1) {
-                    end = str.length();
-                }
-                str.setSpan(new IntentSpan(this, intent), idx, idx + 1,
-                        Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-            }
-        }
-
-        int idx = text.indexOf(ellipsis);
-        if (idx != -1) {
-            Intent intent = createShowAllIntent();
-            str.setSpan(new IntentSpan(this, intent), idx,
-                    idx + ellipsis.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        }
-
-        textView.setText(str);
-        textView.setLinkTextColor(Color.WHITE);
-        MovementMethod m = textView.getMovementMethod();
-        if ((m == null) || !(m instanceof LinkMovementMethod)) {
-            if (textView.getLinksClickable()) {
-                textView.setMovementMethod(LinkMovementMethod.getInstance());
-            }
-        }
     }
 
     private Intent createCharDetailsIntent(String kanji) {
@@ -447,7 +471,7 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
         state.matchingKanjis.clear();
         enableAllRadicals();
 
-        matchedKanjiText.setText(R.string.no_matches);
+        clearCandidates();
         displayTotalMatches();
 
         toggleButtons();
