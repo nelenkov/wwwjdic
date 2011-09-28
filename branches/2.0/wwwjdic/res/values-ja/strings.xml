@@ -391,4 +391,7 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     <string name="gallery">ギャラリー</string>
     
     <string name="none">(なし)</string>
+    
+    <string name="pref_other">その他</string> 
+    <string name="pref_other_summary">アプリメンテナンスなど</string>
 </resources>

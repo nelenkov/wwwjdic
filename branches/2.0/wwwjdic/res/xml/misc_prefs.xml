@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+   <PreferenceCategory android:title="@string/pref_sod">
+        <EditTextPreference android:key="pref_sod_server_timeout"
+            android:title="@string/pref_sod_server_timeout"
+            android:summary="@string/pref_timeout_summary"
+            android:singleLine="true" android:inputType="numberDecimal"
+            android:defaultValue="30" android:maxLength="4" />
+        <EditTextPreference android:key="pref_sod_animation_delay"
+            android:title="@string/pref_sod_animation_delay"
+            android:summary="@string/pref_sod_animation_delay_summary"
+            android:singleLine="true" android:inputType="numberDecimal"
+            android:defaultValue="700" android:maxLength="4" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_export">
+        <ListPreference android:title="@string/pref_export_meanings_separator_char"
+            android:key="pref_export_meanings_separator_char"
+            android:summary="@string/pref_export_meanings_separator_char_summary"
+            android:defaultValue="\n"
+            android:entries="@array/export_meanings_separator_char_names"
+            android:entryValues="@array/export_meanings_separator_chars" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_maintenance">
+        <CheckBoxPreference android:key="pref_enable_analytics"
+            android:title="@string/pref_enable_analytics"
+            android:summary="@string/pref_analytics_summary"
+            android:defaultValue="true" 
+            android:disableDependentsState="false" />
+        <CheckBoxPreference android:key="acra.enable"
+            android:title="@string/pref_disable_acra"
+            android:summaryOn="@string/pref_acra_enabled"
+            android:summaryOff="@string/pref_acra_disabled"
+            android:defaultValue="true"/>
+        <CheckBoxPreference android:key="pref_enable_update_check"
+            android:title="@string/pref_enable_update_check"
+            android:summary="@string/pref_enable_update_check_summary"
+            android:defaultValue="true"/>        
+    </PreferenceCategory>  
+</PreferenceScreen>

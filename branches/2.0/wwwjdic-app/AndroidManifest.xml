@@ -49,6 +49,8 @@
             android:theme="@style/Theme.WwwjdicAb"/>
         <activity android:name="org.nick.wwwjdic.WwwjdicPreferences" 
             android:theme="@style/Theme.WwwjdicAb"/>
+        <activity android:name="org.nick.wwwjdic.WwwjdicPreferencesHC" 
+            android:theme="@style/Theme.WwwjdicAb"/>    
         <activity android:name="org.nick.wwwjdic.ocr.OcrActivity"
             android:configChanges="orientation|keyboardHidden|keyboard" 
             android:hardwareAccelerated="false" 

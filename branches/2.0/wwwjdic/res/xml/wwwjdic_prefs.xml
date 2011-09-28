@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  <PreferenceCategory android:title="@string/pref_wwwjdic">
+        <CheckBoxPreference android:key="pref_auto_select_mirror"
+            android:title="@string/pref_auto_select_mirror"
+            android:summary="@string/pref_auto_select_mirror_summary"
+            android:defaultValue="true" android:disableDependentsState="true" />
+        <ListPreference android:title="@string/pref_wwwjdic_mirror"
+            android:key="pref_wwwjdic_mirror_url"
+            android:defaultValue="http://wwwjdic.mygengo.com/cgi-data/wwwjdic"
+            android:entries="@array/wwwjdic_mirror_names"
+            android:entryValues="@array/wwwjdic_mirror_urls"
+            android:dependency="pref_auto_select_mirror" />
+        <EditTextPreference android:key="pref_wwwjdic_timeout"
+            android:title="@string/pref_wwwjdic_timeout"
+            android:summary="@string/pref_timeout_summary"
+            android:singleLine="true" android:inputType="numberDecimal"
+            android:defaultValue="15" android:maxLength="4" />
+        <ListPreference android:title="@string/pref_default_dict"
+            android:key="pref_default_dict" android:defaultValue="0"
+            android:entries="@array/dictionaries_array"
+            android:entryValues="@array/dictionary_idxs_array" />
+        <CheckBoxPreference android:key="pref_random_examples"
+            android:title="@string/pref_random_examples"
+            android:summary="@string/pref_random_examples_summary"
+            android:defaultValue="false" />    
+    </PreferenceCategory>   
+</PreferenceScreen>
