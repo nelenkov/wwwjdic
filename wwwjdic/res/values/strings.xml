@@ -556,4 +556,7 @@
     <string name="gallery">Gallery</string>
     
     <string name="none">(none)</string>
+    
+    <string name="pref_other">Other</string> 
+    <string name="pref_other_summary">App maintenance, etc.</string>
 </resources>

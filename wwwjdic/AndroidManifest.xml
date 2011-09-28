@@ -38,7 +38,7 @@
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name="KanjiEntryDetail"></activity>
         <activity android:name="RadicalChart"></activity>
-        <activity android:name="WwwjdicPreferences"></activity>
+        <activity android:name=".WwwjdicPreferences"></activity>
         <activity android:name=".ocr.OcrActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
         <activity android:name=".ocr.crop.CropImage"

@@ -301,7 +301,8 @@ public class Wwwjdic extends ActionBarActivity {
             startActivity(intent);
             return true;
         case R.id.menu_settings:
-            intent = new Intent(this, WwwjdicPreferences.class);
+            intent = new Intent(this, IS_HONEYCOMB ? WwwjdicPreferencesHC.class
+                    : WwwjdicPreferences.class);
 
             startActivity(intent);
             return true;

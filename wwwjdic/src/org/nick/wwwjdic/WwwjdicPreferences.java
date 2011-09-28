@@ -42,7 +42,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     public static final String KR_PACKAGE = "org.nick.kanjirecognizer";
 
-    private static final String PREF_DEFAULT_DICT_PREF_KEY = "pref_default_dict";
+    public static final String PREF_DEFAULT_DICT_PREF_KEY = "pref_default_dict";
 
     private static final String PREF_EXPORT_MEANINGS_SEPARATOR_CHAR = "pref_export_meanings_separator_char";
 
@@ -105,7 +105,11 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         super.onCreate(savedInstanceState);
 
         setTitle(R.string.settings);
-        addPreferencesFromResource(R.xml.preferences);
+
+        addPreferencesFromResource(R.xml.wwwjdic_prefs);
+        addPreferencesFromResource(R.xml.ocr_prefs);
+        addPreferencesFromResource(R.xml.kr_prefs);
+        addPreferencesFromResource(R.xml.misc_prefs);
 
         useKrPreference = (CheckBoxPreference) findPreference(PREF_USE_KR_KEY);
         useKrPreference.setOnPreferenceChangeListener(this);
@@ -160,7 +164,11 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     }
 
     private String getMirrorName(String url) {
-        Resources r = getResources();
+        return getMirrorName(this, url);
+    }
+
+    static String getMirrorName(Context ctx, String url) {
+        Resources r = ctx.getResources();
         List<String> mirrorUrls = Arrays.asList(r
                 .getStringArray(R.array.wwwjdic_mirror_urls));
         String[] mirrorNames = r.getStringArray(R.array.wwwjdic_mirror_names);
@@ -173,17 +181,21 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     }
 
     private void showInstallKrDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        showInstallKrDialog(this);
+    }
+
+    static void showInstallKrDialog(final Context ctx) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         builder.setMessage(R.string.install_kr)
                 .setCancelable(false)
                 .setPositiveButton(R.string.yes,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                String kanjiRecognizerUri = getResources()
+                                String kanjiRecognizerUri = ctx.getResources()
                                         .getString(R.string.kr_download_uri);
                                 Intent intent = new Intent(Intent.ACTION_VIEW,
                                         Uri.parse(kanjiRecognizerUri));
-                                startActivity(intent);
+                                ctx.startActivity(intent);
                             }
                         })
                 .setNegativeButton(R.string.no,
@@ -244,7 +256,11 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     }
 
     private String getDictionaryName(int dictIdx) {
-        String[] dictionaryNames = getResources().getStringArray(
+        return getDictionaryName(this, dictIdx);
+    }
+
+    static String getDictionaryName(Context ctx, int dictIdx) {
+        String[] dictionaryNames = ctx.getResources().getStringArray(
                 R.array.dictionaries_array);
 
         if (dictIdx >= 0 && dictIdx < dictionaryNames.length) {
@@ -253,6 +269,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
         return "";
     }
+
 
     public static String getMeaningsSeparatorCharacter(Context context) {
         SharedPreferences preferences = getPrefs(context);
