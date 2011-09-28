@@ -98,17 +98,25 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         translationsLayout = (LinearLayout) v
                 .findViewById(R.id.translations_layout);
 
-        for (String meaning : entry.getMeanings()) {
-            final Pair<LinearLayout, TextView> translationViews = createMeaningTextView(
-                    getActivity(), meaning);
-            Matcher m = CROSS_REF_PATTERN.matcher(meaning);
-            if (m.matches()) {
-                Intent intent = createCrossRefIntent(m.group(1));
-                int start = m.start(1);
-                int end = m.end(1);
-                makeClickable(translationViews.getSecond(), start, end, intent);
-            }
+        if (entry.getMeanings().isEmpty()) {
+            Pair<LinearLayout, TextView> translationViews = createMeaningTextView(
+                    getActivity(), getResources().getString(R.string.none),
+                    false);
             translationsLayout.addView(translationViews.getFirst());
+        } else {
+            for (String meaning : entry.getMeanings()) {
+                Pair<LinearLayout, TextView> translationViews = createMeaningTextView(
+                        getActivity(), meaning);
+                Matcher m = CROSS_REF_PATTERN.matcher(meaning);
+                if (m.matches()) {
+                    Intent intent = createCrossRefIntent(m.group(1));
+                    int start = m.start(1);
+                    int end = m.end(1);
+                    makeClickable(translationViews.getSecond(), start, end,
+                            intent);
+                }
+                translationsLayout.addView(translationViews.getFirst());
+            }
         }
 
         starCb = (CheckBox) v.findViewById(R.id.star_word);
@@ -161,8 +169,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
                         .getCurrentDictionaryName(), dictionary));
         SearchCriteria criteria = SearchCriteria.createForDictionary(word,
                 true, false, false, dictionary);
-        Intent intent = new Intent(getActivity(),
-                DictionaryResultList.class);
+        Intent intent = new Intent(getActivity(), DictionaryResultList.class);
         intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
         return intent;
     }
@@ -171,8 +178,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.examples_button:
-            Intent intent = new Intent(getActivity(),
-                    ExamplesResultList.class);
+            Intent intent = new Intent(getActivity(), ExamplesResultList.class);
             SearchCriteria criteria = SearchCriteria.createForExampleSearch(
                     exampleSearchKey, false, DEFAULT_MAX_NUM_EXAMPLES);
             intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);

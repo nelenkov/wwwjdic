@@ -554,4 +554,6 @@
     
     <string name="ocr_select_image">Select image file</string>
     <string name="gallery">Gallery</string>
+    
+    <string name="none">(none)</string>
 </resources>
