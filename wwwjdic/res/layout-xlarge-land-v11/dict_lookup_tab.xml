@@ -8,5 +8,50 @@
         android:id="@+id/dictionary_fragment"
         android:layout_width="fill_parent" 
         android:layout_height="wrap_content" />
-    <include layout="@layout/favorites_history_pane" />   
+    <LinearLayout 
+      android:id="@+id/favorites_history_layout" 
+      android:layout_width="fill_parent"
+      android:layout_height="0px"
+      android:orientation="horizontal" 
+      android:layout_weight="1" 
+      android:padding="15dip">
+      <LinearLayout
+          android:orientation="vertical" 
+          android:layout_width="0px" 
+          android:layout_weight="1" 
+          android:layout_height="fill_parent" >
+          <TextView 
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content" 
+              android:text="@string/favorites"
+              android:textSize="16sp" 
+              android:textColor="#FFFF"
+              android:gravity="center" 
+              android:layout_gravity="center_vertical"/>
+              <fragment class="org.nick.wwwjdic.history.FavoritesFragment"
+                  android:id="@+id/favorites_fragment"
+                  android:layout_width="fill_parent" 
+                  android:layout_height="0px"
+                  android:layout_weight="1"/>    
+      </LinearLayout>
+      <LinearLayout
+          android:orientation="vertical" 
+          android:layout_width="0px" 
+          android:layout_weight="1" 
+          android:layout_height="fill_parent" >
+          <TextView 
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content" 
+              android:text="@string/search_history"
+              android:textSize="16sp" 
+              android:textColor="#FFFF"
+              android:gravity="center" 
+              android:layout_gravity="center_vertical"/>
+          <fragment class="org.nick.wwwjdic.history.SearchHistoryFragment"
+                  android:id="@+id/history_fragment"
+                  android:layout_width="fill_parent" 
+                  android:layout_height="0px"
+                  android:layout_weight="1"/>    
+      </LinearLayout>
+  </LinearLayout>   
 </LinearLayout>
