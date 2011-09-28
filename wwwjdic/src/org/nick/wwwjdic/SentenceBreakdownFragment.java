@@ -1,5 +1,6 @@
 package org.nick.wwwjdic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.nick.wwwjdic.model.SearchCriteria;
@@ -102,6 +103,8 @@ public class SentenceBreakdownFragment extends
     public static final String EXTRA_SENTENCE = "org.nick.wwwjdic.SENTENCE";
     public static final String EXTRA_SENTENCE_TRANSLATION = "org.nick.wwwjdic.SENTENCE_TRANSLATION";
 
+    private static final String ENTRIES_KEY = "org.nick.wwwjdic.SENTENCE_BREAKDOWN_ENTRIES";
+
     private String sentenceStr;
     private String sentenceTranslation;
     private List<SentenceBreakdownEntry> entries;
@@ -146,9 +149,15 @@ public class SentenceBreakdownFragment extends
                 Context.CLIPBOARD_SERVICE);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            entries = (List<SentenceBreakdownEntry>) savedInstanceState
+                    .getSerializable(ENTRIES_KEY);
+        }
 
         if (getView() == null) {
             return;
@@ -160,15 +169,6 @@ public class SentenceBreakdownFragment extends
             args.putAll(getActivity().getIntent().getExtras());
         }
 
-        if (entries != null) {
-            setTitleAndMarkSentence();
-            if (StringUtils.isEmpty(sentenceTranslation)) {
-                englishSentenceText.setVisibility(View.GONE);
-            }
-
-            return;
-        }
-
         sentenceStr = args.getString(EXTRA_SENTENCE);
         sentenceTranslation = args.getString(EXTRA_SENTENCE_TRANSLATION);
         markedSentence = new SpannableString(sentenceStr);
@@ -178,6 +178,12 @@ public class SentenceBreakdownFragment extends
             englishSentenceText.setText(sentenceTranslation);
         } else {
             englishSentenceText.setVisibility(View.GONE);
+        }
+
+        if (entries != null) {
+            updateEntries(entries);
+
+            return;
         }
 
         WwwjdicQuery query = new WwwjdicQuery(sentenceStr);
@@ -221,6 +227,14 @@ public class SentenceBreakdownFragment extends
         }
 
         return false;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable(ENTRIES_KEY,
+                (ArrayList<SentenceBreakdownEntry>) entries);
     }
 
     private void copyEnglish() {
@@ -291,14 +305,7 @@ public class SentenceBreakdownFragment extends
 
         guiThread.post(new Runnable() {
             public void run() {
-                entries = (List<SentenceBreakdownEntry>) result;
-                SentenceBreakdownAdapter adapter = new SentenceBreakdownAdapter(
-                        getActivity(), entries);
-                setListAdapter(adapter);
-                getListView().setTextFilterEnabled(true);
-
-                markSentence();
-                setTitleAndMarkSentence();
+                updateEntries(result);
                 dismissProgressDialog();
             }
         });
@@ -315,5 +322,16 @@ public class SentenceBreakdownFragment extends
         for (SentenceBreakdownEntry entry : entries) {
             markString(markedSentence, entry.getInflectedForm());
         }
+    }
+
+    private void updateEntries(final List<SentenceBreakdownEntry> result) {
+        entries = (List<SentenceBreakdownEntry>) result;
+        SentenceBreakdownAdapter adapter = new SentenceBreakdownAdapter(
+                getActivity(), entries);
+        setListAdapter(adapter);
+        getListView().setTextFilterEnabled(true);
+
+        markSentence();
+        setTitleAndMarkSentence();
     }
 }

@@ -207,7 +207,10 @@ public class DictionaryResultListFragment extends
 
         if (dualPane) {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            showDetails(entries.get(currentCheckPosition), currentCheckPosition);
+            if (!entries.isEmpty()) {
+                showDetails(entries.get(currentCheckPosition),
+                        currentCheckPosition);
+            }
         }
     }
 }

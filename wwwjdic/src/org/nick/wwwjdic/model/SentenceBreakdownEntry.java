@@ -1,6 +1,13 @@
 package org.nick.wwwjdic.model;
 
-public class SentenceBreakdownEntry {
+import java.io.Serializable;
+
+public class SentenceBreakdownEntry implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3859673753381220751L;
 
     private String inflectedForm;
     private String word;

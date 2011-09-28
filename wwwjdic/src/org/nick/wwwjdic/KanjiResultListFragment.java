@@ -177,7 +177,10 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry> 
         getActivity().setTitle(message);
         if (dualPane) {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            showDetails(entries.get(currentCheckPosition), currentCheckPosition);
+            if (!entries.isEmpty()) {
+                showDetails(entries.get(currentCheckPosition),
+                        currentCheckPosition);
+            }
         }
     }
 
