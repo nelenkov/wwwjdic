@@ -221,7 +221,8 @@ public class Wwwjdic extends ActionBarActivity {
 
         private void removeFragmentIfExists(int id) {
             Fragment fragment = fragmentManager.findFragmentById(id);
-            if (fragment != null) {
+            if (fragment != null && !fragment.isDetached()
+                    && fragment.getActivity() != null) {
                 currentTransaction.remove(fragment);
             }
         }
