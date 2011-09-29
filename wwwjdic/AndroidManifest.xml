@@ -69,6 +69,6 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     
-    <uses-sdk android:minSdkVersion="3"
+    <uses-sdk android:minSdkVersion="7"
         android:targetSdkVersion="13" />
 </manifest> 
