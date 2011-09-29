@@ -2,6 +2,12 @@
 
 = Screenshots =
 
+== Main screen on tablets ==
+http://wwwjdic.googlecode.com/svn/branches/2.0/site/screenshots/main-hc.png
+
+== Example search on tablets ==
+http://wwwjdic.googlecode.com/svn/branches/2.0/site/screenshots/examples-hc.png
+
 == Dictionary Lookup ==
 http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/dictionary.png
 http://wwwjdic.googlecode.com/svn/trunk/site/screenshots/dict-result-list.png
