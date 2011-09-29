@@ -1,9 +1,8 @@
-package org.nick.wwwjdic;
+package org.nick.wwwjdic.history;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.nick.wwwjdic.history.HistoryFragmentBase;
 
 import android.support.v4.app.ActionBar;
 import android.support.v4.app.ActionBar.Tab;
