@@ -54,6 +54,12 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
     @Override
     public void onPageSelected(int position) {
         actionBar.setSelectedNavigationItem(position);
+        refresh(position);
+    }
+
+    private void refresh(int position) {
+        HistoryFragmentBase fragment = (HistoryFragmentBase) getItem(position);
+        fragment.refresh();
     }
 
     @Override
@@ -62,7 +68,9 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
 
     @Override
     public void onTabSelected(Tab tab, FragmentTransaction ft) {
-        viewPager.setCurrentItem(tab.getPosition());
+        int position = tab.getPosition();
+        viewPager.setCurrentItem(position);
+        refresh(position);
     }
 
     @Override
