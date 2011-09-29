@@ -1,6 +1,13 @@
 #summary Full changelog
 
 = Changelog =
+ * v2.0 (2011/9/30) Tablet support
+  * Tablet support
+  * New UI
+  * Japanese text-to-speech support (install [https://market.android.com/details?id=jp.kddilabs.n2tts N2 TTS] from Market to enable)
+  * Removed Google account permissions and Google Docs export
+  * Various improvements and bug fixes
+  * Dropped Android 1.6 support. The lowest supported version is now 2.1 (Eclair).
  * v1.8.7 (2011/8/17) New example search
   * Use new example search: automatically matches inflected, differently spelled words
   * Support OCR for gallery images
