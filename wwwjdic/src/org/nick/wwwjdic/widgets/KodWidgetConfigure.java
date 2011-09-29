@@ -1,9 +1,9 @@
 package org.nick.wwwjdic.widgets;
 
+import org.nick.wwwjdic.ActionBarActivity;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicPreferences;
 
-import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -17,8 +17,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class KodWidgetConfigure extends Activity implements OnClickListener,
-        OnCheckedChangeListener {
+public class KodWidgetConfigure extends ActionBarActivity implements
+        OnClickListener, OnCheckedChangeListener {
 
     private static final int ONE_DAY_IDX = 0;
     private static final int TWELVE_HOURS_IDX = 1;
