@@ -2,6 +2,7 @@ package org.nick.wwwjdic.history;
 
 import org.nick.wwwjdic.ActionBarActivity;
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.utils.Dialogs;
 
 import android.content.Intent;
 import android.os.Build;
@@ -15,6 +16,8 @@ public class FavoritesAndHistory extends ActionBarActivity {
     public static final String EXTRA_FILTER_TYPE = "org.nick.wwwjdic.filterType";
 
     public static final String EXTRA_SELECTED_TAB_IDX = "org.nick.wwwjdic.favoritesAndHistorySelectedTabIdx";
+
+    private static final String FAVORITES_EXPORT_TIP_DIALOG = "tips_favorites_export";
 
     private static final boolean IS_HONEYCOMB = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 
@@ -66,6 +69,9 @@ public class FavoritesAndHistory extends ActionBarActivity {
         tabsAdapter.addTab(historyTab, historyFragment);
 
         getSupportActionBar().setSelectedNavigationItem(tabIdx);
+
+        Dialogs.showTipOnce(this, FAVORITES_EXPORT_TIP_DIALOG,
+                R.string.tips_favorites_export);
     }
 
     @Override
