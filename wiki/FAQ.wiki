@@ -23,7 +23,9 @@ A:  Each permission is needed to implement on or more features. Even if you don'
 
 == Q: Why is the 'Google Docs' export menu disabled? ==
 
-A: Authentication to Google Docs requires the !AccountManager API, which is only available in post-Eclair devices (Android 2.0 and above). Without it you will need enter your Google account and password, which we don't want :) Update: this feature was removed from version 2.0. It was not widely used and the needed Google account permission were confusing a lot of people.
+A: Authentication to Google Docs requires the !AccountManager API, which is only available in post-Eclair devices (Android 2.0 and above). Without it you will need enter your Google account and password, which we don't want :) 
+
+Update: this feature was removed from version 2.0. It was not widely used and the needed Google account permission were confusing a lot of people.
 
 == Q: The exported favorites CSV file doesn't work with Excel!? ==
 
@@ -46,4 +48,6 @@ A: If you moved the app to the SD card, the widget cannot be used. Unfortunately
 
 == Q: How to enable Japanese pronunciation (text-to-speech)? == 
 
-A: Install and enable the [https://market.android.com/details?id=jp.kddilabs.n2tts N2 TTS] Japanese text-to-speech engine (free). After installing, open Settings->Voice input & output->Text-to-speech settings and check 'KDDLABS N2 TTS'. You don't have to set it as the default engine (if you do, readout for other languages may be disabled). Using two separate engines at the same time requires Android 2.2 (Froyo), so this feature is not available on 2.1 (Eclair).
+A: Install and enable the [https://market.android.com/details?id=jp.kddilabs.n2tts N2 TTS] Japanese text-to-speech engine (free). After installing, open Settings->Voice input & output->Text-to-speech settings and check 'KDDLABS N2 TTS'. You don't have to set it as the default engine (if you do, readout for other languages may be disabled).
+
+Using two separate engines at the same time (one for Japanese and one for English, etc.) requires Android 2.2 (Froyo), so this feature is not available on 2.1 (Eclair).
