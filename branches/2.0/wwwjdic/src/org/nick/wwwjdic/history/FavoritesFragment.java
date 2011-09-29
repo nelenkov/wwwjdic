@@ -19,7 +19,6 @@ import org.nick.wwwjdic.model.DictionaryEntry;
 import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.model.WwwjdicEntry;
 import org.nick.wwwjdic.utils.Analytics;
-import org.nick.wwwjdic.utils.Dialogs;
 import org.nick.wwwjdic.utils.LoaderResult;
 
 import android.app.AlertDialog;
@@ -60,8 +59,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     private static final int EXPORT_LOCAL_EXPORT_IDX = 1;
     private static final int EXPORT_ANKI_IDX = 2;
 
-    private static final String FAVORITES_EXPORT_TIP_DIALOG = "tips_favorites_export";
-
     private ProgressDialog progressDialog;
 
     public FavoritesFragment() {
@@ -70,9 +67,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        Dialogs.showTipOnce(getActivity(), FAVORITES_EXPORT_TIP_DIALOG,
-                R.string.tips_favorites_export);
     }
 
     protected void setupAdapter() {
