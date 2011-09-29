@@ -111,6 +111,6 @@
         android:required="false" />
     <uses-feature android:name="android.hardware.touchscreen"
         android:required="false" />
-    <uses-sdk android:minSdkVersion="4"
+    <uses-sdk android:minSdkVersion="7"
         android:targetSdkVersion="13" />
 </manifest> 
