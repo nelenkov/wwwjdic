@@ -6,7 +6,6 @@
     <dimen name="krad_chart_total_kanji_size">14sp</dimen>
     <dimen name="radical_number_text_size">12sp</dimen>
     <dimen name="radical_text_size">34sp</dimen>
-    <dimen name="radical_glyph_size">28sp</dimen>
     
     <dimen name="details_heading_size">26sp</dimen>
     <dimen name="details_reading_size">18sp</dimen>
@@ -15,8 +14,11 @@
     <dimen name="details_separator_size">18sp</dimen>
     
     <dimen name="kanji_detail_heading_size">38sp</dimen>
-    <dimen name="radical_size">34sp</dimen>
-    <dimen name="radical_subscript_size">12sp</dimen>
+    <dimen name="kanji_detail_heading_min_height">45sp</dimen>
+    
+    <dimen name="kanji_detail_codes_size">14sp</dimen>
+    
+    <dimen name="radical_glyph_size">28sp</dimen>
     
     <dimen name="kanji_compound_link_size">14sp</dimen>
     
