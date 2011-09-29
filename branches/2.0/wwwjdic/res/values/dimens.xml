@@ -16,6 +16,7 @@
     <dimen name="kanji_detail_heading_size">38sp</dimen>
     <dimen name="kanji_detail_heading_min_height">45sp</dimen>
     
+    <dimen name="kanji_detail_nanori_label_size">10sp</dimen>
     <dimen name="kanji_detail_codes_size">14sp</dimen>
     
     <dimen name="radical_glyph_size">28sp</dimen>

@@ -191,7 +191,9 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
 
             TextView labelView = new TextView(getActivity());
             labelView.setText(R.string.nanori_label);
-            labelView.setTextSize(10f);
+            float textSize = getResources().getDimension(
+                    R.dimen.kanji_detail_nanori_label_size);
+            labelView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
             labelView.setGravity(Gravity.CENTER);
             layout.addView(labelView, lp);
 
