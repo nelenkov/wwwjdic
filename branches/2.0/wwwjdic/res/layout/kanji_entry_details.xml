@@ -10,14 +10,14 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp" 
-        android:minHeight="@dimen/kanji_detail_heading_size">
+        android:minHeight="@dimen/kanji_detail_heading_min_height">
         <TextView android:id="@+id/kanjiText" 
             android:layout_height="fill_parent"
             android:layout_width="wrap_content" 
             android:layout_marginRight="10dp" 
             android:gravity="center"
             android:layout_gravity="center"
-            style="@style/kanji_detail_heading" /> 
+            style="@style/kanji_detail_heading" />
         <LinearLayout android:id="@+id/readingLayout" 
             android:orientation="vertical" 
             android:layout_width="0dp" 
@@ -30,8 +30,7 @@
             <TextView android:id="@+id/details_kunyomi_text"
                 android:layout_width="fill_parent" 
                 android:layout_height="wrap_content" 
-                style="@style/kanji_detail_reading" 
-                android:text=" "/> 
+                style="@style/kanji_detail_reading" /> 
         </LinearLayout>
         <Button android:id="@+id/jp_speak_button" 
             android:layout_width="wrap_content"
@@ -64,10 +63,7 @@
             android:layout_height="fill_parent"
             android:layout_width="wrap_content"
             android:layout_marginRight="5dp"
-            android:gravity="center"
-            android:layout_gravity="center" 
-            android:text="A"
-            android:textSize="@dimen/radical_glyph_size"/>
+            style="@style/radical_glyph" />
         <LinearLayout android:id="@+id/radicalCountLayout"
             android:orientation="vertical" 
             android:layout_width="0dp"
@@ -80,10 +76,12 @@
                     android:layout_height="fill_parent"
                     android:layout_width="fill_parent" 
                     android:layout_marginRight="5dp"
-                    android:text="@string/radical_number" />
+                    android:text="@string/radical_number" 
+                    android:textSize="@dimen/kanji_detail_codes_size"/>
                 <TextView android:id="@+id/radicalNumberText" 
                     android:layout_height="fill_parent"
-                    android:layout_width="fill_parent" />
+                    android:layout_width="fill_parent" 
+                    android:textSize="@dimen/kanji_detail_codes_size"/>
             </LinearLayout>
             <LinearLayout android:orientation="horizontal"
                 android:layout_width="wrap_content"
@@ -92,10 +90,12 @@
                     android:layout_height="fill_parent"
                     android:layout_width="fill_parent" 
                     android:layout_marginRight="5dp" 
-                    android:text="@string/stroke_count"/>
+                    android:text="@string/stroke_count" 
+                    android:textSize="@dimen/kanji_detail_codes_size" />
                 <TextView android:id="@+id/strokeCountText" 
                     android:layout_height="fill_parent"
-                    android:layout_width="fill_parent" />
+                    android:layout_width="fill_parent" 
+                    android:textSize="@dimen/kanji_detail_codes_size" />
             </LinearLayout>
         </LinearLayout>
         <Button android:id="@+id/sod_button"
