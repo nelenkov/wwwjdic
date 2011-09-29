@@ -1,5 +1,7 @@
 package org.nick.wwwjdic;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -20,6 +22,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
@@ -55,6 +58,22 @@ public abstract class DetailFragment extends Fragment implements
     private static final String TAG = DetailFragment.class.getSimpleName();
 
     private static final int TTS_DATA_CHECK_CODE = 0;
+
+    private static final boolean IS_FROYO = Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO;
+
+    private static Method tts_getDefaultEngine;
+    private static Method tts_setEngineByPackageName;
+
+    static {
+        try {
+            tts_getDefaultEngine = TextToSpeech.class.getMethod(
+                    "getDefaultEngine", (Class[]) null);
+            tts_setEngineByPackageName = TextToSpeech.class.getMethod(
+                    "setEngineByPackageName", new Class[] { String.class });
+        } catch (SecurityException e) {
+        } catch (NoSuchMethodException e) {
+        }
+    }
 
     protected HistoryDbHelper db;
     protected WwwjdicEntry wwwjdicEntry;
@@ -139,21 +158,32 @@ public abstract class DetailFragment extends Fragment implements
             return;
         }
 
-        if (jpTts != null) {
-            if (!jpTts.getDefaultEngine().equals(N2_TTS_PACKAGE)) {
-                int rc = jpTts.setEngineByPackageName(N2_TTS_PACKAGE);
-                if (rc == TextToSpeech.ERROR) {
-                    Log.w(TAG, N2_TTS_PACKAGE + " not available?");
-                    jpTts.shutdown();
-                    jpTts = null;
-                    toggleJpTtsButtons(false);
+        if (jpTts != null && IS_FROYO) {
+            try {
+                String defaultEngine = (String) tts_getDefaultEngine.invoke(
+                        jpTts, (Object[]) null);
+                if (!defaultEngine.equals(N2_TTS_PACKAGE)) {
+                    int rc = (Integer) tts_setEngineByPackageName.invoke(jpTts,
+                            new Object[] { N2_TTS_PACKAGE });
+                    if (rc == TextToSpeech.ERROR) {
+                        Log.w(TAG, N2_TTS_PACKAGE + " not available?");
+                        jpTts.shutdown();
+                        jpTts = null;
+                        toggleJpTtsButtons(false);
 
-                    return;
+                        return;
+                    }
+                    jpTts.setLanguage(Locale.JAPAN);
                 }
-                jpTts.setLanguage(Locale.JAPAN);
-            }
 
-            toggleJpTtsButtons(true);
+                toggleJpTtsButtons(true);
+            } catch (InvocationTargetException e) {
+                Log.e(TAG, "error calling by reflection: " + e.getMessage());
+                toggleJpTtsButtons(false);
+            } catch (IllegalAccessException e) {
+                Log.e(TAG, "error calling by reflection: " + e.getMessage());
+                toggleJpTtsButtons(false);
+            }
         }
 
         if (tts != null) {
