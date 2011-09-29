@@ -3,7 +3,6 @@ package org.nick.wwwjdic.history;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import android.support.v4.app.ActionBar;
 import android.support.v4.app.ActionBar.Tab;
 import android.support.v4.app.Fragment;
@@ -53,9 +52,11 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
     @Override
     public void onPageSelected(int position) {
         actionBar.setSelectedNavigationItem(position);
-        refresh(position);
+        // TODO -- refreshing kills action bar?
+        //        refresh(position);
     }
 
+    @SuppressWarnings("unused")
     private void refresh(int position) {
         HistoryFragmentBase fragment = (HistoryFragmentBase) getItem(position);
         fragment.refresh();
@@ -69,7 +70,8 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
     public void onTabSelected(Tab tab, FragmentTransaction ft) {
         int position = tab.getPosition();
         viewPager.setCurrentItem(position);
-        refresh(position);
+        // TODO -- refreshing kills action bar?
+        //        refresh(position);
     }
 
     @Override
