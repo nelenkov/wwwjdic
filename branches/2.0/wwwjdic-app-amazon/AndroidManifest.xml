@@ -76,7 +76,8 @@
             android:theme="@style/Theme.WwwjdicAb"/>        
             
         <activity android:name="org.nick.wwwjdic.widgets.KodWidgetConfigure" 
-            android:label="@string/kod_widget_configuration">
+            android:label="@string/kod_widget_configuration" 
+            android:theme="@style/Theme.WwwjdicAb">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
