@@ -461,8 +461,10 @@ public abstract class HistoryFragmentBase extends ListFragment implements
         }
     }
 
-    protected void refresh() {
-        getLoaderManager().restartLoader(0, null, this);
+    public void refresh() {
+        if (!isDetached() && getActivity() != null) {
+            getLoaderManager().restartLoader(0, null, this);
+        }
     }
 
     protected void createWwwjdicDirIfNecessary() {
