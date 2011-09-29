@@ -18,6 +18,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -93,6 +94,7 @@ public class Wwwjdic extends ActionBarActivity {
             int position = tab.getPosition();
             viewPager.setCurrentItem(position);
             filterHistoryFragments(position);
+            updateHistorySummary(position);
         }
 
         @Override
@@ -108,6 +110,7 @@ public class Wwwjdic extends ActionBarActivity {
         public void onPageSelected(int position) {
             actionBar.setSelectedNavigationItem(position);
             filterHistoryFragments(position);
+            updateHistorySummary(position);
         }
 
         @Override
@@ -130,7 +133,7 @@ public class Wwwjdic extends ActionBarActivity {
             LayoutInflater inflater = activity.getLayoutInflater();
             View view = inflater.inflate(tabLayouts.get(position), null);
 
-            setupHistorySummary(position, view);
+            updateHistorySummary(position, view);
 
             filterHistoryFragments(position);
 
@@ -139,45 +142,6 @@ public class Wwwjdic extends ActionBarActivity {
             return view;
         }
 
-        private void setupHistorySummary(int position, View view) {
-            switch (position) {
-            case 0:
-                setupDictSummary(view);
-                break;
-            case 1:
-                setupKanjiSummary(view);
-                break;
-            case 2:
-                setupExamplesSummary(view);
-                break;
-            default:
-                // do nothing
-            }
-        }
-
-        private void filterHistoryFragments(int position) {
-            switch (position) {
-            case 0:
-                filterFavoritesHistoryFragment(R.id.favorites_fragment,
-                        HistoryBase.FILTER_DICT);
-                filterFavoritesHistoryFragment(R.id.history_fragment,
-                        HistoryBase.FILTER_DICT);
-                break;
-            case 1:
-                filterFavoritesHistoryFragment(R.id.kanji_favorites_fragment,
-                        HistoryBase.FILTER_KANJI);
-                filterFavoritesHistoryFragment(R.id.kanji_history_fragment,
-                        HistoryBase.FILTER_KANJI);
-                break;
-            case 2:
-                filterFavoritesHistoryFragment(R.id.examples_history_fragment,
-                        HistoryBase.FILTER_EXAMPLES);
-                break;
-            default:
-                // do nothing
-            }
-
-        }
 
         @Override
         public void destroyItem(View container, int position, Object view) {
@@ -356,6 +320,60 @@ public class Wwwjdic extends ActionBarActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        int position = getSupportActionBar().getSelectedNavigationIndex();
+        filterHistoryFragments(position);
+        updateHistorySummary(position);
+    }
+
+    private void updateHistorySummary(int position) {
+        updateHistorySummary(position, viewPager);
+    }
+
+    private void updateHistorySummary(int position, View view) {
+        switch (position) {
+        case 0:
+            updateDictSummary(view);
+            break;
+        case 1:
+            updateKanjiSummary(view);
+            break;
+        case 2:
+            updateExamplesSummary(view);
+            break;
+        default:
+            // do nothing
+        }
+    }
+
+    private void filterHistoryFragments(int position) {
+        switch (position) {
+        case 0:
+            filterFavoritesHistoryFragment(R.id.favorites_fragment,
+                    HistoryBase.FILTER_DICT);
+            filterFavoritesHistoryFragment(R.id.history_fragment,
+                    HistoryBase.FILTER_DICT);
+            break;
+        case 1:
+            filterFavoritesHistoryFragment(R.id.kanji_favorites_fragment,
+                    HistoryBase.FILTER_KANJI);
+            filterFavoritesHistoryFragment(R.id.kanji_history_fragment,
+                    HistoryBase.FILTER_KANJI);
+            break;
+        case 2:
+            filterFavoritesHistoryFragment(R.id.examples_history_fragment,
+                    HistoryBase.FILTER_EXAMPLES);
+            break;
+        default:
+            // do nothing
+        }
+
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -385,47 +403,27 @@ public class Wwwjdic extends ActionBarActivity {
         Bundle extras = getIntent().getExtras();
 
         ActionBar.Tab dictionaryTab = getSupportActionBar().newTab();
-        DictionaryFragment dictionary = new DictionaryFragment();
-        if (extras != null) {
-            dictionary.setArguments(extras);
-        }
-
         dictionaryTab.setIcon(R.drawable.ic_tab_dict);
         if (IS_HONEYCOMB) {
             dictionaryTab.setText(R.string.dictionary);
         }
         viewPager = (ViewPager) findViewById(R.id.content);
-        // tabsAdapter = new TabsPagerAdapter(this, getSupportActionBar(),
-        // viewPager);
         tabsAdapter = new WwwjdicTabsPagerAdapter(this, getSupportActionBar(),
                 viewPager);
-        // tabsAdapter.addTab(dictionaryTab, dictionary);
         tabsAdapter.addTab(dictionaryTab, R.layout.dict_lookup_tab);
 
         ActionBar.Tab kanjiTab = getSupportActionBar().newTab();
-        WwwjdicFragmentBase kanjiLookup = new KanjiLookupFragment();
-        if (extras != null) {
-            kanjiLookup.setArguments(extras);
-        }
-
         kanjiTab.setIcon(R.drawable.ic_tab_kanji);
         if (IS_HONEYCOMB) {
             kanjiTab.setText(R.string.kanji_lookup);
         }
-        // tabsAdapter.addTab(kanjiTab, kanjiLookup);
         tabsAdapter.addTab(kanjiTab, R.layout.kanji_lookup_tab);
 
         ActionBar.Tab examplesTab = getSupportActionBar().newTab();
-        ExampleSearchFragment exampleSearch = new ExampleSearchFragment();
-        if (extras != null) {
-            exampleSearch.setArguments(extras);
-        }
-
         examplesTab.setIcon(R.drawable.ic_tab_example);
         if (IS_HONEYCOMB) {
             examplesTab.setText(R.string.example_search);
         }
-        // tabsAdapter.addTab(examplesTab, exampleSearch);
         tabsAdapter.addTab(examplesTab, R.layout.example_search_tab);
 
         getSupportActionBar().setSelectedNavigationItem(DICTIONARY_TAB_IDX);
@@ -518,83 +516,151 @@ public class Wwwjdic extends ActionBarActivity {
         return WwwjdicApplication.getVersion();
     }
 
-    private void setupDictSummary(View view) {
-        FavoritesAndHistorySummaryView dictHistorySummary = (FavoritesAndHistorySummaryView) view
+    private static class HistorySummaryParams {
+        long numAllFavorites;
+        long numAllHistory;
+        List<String> recentHistory;
+        List<String> recentFavorites;
+    }
+
+    private void updateDictSummary(View view) {
+        final FavoritesAndHistorySummaryView dictHistorySummary = (FavoritesAndHistorySummaryView) view
                 .findViewById(R.id.dict_history_summary);
         if (dictHistorySummary == null) {
             return;
         }
 
-        dbHelper.beginTransaction();
-        try {
-            long numAllFavorites = dbHelper.getDictFavoritesCount();
-            List<String> recentFavorites = dbHelper
-                    .getRecentDictFavorites(NUM_RECENT_HISTORY_ENTRIES);
-            long numAllHistory = dbHelper.getDictHistoryCount();
-            List<String> recentHistory = dbHelper
-                    .getRecentDictHistory(NUM_RECENT_HISTORY_ENTRIES);
+        new AsyncTask<Void, Void, HistorySummaryParams>() {
 
-            dictHistorySummary
-                    .setFavoritesFilterType(HistoryDbHelper.FAVORITES_TYPE_DICT);
-            dictHistorySummary
-                    .setHistoryFilterType(HistoryDbHelper.HISTORY_SEARCH_TYPE_DICT);
-            dictHistorySummary.setRecentEntries(numAllFavorites,
-                    recentFavorites, numAllHistory, recentHistory);
-            dbHelper.setTransactionSuccessful();
-        } finally {
-            dbHelper.endTransaction();
-        }
+            @Override
+            protected HistorySummaryParams doInBackground(Void... params) {
+                HistorySummaryParams result = new HistorySummaryParams();
+                dbHelper.beginTransaction();
+
+                try {
+                    result.numAllFavorites = dbHelper.getDictFavoritesCount();
+                    result.recentFavorites = dbHelper
+                            .getRecentDictFavorites(NUM_RECENT_HISTORY_ENTRIES);
+                    result.numAllHistory = dbHelper.getDictHistoryCount();
+                    result.recentHistory = dbHelper
+                            .getRecentDictHistory(NUM_RECENT_HISTORY_ENTRIES);
+                    dbHelper.setTransactionSuccessful();
+
+                    return result;
+                } catch (Exception e) {
+                    Log.w(TAG,
+                            "error getting history/favorites summary: "
+                                    + e.getMessage(), e);
+
+                    return null;
+                } finally {
+                    dbHelper.endTransaction();
+                }
+            }
+
+            @Override
+            protected void onPostExecute(HistorySummaryParams result) {
+                if (result == null) {
+                    return;
+                }
+
+                dictHistorySummary
+                        .setFavoritesFilterType(HistoryDbHelper.FAVORITES_TYPE_DICT);
+                dictHistorySummary
+                        .setHistoryFilterType(HistoryDbHelper.HISTORY_SEARCH_TYPE_DICT);
+                dictHistorySummary.setRecentEntries(result.numAllFavorites,
+                        result.recentFavorites, result.numAllHistory,
+                        result.recentHistory);
+            }
+
+
+        }.execute();
     }
 
-    private void setupKanjiSummary(View view) {
-        FavoritesAndHistorySummaryView kanjiHistorySummary = (FavoritesAndHistorySummaryView) view
+    private void updateKanjiSummary(View view) {
+        final FavoritesAndHistorySummaryView kanjiHistorySummary = (FavoritesAndHistorySummaryView) view
                 .findViewById(R.id.kanji_history_summary);
         if (kanjiHistorySummary == null) {
             return;
         }
 
-        dbHelper.beginTransaction();
-        try {
-            long numAllFavorites = dbHelper.getKanjiFavoritesCount();
-            List<String> recentFavorites = dbHelper
-                    .getRecentKanjiFavorites(NUM_RECENT_HISTORY_ENTRIES);
-            long numAllHistory = dbHelper.getKanjiHistoryCount();
-            List<String> recentHistory = dbHelper
-                    .getRecentKanjiHistory(NUM_RECENT_HISTORY_ENTRIES);
+        new AsyncTask<Void, Void, HistorySummaryParams>() {
 
-            kanjiHistorySummary
-                    .setFavoritesFilterType(HistoryDbHelper.FAVORITES_TYPE_KANJI);
-            kanjiHistorySummary
-                    .setHistoryFilterType(HistoryDbHelper.HISTORY_SEARCH_TYPE_KANJI);
-            kanjiHistorySummary.setRecentEntries(numAllFavorites,
-                    recentFavorites, numAllHistory, recentHistory);
-            dbHelper.setTransactionSuccessful();
-        } finally {
-            dbHelper.endTransaction();
-        }
+            @Override
+            protected HistorySummaryParams doInBackground(Void... params) {
+                HistorySummaryParams result = new HistorySummaryParams();
+
+                dbHelper.beginTransaction();
+                try {
+                    result.numAllFavorites = dbHelper.getKanjiFavoritesCount();
+                    result.recentFavorites = dbHelper
+                            .getRecentKanjiFavorites(NUM_RECENT_HISTORY_ENTRIES);
+                    result.numAllHistory = dbHelper.getKanjiHistoryCount();
+                    result.recentHistory = dbHelper
+                            .getRecentKanjiHistory(NUM_RECENT_HISTORY_ENTRIES);
+
+                    dbHelper.setTransactionSuccessful();
+                } finally {
+                    dbHelper.endTransaction();
+                }
+
+                return result;
+            }
+
+            @Override
+            protected void onPostExecute(HistorySummaryParams result) {
+                if (result == null) {
+                    return;
+                }
+
+                kanjiHistorySummary
+                        .setFavoritesFilterType(HistoryDbHelper.FAVORITES_TYPE_KANJI);
+                kanjiHistorySummary
+                        .setHistoryFilterType(HistoryDbHelper.HISTORY_SEARCH_TYPE_KANJI);
+                kanjiHistorySummary.setRecentEntries(result.numAllFavorites,
+                        result.recentFavorites, result.numAllHistory,
+                        result.recentHistory);
+            }
+        }.execute();
     }
 
-    private void setupExamplesSummary(View view) {
-        FavoritesAndHistorySummaryView examplesHistorySummary = (FavoritesAndHistorySummaryView) view
+    private void updateExamplesSummary(View view) {
+        final FavoritesAndHistorySummaryView examplesHistorySummary = (FavoritesAndHistorySummaryView) view
                 .findViewById(R.id.examples_history_summary);
         if (examplesHistorySummary == null) {
             return;
         }
 
-        dbHelper.beginTransaction();
-        try {
-            long numAllHistory = dbHelper.getExamplesHistoryCount();
-            List<String> recentHistory = dbHelper
-                    .getRecentExamplesHistory(NUM_RECENT_HISTORY_ENTRIES);
+        new AsyncTask<Void, Void, HistorySummaryParams>() {
 
-            examplesHistorySummary
-                    .setHistoryFilterType(HistoryDbHelper.HISTORY_SEARCH_TYPE_EXAMPLES);
-            examplesHistorySummary.setRecentEntries(0, null, numAllHistory,
-                    recentHistory);
-            dbHelper.setTransactionSuccessful();
-        } finally {
-            dbHelper.endTransaction();
-        }
+            @Override
+            protected HistorySummaryParams doInBackground(Void... params) {
+                HistorySummaryParams result = new HistorySummaryParams();
+                dbHelper.beginTransaction();
+                try {
+                    result.numAllHistory = dbHelper.getExamplesHistoryCount();
+                    result.recentHistory = dbHelper
+                            .getRecentExamplesHistory(NUM_RECENT_HISTORY_ENTRIES);
+                    dbHelper.setTransactionSuccessful();
+                } finally {
+                    dbHelper.endTransaction();
+                }
+
+                return result;
+            }
+
+            @Override
+            protected void onPostExecute(HistorySummaryParams result) {
+                if (result == null) {
+                    return;
+                }
+
+                examplesHistorySummary
+                        .setHistoryFilterType(HistoryDbHelper.HISTORY_SEARCH_TYPE_EXAMPLES);
+                examplesHistorySummary.setRecentEntries(0, null,
+                        result.numAllHistory, result.recentHistory);
+            }
+        }.execute();
     }
 
     private void filterFavoritesHistoryFragment(int fragmentId, int filterType) {
