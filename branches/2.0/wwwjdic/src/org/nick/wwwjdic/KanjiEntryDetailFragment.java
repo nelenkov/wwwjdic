@@ -303,13 +303,17 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
         for (Pair<String, String> codesEntry : codesData) {
             TableRow row = new TableRow(getActivity());
 
+            float textSize = getResources().getDimension(
+                    R.dimen.kanji_detail_codes_size);
             TextView labelView = new TextView(getActivity());
             labelView.setText(codesEntry.getFirst());
+            labelView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
             labelView.setGravity(Gravity.LEFT);
             row.addView(labelView);
 
             TextView textView = new TextView(getActivity());
             textView.setText(codesEntry.getSecond());
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
             textView.setGravity(Gravity.LEFT);
             textView.setPadding(10, 0, 0, 0);
             row.addView(textView);

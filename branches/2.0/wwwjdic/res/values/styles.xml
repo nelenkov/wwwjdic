@@ -97,14 +97,12 @@
     <item name="android:textSize">@dimen/details_reading_size</item>
     <item name="android:textColor">@color/white</item>
   </style>
-
-  <style name="radical">
-    <item name="android:textSize">@dimen/radical_size</item>
+  
+  <style name="radical_glyph">
+    <item name="android:gravity">center</item>
+    <item name="android:layout_gravity">center</item> 
+    <item name="android:textSize">@dimen/radical_glyph_size</item>
     <item name="android:textColor">@color/white</item>
-  </style>
-
-  <style name="radical_subscript">
-    <item name="android:textSize">@dimen/radical_subscript_size</item>
   </style>
 
   <style name="kod_loading">
