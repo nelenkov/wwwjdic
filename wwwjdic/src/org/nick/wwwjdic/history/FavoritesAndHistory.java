@@ -2,7 +2,6 @@ package org.nick.wwwjdic.history;
 
 import org.nick.wwwjdic.ActionBarActivity;
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.TabsPagerAdapter;
 
 import android.content.Intent;
 import android.os.Build;
