@@ -117,6 +117,7 @@
     <string name="kanji_kan">漢</string>
     <string name="look_ahead">スマート\nマッチ</string>
     <string name="hkr">手書き認識</string>
+    <string name="hkr_abbrev">手書き認識</string>
     <string name="pref_kr_annotate">画番号表示</string>
     <string name="pref_kr_annotate_midway">画番号真中表示</string>
     <string name="pref_kr_annotate_midway_summary">チェックされている場合は、画番号を画の真中あたりに表示します。チェックされていない場合は,
@@ -245,9 +246,8 @@
     <string name="kanji_details">漢字詳細</string>
     <string name="appended_to_clipboard">\'%s\'をクリップボードに連結しました。</string>
     <string name="append">クリップボードに連結</string>
-    <string name="kr_usage_tip">* \'HKR\'
-        (手書き漢字認識)ボタンは、一番精度の高い結果を返すが、書き順を守る必要があります。\n* \'OCR\'
-        (光学式文字認識)ボタンは、書いた字を画像として処理します。書き順は無関係が、精度はHKRより低いです。</string>
+    <string name="kr_usage_tip">* \'手書き認識\'ボタンは、一番精度の高い結果を返すが、書き順を守る必要があります。\n* \'OCR\'
+        (光学式文字認識)ボタンは、書いた字を画像として処理します。書き順は無関係が、精度は手書き認識より低いです。</string>
     <string name="kanji_of_the_day">今日の漢字</string>
     <string name="widget_loading">読み込み中...</string>
     <string name="getting_sod_info">書き順情報取得中...</string>
