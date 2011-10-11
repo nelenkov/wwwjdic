@@ -185,6 +185,10 @@ public class DictionaryResultListFragment extends
     public void setResult(final List<DictionaryEntry> result) {
         guiThread.post(new Runnable() {
             public void run() {
+                if (getView() == null) {
+                    return;
+                }
+
                 entries = (List<DictionaryEntry>) result;
                 DictionaryEntryAdapter adapter = new DictionaryEntryAdapter(
                         getActivity(), entries);

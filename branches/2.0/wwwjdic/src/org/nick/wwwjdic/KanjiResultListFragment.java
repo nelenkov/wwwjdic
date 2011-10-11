@@ -160,6 +160,10 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry> 
     public void setResult(final List<KanjiEntry> result) {
         guiThread.post(new Runnable() {
             public void run() {
+                if (getListView() == null) {
+                    return;
+                }
+
                 entries = (List<KanjiEntry>) result;
                 KanjiEntryAdapter adapter = new KanjiEntryAdapter(
                         getActivity(), entries);
