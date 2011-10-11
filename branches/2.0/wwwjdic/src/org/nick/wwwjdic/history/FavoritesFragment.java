@@ -109,6 +109,10 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
             @Override
             protected void onPostExecute(Void v) {
+                if (isDetached() || getActivity() == null) {
+                    return;
+                }
+
                 refresh();
                 getActivity().setProgressBarIndeterminateVisibility(false);
             }
@@ -294,6 +298,10 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
         @Override
         protected void onPostExecute(Boolean result) {
+            if (isDetached() || getActivity() == null) {
+                return;
+            }
+
             if (progressDialog != null && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
@@ -438,6 +446,12 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
             @Override
             protected void onPostExecute(Boolean result) {
+                if (isDetached() || getActivity() == null) {
+                    return;
+                }
+
+                getActivity().setProgressBarIndeterminateVisibility(false);
+
                 if (result) {
                     String message = getResources().getString(
                             R.string.favorites_exported);
@@ -454,8 +468,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                             String.format(message, errMessage),
                             Toast.LENGTH_SHORT).show();
                 }
-
-                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -594,6 +606,12 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
             @Override
             protected void onPostExecute(Boolean result) {
+                if (isDetached() || getActivity() == null) {
+                    return;
+                }
+
+                getActivity().setProgressBarIndeterminateVisibility(false);
+
                 if (result) {
                     String message = getResources().getString(
                             R.string.favorites_exported);
@@ -610,8 +628,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                             String.format(message, errMessage),
                             Toast.LENGTH_SHORT).show();
                 }
-
-                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -670,6 +686,12 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
             @Override
             protected void onPostExecute(Boolean result) {
+                if (isDetached() || getActivity() == null) {
+                    return;
+                }
+
+                getActivity().setProgressBarIndeterminateVisibility(false);
+
                 if (result) {
                     String message = getResources().getString(
                             R.string.favorites_imported);
@@ -688,8 +710,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                 }
 
                 refresh();
-
-                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }

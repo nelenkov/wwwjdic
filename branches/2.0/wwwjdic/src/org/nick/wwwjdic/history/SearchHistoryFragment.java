@@ -86,6 +86,10 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
             @Override
             protected void onPostExecute(Boolean result) {
+                if (isDetached() || getActivity() == null) {
+                    return;
+                }
+
                 refresh();
                 getActivity().setProgressBarIndeterminateVisibility(false);
             }
@@ -213,6 +217,12 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
             @Override
             protected void onPostExecute(Boolean result) {
+                if (isDetached() || getActivity() == null) {
+                    return;
+                }
+
+                getActivity().setProgressBarIndeterminateVisibility(false);
+
                 if (result) {
                     String message = getResources().getString(
                             R.string.history_exported);
@@ -229,7 +239,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                             String.format(message, errMessage),
                             Toast.LENGTH_SHORT).show();
                 }
-                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -292,6 +301,12 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
             @Override
             protected void onPostExecute(Boolean result) {
+                if (isDetached() || getActivity() == null) {
+                    return;
+                }
+
+                getActivity().setProgressBarIndeterminateVisibility(false);
+
                 if (result) {
                     String message = getResources().getString(
                             R.string.history_imported);
@@ -310,8 +325,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                 }
 
                 refresh();
-
-                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
