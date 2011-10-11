@@ -190,23 +190,21 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
             protected void onPostExecute(Boolean result) {
                 if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.dismiss();
+                }
 
-                    if (result) {
-                        enableAllRadicals();
-                        adapter = new KradAdapter(KradChart.this,
-                                R.layout.krad_item, state.radicals);
-                        radicalChartGrid.setAdapter(adapter);
+                if (result) {
+                    enableAllRadicals();
+                    adapter = new KradAdapter(KradChart.this,
+                            R.layout.krad_item, state.radicals);
+                    radicalChartGrid.setAdapter(adapter);
 
-                        Dialogs.showTipOnce(KradChart.this, MULTI_RADICAL_TIP,
-                                R.string.multi_radical_search_tip);
-                    } else {
-                        Toast t = Toast.makeText(
-                                KradChart.this,
-                                "error loading radkfile-u "
-                                        + error.getMessage(),
-                                Toast.LENGTH_SHORT);
-                        t.show();
-                    }
+                    Dialogs.showTipOnce(KradChart.this, MULTI_RADICAL_TIP,
+                            R.string.multi_radical_search_tip);
+                } else {
+                    Toast t = Toast.makeText(KradChart.this,
+                            "error loading radkfile-u " + error.getMessage(),
+                            Toast.LENGTH_SHORT);
+                    t.show();
                 }
             }
         }.execute();
