@@ -195,8 +195,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
 
                 Analytics.event("dictSearch", getActivity());
 
-                //                startActivity(intent);
-                throw new RuntimeException("Foobar: " + input);
+                startActivity(intent);
             } catch (RejectedExecutionException e) {
                 Log.e(TAG, e.getMessage(), e);
             }
