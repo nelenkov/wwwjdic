@@ -80,7 +80,7 @@ public abstract class WebServiceBackedActivity extends FragmentActivity {
     }
 
     protected WwwjdicApplication getApp() {
-        return (WwwjdicApplication) getApplication();
+        return WwwjdicApplication.getInstance();
     }
 
 }

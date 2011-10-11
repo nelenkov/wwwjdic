@@ -35,7 +35,10 @@ import com.flurry.android.FlurryAgent;
 @ReportsCrashes(formKey = "dEVLZ0dzclVoWG43V0xldWRXS3h3dkE6MQ", mode = ReportingInteractionMode.TOAST, resToastText = R.string.crash_toast_text)
 public class WwwjdicApplication extends Application {
 
+
     private static final String TAG = WwwjdicApplication.class.getSimpleName();
+
+    private static WwwjdicApplication instance;
 
     private static final String WWWJDIC_DIR = "wwwjdic";
 
@@ -55,14 +58,21 @@ public class WwwjdicApplication extends Application {
     private String currentDictionary = "1";
     private String currentDictionaryName = "General";
 
+    public static WwwjdicApplication getInstance() {
+        return instance;
+    }
+
     @Override
     public void onCreate() {
+        instance = this;
+
         version = getVersionName();
 
         flurryKey = readKey();
         FlurryAgent.setCaptureUncaughtExceptions(false);
 
         ACRA.init(this);
+
         createWwwjdicDirIfNecessary();
 
         updateJapanMirror();

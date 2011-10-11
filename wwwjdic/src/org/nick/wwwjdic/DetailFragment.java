@@ -131,7 +131,7 @@ public abstract class DetailFragment extends Fragment implements
     }
 
     protected WwwjdicApplication getApp() {
-        return (WwwjdicApplication) getActivity().getApplication();
+        return WwwjdicApplication.getInstance();
     }
 
     protected void makeClickable(TextView textView, int start, int end,
