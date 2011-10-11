@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
 public abstract class ResultListFragmentBase<T> extends ListFragment implements
-        ResultList<T> {
+        ResultList<T>, DialogInterface.OnCancelListener {
 
     private static final String TAG = ResultListFragmentBase.class
             .getSimpleName();
@@ -67,21 +67,41 @@ public abstract class ResultListFragmentBase<T> extends ListFragment implements
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+
+        cancelSearchTask();
+    }
+
+
+    @Override
     public void onDestroy() {
-        if (transPending != null) {
-            transPending.cancel(true);
-        }
+        cancelSearchTask();
 
         super.onDestroy();
     }
 
+
+    private void cancelSearchTask() {
+        if (transPending != null) {
+            transPending.cancel(true);
+            transPending = null;
+        }
+    }
+
     protected void submitSearchTask(SearchTask<T> searchTask) {
         progressDialog = ProgressDialog.show(getActivity(), "", getResources()
-                .getText(R.string.loading).toString(), true);
+                .getText(R.string.loading).toString(), true, true, this);
 
         ExecutorService executorService = getApp().getExecutorService();
         transPending = executorService.submit(searchTask);
     }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        cancelSearchTask();
+    }
+
 
     protected WwwjdicApplication getApp() {
         WwwjdicApplication app = (WwwjdicApplication) getActivity()

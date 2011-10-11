@@ -308,6 +308,11 @@ public class ExamplesResultListFragment extends
     public void setResult(final List<ExampleSentence> result) {
         guiThread.post(new Runnable() {
             public void run() {
+                // backed out before view is created
+                if (getListView() == null) {
+                    return;
+                }
+
                 sentences = (List<ExampleSentence>) result;
                 ExampleSentenceAdapter adapter = new ExampleSentenceAdapter(
                         getActivity(), sentences, criteria.getQueryString());
@@ -334,5 +339,6 @@ public class ExamplesResultListFragment extends
             }
         }
     }
+
 
 }
