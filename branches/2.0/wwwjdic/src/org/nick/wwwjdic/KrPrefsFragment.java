@@ -28,7 +28,7 @@ public class KrPrefsFragment extends PreferenceFragment implements
             Boolean enabled = (Boolean) newValue;
             if (enabled) {
                 if (!WwwjdicPreferences.isKrInstalled(getActivity(),
-                        getActivity().getApplication())) {
+                        WwwjdicApplication.getInstance())) {
                     WwwjdicPreferences.showInstallKrDialog(getActivity());
                     return false;
                 }

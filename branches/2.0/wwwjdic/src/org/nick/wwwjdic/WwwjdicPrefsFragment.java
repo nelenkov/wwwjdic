@@ -40,9 +40,7 @@ public class WwwjdicPrefsFragment extends PreferenceFragment implements
         if (PREF_AUTO_SELECT_MIRROR_KEY.equals(preference.getKey())) {
             boolean autoSelect = (Boolean) newValue;
             if (autoSelect) {
-                WwwjdicApplication app = (WwwjdicApplication) getActivity()
-                        .getApplication();
-                app.setMirrorBasedOnLocation();
+                WwwjdicApplication.getInstance().setMirrorBasedOnLocation();
                 mirrorPreference.setSummary(WwwjdicPreferences.getMirrorName(
                         getActivity(),
                         WwwjdicPreferences.getWwwjdicUrl(getActivity())));

@@ -143,8 +143,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         if (PREF_AUTO_SELECT_MIRROR_KEY.equals(preference.getKey())) {
             boolean autoSelect = (Boolean) newValue;
             if (autoSelect) {
-                WwwjdicApplication app = (WwwjdicApplication) getApplication();
-                app.setMirrorBasedOnLocation();
+                WwwjdicApplication.getInstance().setMirrorBasedOnLocation();
                 mirrorPreference.setSummary(getMirrorName(getWwwjdicUrl(this)));
             }
 

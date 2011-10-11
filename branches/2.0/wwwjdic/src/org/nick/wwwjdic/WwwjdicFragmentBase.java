@@ -15,7 +15,7 @@ public class WwwjdicFragmentBase extends Fragment {
     }
 
     protected WwwjdicApplication getApp() {
-        return (WwwjdicApplication) getActivity().getApplication();
+        return WwwjdicApplication.getInstance();
     }
 
 }

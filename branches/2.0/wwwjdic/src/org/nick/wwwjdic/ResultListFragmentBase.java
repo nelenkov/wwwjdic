@@ -104,9 +104,7 @@ public abstract class ResultListFragmentBase<T> extends ListFragment implements
 
 
     protected WwwjdicApplication getApp() {
-        WwwjdicApplication app = (WwwjdicApplication) getActivity()
-                .getApplication();
-        return app;
+        return WwwjdicApplication.getInstance();
     }
 
     public void setError(final Exception ex) {
