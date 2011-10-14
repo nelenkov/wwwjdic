@@ -559,4 +559,6 @@
     
     <string name="pref_other">Other</string> 
     <string name="pref_other_summary">App maintenance, etc.</string>
+    
+    <string name="speak">Speak</string>
 </resources>
