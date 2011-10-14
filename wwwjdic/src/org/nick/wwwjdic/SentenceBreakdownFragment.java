@@ -209,7 +209,7 @@ public class SentenceBreakdownFragment extends
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.example_breakdown_context, menu);
+        inflater.inflate(R.menu.example_breakdown, menu);
     }
 
     @Override
