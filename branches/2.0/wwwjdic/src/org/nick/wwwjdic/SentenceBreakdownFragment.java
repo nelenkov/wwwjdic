@@ -2,6 +2,7 @@ package org.nick.wwwjdic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.model.SentenceBreakdownEntry;
@@ -27,7 +28,8 @@ import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
 public class SentenceBreakdownFragment extends
-        ResultListFragmentBase<SentenceBreakdownEntry> {
+        ResultListFragmentBase<SentenceBreakdownEntry> implements
+        TtsManager.TtsEnabled {
 
     static class SentenceBreakdownAdapter extends BaseAdapter {
 
@@ -100,6 +102,8 @@ public class SentenceBreakdownFragment extends
         }
     }
 
+    private static final String N2_TTS_PACKAGE = "jp.kddilabs.n2tts";
+
     public static final String EXTRA_SENTENCE = "org.nick.wwwjdic.SENTENCE";
     public static final String EXTRA_SENTENCE_TRANSLATION = "org.nick.wwwjdic.SENTENCE_TRANSLATION";
 
@@ -117,6 +121,9 @@ public class SentenceBreakdownFragment extends
     private static final int HILIGHT_COLOR2 = 0xfff97600;
 
     private ClipboardManager clipboardManager;
+
+    private boolean showSpeakMenu = false;
+    private TtsManager ttsManager;
 
     public static SentenceBreakdownFragment newInstance(int index,
             String senteceStr, String sentenceTranslation) {
@@ -173,6 +180,8 @@ public class SentenceBreakdownFragment extends
         sentenceTranslation = args.getString(EXTRA_SENTENCE_TRANSLATION);
         markedSentence = new SpannableString(sentenceStr);
 
+        ttsManager = new TtsManager(getActivity(), this, N2_TTS_PACKAGE);
+
         sentenceView.setText(markedSentence);
         if (!StringUtils.isEmpty(sentenceTranslation)) {
             englishSentenceText.setText(sentenceTranslation);
@@ -190,6 +199,22 @@ public class SentenceBreakdownFragment extends
         SearchTask<SentenceBreakdownEntry> searchTask = new SentenceBreakdownTask(
                 getWwwjdicUrl(), getHttpTimeoutSeconds(), this, query);
         submitSearchTask(searchTask);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ttsManager.checkTtsAvailability();
+    }
+
+    @Override
+    public void onDestroy() {
+        if (ttsManager != null) {
+            ttsManager.shutdown();
+        }
+
+        super.onDestroy();
     }
 
     @Override
@@ -212,6 +237,17 @@ public class SentenceBreakdownFragment extends
         inflater.inflate(R.menu.example_breakdown, menu);
     }
 
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        MenuItem item = menu.findItem(R.id.menu_ex_breakdown_speak);
+        if (item != null) {
+            item.setEnabled(showSpeakMenu);
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -225,6 +261,9 @@ public class SentenceBreakdownFragment extends
             lookupAllKanji();
             return true;
         case R.id.menu_ex_breakdown_speak:
+            if (ttsManager != null) {
+                ttsManager.speak(sentenceStr);
+            }
             return true;
         }
 
@@ -335,5 +374,32 @@ public class SentenceBreakdownFragment extends
 
         markSentence();
         setTitleAndMarkSentence();
+    }
+
+    @Override
+    public Locale getSpeechLocale() {
+        return Locale.JAPAN;
+    }
+
+    @Override
+    public void showTtsButtons() {
+        showSpeakMenu = true;
+        getSupportActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public void hideTtsButtons() {
+        showSpeakMenu = false;
+        getSupportActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public boolean wantsTts() {
+        // XXX don't show install dialog?
+        return false;
+    }
+
+    @Override
+    public void setWantsTts(boolean wantsTts) {
     }
 }
