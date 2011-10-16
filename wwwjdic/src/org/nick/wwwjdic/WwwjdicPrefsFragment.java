@@ -1,7 +1,9 @@
 package org.nick.wwwjdic;
 
+import static org.nick.wwwjdic.WwwjdicPreferences.DEFAULT_JP_TTS_ENGINE_PACKAGE;
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_AUTO_SELECT_MIRROR_KEY;
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_DEFAULT_DICT_PREF_KEY;
+import static org.nick.wwwjdic.WwwjdicPreferences.PREF_JP_TTS_ENGINE;
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_WWWJDIC_MIRROR_URL_KEY;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -16,6 +18,7 @@ public class WwwjdicPrefsFragment extends PreferenceFragment implements
     private CheckBoxPreference autoSelectMirrorPreference;
     private ListPreference mirrorPreference;
     private ListPreference defaultDictPreference;
+    private ListPreference jpTtsEnginePreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,11 @@ public class WwwjdicPrefsFragment extends PreferenceFragment implements
         defaultDictPreference = (ListPreference) findPreference(PREF_DEFAULT_DICT_PREF_KEY);
         defaultDictPreference.setSummary(defaultDictPreference.getEntry());
         defaultDictPreference.setOnPreferenceChangeListener(this);
+
+        jpTtsEnginePreference = (ListPreference) findPreference(PREF_JP_TTS_ENGINE);
+        jpTtsEnginePreference.setSummary(WwwjdicPreferences.getTtsEngineName(
+                getActivity(), DEFAULT_JP_TTS_ENGINE_PACKAGE));
+        jpTtsEnginePreference.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -57,6 +65,11 @@ public class WwwjdicPrefsFragment extends PreferenceFragment implements
         if (PREF_DEFAULT_DICT_PREF_KEY.equals(preference.getKey())) {
             preference.setSummary(WwwjdicPreferences.getDictionaryName(
                     getActivity(), Integer.valueOf((String) newValue)));
+        }
+
+        if (PREF_JP_TTS_ENGINE.equals(preference.getKey())) {
+            preference.setSummary(WwwjdicPreferences.getTtsEngineName(
+                    getActivity(), (String) newValue));
         }
 
         return true;

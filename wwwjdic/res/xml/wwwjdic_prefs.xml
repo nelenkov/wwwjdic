@@ -24,6 +24,11 @@
         <CheckBoxPreference android:key="pref_random_examples"
             android:title="@string/pref_random_examples"
             android:summary="@string/pref_random_examples_summary"
-            android:defaultValue="false" />    
+            android:defaultValue="false" />
+        <ListPreference android:title="@string/pref_jp_tts_engine"
+            android:key="pref_jp_tts_engine" 
+            android:defaultValue="jp.kddilabs.n2tts"
+            android:entries="@array/jp_tts_engine_names"
+            android:entryValues="@array/jp_tts_engine_packages" />    
     </PreferenceCategory>   
 </PreferenceScreen>

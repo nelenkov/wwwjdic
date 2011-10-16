@@ -26,6 +26,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.SupportActivity;
 import android.text.ClipboardManager;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -50,8 +51,6 @@ public abstract class DetailFragment extends Fragment implements
 
     protected static final Pattern CROSS_REF_PATTERN = Pattern
             .compile("^.*\\(See (\\S+)\\).*$");
-
-    protected static final String N2_TTS_PACKAGE = "jp.kddilabs.n2tts";
 
     protected static final int ITEM_ID_HOME = 0;
 
@@ -82,6 +81,8 @@ public abstract class DetailFragment extends Fragment implements
     protected TextToSpeech tts;
     protected TextToSpeech jpTts;
 
+    private String jpTtsEnginePackageName;
+
     protected DetailFragment() {
     }
 
@@ -99,6 +100,14 @@ public abstract class DetailFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
 
         db = HistoryDbHelper.getInstance(getActivity());
+    }
+
+    @Override
+    public void onAttach(SupportActivity activity) {
+        super.onAttach(activity);
+
+        jpTtsEnginePackageName = WwwjdicPreferences
+                .getJpTtsEnginePackage(activity.asActivity());
     }
 
     @Override
@@ -162,11 +171,11 @@ public abstract class DetailFragment extends Fragment implements
             try {
                 String defaultEngine = (String) tts_getDefaultEngine.invoke(
                         jpTts, (Object[]) null);
-                if (!defaultEngine.equals(N2_TTS_PACKAGE)) {
+                if (!defaultEngine.equals(jpTtsEnginePackageName)) {
                     int rc = (Integer) tts_setEngineByPackageName.invoke(jpTts,
-                            new Object[] { N2_TTS_PACKAGE });
+                            new Object[] { jpTtsEnginePackageName });
                     if (rc == TextToSpeech.ERROR) {
-                        Log.w(TAG, N2_TTS_PACKAGE + " not available?");
+                        Log.w(TAG, jpTtsEnginePackageName + " not available?");
                         jpTts.shutdown();
                         jpTts = null;
                         toggleJpTtsButtons(false);
@@ -251,12 +260,12 @@ public abstract class DetailFragment extends Fragment implements
     protected void checkTtsAvailability() {
         PackageManager pm = getActivity().getPackageManager();
         try {
-            PackageInfo pi = pm.getPackageInfo(N2_TTS_PACKAGE, 0);
+            PackageInfo pi = pm.getPackageInfo(jpTtsEnginePackageName, 0);
             if (pi != null) {
                 jpTts = new TextToSpeech(getActivity(), this);
             }
         } catch (NameNotFoundException e) {
-            Log.w(TAG, N2_TTS_PACKAGE + " not found");
+            Log.w(TAG, jpTtsEnginePackageName + " not found");
         }
 
         if (!isIntentAvailable(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA)) {

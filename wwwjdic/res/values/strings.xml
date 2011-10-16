@@ -561,4 +561,18 @@
     <string name="pref_other_summary">App maintenance, etc.</string>
     
     <string name="speak">Speak</string>
+    
+    <string name="pref_jp_tts_engine">Japanese TTS Engine</string>
+    
+    <string-array name="jp_tts_engine_names">
+        <item>N2 TTS</item>
+        <item>SVOX Japanese</item>
+        <item>AquesTalk TTS</item>
+    </string-array>
+    
+    <string-array name="jp_tts_engine_packages">
+        <item>jp.kddilabs.n2tts</item>
+        <item>com.svox.classic</item>
+        <item>com.a_quest.aquestalka</item>
+    </string-array>
 </resources>
