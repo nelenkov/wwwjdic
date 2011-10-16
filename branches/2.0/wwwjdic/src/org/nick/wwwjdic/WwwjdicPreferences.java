@@ -95,10 +95,14 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     private static final String PREF_RANDOM_EXAMPLES_KEY = "pref_random_examples";
 
+    static final String PREF_JP_TTS_ENGINE = "pref_jp_tts_engine";
+    static final String DEFAULT_JP_TTS_ENGINE_PACKAGE = "jp.kddilabs.n2tts";
+
     private CheckBoxPreference useKrPreference;
     private CheckBoxPreference autoSelectMirrorPreference;
     private ListPreference mirrorPreference;
     private ListPreference defaultDictPreference;
+    private ListPreference jpTtsEnginePreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +128,11 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         defaultDictPreference = (ListPreference) findPreference(PREF_DEFAULT_DICT_PREF_KEY);
         defaultDictPreference.setSummary(defaultDictPreference.getEntry());
         defaultDictPreference.setOnPreferenceChangeListener(this);
+
+        jpTtsEnginePreference = (ListPreference) findPreference(PREF_JP_TTS_ENGINE);
+        jpTtsEnginePreference.setSummary(getTtsEngineName(this,
+                DEFAULT_JP_TTS_ENGINE_PACKAGE));
+        jpTtsEnginePreference.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -159,7 +168,29 @@ public class WwwjdicPreferences extends PreferenceActivity implements
                     .valueOf((String) newValue)));
         }
 
+        if (PREF_JP_TTS_ENGINE.equals(preference.getKey())) {
+            preference.setSummary(getTtsEngineName(this, (String) newValue));
+        }
+
         return true;
+    }
+
+    static String getTtsEngineName(Context ctx, String enginePackage) {
+        return matchNameToValue(ctx, R.array.jp_tts_engine_names,
+                R.array.jp_tts_engine_packages, enginePackage);
+    }
+
+    private static String matchNameToValue(Context ctx, int nameArrayResId,
+            int valueArrayResId, String value) {
+        Resources r = ctx.getResources();
+        String[] names = r.getStringArray(nameArrayResId);
+        List<String> values = Arrays.asList(r.getStringArray(valueArrayResId));
+        int idx = values.indexOf(value);
+        if (idx != -1) {
+            return names[idx];
+        }
+
+        return "";
     }
 
     private String getMirrorName(String url) {
@@ -167,16 +198,8 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     }
 
     static String getMirrorName(Context ctx, String url) {
-        Resources r = ctx.getResources();
-        List<String> mirrorUrls = Arrays.asList(r
-                .getStringArray(R.array.wwwjdic_mirror_urls));
-        String[] mirrorNames = r.getStringArray(R.array.wwwjdic_mirror_names);
-        int idx = mirrorUrls.indexOf(url);
-        if (idx != -1) {
-            return mirrorNames[idx];
-        }
-
-        return "";
+        return matchNameToValue(ctx, R.array.wwwjdic_mirror_names,
+                R.array.wwwjdic_mirror_urls, url);
     }
 
     private void showInstallKrDialog() {
@@ -268,7 +291,6 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
         return "";
     }
-
 
     public static String getMeaningsSeparatorCharacter(Context context) {
         SharedPreferences preferences = getPrefs(context);
@@ -580,5 +602,10 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         SharedPreferences preferences = getPrefs(context);
 
         return preferences.getBoolean(PREF_RANDOM_EXAMPLES_KEY, false);
+    }
+
+    public static String getJpTtsEnginePackage(Context context) {
+        return getPrefs(context).getString(PREF_JP_TTS_ENGINE,
+                "jp.kddilabs.n2tts");
     }
 }

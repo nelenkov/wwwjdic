@@ -12,6 +12,7 @@ import org.nick.wwwjdic.utils.StringUtils;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.SupportActivity;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.text.ClipboardManager;
@@ -102,8 +103,6 @@ public class SentenceBreakdownFragment extends
         }
     }
 
-    private static final String N2_TTS_PACKAGE = "jp.kddilabs.n2tts";
-
     public static final String EXTRA_SENTENCE = "org.nick.wwwjdic.SENTENCE";
     public static final String EXTRA_SENTENCE_TRANSLATION = "org.nick.wwwjdic.SENTENCE_TRANSLATION";
 
@@ -122,6 +121,7 @@ public class SentenceBreakdownFragment extends
 
     private ClipboardManager clipboardManager;
 
+    private String jpTtsEnginePackageName;
     private boolean showSpeakMenu = false;
     private TtsManager ttsManager;
 
@@ -180,7 +180,7 @@ public class SentenceBreakdownFragment extends
         sentenceTranslation = args.getString(EXTRA_SENTENCE_TRANSLATION);
         markedSentence = new SpannableString(sentenceStr);
 
-        ttsManager = new TtsManager(getActivity(), this, N2_TTS_PACKAGE);
+        ttsManager = new TtsManager(getActivity(), this, jpTtsEnginePackageName);
 
         sentenceView.setText(markedSentence);
         if (!StringUtils.isEmpty(sentenceTranslation)) {
@@ -199,6 +199,14 @@ public class SentenceBreakdownFragment extends
         SearchTask<SentenceBreakdownEntry> searchTask = new SentenceBreakdownTask(
                 getWwwjdicUrl(), getHttpTimeoutSeconds(), this, query);
         submitSearchTask(searchTask);
+    }
+
+    @Override
+    public void onAttach(SupportActivity activity) {
+        super.onAttach(activity);
+
+        jpTtsEnginePackageName = WwwjdicPreferences
+                .getJpTtsEnginePackage(activity.asActivity());
     }
 
     @Override
