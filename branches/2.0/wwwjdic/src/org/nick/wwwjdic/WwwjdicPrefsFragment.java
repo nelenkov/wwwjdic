@@ -1,6 +1,5 @@
 package org.nick.wwwjdic;
 
-import static org.nick.wwwjdic.WwwjdicPreferences.DEFAULT_JP_TTS_ENGINE_PACKAGE;
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_AUTO_SELECT_MIRROR_KEY;
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_DEFAULT_DICT_PREF_KEY;
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_JP_TTS_ENGINE;
@@ -39,7 +38,7 @@ public class WwwjdicPrefsFragment extends PreferenceFragment implements
 
         jpTtsEnginePreference = (ListPreference) findPreference(PREF_JP_TTS_ENGINE);
         jpTtsEnginePreference.setSummary(WwwjdicPreferences.getTtsEngineName(
-                getActivity(), DEFAULT_JP_TTS_ENGINE_PACKAGE));
+                getActivity(), jpTtsEnginePreference.getEntry().toString()));
         jpTtsEnginePreference.setOnPreferenceChangeListener(this);
     }
 
