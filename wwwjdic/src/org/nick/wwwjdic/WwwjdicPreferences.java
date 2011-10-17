@@ -131,7 +131,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
         jpTtsEnginePreference = (ListPreference) findPreference(PREF_JP_TTS_ENGINE);
         jpTtsEnginePreference.setSummary(getTtsEngineName(this,
-                jpTtsEnginePreference.getEntry().toString()));
+                jpTtsEnginePreference.getValue()));
         jpTtsEnginePreference.setOnPreferenceChangeListener(this);
     }
 
