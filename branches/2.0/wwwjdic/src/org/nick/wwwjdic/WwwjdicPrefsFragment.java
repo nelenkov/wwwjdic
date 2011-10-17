@@ -38,7 +38,7 @@ public class WwwjdicPrefsFragment extends PreferenceFragment implements
 
         jpTtsEnginePreference = (ListPreference) findPreference(PREF_JP_TTS_ENGINE);
         jpTtsEnginePreference.setSummary(WwwjdicPreferences.getTtsEngineName(
-                getActivity(), jpTtsEnginePreference.getEntry().toString()));
+                getActivity(), jpTtsEnginePreference.getValue()));
         jpTtsEnginePreference.setOnPreferenceChangeListener(this);
     }
 
