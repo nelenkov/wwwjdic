@@ -131,7 +131,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
         jpTtsEnginePreference = (ListPreference) findPreference(PREF_JP_TTS_ENGINE);
         jpTtsEnginePreference.setSummary(getTtsEngineName(this,
-                DEFAULT_JP_TTS_ENGINE_PACKAGE));
+                jpTtsEnginePreference.getEntry().toString()));
         jpTtsEnginePreference.setOnPreferenceChangeListener(this);
     }
 
@@ -606,6 +606,6 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     public static String getJpTtsEnginePackage(Context context) {
         return getPrefs(context).getString(PREF_JP_TTS_ENGINE,
-                "jp.kddilabs.n2tts");
+                DEFAULT_JP_TTS_ENGINE_PACKAGE);
     }
 }
