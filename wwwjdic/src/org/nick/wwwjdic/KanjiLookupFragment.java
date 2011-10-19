@@ -158,15 +158,11 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
     }
 
     public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.kanjiSearchButton:
-            // hideKeyboard();
-
+        if (v.getId() == R.id.kanjiSearchButton) {
             String kanjiInput = kanjiInputText.getText().toString();
             if (TextUtils.isEmpty(kanjiInput)) {
                 return;
             }
-
             try {
                 int searchTypeIdx = kanjiSearchTypeSpinner
                         .getSelectedItemPosition();
@@ -199,14 +195,9 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
             } catch (RejectedExecutionException e) {
                 Log.e(TAG, "RejectedExecutionException", e);
             }
-            break;
-        case R.id.selectRadicalButton:
+        } else if (v.getId() == R.id.selectRadicalButton) {
             Intent i = new Intent(getActivity(), RadicalChart.class);
-
             startActivityForResult(i, RADICAL_RETURN_RESULT);
-            break;
-        default:
-            // do nothing
         }
     }
 
@@ -253,24 +244,20 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
             return;
         }
 
-        switch (parent.getId()) {
-        case R.id.kanjiSearchTypeSpinner:
+        if (parent.getId() == R.id.kanjiSearchTypeSpinner) {
             kanjiInputText.setText("");
             kanjiInputText.requestFocus();
-
             // radical number or number of strokes
             if (position == 1 || position == 2) {
                 kanjiInputText.setInputType(InputType.TYPE_CLASS_NUMBER);
             } else {
                 kanjiInputText.setInputType(InputType.TYPE_CLASS_TEXT);
             }
-
             if (position != 2) {
                 toggleRadicalStrokeCountPanel(false);
             } else {
                 toggleRadicalStrokeCountPanel(true);
             }
-            break;
         }
     }
 

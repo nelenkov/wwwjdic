@@ -104,15 +104,13 @@ public class KodWidgetConfigure extends ActionBarActivity implements
     public void onClick(View v) {
         final Context context = KodWidgetConfigure.this;
 
-        switch (v.getId()) {
-        case R.id.kod_configure_ok_button:
+        if (v.getId() == R.id.kod_configure_ok_button) {
             WwwjdicPreferences.setKodLevelOneOnly(this, levelOneCb.isChecked());
             WwwjdicPreferences.setKodUseJlpt(this, useJlptCb.isChecked());
             WwwjdicPreferences.setKodJlptLevel(this,
                     jlptLevelSpinner.getSelectedItemPosition() + 1);
             WwwjdicPreferences.setKodShowReading(this,
                     showReadingCb.isChecked());
-
             long updateInterval = WwwjdicPreferences.KOD_DEFAULT_UPDATE_INTERVAL;
             switch (updateIntervalSpinner.getSelectedItemPosition()) {
             case ONE_DAY_IDX:
@@ -131,38 +129,27 @@ public class KodWidgetConfigure extends ActionBarActivity implements
                 // do nothing
             }
             WwwjdicPreferences.setKodUpdateInterval(this, updateInterval);
-
             startService(new Intent(context, GetKanjiService.class));
-
             Intent resultValue = new Intent();
             resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     appWidgetId);
             setResult(RESULT_OK, resultValue);
             finish();
-            break;
-        case R.id.kod_configure_cancel_button:
+        } else if (v.getId() == R.id.kod_configure_cancel_button) {
             finish();
-            break;
-        default:
-            // do nothing
         }
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        switch (buttonView.getId()) {
-        case R.id.kod_level1_only_cb:
+        if (buttonView.getId() == R.id.kod_level1_only_cb) {
             useJlptCb.setEnabled(!isChecked);
             jlptLevelSpinner.setEnabled(!isChecked);
             jlptLevelLabel.setEnabled(!isChecked);
-            break;
-        case R.id.kod_use_jlpt_cb:
+        } else if (buttonView.getId() == R.id.kod_use_jlpt_cb) {
             levelOneCb.setEnabled(!isChecked);
             jlptLevelLabel.setEnabled(isChecked);
             jlptLevelSpinner.setEnabled(isChecked);
-            break;
-        default:
-            // do nothing
         }
     }
 

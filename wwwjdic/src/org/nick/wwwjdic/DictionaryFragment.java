@@ -167,15 +167,12 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
     }
 
     public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.translateButton:
+        if (v.getId() == R.id.translateButton) {
             hideKeyboard();
-
             String input = inputText.getText().toString();
             if (TextUtils.isEmpty(input)) {
                 return;
             }
-
             try {
                 int dictIdx = dictSpinner.getSelectedItemPosition();
                 String dict = getDictionaryFromSelection(dictIdx);
@@ -199,9 +196,6 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
             } catch (RejectedExecutionException e) {
                 Log.e(TAG, e.getMessage(), e);
             }
-            break;
-        default:
-            // do nothing
         }
     }
 
@@ -218,18 +212,12 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
     }
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        switch (buttonView.getId()) {
-        case R.id.exactMatchCb:
+        if (buttonView.getId() == R.id.exactMatchCb) {
             toggleRomanizedCb(isChecked);
-            break;
-        case R.id.commonWordsCb:
+        } else if (buttonView.getId() == R.id.commonWordsCb) {
             toggleRomanizedCb(isChecked);
-            break;
-        case R.id.romanizedCb:
+        } else if (buttonView.getId() == R.id.romanizedCb) {
             toggleExactCommonCbs(isChecked);
-            break;
-        default:
-            // do nothing
         }
     }
 
@@ -254,16 +242,12 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
     }
 
     public void onFocusChange(View v, boolean hasFocus) {
-        switch (v.getId()) {
-        case R.id.inputText:
+        if (v.getId() == R.id.inputText) {
             if (hasFocus) {
                 showKeyboard();
             } else {
                 hideKeyboard();
             }
-            break;
-        default:
-            // do nothing
         }
     }
 

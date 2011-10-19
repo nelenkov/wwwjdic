@@ -210,18 +210,12 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.draw_sod_button:
+        if (v.getId() == R.id.draw_sod_button) {
             drawSod();
-            break;
-        case R.id.animate_button:
+        } else if (v.getId() == R.id.animate_button) {
             animate();
-            break;
-        case R.id.clear_sod_button:
+        } else if (v.getId() == R.id.clear_sod_button) {
             clear();
-            break;
-        default:
-            // do nothing
         }
     }
 
