@@ -99,15 +99,11 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
     }
 
     public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.exampleSearchButton:
-            // hideKeyboard();
-
+        if (v.getId() == R.id.exampleSearchButton) {
             String queryString = exampleSearchInputText.getText().toString();
             if (TextUtils.isEmpty(queryString)) {
                 return;
             }
-
             if (sentenceModeSpinner.getSelectedItemPosition() == 0) {
                 int numMaxResults = 20;
                 try {
@@ -139,9 +135,6 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
 
                 startActivity(intent);
             }
-            break;
-        default:
-            // do nothing
         }
     }
 
@@ -166,10 +159,8 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
             return;
         }
 
-        switch (parent.getId()) {
-        case R.id.modeSpinner:
+        if (parent.getId() == R.id.modeSpinner) {
             toggleExampleOptions(position == 0);
-            break;
         }
     }
 

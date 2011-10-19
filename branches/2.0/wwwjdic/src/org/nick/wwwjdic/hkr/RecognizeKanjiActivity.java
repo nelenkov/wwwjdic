@@ -340,21 +340,14 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.recognize_button:
+        if (v.getId() == R.id.recognize_button) {
             recognizeKanji();
-            break;
-        case R.id.ocr_button:
+        } else if (v.getId() == R.id.ocr_button) {
             ocrKanji();
-            break;
-        case R.id.remove_stroke_button:
+        } else if (v.getId() == R.id.remove_stroke_button) {
             drawView.removeLastStroke();
-            break;
-        case R.id.clear_canvas_button:
+        } else if (v.getId() == R.id.clear_canvas_button) {
             clear();
-            break;
-        default:
-            // do nothing
         }
     }
 

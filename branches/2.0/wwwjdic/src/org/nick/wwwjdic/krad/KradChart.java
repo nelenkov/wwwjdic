@@ -372,28 +372,21 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
 
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
-        switch (parent.getId()) {
-        case R.id.candidates_gallery:
+        if (parent.getId() == R.id.candidates_gallery) {
             if (position >= 0 && position < candidates.length) {
                 String kanji = candidates[position];
                 Intent intent = createCharDetailsIntent(kanji);
                 startActivity(intent);
             }
-            break;
-        case R.id.kradChartGrid:
+        } else if (parent.getId() == R.id.kradChartGrid) {
             Analytics.event("multiradicalSelect", this);
-
             String radical = state.radicals.get(position).trim();
             if (state.selectedRadicals.contains(radical)) {
                 state.selectedRadicals.remove(radical);
             } else {
                 state.selectedRadicals.add(radical);
             }
-
             updateRadicalsAndMatches();
-            break;
-        default:
-            // do nothing
         }
     }
 
@@ -452,15 +445,10 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-        case R.id.show_all_button:
+        if (view.getId() == R.id.show_all_button) {
             showCandidates();
-            break;
-        case R.id.clear_button:
+        } else if (view.getId() == R.id.clear_button) {
             clearSelection();
-            break;
-        default:
-            // do nothing
         }
     }
 

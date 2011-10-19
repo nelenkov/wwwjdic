@@ -738,8 +738,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
         Intent intent = new Intent(this, Wwwjdic.class);
         Bundle extras = new Bundle();
 
-        switch (v.getId()) {
-        case R.id.send_to_dict:
+        if (v.getId() == R.id.send_to_dict) {
             if (isDirectSearch) {
                 criteria = SearchCriteria.createForDictionaryDefault(key);
                 intent = new Intent(this, DictionaryResultList.class);
@@ -747,8 +746,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
                 extras.putInt(Wwwjdic.EXTRA_SEARCH_TYPE,
                         SearchCriteria.CRITERIA_TYPE_DICT);
             }
-            break;
-        case R.id.send_to_kanjidict:
+        } else if (v.getId() == R.id.send_to_kanjidict) {
             if (isDirectSearch) {
                 criteria = SearchCriteria.createForKanjiOrReading(key);
                 intent = new Intent(this, KanjiResultList.class);
@@ -756,8 +754,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
                 extras.putInt(Wwwjdic.EXTRA_SEARCH_TYPE,
                         SearchCriteria.CRITERIA_TYPE_KANJI);
             }
-            break;
-        case R.id.send_to_example_search:
+        } else if (v.getId() == R.id.send_to_example_search) {
             if (isDirectSearch) {
                 criteria = SearchCriteria.createForExampleSearchDefault(key);
                 intent = new Intent(this, ExamplesResultList.class);
@@ -765,8 +762,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
                 extras.putInt(Wwwjdic.EXTRA_SEARCH_TYPE,
                         SearchCriteria.CRITERIA_TYPE_EXAMPLES);
             }
-            break;
-        case R.id.pick_image:
+        } else if (v.getId() == R.id.pick_image) {
             intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image/*");
@@ -774,8 +770,6 @@ public class OcrActivity extends WebServiceBackedActivity implements
             intent.putExtra("android.intent.extra.LOCAL_ONLY", true);
             startActivityForResult(intent, SELECT_IMAGE_REQUEST_CODE);
             return;
-        default:
-            // do nothing
         }
 
         if (isDirectSearch) {

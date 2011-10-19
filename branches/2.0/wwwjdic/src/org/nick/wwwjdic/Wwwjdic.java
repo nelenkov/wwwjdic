@@ -255,39 +255,32 @@ public class Wwwjdic extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.menu_about:
+        if (item.getItemId() == R.id.menu_about) {
             Intent intent = new Intent(this, AboutActivity.class);
             startActivity(intent);
             return true;
-        case R.id.menu_ocr:
-            intent = new Intent(this, OcrActivity.class);
-
+        } else if (item.getItemId() == R.id.menu_ocr) {
+            Intent intent = new Intent(this, OcrActivity.class);
             startActivity(intent);
             return true;
-        case R.id.menu_settings:
-            intent = new Intent(this, IS_HONEYCOMB ? WwwjdicPreferencesHC.class
+        } else if (item.getItemId() == R.id.menu_settings) {
+            Intent intent = new Intent(this,
+                    IS_HONEYCOMB ? WwwjdicPreferencesHC.class
                     : WwwjdicPreferences.class);
-
             startActivity(intent);
             return true;
-        case R.id.menu_draw:
-            intent = new Intent(this, RecognizeKanjiActivity.class);
-
+        } else if (item.getItemId() == R.id.menu_draw) {
+            Intent intent = new Intent(this, RecognizeKanjiActivity.class);
             startActivity(intent);
             return true;
-        case R.id.menu_favorites_history:
-            intent = new Intent(this, FavoritesAndHistory.class);
-
+        } else if (item.getItemId() == R.id.menu_favorites_history) {
+            Intent intent = new Intent(this, FavoritesAndHistory.class);
             startActivity(intent);
             return true;
-        case R.id.menu_multi_radical:
-            intent = new Intent(this, KradChart.class);
-
+        } else if (item.getItemId() == R.id.menu_multi_radical) {
+            Intent intent = new Intent(this, KradChart.class);
             startActivity(intent);
             return true;
-        default:
-            // do nothing
         }
 
         return super.onOptionsItemSelected(item);

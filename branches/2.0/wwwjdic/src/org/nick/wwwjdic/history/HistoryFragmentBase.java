@@ -183,29 +183,23 @@ public abstract class HistoryFragmentBase extends ListFragment implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
+        if (item.getItemId() == android.R.id.home) {
             Intent intent = new Intent(getActivity(), Wwwjdic.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-            break;
-        case R.id.menu_import:
+        } else if (item.getItemId() == R.id.menu_import) {
             importItems();
             getSupportActivity().invalidateOptionsMenu();
-            break;
-        case R.id.menu_export:
+        } else if (item.getItemId() == R.id.menu_export) {
             exportItems();
             getSupportActivity().invalidateOptionsMenu();
-            break;
-        case R.id.menu_filter:
+        } else if (item.getItemId() == R.id.menu_filter) {
             showFilterDialog();
-            break;
-        case R.id.menu_delete:
+        } else if (item.getItemId() == R.id.menu_delete) {
             DialogFragment confirmDeleteDialog = ConfirmDeleteDialog
                     .newInstance(this);
             confirmDeleteDialog.show(getFragmentManager(),
                     "confirmDeleteDialog");
-
             return true;
         }
 
@@ -385,14 +379,13 @@ public abstract class HistoryFragmentBase extends ListFragment implements
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
                 .getMenuInfo();
         int position = info.position;
-        switch (item.getItemId()) {
-        case R.id.menu_context_history_lookup:
+        if (item.getItemId() == R.id.menu_context_history_lookup) {
             lookup(position);
             return true;
-        case R.id.menu_context_history_copy:
+        } else if (item.getItemId() == R.id.menu_context_history_copy) {
             copy(position);
             return true;
-        case R.id.menu_context_history_delete:
+        } else if (item.getItemId() == R.id.menu_context_history_delete) {
             delete(position);
             return true;
         }
@@ -556,16 +549,15 @@ public abstract class HistoryFragmentBase extends ListFragment implements
 
         public boolean onActionItemClicked(ActionMode actionMode,
                 MenuItem menuItem) {
-            switch (menuItem.getItemId()) {
-            case R.id.menu_context_history_lookup:
+            if (menuItem.getItemId() == R.id.menu_context_history_lookup) {
                 lookup(position);
                 actionMode.finish();
                 return true;
-            case R.id.menu_context_history_copy:
+            } else if (menuItem.getItemId() == R.id.menu_context_history_copy) {
                 copy(position);
                 actionMode.finish();
                 return true;
-            case R.id.menu_context_history_delete:
+            } else if (menuItem.getItemId() == R.id.menu_context_history_delete) {
                 delete(position);
                 actionMode.finish();
                 return true;

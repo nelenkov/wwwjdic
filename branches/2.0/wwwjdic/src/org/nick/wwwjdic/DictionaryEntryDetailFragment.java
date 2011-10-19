@@ -149,12 +149,11 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.menu_dict_detail_lookup_kanji:
+        if (item.getItemId() == R.id.menu_dict_detail_lookup_kanji) {
             Activities.lookupKanji(getActivity(), db,
                     wwwjdicEntry.getHeadword());
             return true;
-        case R.id.menu_dict_detail_copy:
+        } else if (item.getItemId() == R.id.menu_dict_detail_copy) {
             copy();
             return true;
         }
@@ -176,8 +175,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.examples_button:
+        if (v.getId() == R.id.examples_button) {
             Intent intent = new Intent(getActivity(), ExamplesResultList.class);
             SearchCriteria criteria = SearchCriteria.createForExampleSearch(
                     exampleSearchKey, false, DEFAULT_MAX_NUM_EXAMPLES);
@@ -185,11 +183,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
             intent.putExtra(
                     ExamplesResultListFragment.EXTRA_EXAMPLES_BACKDOOR_SEARCH,
                     true);
-
             startActivity(intent);
-            break;
-        default:
-            // do nothing
         }
     }
 

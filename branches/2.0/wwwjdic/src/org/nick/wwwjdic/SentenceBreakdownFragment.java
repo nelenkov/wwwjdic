@@ -258,17 +258,16 @@ public class SentenceBreakdownFragment extends
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.menu_example_copy_jp:
+        if (item.getItemId() == R.id.menu_example_copy_jp) {
             copyJapanese();
             return true;
-        case R.id.menu_example_copy_eng:
+        } else if (item.getItemId() == R.id.menu_example_copy_eng) {
             copyEnglish();
             return true;
-        case R.id.menu_example_lookup_kanji:
+        } else if (item.getItemId() == R.id.menu_example_lookup_kanji) {
             lookupAllKanji();
             return true;
-        case R.id.menu_ex_breakdown_speak:
+        } else if (item.getItemId() == R.id.menu_ex_breakdown_speak) {
             if (ttsManager != null) {
                 ttsManager.speak(sentenceStr);
             }

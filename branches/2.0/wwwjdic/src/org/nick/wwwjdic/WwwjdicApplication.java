@@ -32,7 +32,7 @@ import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
 
-@ReportsCrashes(formKey = "dEVLZ0dzclVoWG43V0xldWRXS3h3dkE6MQ", mode = ReportingInteractionMode.TOAST, resToastText = R.string.crash_toast_text)
+@ReportsCrashes(formKey = "dEVLZ0dzclVoWG43V0xldWRXS3h3dkE6MQ", mode = ReportingInteractionMode.SILENT)
 public class WwwjdicApplication extends Application {
 
 

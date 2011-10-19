@@ -283,8 +283,7 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.menu_kanji_detail_copy:
+        if (item.getItemId() == R.id.menu_kanji_detail_copy) {
             copy();
             return true;
         }
@@ -442,12 +441,8 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.sod_button:
+        if (v.getId() == R.id.sod_button) {
             Activities.showStrokeOrder(getActivity(), entry);
-            break;
-        default:
-            // do nothing
         }
     }
 
