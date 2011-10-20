@@ -8,14 +8,14 @@
     <item name="android:layout_height">fill_parent</item> 
     <item name="android:layout_width">0px</item>
     <item name="android:layout_weight">1</item> 
-    <item name="android:textSize">16dp</item> 
+    <item name="android:textSize">@dimen/hkr_toolbar_text_size</item> 
   </style>
   
   <style name="hkr_toolbar_checbox">
     <item name="android:layout_height">wrap_content</item> 
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_gravity">center_vertical</item>
-    <item name="android:textSize">16dp</item> 
+    <item name="android:textSize">@dimen/hkr_toolbar_text_size</item> 
   </style>
   
   <style name="krad_chart_button">
