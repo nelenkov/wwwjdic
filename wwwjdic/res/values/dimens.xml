@@ -34,4 +34,6 @@
     
     <dimen name="candidates_item_size">26sp</dimen>
     <dimen name="candidates_min_height">42dp</dimen>
+    
+    <dimen name="hkr_toolbar_text_size">12dp</dimen>        
 </resources>
