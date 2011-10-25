@@ -266,7 +266,7 @@ public class Wwwjdic extends ActionBarActivity {
         } else if (item.getItemId() == R.id.menu_settings) {
             Intent intent = new Intent(this,
                     IS_HONEYCOMB ? WwwjdicPreferencesHC.class
-                    : WwwjdicPreferences.class);
+                            : WwwjdicPreferences.class);
             startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.menu_draw) {
@@ -310,7 +310,8 @@ public class Wwwjdic extends ActionBarActivity {
 
         Analytics.startSession(this);
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
 
 

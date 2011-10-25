@@ -15,7 +15,7 @@
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/multi_radical_search"
         android:orderInCategory="2"
-        android:showAsAction="never" />          
+        android:showAsAction="ifRoom" />          
    <item android:id="@+id/menu_favorites_history"
         android:icon="@android:drawable/ic_menu_recent_history"
         android:title="@string/favorites_hist"

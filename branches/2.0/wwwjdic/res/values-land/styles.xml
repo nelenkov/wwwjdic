@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="Theme.WwwjdicAbMain" parent="@style/Theme.Sherlock" >
+      <item name="abIcon">@null</item>
+      <item name="abHomeAsUpIndicator">@null</item>
+  </style>
+</resources>
