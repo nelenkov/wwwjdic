@@ -136,6 +136,13 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (PREF_USE_KR_KEY.equals(preference.getKey())) {
             Boolean enabled = (Boolean) newValue;
@@ -608,4 +615,17 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         return getPrefs(context).getString(PREF_JP_TTS_ENGINE,
                 DEFAULT_JP_TTS_ENGINE_PACKAGE);
     }
+
+    //    @Override
+    //    public boolean onOptionsItemSelected(MenuItem item) {
+    //        switch (item.getItemId()) {
+    //        case android.R.id.home:
+    //            Activities.home(this);
+    //            return true;
+    //        default:
+    //            // do nothing
+    //        }
+    //
+    //        return super.onOptionsItemSelected(item);
+    //    }
 }
