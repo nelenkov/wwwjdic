@@ -3,9 +3,9 @@ package org.nick.wwwjdic.history;
 import org.nick.wwwjdic.ActionBarActivity;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.utils.Dialogs;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBar;
 import android.support.v4.view.ViewPager;
@@ -19,8 +19,6 @@ public class FavoritesAndHistory extends ActionBarActivity {
 
     private static final String FAVORITES_EXPORT_TIP_DIALOG = "tips_favorites_export";
 
-    private static final boolean IS_HONEYCOMB = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
-
     private ViewPager viewPager;
     private TabsPagerAdapter tabsAdapter;
 
@@ -31,6 +29,7 @@ public class FavoritesAndHistory extends ActionBarActivity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         setContentView(R.layout.favorites_history);
+        setTitle(R.string.favorites_hist);
 
         Intent intent = getIntent();
         int filterType = intent.getIntExtra(EXTRA_FILTER_TYPE,
@@ -85,9 +84,13 @@ public class FavoritesAndHistory extends ActionBarActivity {
     protected void onStart() {
         super.onStart();
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        boolean showHome = UIUtils.isHoneycombTablet(this)
+                || !UIUtils.isLandscape(this);
+        boolean showTitle = !UIUtils.isHoneycombTablet(this)
+                && UIUtils.isPortrait(this);
+        getSupportActionBar().setDisplayShowHomeEnabled(showHome);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(showHome);
+        getSupportActionBar().setDisplayShowTitleEnabled(showTitle);
     }
 
 }
