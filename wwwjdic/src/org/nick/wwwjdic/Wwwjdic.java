@@ -13,6 +13,7 @@ import org.nick.wwwjdic.krad.KradChart;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.ocr.OcrActivity;
 import org.nick.wwwjdic.utils.Analytics;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -310,8 +311,12 @@ public class Wwwjdic extends ActionBarActivity {
 
         Analytics.startSession(this);
 
-        //        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        boolean showHome = UIUtils.isHoneycombTablet(this)
+                || UIUtils.isPortrait(this);
+        boolean showTitle = !UIUtils.isHoneycombTablet(this)
+                && UIUtils.isPortrait(this);
+        getSupportActionBar().setDisplayShowTitleEnabled(showHome);
+        getSupportActionBar().setDisplayShowTitleEnabled(showTitle);
     }
 
 
