@@ -8,6 +8,5 @@
 	<classpathentry kind="lib" path="/Wwwjdic/lib/acra-4.2.3.jar"/>
 	<classpathentry kind="lib" path="/Wwwjdic/lib/FlurryAgent.jar"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry kind="lib" path="/Wwwjdic/lib/actionbarsherlock-plugin-preference-3.4.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
