@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
      <item android:id="@+id/menu_ex_breakdown_speak"
         android:icon="@android:drawable/ic_lock_silent_mode_off"
-        android:title="@string/speak"
+        android:title="@string/read_out"
         android:orderInCategory="0"
         android:showAsAction="ifRoom|withText" />  
      <item android:id="@+id/menu_example_lookup_kanji"
