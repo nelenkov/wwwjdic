@@ -560,7 +560,7 @@
     <string name="pref_other">Other</string> 
     <string name="pref_other_summary">App maintenance, etc.</string>
     
-    <string name="speak">Speak</string>
+    <string name="read_out">Read out</string>
     
     <string name="pref_jp_tts_engine">Japanese TTS Engine</string>
     

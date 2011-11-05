@@ -395,6 +395,6 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     <string name="pref_other">その他</string> 
     <string name="pref_other_summary">アプリメンテナンスなど</string>
     
-    <string name="speak">読み上げ</string>
+    <string name="read_out">読み上げ</string>
     <string name="pref_jp_tts_engine">日本語読み上げエンジン</string>
 </resources>
