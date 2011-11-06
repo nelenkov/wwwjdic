@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.acra.ACRA;
+import org.acra.ACRAConfiguration;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.nick.wwwjdic.model.Radicals;
@@ -70,6 +71,7 @@ public class WwwjdicApplication extends Application {
         flurryKey = readKey();
         FlurryAgent.setCaptureUncaughtExceptions(false);
 
+        ACRAConfiguration.setResToastText(R.string.crash_toast_text);
         ACRA.init(this);
 
         createWwwjdicDirIfNecessary();
