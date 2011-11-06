@@ -56,9 +56,6 @@ public class Wwwjdic extends ActionBarActivity {
 
     private static final String DONATE_VERSION_PACKAGE = "org.nick.wwwjdic.donate";
 
-    // private static final boolean IS_HONEYCOMB = Build.VERSION.SDK_INT >=
-    // Build.VERSION_CODES.HONEYCOMB;
-
     class WwwjdicTabsPagerAdapter extends PagerAdapter implements
             ViewPager.OnPageChangeListener, ActionBar.TabListener {
 
