@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Tablet support\n* New UI\n* Japanese text-to-speech support (install \'N2 TTS\' from Market to enable)\n* Removed Google account permissions\n* Various improvements and bug fixes</string>
+    <string name="whats_new">* Text-to-speech for example sentences\n* Multiple Japanese TTS engines support (Settings)\n* Android 4.0 (ICS) consistent UI\n* ICS support\n* Bugfixes</string>
 </resources>
