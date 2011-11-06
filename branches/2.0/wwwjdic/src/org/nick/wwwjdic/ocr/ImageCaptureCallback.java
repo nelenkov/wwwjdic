@@ -4,7 +4,7 @@ import static org.nick.wwwjdic.WwwjdicPreferences.ACRA_DEBUG;
 
 import java.io.OutputStream;
 
-import org.acra.ErrorReporter;
+import org.acra.ACRA;
 
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
@@ -39,7 +39,7 @@ public class ImageCaptureCallback implements PictureCallback {
         } catch (Exception ex) {
             Log.e(TAG, "onPictureTaken error: " + ex.getMessage(), ex);
             if (ACRA_DEBUG) {
-                ErrorReporter.getInstance().handleException(ex);
+                ACRA.getErrorReporter().handleSilentException(ex);
             }
         }
     }

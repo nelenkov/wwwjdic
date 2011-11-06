@@ -5,8 +5,8 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/Wwwjdic/lib/opencsv-2.2.jar"/>
-	<classpathentry kind="lib" path="/Wwwjdic/lib/acra-4.2.3.jar"/>
 	<classpathentry kind="lib" path="/Wwwjdic/lib/FlurryAgent.jar"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="lib" path="/Wwwjdic/lib/acra-4.3.0-20111103.232318-3.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
-import org.acra.ErrorReporter;
+import org.acra.ACRA;
 import org.nick.wwwjdic.R;
 
 import android.app.ProgressDialog;
@@ -110,7 +110,7 @@ public class CropImage extends MonitoredActivity {
             } catch (IOException e) {
                 Log.e(TAG, "error reading picture: " + e.getMessage(), e);
                 if (ACRA_DEBUG) {
-                    ErrorReporter.getInstance().handleException(e);
+                    ACRA.getErrorReporter().handleSilentException(e);
                 }
 
                 Toast.makeText(
