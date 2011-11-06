@@ -1,6 +1,12 @@
 #summary Full changelog
 
 = Changelog =
+ * v2.1 (2011/11/6) TTS improvements and ICS support
+  * Text-to-speech for example sentences
+  * Multiple Japanese TTS engines support (Settings)
+  * Android 4.0 (ICS) consistent UI
+  * ICS support
+  * Bug fixes
  * v2.0 (2011/9/30) Tablet support
   * Tablet support
   * New UI
