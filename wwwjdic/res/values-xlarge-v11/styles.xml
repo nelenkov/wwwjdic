@@ -62,4 +62,6 @@
   <style name="WwwjdicAbTrans" parent="Theme.WwwjdicAb">
     <item name="abBackground">@drawable/action_bar_bg_trans</item>
   </style>
+  
+  <style name="Theme.WwwjdicAbMain" parent="@style/Theme.Sherlock"/>    
 </resources>

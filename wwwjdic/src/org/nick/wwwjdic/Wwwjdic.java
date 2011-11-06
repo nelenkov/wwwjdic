@@ -1,5 +1,6 @@
 package org.nick.wwwjdic;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.ActionBar;
@@ -56,7 +56,8 @@ public class Wwwjdic extends ActionBarActivity {
 
     private static final String DONATE_VERSION_PACKAGE = "org.nick.wwwjdic.donate";
 
-    private static final boolean IS_HONEYCOMB = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+    // private static final boolean IS_HONEYCOMB = Build.VERSION.SDK_INT >=
+    // Build.VERSION_CODES.HONEYCOMB;
 
     class WwwjdicTabsPagerAdapter extends PagerAdapter implements
             ViewPager.OnPageChangeListener, ActionBar.TabListener {
@@ -142,7 +143,6 @@ public class Wwwjdic extends ActionBarActivity {
 
             return view;
         }
-
 
         @Override
         public void destroyItem(View container, int position, Object view) {
@@ -266,7 +266,7 @@ public class Wwwjdic extends ActionBarActivity {
             return true;
         } else if (item.getItemId() == R.id.menu_settings) {
             Intent intent = new Intent(this,
-                    IS_HONEYCOMB ? WwwjdicPreferencesHC.class
+                    UIUtils.isHoneycomb() ? WwwjdicPreferencesHC.class
                             : WwwjdicPreferences.class);
             startActivity(intent);
             return true;
@@ -281,6 +281,9 @@ public class Wwwjdic extends ActionBarActivity {
         } else if (item.getItemId() == R.id.menu_multi_radical) {
             Intent intent = new Intent(this, KradChart.class);
             startActivity(intent);
+            return true;
+        } else if (item.getItemId() == android.R.id.home) {
+            Activities.home(this);
             return true;
         }
 
@@ -315,10 +318,9 @@ public class Wwwjdic extends ActionBarActivity {
                 || UIUtils.isPortrait(this);
         boolean showTitle = !UIUtils.isHoneycombTablet(this)
                 && UIUtils.isPortrait(this);
-        getSupportActionBar().setDisplayShowTitleEnabled(showHome);
+        getSupportActionBar().setDisplayShowHomeEnabled(showHome);
         getSupportActionBar().setDisplayShowTitleEnabled(showTitle);
     }
-
 
     @Override
     protected void onResume() {
@@ -396,14 +398,11 @@ public class Wwwjdic extends ActionBarActivity {
 
     private void setupTabs() {
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        if (!IS_HONEYCOMB) {
-            getSupportActionBar().setDisplayShowHomeEnabled(false);
-        }
         Bundle extras = getIntent().getExtras();
 
         ActionBar.Tab dictionaryTab = getSupportActionBar().newTab();
         dictionaryTab.setIcon(R.drawable.ic_tab_dict);
-        if (IS_HONEYCOMB) {
+        if (UIUtils.isHoneycombTablet(this)) {
             dictionaryTab.setText(R.string.dictionary);
         }
         viewPager = (ViewPager) findViewById(R.id.content);
@@ -413,14 +412,14 @@ public class Wwwjdic extends ActionBarActivity {
 
         ActionBar.Tab kanjiTab = getSupportActionBar().newTab();
         kanjiTab.setIcon(R.drawable.ic_tab_kanji);
-        if (IS_HONEYCOMB) {
+        if (UIUtils.isHoneycombTablet(this)) {
             kanjiTab.setText(R.string.kanji_lookup);
         }
         tabsAdapter.addTab(kanjiTab, R.layout.kanji_lookup_tab);
 
         ActionBar.Tab examplesTab = getSupportActionBar().newTab();
         examplesTab.setIcon(R.drawable.ic_tab_example);
-        if (IS_HONEYCOMB) {
+        if (UIUtils.isHoneycombTablet(this)) {
             examplesTab.setText(R.string.example_search);
         }
         tabsAdapter.addTab(examplesTab, R.layout.example_search_tab);
@@ -571,7 +570,6 @@ public class Wwwjdic extends ActionBarActivity {
                         result.recentFavorites, result.numAllHistory,
                         result.recentHistory);
             }
-
 
         }.execute();
     }
