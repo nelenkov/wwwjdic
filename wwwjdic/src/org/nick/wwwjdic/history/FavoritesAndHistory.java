@@ -85,7 +85,7 @@ public class FavoritesAndHistory extends ActionBarActivity {
         super.onStart();
 
         boolean showHome = UIUtils.isHoneycombTablet(this)
-                || !UIUtils.isLandscape(this);
+                || UIUtils.isPortrait(this);
         boolean showTitle = !UIUtils.isHoneycombTablet(this)
                 && UIUtils.isPortrait(this);
         getSupportActionBar().setDisplayShowHomeEnabled(showHome);
