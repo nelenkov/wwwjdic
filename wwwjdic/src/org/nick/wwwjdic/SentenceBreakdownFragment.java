@@ -213,7 +213,9 @@ public class SentenceBreakdownFragment extends
     public void onResume() {
         super.onResume();
 
-        ttsManager.checkTtsAvailability();
+        if (ttsManager != null) {
+            ttsManager.checkTtsAvailability();
+        }
     }
 
     @Override
@@ -244,7 +246,6 @@ public class SentenceBreakdownFragment extends
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.example_breakdown, menu);
     }
-
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
