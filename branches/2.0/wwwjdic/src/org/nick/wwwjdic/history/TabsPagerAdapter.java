@@ -3,6 +3,8 @@ package org.nick.wwwjdic.history;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nick.wwwjdic.R;
+
 import android.support.v4.app.ActionBar;
 import android.support.v4.app.ActionBar.Tab;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,7 @@ import android.support.v4.view.ViewPager;
 public class TabsPagerAdapter extends FragmentPagerAdapter implements
         ViewPager.OnPageChangeListener, ActionBar.TabListener {
 
+    private FragmentActivity activity;
     private final ActionBar actionBar;
     private final ViewPager viewPager;
     private final List<HistoryFragmentBase> tabs = new ArrayList<HistoryFragmentBase>();
@@ -21,6 +24,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
     public TabsPagerAdapter(FragmentActivity activity, ActionBar actionBar,
             ViewPager pager) {
         super(activity.getSupportFragmentManager());
+        this.activity = activity;
         this.actionBar = actionBar;
         this.viewPager = pager;
         this.viewPager.setAdapter(this);
@@ -54,6 +58,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
         actionBar.setSelectedNavigationItem(position);
         // TODO -- refreshing kills action bar?
         //        refresh(position);
+        setTitle(position);
     }
 
     @SuppressWarnings("unused")
@@ -72,6 +77,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
         viewPager.setCurrentItem(position);
         // TODO -- refreshing kills action bar?
         //        refresh(position);
+        setTitle(position);
     }
 
     @Override
@@ -80,6 +86,14 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
 
     @Override
     public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+    }
+
+    private void setTitle(int tabIdx) {
+        if (tabIdx == 0) {
+            activity.setTitle(R.string.favorites);
+        } else {
+            activity.setTitle(R.string.history);
+        }
     }
 
 }
