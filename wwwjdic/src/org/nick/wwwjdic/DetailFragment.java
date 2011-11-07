@@ -182,8 +182,8 @@ public abstract class DetailFragment extends Fragment implements
 
                         return;
                     }
-                    jpTts.setLanguage(Locale.JAPAN);
                 }
+                jpTts.setLanguage(Locale.JAPAN);
 
                 toggleJpTtsButtons(true);
             } catch (InvocationTargetException e) {
