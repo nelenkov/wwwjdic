@@ -4,7 +4,7 @@
     android:versionName="2.1" android:versionCode="2100">
     <application android:icon="@drawable/icon"
         android:label="@string/app_name" 
-        android:debuggable="true"
+        android:debuggable="false"
         android:name="org.nick.wwwjdic.WwwjdicApplication" 
         android:hardwareAccelerated="true">
         <meta-data android:name="android.app.default_searchable"
