@@ -160,7 +160,7 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry> 
     public void setResult(final List<KanjiEntry> result) {
         guiThread.post(new Runnable() {
             public void run() {
-                if (getListView() == null) {
+                if (getView() == null) {
                     return;
                 }
 
