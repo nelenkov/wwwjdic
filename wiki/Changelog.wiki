@@ -1,6 +1,10 @@
 #summary Full changelog
 
 = Changelog =
+ * v2.1.1 (2011/11/7) Bugfix release
+  * Fixed Japanese TTS bug
+  * Avoid crash when opening Settings in landscape mode
+  * Improved error reporting
  * v2.1 (2011/11/6) TTS improvements and ICS support
   * Text-to-speech for example sentences
   * Multiple Japanese TTS engines support (Settings)
