@@ -309,7 +309,7 @@ public class ExamplesResultListFragment extends
         guiThread.post(new Runnable() {
             public void run() {
                 // backed out before view is created
-                if (getListView() == null) {
+                if (getView() == null) {
                     return;
                 }
 
