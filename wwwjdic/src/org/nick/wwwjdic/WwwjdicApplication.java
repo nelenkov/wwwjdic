@@ -14,6 +14,7 @@ import org.acra.ACRA;
 import org.acra.ACRAConfiguration;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
+import org.acra.sender.HttpPostSender;
 import org.nick.wwwjdic.model.Radicals;
 import org.nick.wwwjdic.updates.UpdateCheckService;
 import org.nick.wwwjdic.utils.FileUtils;
@@ -33,6 +34,7 @@ import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
 
+//@ReportsCrashes(formKey = "", formUri = "http://192.47.34.130:8080/acra-handler/", mode = ReportingInteractionMode.SILENT, formUriBasicAuthLogin = "acra", formUriBasicAuthPassword = "z5uibzjr")
 @ReportsCrashes(formKey = "dEJzcGZKazRWVGRkRTR0X2JKN0ozWFE6MQ", mode = ReportingInteractionMode.TOAST)
 public class WwwjdicApplication extends Application {
 
@@ -73,6 +75,9 @@ public class WwwjdicApplication extends Application {
 
         ACRAConfiguration.setResToastText(R.string.crash_toast_text);
         ACRA.init(this);
+        String bugsenseUrl = getResources().getString(R.string.bugsense_url);
+        ACRA.getErrorReporter().addReportSender(
+                new HttpPostSender(bugsenseUrl, null));
 
         createWwwjdicDirIfNecessary();
 
