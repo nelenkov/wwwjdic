@@ -2,6 +2,6 @@
 <resources>
   <style name="Theme.WwwjdicAbMain" parent="@style/Theme.Sherlock" >
       <item name="abIcon">@null</item>
-      <item name="abHomeAsUpIndicator">@null</item>
+      <item name="homeAsUpIndicator">@null</item>
   </style>
 </resources>
