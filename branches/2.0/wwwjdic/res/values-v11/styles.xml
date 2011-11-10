@@ -4,6 +4,7 @@
     <item name="android:background">?android:attr/activatedBackgroundIndicator</item>
   </style>
   
+  <!-- 
   <style name="hkr_toolbar_button">
     <item name="android:layout_height">fill_parent</item> 
     <item name="android:layout_width">0px</item>
@@ -16,19 +17,8 @@
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_gravity">center_vertical</item>
     <item name="android:textSize">@dimen/hkr_toolbar_text_size</item> 
-  </style>    
-  
-  <style name="krad_chart_button">
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_width">0dp</item>
-    <item name="android:layout_weight">1</item>
-    <item name="android:layout_gravity">center_vertical</item>
-    <item name="android:gravity">center</item> 
   </style>
+  -->    
   
   <style name="small_button"/>
-  
-  <style name="WwwjdicAbTrans" parent="Theme.WwwjdicAb">
-    <item name="abBackground">@drawable/action_bar_bg_trans</item>
-  </style>
 </resources>
