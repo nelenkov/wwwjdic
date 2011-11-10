@@ -19,12 +19,13 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.support.v4.app.SherlockPreferenceActivity;
+import android.support.v4.view.MenuItem;
 import android.text.format.DateUtils;
 import android.util.Log;
 
-public class WwwjdicPreferences extends PreferenceActivity implements
+public class WwwjdicPreferences extends SherlockPreferenceActivity implements
         OnPreferenceChangeListener {
 
     private static final String TAG = WwwjdicPreferences.class.getSimpleName();
@@ -139,7 +140,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     protected void onStart() {
         super.onStart();
 
-        //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -616,16 +617,16 @@ public class WwwjdicPreferences extends PreferenceActivity implements
                 DEFAULT_JP_TTS_ENGINE_PACKAGE);
     }
 
-    //    @Override
-    //    public boolean onOptionsItemSelected(MenuItem item) {
-    //        switch (item.getItemId()) {
-    //        case android.R.id.home:
-    //            Activities.home(this);
-    //            return true;
-    //        default:
-    //            // do nothing
-    //        }
-    //
-    //        return super.onOptionsItemSelected(item);
-    //    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            Activities.home(this);
+            return true;
+        default:
+            // do nothing
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
