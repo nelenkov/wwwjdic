@@ -34,7 +34,6 @@ import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
 
-//@ReportsCrashes(formKey = "", formUri = "http://192.47.34.130:8080/acra-handler/", mode = ReportingInteractionMode.SILENT, formUriBasicAuthLogin = "acra", formUriBasicAuthPassword = "z5uibzjr")
 @ReportsCrashes(formKey = "dEJzcGZKazRWVGRkRTR0X2JKN0ozWFE6MQ", mode = ReportingInteractionMode.TOAST)
 public class WwwjdicApplication extends Application {
 
