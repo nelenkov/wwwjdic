@@ -5,10 +5,10 @@
     <LinearLayout android:id="@+id/kanjiLookupTab"
         android:orientation="vertical" 
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" 
+        android:layout_height="wrap_content" 
         android:padding="15dip"
         android:layout_gravity="top" 
-        android:minHeight="200px">
+        android:minHeight="200dp">
         <EditText  android:id="@+id/kanjiInputText" 
             style="@style/search_input"
             android:hint="@string/enter_kanji_search_key"

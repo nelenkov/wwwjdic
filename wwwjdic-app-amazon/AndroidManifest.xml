@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.nick.wwwjdic" android:installLocation="auto"
-    android:versionName="2.1.1" android:versionCode="2110">
+    package="org.nick.wwwjdic" 
+    android:installLocation="auto"
+    android:versionName="2.1.1" 
+    android:versionCode="2110">
+    
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera.flash"
+        android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen"
+        android:required="false" />
+    
+    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="13" />
+    
      <application android:icon="@drawable/icon"
         android:label="@string/app_name" 
         android:debuggable="false"
@@ -99,19 +117,4 @@
         <provider android:name="org.nick.wwwjdic.SearchSuggestionProvider"
               android:authorities="org.nick.wwwjdic.SearchSuggestionProvider" />
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-    <uses-feature android:name="android.hardware.camera.flash"
-        android:required="false" />
-    <uses-feature android:name="android.hardware.touchscreen"
-        android:required="false" />
-    <uses-sdk android:minSdkVersion="7"
-        android:targetSdkVersion="13" />
 </manifest> 

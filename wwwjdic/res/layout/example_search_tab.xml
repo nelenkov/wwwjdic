@@ -5,7 +5,7 @@
     android:fillViewport="true">
      <LinearLayout android:orientation="vertical" 
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="wrap_content">
 	    <fragment class="org.nick.wwwjdic.ExampleSearchFragment"
 	            android:id="@+id/example_search_fragment"
 	            android:layout_width="fill_parent" 

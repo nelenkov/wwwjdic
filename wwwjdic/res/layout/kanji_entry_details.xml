@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_marginRight="5dp"
             style="@style/radical_glyph" />
-        <LinearLayout android:id="@+id/radicalCountLayout"
+        <LinearLayout android:id="@+id/radicalLayout"
             android:orientation="vertical" 
             android:layout_width="0dp"
             android:layout_weight="1" 
@@ -134,7 +134,7 @@
         <LinearLayout 
             android:orientation="vertical" 
             android:layout_width="fill_parent" 
-            android:layout_height="fill_parent">
+            android:layout_height="wrap_content">
             <LinearLayout android:id="@+id/translations_layout" 
                 android:orientation="vertical" 
                 android:layout_width="fill_parent"
