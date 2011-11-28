@@ -20,6 +20,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -221,6 +222,8 @@ public class Wwwjdic extends ActionBarActivity {
 
     private HistoryDbHelper dbHelper;
 
+    private boolean hasCamera;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -231,6 +234,9 @@ public class Wwwjdic extends ActionBarActivity {
         setupTabs();
 
         dbHelper = HistoryDbHelper.getInstance(this);
+
+        hasCamera = getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_CAMERA);
 
         invalidateOptionsMenu();
 
@@ -249,6 +255,14 @@ public class Wwwjdic extends ActionBarActivity {
         inflater.inflate(R.menu.main, menu);
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.menu_ocr).setEnabled(hasCamera);
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
