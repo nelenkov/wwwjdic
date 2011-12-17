@@ -13,6 +13,8 @@ import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.LoaderResult;
+import org.nick.wwwjdic.utils.MediaScannerWrapper;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -190,6 +192,10 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                                 .toStringArray(criteria, time);
                         writer.writeNext(criteriaStr);
                         count++;
+                    }
+
+                    if (UIUtils.isFroyo()) {
+                        MediaScannerWrapper.scanFile(getActivity(), filename);
                     }
 
                     Analytics.event("historyExport", getActivity());

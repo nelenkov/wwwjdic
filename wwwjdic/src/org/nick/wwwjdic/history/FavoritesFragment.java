@@ -20,6 +20,8 @@ import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.model.WwwjdicEntry;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.LoaderResult;
+import org.nick.wwwjdic.utils.MediaScannerWrapper;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -265,6 +267,10 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                 boolean isKanji = params[0];
                 exportFilename = exportToAnkiDeck(isKanji);
 
+                if (UIUtils.isFroyo()) {
+                    MediaScannerWrapper.scanFile(getActivity(), exportFilename);
+                }
+
                 return true;
             } catch (Exception e) {
                 error = e;
@@ -433,6 +439,11 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                     count = exportToCsv(exportFile.getAbsolutePath(), writer,
                             false);
 
+                    if (UIUtils.isFroyo()) {
+                        MediaScannerWrapper.scanFile(getActivity(),
+                                exportFilename);
+                    }
+
                     Analytics.event("favoritesLocalCsvExport", getActivity());
 
                     return true;
@@ -581,6 +592,10 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
                     writer.flush();
                     writer.close();
+
+                    if (UIUtils.isFroyo()) {
+                        MediaScannerWrapper.scanFile(getActivity(), exportFile);
+                    }
 
                     Analytics.event("favoritesExport", getActivity());
 

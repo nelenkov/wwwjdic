@@ -20,6 +20,8 @@ import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.ocr.crop.CropImage;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Dialogs;
+import org.nick.wwwjdic.utils.MediaScannerWrapper;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -519,6 +521,11 @@ public class OcrActivity extends WebServiceBackedActivity implements
             bitmap.compress(CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
+
+            if (UIUtils.isFroyo()) {
+                MediaScannerWrapper.scanFile(this, filename);
+            }
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
