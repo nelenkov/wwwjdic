@@ -4,6 +4,7 @@ import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.model.WwwjdicEntry;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.text.ClipboardManager;
 import android.widget.Toast;
@@ -23,6 +24,8 @@ public abstract class DetailActivity extends ActionBarActivity {
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
+
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         isFavorite = getIntent().getBooleanExtra(EXTRA_IS_FAVORITE, false);
         db = HistoryDbHelper.getInstance(this);
