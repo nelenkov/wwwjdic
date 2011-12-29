@@ -27,7 +27,7 @@
     
     <application android:icon="@drawable/icon"
         android:label="@string/app_name" 
-        android:debuggable="false"
+        android:debuggable="true"
         android:name="org.nick.wwwjdic.WwwjdicApplication" 
         android:hardwareAccelerated="true">
         <meta-data android:name="android.app.default_searchable"
@@ -36,7 +36,7 @@
             android:label="@string/app_name_short"
             android:windowSoftInputMode="stateVisible|adjustPan" 
             android:theme="@style/Theme.WwwjdicAbMain"
-            android:uiOptions="splitActionBarWhenNarrow" >
+            android:uiOptions="splitActionBarWhenNarrow">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -65,7 +65,8 @@
             android:label="@string/searching" 
             android:theme="@style/Theme.WwwjdicAb"/>
         <activity android:name="org.nick.wwwjdic.SentenceBreakdown"
-            android:theme="@style/Theme.WwwjdicAb"/>
+            android:theme="@style/Theme.WwwjdicAb" 
+            android:uiOptions="splitActionBarWhenNarrow"/>
         <activity android:name="org.nick.wwwjdic.KanjiEntryDetail"
             android:taskAffinity="" 
             android:theme="@style/Theme.WwwjdicAb"/>
