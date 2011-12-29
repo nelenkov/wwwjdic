@@ -270,7 +270,8 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
             return null;
         }
 
-        View v = inflater.inflate(R.layout.kanji_entry_details, container,
+        View v = inflater.inflate(R.layout.kanji_entry_details_fragment,
+                container,
                 false);
 
         return v;

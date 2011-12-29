@@ -16,11 +16,13 @@ public class DictionaryEntryDetail extends DetailActivity {
                 .getSerializableExtra(EXTRA_DICTIONARY_ENTRY);
         wwwjdicEntry = entry;
 
+        setContentView(R.layout.dict_entry_details);
+
         if (savedInstanceState == null) {
             DictionaryEntryDetailFragment details = new DictionaryEntryDetailFragment();
             details.setArguments(getIntent().getExtras());
             getSupportFragmentManager().beginTransaction()
-                    .add(android.R.id.content, details).commit();
+                    .add(R.id.entry_details, details).commit();
         }
     }
 
