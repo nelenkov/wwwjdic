@@ -147,6 +147,14 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         inflater.inflate(R.menu.dict_detail, menu);
     }
 
+    private Intent createShareIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        String str = entry.getDetailString();
+        shareIntent.putExtra(Intent.EXTRA_TEXT, str);
+        return shareIntent;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_dict_detail_lookup_kanji) {
@@ -155,6 +163,8 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
             return true;
         } else if (item.getItemId() == R.id.menu_dict_detail_copy) {
             copy();
+            // TODO
+            //            getActivity().startActivity(createShareIntent());
             return true;
         }
 
