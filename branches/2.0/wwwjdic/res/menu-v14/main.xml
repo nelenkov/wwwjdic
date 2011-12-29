@@ -17,7 +17,7 @@
         android:orderInCategory="2"
         android:showAsAction="ifRoom" />          
    <item android:id="@+id/menu_favorites_history"
-        android:icon="@android:drawable/ic_menu_recent_history"
+        android:icon="@drawable/ic_menu_recent_history"
         android:title="@string/favorites_hist"
         android:orderInCategory="3"
         android:showAsAction="ifRoom" />

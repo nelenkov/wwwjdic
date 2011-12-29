@@ -2,7 +2,7 @@
 <menu
   xmlns:android="http://schemas.android.com/apk/res/android">
      <item android:id="@+id/menu_kanji_detail_copy"
-        android:icon="@drawable/ic_menu_share"
+        android:icon="@android:drawable/ic_menu_share"
         android:title="@string/copy"
         android:orderInCategory="0"
         android:showAsAction="ifRoom|withText" />   
