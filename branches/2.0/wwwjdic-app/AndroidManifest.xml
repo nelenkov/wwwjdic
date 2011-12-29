@@ -35,7 +35,8 @@
         <activity android:name="org.nick.wwwjdic.Wwwjdic"
             android:label="@string/app_name_short"
             android:windowSoftInputMode="stateVisible|adjustPan" 
-            android:theme="@style/Theme.WwwjdicAbMain">
+            android:theme="@style/Theme.WwwjdicAbMain"
+            android:uiOptions="splitActionBarWhenNarrow" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -92,7 +93,8 @@
         <activity android:name="org.nick.wwwjdic.hkr.HkrCandidates" 
             android:theme="@style/Theme.WwwjdicAb"/>
         <activity android:name="org.nick.wwwjdic.history.FavoritesAndHistory"
-             android:theme="@style/Theme.WwwjdicAbMain"/>
+             android:theme="@style/Theme.WwwjdicAbMain" 
+             android:uiOptions="splitActionBarWhenNarrow"/>
         <activity android:name="org.nick.wwwjdic.sod.SodActivity" 
             android:theme="@style/Theme.WwwjdicAb"/>
         <activity android:name="org.nick.wwwjdic.krad.KradChart"
