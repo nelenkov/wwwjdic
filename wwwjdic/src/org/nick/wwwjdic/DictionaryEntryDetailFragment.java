@@ -137,7 +137,8 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
             return null;
         }
 
-        View v = inflater.inflate(R.layout.entry_details, container, false);
+        View v = inflater.inflate(R.layout.dict_entry_details_fragment,
+                container, false);
 
         return v;
     }
@@ -164,7 +165,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         } else if (item.getItemId() == R.id.menu_dict_detail_copy) {
             copy();
             // TODO
-            //            getActivity().startActivity(createShareIntent());
+            // getActivity().startActivity(createShareIntent());
             return true;
         }
 

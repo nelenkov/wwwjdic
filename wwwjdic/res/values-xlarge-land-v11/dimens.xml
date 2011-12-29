@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="favorites_hist_pager_margin">100dp</dimen>
+    <dimen name="single_fragment_margin">100dp</dimen>
+    <dimen name="favorites_hist_pager_margin">@dimen/single_fragment_margin</dimen>
 </resources>

@@ -18,11 +18,13 @@ public class KanjiEntryDetail extends DetailActivity {
                 EXTRA_KANJI_ENTRY);
         wwwjdicEntry = entry;
 
+        setContentView(R.layout.kanji_entry_details);
+
         if (savedInstanceState == null) {
             KanjiEntryDetailFragment details = new KanjiEntryDetailFragment();
             details.setArguments(getIntent().getExtras());
             getSupportFragmentManager().beginTransaction()
-                    .add(android.R.id.content, details).commit();
+                    .add(R.id.entry_details, details).commit();
         }
     }
 
