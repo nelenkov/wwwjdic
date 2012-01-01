@@ -17,6 +17,7 @@ import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.text.ClipboardManager;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -273,9 +274,25 @@ public class SentenceBreakdownFragment extends
                 ttsManager.speak(sentenceStr);
             }
             return true;
+        } else if (item.getItemId() == R.id.menu_example_share) {
+            share();
+
+            return true;
         }
 
         return false;
+    }
+
+    private void share() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        String str = sentenceStr;
+        if (!TextUtils.isEmpty(sentenceTranslation)) {
+            str += "\n" + sentenceTranslation;
+        }
+        shareIntent.putExtra(Intent.EXTRA_TEXT, str);
+
+        getActivity().startActivity(shareIntent);
     }
 
     @Override

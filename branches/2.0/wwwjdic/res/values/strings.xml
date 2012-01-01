@@ -575,4 +575,6 @@
         <item>com.svox.classic</item>
         <item>com.a_quest.aquestalka</item>
     </string-array>
+    
+    <string name="share">Share</string>
 </resources>
