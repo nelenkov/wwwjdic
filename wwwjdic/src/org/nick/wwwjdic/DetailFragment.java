@@ -357,4 +357,13 @@ public abstract class DetailFragment extends Fragment implements
                 String.format(messageTemplate, wwwjdicEntry.getHeadword()),
                 Toast.LENGTH_SHORT).show();
     }
+
+    protected void share() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        String str = wwwjdicEntry.getDetailString();
+        shareIntent.putExtra(Intent.EXTRA_TEXT, str);
+
+        getActivity().startActivity(shareIntent);
+    }
 }

@@ -271,8 +271,7 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
         }
 
         View v = inflater.inflate(R.layout.kanji_entry_details_fragment,
-                container,
-                false);
+                container, false);
 
         return v;
     }
@@ -286,6 +285,10 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_kanji_detail_copy) {
             copy();
+            return true;
+        } else if (item.getItemId() == R.id.menu_kanji_detail_share) {
+            share();
+
             return true;
         }
 
