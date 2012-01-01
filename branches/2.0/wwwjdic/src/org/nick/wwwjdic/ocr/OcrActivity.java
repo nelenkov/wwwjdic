@@ -38,7 +38,6 @@ import android.graphics.Rect;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -67,8 +66,6 @@ public class OcrActivity extends WebServiceBackedActivity implements
         OnCheckedChangeListener {
 
     private static final String TAG = OcrActivity.class.getSimpleName();
-
-    private static final boolean IS_HONEYCOMB = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 
     // kind of arbitrary, but OCR seems to work fine with this, and we need to
     // keep picture size small for faster recognition
@@ -115,7 +112,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        if (!IS_HONEYCOMB) {
+        if (!UIUtils.isHoneycombTablet(this)) {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
         window.setFormat(PixelFormat.TRANSLUCENT);
@@ -181,7 +178,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
         Analytics.startSession(this);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(IS_HONEYCOMB);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(
+                    UIUtils.isHoneycombTablet(this));
         }
     }
 
