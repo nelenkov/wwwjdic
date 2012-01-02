@@ -106,7 +106,7 @@ public class UpdateCheckService extends IntentService {
     private void showNotification(Version latest) {
         CharSequence message = getResources().getString(
                 R.string.update_available, latest.getVersionName());
-        Notification notification = new Notification(R.drawable.icon_update,
+        Notification notification = new Notification(R.drawable.ic_stat_update,
                 message, System.currentTimeMillis());
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
         notification.flags |= Notification.FLAG_ONLY_ALERT_ONCE;
