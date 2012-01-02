@@ -68,7 +68,6 @@ public class TtsManager implements TextToSpeech.OnInitListener {
         this.showInstallDialog = showInstallDialog;
     }
 
-
     public TtsManager(Context context, TtsEnabled ttsActivitiy,
             String ttsEnginePackage) {
         this(context, ttsActivitiy, ttsEnginePackage, true);
@@ -90,9 +89,13 @@ public class TtsManager implements TextToSpeech.OnInitListener {
         }
     }
 
-
     @Override
     public void onInit(int status) {
+        if (tts == null) {
+            Log.w(TAG, "TTS not found or failed to initialize");
+            return;
+        }
+
         if (status != TextToSpeech.SUCCESS) {
             ttsActivitiy.hideTtsButtons();
             return;
