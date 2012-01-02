@@ -8,7 +8,7 @@
         android:showAsAction="ifRoom|withText" />
      <item android:id="@+id/menu_kanji_detail_share"
         android:icon="@android:drawable/ic_menu_share"
-        android:title="@string/copy"
+        android:title="@string/share"
         android:orderInCategory="1"
         android:showAsAction="ifRoom|withText" />   
 </menu>
