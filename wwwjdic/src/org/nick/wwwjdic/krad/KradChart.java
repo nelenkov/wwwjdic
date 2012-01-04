@@ -188,6 +188,10 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
 
             @Override
             protected void onPostExecute(Boolean result) {
+                if (isFinishing()) {
+                    return;
+                }
+
                 if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
