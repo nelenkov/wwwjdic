@@ -34,7 +34,6 @@ import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
 
-//@ReportsCrashes(formKey = "", formUri = "http://192.47.34.130:8080/acra-handler/", mode = ReportingInteractionMode.SILENT, formUriBasicAuthLogin = "acra", formUriBasicAuthPassword = "z5uibzjr")
 @ReportsCrashes(formKey = "dEJzcGZKazRWVGRkRTR0X2JKN0ozWFE6MQ", mode = ReportingInteractionMode.TOAST)
 public class WwwjdicApplication extends Application {
 
@@ -73,11 +72,7 @@ public class WwwjdicApplication extends Application {
         flurryKey = readKey();
         FlurryAgent.setCaptureUncaughtExceptions(false);
 
-        ACRAConfiguration.setResToastText(R.string.crash_toast_text);
-        ACRA.init(this);
-        String bugsenseUrl = getResources().getString(R.string.bugsense_url);
-        ACRA.getErrorReporter().addReportSender(
-                new HttpPostSender(bugsenseUrl, null));
+        initAcra();
 
         createWwwjdicDirIfNecessary();
 
@@ -103,6 +98,20 @@ public class WwwjdicApplication extends Application {
                 WwwjdicPreferences.DEFAULT_STROKE_ANIMATION_DELAY);
 
         startCheckUpdateService();
+    }
+
+    private void initAcra() {
+        try {
+            ACRAConfiguration.setResToastText(R.string.crash_toast_text);
+            ACRA.init(this);
+            String bugsenseUrl = getResources()
+                    .getString(R.string.bugsense_url);
+            ACRA.getErrorReporter().addReportSender(
+                    new HttpPostSender(bugsenseUrl, null));
+        } catch (IllegalStateException e) {
+            Log.w(TAG, "ACRA.init() called more than once?: " + e.getMessage(),
+                    e);
+        }
     }
 
     private void updateJapanMirror() {
