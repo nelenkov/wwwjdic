@@ -89,11 +89,7 @@ public class KradDb {
     public Set<String> getKanjiForRadical(String radical) {
         Set<String> result = radicalToKanjis.get(radical);
 
-        if (result == null) {
-            result = new HashSet<String>();
-        }
-
-        return result;
+        return result == null ? new HashSet<String>() : result;
     }
 
     public Set<String> getKanjisForRadicals(Set<String> radicals) {
@@ -113,11 +109,7 @@ public class KradDb {
     public Set<String> getRadicalsForKanji(String kanji) {
         Set<String> result = kanjiToRadicals.get(kanji);
 
-        if (result == null) {
-            result = new HashSet<String>();
-        }
-
-        return result;
+        return result == null ? new HashSet<String>() : result;
     }
 
     public Set<String> getRadicalsForKanjis(Set<String> kanjis) {
