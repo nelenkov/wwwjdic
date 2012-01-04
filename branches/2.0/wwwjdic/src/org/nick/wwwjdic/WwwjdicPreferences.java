@@ -3,6 +3,8 @@ package org.nick.wwwjdic;
 import java.util.Arrays;
 import java.util.List;
 
+import org.nick.wwwjdic.widgets.KodWidgetConfigure;
+
 import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
@@ -20,6 +22,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.support.v4.app.SherlockPreferenceActivity;
 import android.support.v4.view.MenuItem;
 import android.text.format.DateUtils;
@@ -99,6 +102,8 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
     static final String PREF_JP_TTS_ENGINE = "pref_jp_tts_engine";
     static final String DEFAULT_JP_TTS_ENGINE_PACKAGE = "jp.kddilabs.n2tts";
 
+    static final String PREF_KOD_KEY = "pref_kod";
+
     private CheckBoxPreference useKrPreference;
     private CheckBoxPreference autoSelectMirrorPreference;
     private ListPreference mirrorPreference;
@@ -114,6 +119,7 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
         addPreferencesFromResource(R.xml.wwwjdic_prefs);
         addPreferencesFromResource(R.xml.ocr_prefs);
         addPreferencesFromResource(R.xml.kr_prefs);
+        addPreferencesFromResource(R.xml.widget_prefs);
         addPreferencesFromResource(R.xml.misc_prefs);
 
         useKrPreference = (CheckBoxPreference) findPreference(PREF_USE_KR_KEY);
@@ -181,6 +187,21 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
         }
 
         return true;
+    }
+
+    @Override
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
+            Preference preference) {
+        String key = preference.getKey();
+        if (PREF_KOD_KEY.equals(key)) {
+            Intent intent = new Intent(this, KodWidgetConfigure.class);
+            // XXX
+            startActivityForResult(intent, 42);
+
+            return true;
+        }
+
+        return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 
     static String getTtsEngineName(Context ctx, String enginePackage) {
