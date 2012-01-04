@@ -7,6 +7,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/opencsv"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="lib" path="lib/acra-4.3.0-20111103.232318-3.jar"/>
-	<classpathentry kind="lib" path="lib/actionbarsherlock-plugin-preference-3.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/actionbarsherlock-plugin-preference-3.5.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
