@@ -34,6 +34,7 @@ import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
 
+//@ReportsCrashes(formKey = "", formUri = "http://192.47.34.130:8080/acra-handler/", mode = ReportingInteractionMode.SILENT, formUriBasicAuthLogin = "acra", formUriBasicAuthPassword = "z5uibzjr")
 @ReportsCrashes(formKey = "dEJzcGZKazRWVGRkRTR0X2JKN0ozWFE6MQ", mode = ReportingInteractionMode.TOAST)
 public class WwwjdicApplication extends Application {
 
@@ -85,7 +86,15 @@ public class WwwjdicApplication extends Application {
         initRadicals();
 
         if (isAutoSelectMirror()) {
-            setMirrorBasedOnLocation();
+            try {
+                setMirrorBasedOnLocation();
+            } catch (Exception e) {
+                // workaround: parsing mirror coords fails on Xperia (SO-01B) with 
+                // StringIndexOutOfBoundsException
+                Log.w(TAG,
+                        "Failed to set mirror based on location, setting default");
+                setDefaultMirror();
+            }
         }
 
         updateKanjiRecognizerUrl();
@@ -204,6 +213,14 @@ public class WwwjdicApplication extends Application {
         prefs.edit()
                 .putString(WwwjdicPreferences.PREF_WWWJDIC_MIRROR_URL_KEY,
                         mirrorUrls[mirrorIdx]).commit();
+    }
+
+    private void setDefaultMirror() {
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        prefs.edit()
+                .putString(WwwjdicPreferences.PREF_WWWJDIC_MIRROR_URL_KEY,
+                        WwwjdicPreferences.DEFAULT_WWWJDIC_URL).commit();
     }
 
     private void createWwwjdicDirIfNecessary() {
