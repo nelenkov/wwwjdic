@@ -13,6 +13,11 @@
         <extra android:name="resource" 
                android:value="kr_prefs" />
     </header>
+    <header android:fragment="org.nick.wwwjdic.WidgetPrefsFragment"
+        android:title="@string/pref_widget">
+        <extra android:name="resource" 
+               android:value="widget_prefs" />
+    </header>
     <header android:fragment="org.nick.wwwjdic.GenericPrefsFragment"
         android:title="@string/pref_other" 
         android:summary="@string/pref_other_summary">
