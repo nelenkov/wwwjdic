@@ -107,6 +107,9 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
 
     static final String PREF_KOD_KEY = "pref_kod";
 
+    private static String PREF_KOD_IS_RANDOM_KEY = "kod_is_random";
+    private static String PREF_KOD_CURRENT_KANJI_KEY = "kod_current_kanji";
+
     private CheckBoxPreference useKrPreference;
     private CheckBoxPreference autoSelectMirrorPreference;
     private ListPreference mirrorPreference;
@@ -212,7 +215,7 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
             Intent intent = new Intent(this, KodWidgetConfigure.class);
             // anything but 0 should do
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 1);
-            // configure activity will launch the update service, so 
+            // configure activity will launch the update service, so
             // we don't really care about the result
             startActivity(intent);
 
@@ -654,6 +657,24 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
     public static String getJpTtsEnginePackage(Context context) {
         return getPrefs(context).getString(PREF_JP_TTS_ENGINE,
                 DEFAULT_JP_TTS_ENGINE_PACKAGE);
+    }
+
+    public static boolean isKodRandom(Context context) {
+        return getPrefs(context).getBoolean(PREF_KOD_IS_RANDOM_KEY, true);
+    }
+
+    public static void setKodRandom(Context context, boolean isRandom) {
+        getPrefsEditor(context).putBoolean(PREF_KOD_IS_RANDOM_KEY, isRandom)
+                .commit();
+    }
+
+    public static String getKodCurrentKanji(Context context) {
+        return getPrefs(context).getString(PREF_KOD_CURRENT_KANJI_KEY, null);
+    }
+
+    public static void setKodCurrentKanji(Context context, String kanji) {
+        getPrefsEditor(context).putString(PREF_KOD_CURRENT_KANJI_KEY, kanji)
+                .commit();
     }
 
     @Override

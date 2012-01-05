@@ -3,7 +3,7 @@ package org.nick.wwwjdic.widgets;
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
-public class RandomJisGenerator {
+public class RandomJisGenerator implements KanjiGenerator {
 
     // Cf. JIS X 0208:
     //
@@ -36,6 +36,13 @@ public class RandomJisGenerator {
 
     private Random random = new Random();
 
+    private boolean limitToLevelOne;
+    private String currentKanji;
+
+    public RandomJisGenerator(boolean limitToLevelOne) {
+        this.limitToLevelOne = limitToLevelOne;
+    }
+
     public String generateRawJis() {
         return generateRawJis(false);
     }
@@ -66,6 +73,16 @@ public class RandomJisGenerator {
         return Integer.toString(x, 16) + Integer.toString(y, 16);
     }
 
+    @Override
+    public void setCurrentKanji(String kanji) {
+        currentKanji = kanji;
+    }
+
+    @Override
+    public String selectNextUnicodeCp() {
+        return generateAsUnicodeCp(limitToLevelOne);
+    }
+
     public String generateAsUnicodeCp(boolean limitToLevelOne) {
         return rawJisToUnicodeCp(generateRawJis(limitToLevelOne));
     }
@@ -86,6 +103,6 @@ public class RandomJisGenerator {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
-
     }
+
 }

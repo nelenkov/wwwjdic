@@ -581,4 +581,8 @@
     <string name="pref_widget">Widget settings</string>
     <string name="pref_kod">Kanji of the day</string>
     <string name="pref_kod_summary">Kanji of the day widget settings</string>
+
+    <string name="kanji_selection">Kanji selection</string>
+    <string name="random">Random</string>
+    <string name="sequential">Sequentail</string>
 </resources>

@@ -399,4 +399,12 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     <string name="pref_jp_tts_engine">日本語読み上げエンジン</string>
     
     <string name="share">共有</string>
+    
+    <string name="pref_widget">ウィジェット設定</string>
+    <string name="pref_kod">今日の漢字</string>
+    <string name="pref_kod_summary">今日の漢字ウィジェット設定</string>
+
+    <string name="kanji_selection">漢字選択方法</string>
+    <string name="random">ランダム</string>
+    <string name="sequential">順次</string>
 </resources>
