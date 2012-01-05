@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -38,6 +39,8 @@ public class KodWidgetConfigure extends ActionBarActivity implements
     private Spinner jlptLevelSpinner;
     private CheckBox showReadingCb;
     private Spinner updateIntervalSpinner;
+    private RadioButton kodRandomRb;
+    private RadioButton kodSequentialRb;
 
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -47,6 +50,10 @@ public class KodWidgetConfigure extends ActionBarActivity implements
         setContentView(R.layout.kod_widget_configure);
 
         findViews();
+
+        boolean isKodRandom = WwwjdicPreferences.isKodRandom(this);
+        kodRandomRb.setChecked(isKodRandom);
+        kodSequentialRb.setChecked(!isKodRandom);
 
         boolean isJisLevel1 = WwwjdicPreferences.isKodLevelOneOnly(this);
         boolean isUseJlpt = WwwjdicPreferences.isKodUseJlpt(this);
@@ -98,6 +105,8 @@ public class KodWidgetConfigure extends ActionBarActivity implements
         jlptLevelSpinner = (Spinner) findViewById(R.id.kod_jlpt_level_spinner);
         showReadingCb = (CheckBox) findViewById(R.id.kod_show_reading_cb);
         updateIntervalSpinner = (Spinner) findViewById(R.id.kod_update_interval_spinner);
+        kodRandomRb = (RadioButton) findViewById(R.id.kod_random);
+        kodSequentialRb = (RadioButton) findViewById(R.id.kod_sequential);
     }
 
     @Override
@@ -105,30 +114,16 @@ public class KodWidgetConfigure extends ActionBarActivity implements
         final Context context = KodWidgetConfigure.this;
 
         if (v.getId() == R.id.kod_configure_ok_button) {
+            WwwjdicPreferences.setKodRandom(this, kodRandomRb.isChecked());
             WwwjdicPreferences.setKodLevelOneOnly(this, levelOneCb.isChecked());
             WwwjdicPreferences.setKodUseJlpt(this, useJlptCb.isChecked());
             WwwjdicPreferences.setKodJlptLevel(this,
                     jlptLevelSpinner.getSelectedItemPosition() + 1);
             WwwjdicPreferences.setKodShowReading(this,
                     showReadingCb.isChecked());
-            long updateInterval = WwwjdicPreferences.KOD_DEFAULT_UPDATE_INTERVAL;
-            switch (updateIntervalSpinner.getSelectedItemPosition()) {
-            case ONE_DAY_IDX:
-                updateInterval = ONE_DAY_MILLIS;
-                break;
-            case TWELVE_HOURS_IDX:
-                updateInterval = TWELVE_HOURS_MILLIS;
-                break;
-            case SIX_HOURS_IDX:
-                updateInterval = SIX_HOURS_MILLIS;
-                break;
-            case TWO_MINUTES_IDX:
-                updateInterval = TWO_MINUTES_MILLIS;
-                break;
-            default:
-                // do nothing
-            }
-            WwwjdicPreferences.setKodUpdateInterval(this, updateInterval);
+
+            setUpdateInterval();
+
             startService(new Intent(context, GetKanjiService.class));
             Intent resultValue = new Intent();
             resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
@@ -138,6 +133,27 @@ public class KodWidgetConfigure extends ActionBarActivity implements
         } else if (v.getId() == R.id.kod_configure_cancel_button) {
             finish();
         }
+    }
+
+    private void setUpdateInterval() {
+        long updateInterval = WwwjdicPreferences.KOD_DEFAULT_UPDATE_INTERVAL;
+        switch (updateIntervalSpinner.getSelectedItemPosition()) {
+        case ONE_DAY_IDX:
+            updateInterval = ONE_DAY_MILLIS;
+            break;
+        case TWELVE_HOURS_IDX:
+            updateInterval = TWELVE_HOURS_MILLIS;
+            break;
+        case SIX_HOURS_IDX:
+            updateInterval = SIX_HOURS_MILLIS;
+            break;
+        case TWO_MINUTES_IDX:
+            updateInterval = TWO_MINUTES_MILLIS;
+            break;
+        default:
+            // do nothing
+        }
+        WwwjdicPreferences.setKodUpdateInterval(this, updateInterval);
     }
 
     @Override

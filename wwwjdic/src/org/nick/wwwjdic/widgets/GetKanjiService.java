@@ -8,7 +8,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
@@ -21,7 +20,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.client.HttpClientFactory;
-import org.nick.wwwjdic.model.JlptLevels;
 import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.utils.StringUtils;
 
@@ -53,8 +51,6 @@ public class GetKanjiService extends Service {
     private static final int NUM_RETRIES = 5;
 
     private static final int RETRY_INTERVAL = 15 * 1000;
-
-    private final RandomJisGenerator jisGenerator = new RandomJisGenerator();
 
     private final Executor executor = Executors.newSingleThreadExecutor();
 
@@ -183,6 +179,12 @@ public class GetKanjiService extends Service {
                 return views;
             }
 
+            if (!WwwjdicPreferences.isKodRandom(context)) {
+                KanjiEntry entry = entries.get(0);
+                WwwjdicPreferences.setKodCurrentKanji(context,
+                        entry.getHeadword());
+            }
+
             KodWidgetProvider.showKanji(context, views, showReadingAndMeaning,
                     entries);
             WwwjdicPreferences.setLastKodUpdateError(context, 0);
@@ -202,21 +204,21 @@ public class GetKanjiService extends Service {
     }
 
     private String selectKanji(Context context) {
+        KanjiGenerator generator = new RandomJisGenerator(
+                WwwjdicPreferences.isKodLevelOneOnly(context));
+        boolean isRandom = WwwjdicPreferences.isKodRandom(this);
         if (WwwjdicPreferences.isKodUseJlpt(this)
                 && !WwwjdicPreferences.isKodLevelOneOnly(this)) {
-            int level = WwwjdicPreferences.getKodJlptLevel(this);
-            String[] kanjis = JlptLevels.getKanjiForLevel(level);
-            Random random = new Random();
-
-            String kanji = kanjis[random.nextInt(kanjis.length)];
-            int unicodeCp = (int) kanji.toCharArray()[0];
-
-            return Integer.toString(unicodeCp, 16);
+            generator = new JlptLevelGenerator(isRandom,
+                    WwwjdicPreferences.getKodJlptLevel(this));
         }
 
-        String unicodeCp = jisGenerator.generateAsUnicodeCp(WwwjdicPreferences
-                .isKodLevelOneOnly(context));
-        return unicodeCp;
+        if (!isRandom) {
+            String currentKanji = WwwjdicPreferences.getKodCurrentKanji(this);
+            generator.setCurrentKanji(currentKanji);
+        }
+
+        return generator.selectNextUnicodeCp();
     }
 
     private String query(String url, String backdoorCode) {
