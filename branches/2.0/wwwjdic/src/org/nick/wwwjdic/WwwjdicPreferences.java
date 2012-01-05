@@ -4,9 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.nick.wwwjdic.widgets.KodWidgetConfigure;
+import org.nick.wwwjdic.widgets.KodWidgetProvider;
 
 import android.app.AlertDialog;
 import android.app.Application;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -150,6 +153,18 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        AppWidgetManager wm = AppWidgetManager.getInstance(this);
+        ComponentName kodWidget = new ComponentName(this,
+                KodWidgetProvider.class);
+        int[] ids = wm.getAppWidgetIds(kodWidget);
+        boolean hasWidgets = ids != null && ids.length > 0;
+        findPreference(PREF_KOD_KEY).setEnabled(hasWidgets);
+    }
+
+    @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (PREF_USE_KR_KEY.equals(preference.getKey())) {
             Boolean enabled = (Boolean) newValue;
@@ -195,8 +210,11 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
         String key = preference.getKey();
         if (PREF_KOD_KEY.equals(key)) {
             Intent intent = new Intent(this, KodWidgetConfigure.class);
-            // XXX
-            startActivityForResult(intent, 42);
+            // anything but 0 should do
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 1);
+            // configure activity will launch the update service, so 
+            // we don't really care about the result
+            startActivity(intent);
 
             return true;
         }

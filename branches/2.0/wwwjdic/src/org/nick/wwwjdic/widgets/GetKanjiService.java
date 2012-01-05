@@ -116,6 +116,7 @@ public class GetKanjiService extends Service {
                 updateIntent, 0);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
         alarmManager.set(AlarmManager.RTC, nextUpdate, pendingIntent);
     }
 
