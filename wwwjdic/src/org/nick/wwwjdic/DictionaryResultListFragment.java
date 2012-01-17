@@ -100,6 +100,10 @@ public class DictionaryResultListFragment extends
 
     private void showDetails(DictionaryEntry entry, int index) {
         if (dualPane) {
+            if (!isVisible()) {
+                return;
+            }
+
             getListView().setItemChecked(index, true);
 
             DictionaryEntryDetailFragment details = (DictionaryEntryDetailFragment) getFragmentManager()
