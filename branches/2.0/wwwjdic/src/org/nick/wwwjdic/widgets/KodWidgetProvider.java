@@ -46,6 +46,10 @@ public class KodWidgetProvider extends AppWidgetProvider {
             }
         } else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action)) {
             Bundle extras = intent.getExtras();
+            // only on IS04 2.2.2?
+            if (extras == null) {
+                return;
+            }
             boolean noConnectivity = extras.getBoolean(
                     ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
             Log.d(TAG, "CONNECTIVITY_ACTION::noConnectivity : "
