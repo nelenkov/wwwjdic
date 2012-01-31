@@ -771,6 +771,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
             intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image/*");
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
             // only in API 11
             intent.putExtra("android.intent.extra.LOCAL_ONLY", true);
             startActivityForResult(intent, SELECT_IMAGE_REQUEST_CODE);
