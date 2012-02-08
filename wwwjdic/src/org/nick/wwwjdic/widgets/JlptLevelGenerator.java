@@ -25,6 +25,14 @@ public class JlptLevelGenerator implements KanjiGenerator {
 
     @Override
     public String selectNextUnicodeCp() {
+        String kanji = selectNextKanji();
+        int unicodeCp = (int) kanji.toCharArray()[0];
+
+        return Integer.toString(unicodeCp, 16);
+    }
+
+    @Override
+    public String selectNextKanji() {
         String[] kanjis = JlptLevels.getKanjiForLevel(jlptLevel);
 
         String kanji = null;
@@ -40,9 +48,7 @@ public class JlptLevelGenerator implements KanjiGenerator {
                 currentKanji = kanji;
             }
         }
-        int unicodeCp = (int) kanji.toCharArray()[0];
-
-        return Integer.toString(unicodeCp, 16);
+        return kanji;
     }
 
 }

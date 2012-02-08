@@ -5,4 +5,6 @@ public interface KanjiGenerator {
     void setCurrentKanji(String kanji);
 
     String selectNextUnicodeCp();
+
+    String selectNextKanji();
 }

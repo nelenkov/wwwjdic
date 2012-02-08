@@ -3,7 +3,7 @@ package org.nick.wwwjdic.widgets;
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
-public class RandomJisGenerator implements KanjiGenerator {
+public class JisGenerator implements KanjiGenerator {
 
     // Cf. JIS X 0208:
     //
@@ -36,10 +36,12 @@ public class RandomJisGenerator implements KanjiGenerator {
 
     private Random random = new Random();
 
+    private boolean isRandom;
     private boolean limitToLevelOne;
     private String currentKanji;
 
-    public RandomJisGenerator(boolean limitToLevelOne) {
+    public JisGenerator(boolean isRandom, boolean limitToLevelOne) {
+        this.isRandom = isRandom;
         this.limitToLevelOne = limitToLevelOne;
     }
 
@@ -56,17 +58,66 @@ public class RandomJisGenerator implements KanjiGenerator {
             endLine = LEVEL1_END_LINE;
         }
 
-        int line = random.nextInt(endLine - startLine + 1) + startLine;
+        if (isRandom) {
+            int line = random.nextInt(endLine - startLine + 1) + startLine;
 
-        int column = 0;
-        if (limitToLevelOne && line == LEVEL1_END_LINE) {
-            column = random.nextInt(LEVEL1_END_LINE_NUM_KANJI) + 1;
-        } else if (!limitToLevelOne && line == KANJI_END_LINE) {
-            column = random.nextInt(NUM_KANJI_LAST_LINE) + 1;
-        } else {
-            column = random.nextInt(JIS_GRID_SIZE);
+            int column = 0;
+            if (limitToLevelOne && line == LEVEL1_END_LINE) {
+                column = random.nextInt(LEVEL1_END_LINE_NUM_KANJI) + 1;
+            } else if (!limitToLevelOne && line == KANJI_END_LINE) {
+                column = random.nextInt(NUM_KANJI_LAST_LINE) + 1;
+            } else {
+                column = random.nextInt(JIS_GRID_SIZE);
+            }
+
+            return toRawJis(line, column);
         }
 
+        if (currentKanji == null) {
+            int line = KANJI_START_LINE;
+            int column = 1;
+            String result = toRawJis(line, column);
+            currentKanji = rawJisToKanji(result);
+
+            return result;
+        }
+
+        byte[] rawJis = kanjiToRawJis(currentKanji);
+        int line = rawJis[0] - OFFSET;
+        int column = rawJis[1] - OFFSET;
+
+        if (limitToLevelOne && line == LEVEL1_END_LINE) {
+            if (column == LEVEL1_END_LINE_NUM_KANJI) {
+                // start over
+                line = KANJI_START_LINE;
+                column = 1;
+            } else {
+                column++;
+            }
+        } else if (!limitToLevelOne && line == KANJI_END_LINE) {
+            if (column == NUM_KANJI_LAST_LINE) {
+                // start over
+                line = KANJI_START_LINE;
+                column = 1;
+            } else {
+                column++;
+            }
+        } else {
+            if (column == JIS_GRID_SIZE) {
+                line++;
+                column = 1;
+            } else {
+                column++;
+            }
+        }
+
+        String result = toRawJis(line, column);
+        currentKanji = rawJisToKanji(result);
+
+        return result;
+    }
+
+    private String toRawJis(int line, int column) {
         int x = line + OFFSET;
         int y = column + OFFSET;
 
@@ -87,7 +138,20 @@ public class RandomJisGenerator implements KanjiGenerator {
         return rawJisToUnicodeCp(generateRawJis(limitToLevelOne));
     }
 
+    @Override
+    public String selectNextKanji() {
+        return Character.toString((char) Integer.parseInt(
+                selectNextUnicodeCp(), 16));
+    }
+
     private static String rawJisToUnicodeCp(String rawJis) {
+        String kanji = rawJisToKanji(rawJis);
+        int unicodeCp = (int) kanji.toCharArray()[0];
+
+        return Integer.toString(unicodeCp, 16);
+    }
+
+    private static String rawJisToKanji(String rawJis) {
         if (rawJis.length() != 4) {
             throw new IllegalArgumentException("Invalid raw JIS code");
         }
@@ -95,11 +159,19 @@ public class RandomJisGenerator implements KanjiGenerator {
         byte low = Byte.parseByte(rawJis.substring(2), 16);
 
         byte[] eucBytes = { (byte) (high + 0x80), (byte) (low + 0x80) };
-        try {
-            String kanji = new String(eucBytes, "EUC-JP");
-            int unicodeCp = (int) kanji.toCharArray()[0];
 
-            return Integer.toString(unicodeCp, 16);
+        try {
+            return new String(eucBytes, "EUC-JP");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static byte[] kanjiToRawJis(String kanji) {
+        try {
+            byte[] eucBytes = kanji.getBytes("EUC-JP");
+            return new byte[] { (byte) (eucBytes[0] - 0x80),
+                    (byte) (eucBytes[1] - 0x80) };
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }

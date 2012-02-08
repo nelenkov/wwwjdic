@@ -3,6 +3,8 @@
  */
 package org.nick.wwwjdic.widgets;
 
+import static org.nick.wwwjdic.WwwjdicPreferences.WWWJDIC_DEBUG;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -133,9 +135,13 @@ public class GetKanjiService extends Service {
             updateKodWidgets(this, views);
 
             String unicodeCp = selectKanji(context);
-            Log.d(TAG, "KOD Unicode CP: " + unicodeCp);
+            if (WWWJDIC_DEBUG) {
+                Log.d(TAG, "KOD Unicode CP: " + unicodeCp);
+            }
             String backdoorCode = generateBackdoorCode(unicodeCp);
-            Log.d(TAG, "backdoor code: " + backdoorCode);
+            if (WWWJDIC_DEBUG) {
+                Log.d(TAG, "backdoor code: " + backdoorCode);
+            }
             String wwwjdicResponse = null;
 
             for (int i = 0; i < NUM_RETRIES; i++) {
@@ -168,7 +174,9 @@ public class GetKanjiService extends Service {
                 return views;
             }
 
-            Log.d(TAG, "WWWJDIC response " + wwwjdicResponse);
+            if (WWWJDIC_DEBUG) {
+                Log.d(TAG, "WWWJDIC response " + wwwjdicResponse);
+            }
             List<KanjiEntry> entries = parseResult(wwwjdicResponse);
 
             if (entries.isEmpty()) {
@@ -204,9 +212,9 @@ public class GetKanjiService extends Service {
     }
 
     private String selectKanji(Context context) {
-        KanjiGenerator generator = new RandomJisGenerator(
-                WwwjdicPreferences.isKodLevelOneOnly(context));
         boolean isRandom = WwwjdicPreferences.isKodRandom(this);
+        KanjiGenerator generator = new JisGenerator(isRandom,
+                WwwjdicPreferences.isKodLevelOneOnly(context));
         if (WwwjdicPreferences.isKodUseJlpt(this)
                 && !WwwjdicPreferences.isKodLevelOneOnly(this)) {
             generator = new JlptLevelGenerator(isRandom,
@@ -230,10 +238,10 @@ public class GetKanjiService extends Service {
 
             return responseStr;
         } catch (ClientProtocolException cpe) {
-            Log.e("WWWJDIC", "ClientProtocolException", cpe);
+            Log.e(TAG, "ClientProtocolException", cpe);
             throw new RuntimeException(cpe);
         } catch (IOException e) {
-            Log.e("WWWJDIC", "IOException", e);
+            Log.e(TAG, "IOException", e);
             throw new RuntimeException(e);
         }
     }
@@ -266,7 +274,9 @@ public class GetKanjiService extends Service {
                     hasEndPre = true;
                     line = line.replaceAll(PRE_END_TAG, "");
                 }
-                Log.d(TAG, "dic entry line: " + line);
+                if (WWWJDIC_DEBUG) {
+                    Log.d(TAG, "dic entry line: " + line);
+                }
                 KanjiEntry entry = KanjiEntry.parseKanjidic(line);
                 result.add(entry);
 
