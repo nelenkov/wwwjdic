@@ -117,11 +117,25 @@ public class KodWidgetConfigure extends ActionBarActivity implements
             boolean isRandom = kodRandomRb.isChecked();
             WwwjdicPreferences.setKodRandom(this, isRandom);
             if (isRandom) {
-                WwwjdicPreferences.setKodCurrentKanji(this, null);
+                clearCurrentKanji();
             }
 
-            WwwjdicPreferences.setKodLevelOneOnly(this, levelOneCb.isChecked());
-            WwwjdicPreferences.setKodUseJlpt(this, useJlptCb.isChecked());
+            boolean isSequential = !isRandom;
+            boolean isL1Current = WwwjdicPreferences.isKodLevelOneOnly(this);
+            boolean isL1 = levelOneCb.isChecked();
+            // clear previous value if state has changed
+            // e.g., JLPT -> JIS L1, JIS L1 -> JPLT, none -> JIS L1/JLPT
+            if (isSequential && isL1Current != isL1) {
+                clearCurrentKanji();
+            }
+            WwwjdicPreferences.setKodLevelOneOnly(this, isL1);
+
+            boolean isUseJlptCurrent = WwwjdicPreferences.isKodUseJlpt(this);
+            boolean isUseJlpt = useJlptCb.isChecked();
+            WwwjdicPreferences.setKodUseJlpt(this, isUseJlpt);
+            if (isSequential && isUseJlptCurrent != isUseJlpt) {
+                clearCurrentKanji();
+            }
             WwwjdicPreferences.setKodJlptLevel(this,
                     jlptLevelSpinner.getSelectedItemPosition() + 1);
             WwwjdicPreferences.setKodShowReading(this,
@@ -138,6 +152,10 @@ public class KodWidgetConfigure extends ActionBarActivity implements
         } else if (v.getId() == R.id.kod_configure_cancel_button) {
             finish();
         }
+    }
+
+    private void clearCurrentKanji() {
+        WwwjdicPreferences.setKodCurrentKanji(this, null);
     }
 
     private void setUpdateInterval() {
