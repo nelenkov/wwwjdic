@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.nick.wwwjdic.widgets.JisGenerator;
 
-public class RandomJisGeneratorTest {
+public class JisGeneratorTest {
 
     @Test
     public void testGenerate() {
