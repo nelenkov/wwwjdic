@@ -50,15 +50,14 @@ public class JisGenerator implements KanjiGenerator {
     }
 
     public String generateRawJis(boolean limitToLevelOne) {
-        int startLine = KANJI_START_LINE;
-        int endLine = KANJI_END_LINE;
-
-        if (limitToLevelOne) {
-            startLine = LEVEL1_START_LINE;
-            endLine = LEVEL1_END_LINE;
-        }
-
         if (isRandom) {
+            int startLine = KANJI_START_LINE;
+            int endLine = KANJI_END_LINE;
+
+            if (limitToLevelOne) {
+                startLine = LEVEL1_START_LINE;
+                endLine = LEVEL1_END_LINE;
+            }
             int line = random.nextInt(endLine - startLine + 1) + startLine;
 
             int column = 0;
