@@ -114,7 +114,12 @@ public class KodWidgetConfigure extends ActionBarActivity implements
         final Context context = KodWidgetConfigure.this;
 
         if (v.getId() == R.id.kod_configure_ok_button) {
-            WwwjdicPreferences.setKodRandom(this, kodRandomRb.isChecked());
+            boolean isRandom = kodRandomRb.isChecked();
+            WwwjdicPreferences.setKodRandom(this, isRandom);
+            if (isRandom) {
+                WwwjdicPreferences.setKodCurrentKanji(this, null);
+            }
+
             WwwjdicPreferences.setKodLevelOneOnly(this, levelOneCb.isChecked());
             WwwjdicPreferences.setKodUseJlpt(this, useJlptCb.isChecked());
             WwwjdicPreferences.setKodJlptLevel(this,
