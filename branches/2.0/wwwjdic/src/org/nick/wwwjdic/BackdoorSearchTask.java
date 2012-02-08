@@ -1,5 +1,7 @@
 package org.nick.wwwjdic;
 
+import static org.nick.wwwjdic.WwwjdicPreferences.WWWJDIC_DEBUG;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +68,10 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
                     hasEndPre = true;
                     line = line.replaceAll(PRE_END_TAG, "");
                 }
-                Log.d(TAG, "dic entry line: " + line);
+
+                if (WWWJDIC_DEBUG) {
+                    Log.d(TAG, "dic entry line: " + line);
+                }
                 T entry = parseEntry(line);
                 if (entry != null) {
                     result.add(entry);
@@ -89,7 +94,9 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
             SearchCriteria criteria = (SearchCriteria) query;
             String lookupUrl = String.format("%s?%s", url,
                     generateBackdoorCode(criteria));
-            Log.d(TAG, "WWWJDIC URL: " + lookupUrl);
+            if (WWWJDIC_DEBUG) {
+                Log.d(TAG, "WWWJDIC URL: " + lookupUrl);
+            }
 
             HttpGet get = new HttpGet(lookupUrl);
             String responseStr = httpclient.execute(get, responseHandler,
