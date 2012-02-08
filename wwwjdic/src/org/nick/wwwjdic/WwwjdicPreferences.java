@@ -42,7 +42,7 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
 
     public static final String PREF_AUTO_SELECT_MIRROR_KEY = "pref_auto_select_mirror";
     public static final String PREF_WWWJDIC_MIRROR_URL_KEY = "pref_wwwjdic_mirror_url";
-    public static final String DEFAULT_WWWJDIC_URL = "http://wwwjdic.mygengo.com/cgi-data/wwwjdic";
+    public static final String DEFAULT_WWWJDIC_URL = "http://mygengo.com/wwwjdic/cgi-data/wwwjdic";
 
     public static final String PREF_WWWJDIC_TIMEOUT_KEY = "pref_wwwjdic_timeout";
     private static final int WWWJDIC_TIMEOUT_DEFAULT = 10 * 1000;
