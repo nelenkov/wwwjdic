@@ -286,6 +286,7 @@ public class SentenceBreakdownFragment extends
     private void share() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         String str = sentenceStr;
         if (!TextUtils.isEmpty(sentenceTranslation)) {
             str += "\n" + sentenceTranslation;

@@ -361,6 +361,7 @@ public abstract class DetailFragment extends Fragment implements
     protected void share() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         String str = wwwjdicEntry.getDetailString();
         shareIntent.putExtra(Intent.EXTRA_TEXT, str);
 
