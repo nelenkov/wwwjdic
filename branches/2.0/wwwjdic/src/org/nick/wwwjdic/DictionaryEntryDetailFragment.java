@@ -223,6 +223,8 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
                 return new Locale("NL");
             } else if ("N".equals(entryDictionary)) {
                 return new Locale("SL");
+            } else if ("O".equals(entryDictionary)) {
+                return new Locale("IT");
             }
         }
 
