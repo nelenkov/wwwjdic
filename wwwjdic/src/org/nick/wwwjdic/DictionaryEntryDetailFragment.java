@@ -202,7 +202,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         }
 
         String[] engDictsArr = { "1", "3", "4", "5", "6", "7", "8", "A", "B",
-                "C", "D" };
+                "C", "D", "E", "F", "Q" };
         List<String> engDicts = Arrays.asList(engDictsArr);
         if (engDicts.contains(entryDictionary)) {
             return Locale.ENGLISH;

@@ -23,6 +23,9 @@
         <item>日本語--オランダ語</item>
         <item>日本語--スロベニア語</item>
         <item>日本語--イタリア語</item>
+        <item>日本語 Wordnet</item>
+        <item>統合日</item>
+        <item>作業中辞書</item>
     </string-array>
     <string-array name="kanji_search_types_array">
         <item>漢字・読み</item>
