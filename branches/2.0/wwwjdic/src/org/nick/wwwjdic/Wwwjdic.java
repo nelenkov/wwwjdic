@@ -232,6 +232,10 @@ public class Wwwjdic extends ActionBarActivity {
 
         setContentView(R.layout.main);
 
+        // collapse action bar
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         setupTabs();
 
         dbHelper = HistoryDbHelper.getInstance(this);
@@ -325,12 +329,13 @@ public class Wwwjdic extends ActionBarActivity {
 
         Analytics.startSession(this);
 
-        boolean showHome = UIUtils.isHoneycombTablet(this)
-                || UIUtils.isPortrait(this);
-        boolean showTitle = !UIUtils.isHoneycombTablet(this)
-                && UIUtils.isPortrait(this);
-        getSupportActionBar().setDisplayShowHomeEnabled(showHome);
-        getSupportActionBar().setDisplayShowTitleEnabled(showTitle);
+        // XXX -- remove since the action bar is no collapsed
+        // boolean showHome = UIUtils.isHoneycombTablet(this)
+        // || UIUtils.isPortrait(this);
+        // boolean showTitle = !UIUtils.isHoneycombTablet(this)
+        // && UIUtils.isPortrait(this);
+        // getSupportActionBar().setDisplayShowHomeEnabled(showHome);
+        // getSupportActionBar().setDisplayShowTitleEnabled(showTitle);
     }
 
     @Override
