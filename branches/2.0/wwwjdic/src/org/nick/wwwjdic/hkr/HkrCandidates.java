@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
+import com.actionbarsherlock.view.Window;
+
 public class HkrCandidates extends ActionBarActivity implements
         HkrCandidatesFragment.HkrCandidateSelectedListener {
 
@@ -25,7 +27,7 @@ public class HkrCandidates extends ActionBarActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(android.support.v4.view.Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         setContentView(R.layout.hkr_candidates);
         setProgressBarIndeterminateVisibility(Boolean.FALSE);

@@ -10,13 +10,12 @@ import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.utils.LoaderBase;
 import org.nick.wwwjdic.utils.LoaderResult;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.app.SupportActivity;
 import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItem;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -149,7 +148,7 @@ public class HkrCandidatesFragment extends ListFragment implements
     }
 
     @Override
-    public void onAttach(SupportActivity activity) {
+    public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
             candidateSelectedListener = (HkrCandidateSelectedListener) activity;
@@ -203,7 +202,7 @@ public class HkrCandidatesFragment extends ListFragment implements
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info;
         try {
             info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();

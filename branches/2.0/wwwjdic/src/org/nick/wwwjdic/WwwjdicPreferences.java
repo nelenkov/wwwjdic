@@ -26,10 +26,11 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
-import android.support.v4.app.SherlockPreferenceActivity;
-import android.support.v4.view.MenuItem;
 import android.text.format.DateUtils;
 import android.util.Log;
+
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.actionbarsherlock.view.MenuItem;
 
 public class WwwjdicPreferences extends SherlockPreferenceActivity implements
         OnPreferenceChangeListener {
@@ -37,7 +38,7 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
     private static final String TAG = WwwjdicPreferences.class.getSimpleName();
 
     public static final boolean ACRA_DEBUG = false;
-    public static final boolean WWWJDIC_DEBUG = false;
+    public static final boolean WWWJDIC_DEBUG = true;
 
     public static final String PREF_USE_KR_KEY = "pref_kr_use_kanji_recognizer";
 

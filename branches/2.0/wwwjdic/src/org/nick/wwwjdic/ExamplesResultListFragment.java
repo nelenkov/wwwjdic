@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItem;
 import android.text.ClipboardManager;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -217,7 +216,7 @@ public class ExamplesResultListFragment extends
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info;
         try {
             info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -339,6 +338,5 @@ public class ExamplesResultListFragment extends
             }
         }
     }
-
 
 }

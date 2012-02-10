@@ -1,209 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <style name="list_item_base">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:singleLine">true</item>
-    <item name="android:ellipsize">end</item>
-    <item name="android:textColor">@color/white</item>
-  </style>
-  
-  <style name="dict_list_heading" parent="style/list_item_base">
-    <item name="android:layout_marginLeft">5dp</item>
-    <item name="android:layout_marginTop">3dp</item>
-    <item name="android:layout_marginRight">5dp</item>
-    <item name="android:layout_marginBottom">0dp</item>
-    <item name="android:textSize">20sp</item>
-  </style>
+    <style name="list_item_base">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
-  <style name="dict_list_reading" parent="style/list_item_base">
-    <item name="android:layout_marginLeft">5dp</item>
-    <item name="android:layout_marginTop">2dp</item>
-    <item name="android:layout_marginRight">3dp</item>
-    <item name="android:layout_marginBottom">0dp</item>
-    <item name="android:textSize">18sp</item>
-  </style>
+    <style name="dict_list_heading" parent="style/list_item_base">
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 
-  <style name="dict_list_translation" parent="style/list_item_base">
-    <item name="android:layout_marginLeft">5dp</item>
-    <item name="android:layout_marginTop">2dp</item>
-    <item name="android:layout_marginRight">3dp</item>
-    <item name="android:layout_marginBottom">0dp</item>
-    <item name="android:textSize">16sp</item>
-  </style>
+    <style name="dict_list_reading" parent="style/list_item_base">
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginRight">3dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 
-  <style name="kanji_list_heading">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_marginLeft">5dp</item>
-    <item name="android:layout_marginTop">3dp</item>
-    <item name="android:layout_marginRight">5dp</item>
-    <item name="android:layout_marginBottom">0dp</item>
-    <item name="android:layout_gravity">center</item>
-    <item name="android:gravity">center</item>
-    <item name="android:singleLine">true</item>
-    <item name="android:ellipsize">end</item>
-    <item name="android:textSize">42sp</item>
-    <item name="android:textColor">@color/white</item>
-  </style>
+    <style name="dict_list_translation" parent="style/list_item_base">
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginRight">3dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 
-  <style name="kanji_list_reading">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_marginLeft">5dp</item>
-    <item name="android:layout_marginTop">2dp</item>
-    <item name="android:layout_marginRight">3dp</item>
-    <item name="android:layout_marginBottom">0dp</item>
-    <item name="android:singleLine">true</item>
-    <item name="android:ellipsize">end</item>
-    <item name="android:textSize">16sp</item>
-    <item name="android:textColor">@color/white</item>
-  </style>
+    <style name="kanji_list_heading">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textSize">42sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
-  <style name="kanji_list_translation">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_marginLeft">5dp</item>
-    <item name="android:layout_marginTop">2dp</item>
-    <item name="android:layout_marginRight">3dp</item>
-    <item name="android:layout_marginBottom">0dp</item>
-    <item name="android:singleLine">true</item>
-    <item name="android:ellipsize">end</item>
-    <item name="android:textSize">16sp</item>
-    <item name="android:textColor">@color/white</item>
-  </style>
+    <style name="kanji_list_reading">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginRight">3dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
-  <style name="dict_detail_heading">
-    <item name="android:textSize">@dimen/details_heading_size</item>
-    <item name="android:textColor">@color/white</item>
-  </style>
+    <style name="kanji_list_translation">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginRight">3dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
-  <style name="dict_detail_reading">
-    <item name="android:textSize">@dimen/details_reading_size</item>
-    <item name="android:textColor">@color/white</item>
-  </style>
+    <style name="dict_detail_heading">
+        <item name="android:textSize">@dimen/details_heading_size</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
-  <style name="dict_detail_meaning">
-    <item name="android:textSize">@dimen/details_meaning_size</item>
-  </style>
+    <style name="dict_detail_reading">
+        <item name="android:textSize">@dimen/details_reading_size</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
-  <style name="kanji_detail_heading">
-    <item name="android:textSize">@dimen/kanji_detail_heading_size</item>
-    <item name="android:textColor">@color/white</item>
-  </style>
+    <style name="dict_detail_meaning">
+        <item name="android:textSize">@dimen/details_meaning_size</item>
+    </style>
 
-  <style name="kanji_detail_reading">
-    <item name="android:textSize">@dimen/details_reading_size</item>
-    <item name="android:textColor">@color/white</item>
-  </style>
-  
-  <style name="radical_glyph">
-    <item name="android:gravity">center</item>
-    <item name="android:layout_gravity">center</item> 
-    <item name="android:textSize">@dimen/radical_glyph_size</item>
-    <item name="android:textColor">@color/white</item>
-  </style>
+    <style name="kanji_detail_heading">
+        <item name="android:textSize">@dimen/kanji_detail_heading_size</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
-  <style name="kod_loading">
-    <item name="android:textSize">10sp</item>
-    <item name="android:textColor">@color/semi_white</item>
-  </style>
+    <style name="kanji_detail_reading">
+        <item name="android:textSize">@dimen/details_reading_size</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
-  <style name="listViewActivatedStyle" />
+    <style name="radical_glyph">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">@dimen/radical_glyph_size</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
-  <style name="hkr_toolbar_button">
-    <item name="android:layout_height">fill_parent</item>
-    <item name="android:layout_width">0px</item>
-    <item name="android:layout_weight">1</item>
-    <item name="android:background">@android:drawable/btn_default_small</item>
-    <item name="android:textSize">@dimen/hkr_toolbar_text_size</item>
-  </style>
+    <style name="kod_loading">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/semi_white</item>
+    </style>
 
-  <style name="hkr_toolbar_checbox">
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_gravity">center_vertical</item>
-    <item name="android:textSize">@dimen/hkr_toolbar_text_size</item>
-  </style>
+    <style name="listViewActivatedStyle" />
 
-  <style name="krad_chart_button">
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_width">0dp</item>
-    <item name="android:layout_weight">1</item>
-    <item name="android:background">@android:drawable/btn_default_small</item>
-    <item name="android:layout_gravity">center_vertical</item>
-    <item name="android:gravity">center</item>
-  </style>
+    <style name="hkr_toolbar_button">
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_width">0px</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@android:drawable/btn_default_small</item>
+        <item name="android:textSize">@dimen/hkr_toolbar_text_size</item>
+    </style>
 
-  <style name="small_button">
-    <item name="android:background">@android:drawable/btn_default_small</item>
-  </style>
+    <style name="hkr_toolbar_checbox">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/hkr_toolbar_text_size</item>
+    </style>
 
-  <style name="details_separator">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">@color/white</item>
-    <item name="android:background">@color/grey</item>
-    <item name="android:textSize">@dimen/details_separator_size</item>
-    <item name="android:paddingLeft">3dp</item>
-  </style>
+    <style name="krad_chart_button">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@android:drawable/btn_default_small</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center</item>
+    </style>
 
-  <style name="compounds_link">
-    <item name="android:layout_height">fill_parent</item>
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:textColorLink">@color/white</item>
-    <item name="android:layout_marginRight">10dp</item>
-    <item name="android:singleLine">true</item>
-    <item name="android:textSize">@dimen/kanji_compound_link_size</item>
-  </style>
+    <style name="small_button">
+        <item name="android:background">@android:drawable/btn_default_small</item>
+    </style>
 
-  <style name="ocr_button">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:paddingLeft">8dip</item>
-    <item name="android:paddingRight">8dip</item>
-    <item name="android:textSize">32sp</item>
-    <item name="android:background">@null</item>
-  </style>
-  
-  <style name="action_bar_title">
-    <item name="android:textColor">@color/white</item>
-    <item name="android:textSize">18sp</item>
-  </style>
-  
-  <style name="Theme.WwwjdicAb" parent="@style/Theme.Sherlock">
-    <item name="abBackground">@drawable/action_bar_bg</item>
-    <item name="abIcon">@drawable/ic_action_home</item> 
-    <item name="abTitleTextStyle">@style/action_bar_title</item>
-  </style>
-  
-  <style name="Theme.WwwjdicAbMain" parent="@style/Theme.Sherlock">
-    <item name="abBackground">@drawable/action_bar_bg</item>
-    <item name="abIcon">@drawable/ic_action_home</item> 
-    <item name="abTitleTextStyle">@style/action_bar_title</item>
-  </style>     
-  
-  <style name="WwwjdicAbTrans" />
-  
-  <style name="search_input">
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:inputType">text</item> 
-    <item name="android:lines">1</item>
-  </style>
-  
-  <style name="search_option">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">@color/white</item>
-    <item name="android:textSize">@dimen/search_option_text_size</item>
-    <item name="android:layout_gravity">center_vertical</item>
-  </style> 
-  
-  <style name="search_button">
-    <item name="android:layout_height">wrap_content</item> 
-    <item name="android:layout_width">fill_parent</item>
-   </style> 
-  
+    <style name="details_separator">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/grey</item>
+        <item name="android:textSize">@dimen/details_separator_size</item>
+        <item name="android:paddingLeft">3dp</item>
+    </style>
+
+    <style name="compounds_link">
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColorLink">@color/white</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">@dimen/kanji_compound_link_size</item>
+    </style>
+
+    <style name="ocr_button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">8dip</item>
+        <item name="android:paddingRight">8dip</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="action_bar_title">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Theme.WwwjdicAb" parent="@style/Theme.Sherlock">
+        <item name="actionBarStyle">@style/Widget.WwwjdicAb</item>
+    </style>
+
+    <style name="Widget.WwwjdicAb" parent="Widget.Sherlock.ActionBar">
+        <item name="background">@drawable/action_bar_bg</item>
+        <item name="backgroundSplit">@drawable/action_bar_bg</item>
+        <item name="icon">@drawable/ic_action_home</item>
+        <item name="titleTextStyle">@style/action_bar_title</item>
+    </style>
+
+    <style name="Theme.WwwjdicAbMain" parent="@style/Theme.Sherlock">
+        <item name="actionBarStyle">@style/Widget.WwwjdicAbMain</item>
+    </style>
+    
+    <style name="Widget.WwwjdicAbMain" parent="Widget.Sherlock.ActionBar">
+        <item name="background">@drawable/action_bar_bg</item>
+        <item name="backgroundSplit">@drawable/action_bar_bg</item>
+        <item name="icon">@drawable/ic_action_home</item>
+        <item name="titleTextStyle">@style/action_bar_title</item>
+    </style>
+
+    <style name="WwwjdicAbTrans" />
+
+    <style name="search_input">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:inputType">text</item>
+        <item name="android:lines">1</item>
+    </style>
+
+    <style name="search_option">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/search_option_text_size</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="search_button">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
+    </style>
+
 </resources>

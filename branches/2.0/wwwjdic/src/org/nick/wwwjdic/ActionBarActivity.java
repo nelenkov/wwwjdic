@@ -1,7 +1,8 @@
 package org.nick.wwwjdic;
 
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.MenuItem;
+
+import com.actionbarsherlock.view.MenuItem;
 
 public abstract class ActionBarActivity extends FragmentActivity {
 

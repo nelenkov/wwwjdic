@@ -43,7 +43,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v4.view.MenuItem;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -60,6 +59,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.actionbarsherlock.view.MenuItem;
 
 public class OcrActivity extends WebServiceBackedActivity implements
         SurfaceHolder.Callback, OnClickListener, OnTouchListener,
