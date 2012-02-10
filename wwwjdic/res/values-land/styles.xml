@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <style name="Theme.WwwjdicAbMain" parent="@style/Theme.Sherlock" >
-      <item name="abIcon">@null</item>
-      <item name="homeAsUpIndicator">@null</item>
-  </style>
+
+    <style name="Widget.WwwjdicAb" parent="Widget.Sherlock.ActionBar">
+        <item name="icon">@null</item>
+        <item name="homeAsUpIndicator">@null</item>
+    </style>
+
+    <style name="Widget.WwwjdicAbMain" parent="Widget.Sherlock.ActionBar">
+        <item name="background">@null</item>
+        <item name="icon">@null</item>
+        <item name="homeAsUpIndicator">@null</item>
+    </style>
+
 </resources>

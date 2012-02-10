@@ -12,6 +12,7 @@ import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.LoaderResult;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -24,17 +25,12 @@ import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.app.SupportActivity;
-import android.support.v4.view.ActionMode;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.support.v4.widget.CursorAdapter;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -44,6 +40,11 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import au.com.bytecode.opencsv.CSVReader;
+
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 @SuppressWarnings("deprecation")
 public abstract class HistoryFragmentBase extends ListFragment implements
@@ -111,14 +112,14 @@ public abstract class HistoryFragmentBase extends ListFragment implements
     }
 
     @Override
-    public void onAttach(SupportActivity activity) {
+    public void onAttach(Activity activity) {
         super.onAttach(activity);
-        // XXX -- uglish, but calling setHasOptionsMenu() any later 
+        // XXX -- uglish, but calling setHasOptionsMenu() any later
         // than this may result in menu shown when restored (e.g., on rotate)
         // Is there a better way?
-        // hasOptionsMenu has to be false by default, because we don't 
+        // hasOptionsMenu has to be false by default, because we don't
         // want it when shown on the main screen (Wwwjdic.java)
-        if (activity.asActivity() instanceof FavoritesAndHistory) {
+        if (activity instanceof FavoritesAndHistory) {
             setHasOptionsMenu(true);
         }
     }
@@ -189,10 +190,10 @@ public abstract class HistoryFragmentBase extends ListFragment implements
             startActivity(intent);
         } else if (item.getItemId() == R.id.menu_import) {
             importItems();
-            getSupportActivity().invalidateOptionsMenu();
+            getActivity().invalidateOptionsMenu();
         } else if (item.getItemId() == R.id.menu_export) {
             exportItems();
-            getSupportActivity().invalidateOptionsMenu();
+            getActivity().invalidateOptionsMenu();
         } else if (item.getItemId() == R.id.menu_filter) {
             showFilterDialog();
         } else if (item.getItemId() == R.id.menu_delete) {
@@ -229,7 +230,7 @@ public abstract class HistoryFragmentBase extends ListFragment implements
                             public void onClick(DialogInterface dialog, int item) {
                                 selectedFilter = item - 1;
                                 filter();
-                                getSupportActivity().invalidateOptionsMenu();
+                                getActivity().invalidateOptionsMenu();
                                 dialog.dismiss();
                             }
                         });
@@ -370,12 +371,13 @@ public abstract class HistoryFragmentBase extends ListFragment implements
             return;
         }
 
-        MenuInflater inflater = getSupportActivity().getMenuInflater();
-        inflater.inflate(R.menu.history_favorites_context, menu);
+        // XXX
+        // MenuInflater inflater = getActivity().getMenuInflater();
+        // inflater.inflate(R.menu.history_favorites_context, menu);
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
                 .getMenuInfo();
         int position = info.position;
@@ -437,7 +439,7 @@ public abstract class HistoryFragmentBase extends ListFragment implements
                                 public void onClick(DialogInterface dialog,
                                         int id) {
                                     historyFragment.deleteAll();
-                                    historyFragment.getSupportActivity()
+                                    historyFragment.getActivity()
                                             .invalidateOptionsMenu();
                                 }
                             })
@@ -523,7 +525,7 @@ public abstract class HistoryFragmentBase extends ListFragment implements
         }
 
         getListView().setItemChecked(position, true);
-        currentActionMode = getSupportActivity().startActionMode(
+        currentActionMode = getActivity().startActionMode(
                 new ContextCallback(position));
 
         return true;
@@ -538,8 +540,9 @@ public abstract class HistoryFragmentBase extends ListFragment implements
         }
 
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            MenuInflater inflater = getActivity().getMenuInflater();
-            inflater.inflate(R.menu.history_favorites_context, menu);
+            // XXXX
+            // MenuInflater inflater = getActivity().getMenuInflater();
+            // inflater.inflate(R.menu.history_favorites_context, menu);
             return true;
         }
 

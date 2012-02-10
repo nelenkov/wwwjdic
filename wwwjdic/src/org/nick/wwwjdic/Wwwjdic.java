@@ -1,6 +1,5 @@
 package org.nick.wwwjdic;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,20 +23,21 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.ActionBar;
-import android.support.v4.app.ActionBar.Tab;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 public class Wwwjdic extends ActionBarActivity {
 
@@ -86,11 +86,11 @@ public class Wwwjdic extends ActionBarActivity {
         }
 
         @Override
-        public void onTabReselected(Tab tab, FragmentTransaction ft) {
+        public void onTabReselected(Tab tab) {
         }
 
         @Override
-        public void onTabSelected(Tab tab, FragmentTransaction ft) {
+        public void onTabSelected(Tab tab) {
             int position = tab.getPosition();
             viewPager.setCurrentItem(position);
             filterHistoryFragments(position);
@@ -98,7 +98,7 @@ public class Wwwjdic extends ActionBarActivity {
         }
 
         @Override
-        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+        public void onTabUnselected(Tab tab) {
         }
 
         @Override
@@ -212,6 +212,7 @@ public class Wwwjdic extends ActionBarActivity {
         @Override
         public void restoreState(Parcelable state, ClassLoader loader) {
         }
+
     }
 
     private static final int NUM_RECENT_HISTORY_ENTRIES = 5;
@@ -250,13 +251,12 @@ public class Wwwjdic extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getSupportMenuInflater();
 
         inflater.inflate(R.menu.main, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
-
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {

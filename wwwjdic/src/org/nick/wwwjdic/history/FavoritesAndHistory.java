@@ -7,9 +7,10 @@ import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActionBar;
 import android.support.v4.view.ViewPager;
-import android.view.Window;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Window;
 
 public class FavoritesAndHistory extends ActionBarActivity {
 
@@ -27,6 +28,7 @@ public class FavoritesAndHistory extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setProgressBarIndeterminateVisibility(Boolean.FALSE);
 
         setContentView(R.layout.favorites_history);
         setTitle(R.string.favorites_hist);

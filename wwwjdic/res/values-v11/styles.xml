@@ -27,8 +27,10 @@
   </style>
   
   <style name="small_button"/>
-  
+
+  <!-- XXX 
   <style name="WwwjdicAbTrans" parent="Theme.WwwjdicAb">
     <item name="abBackground">@drawable/action_bar_bg_trans</item>
   </style>
+  -->
 </resources>

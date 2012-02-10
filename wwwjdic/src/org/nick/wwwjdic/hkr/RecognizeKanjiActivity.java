@@ -39,13 +39,14 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.support.v4.view.MenuItem;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
+
+import com.actionbarsherlock.view.MenuItem;
 
 public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         OnClickListener {

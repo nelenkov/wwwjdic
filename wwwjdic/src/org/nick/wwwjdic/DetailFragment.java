@@ -12,6 +12,7 @@ import org.nick.wwwjdic.utils.DictUtils;
 import org.nick.wwwjdic.utils.IntentSpan;
 import org.nick.wwwjdic.utils.Pair;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -26,7 +27,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.SupportActivity;
 import android.text.ClipboardManager;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -103,11 +103,11 @@ public abstract class DetailFragment extends Fragment implements
     }
 
     @Override
-    public void onAttach(SupportActivity activity) {
+    public void onAttach(Activity activity) {
         super.onAttach(activity);
 
         jpTtsEnginePackageName = WwwjdicPreferences
-                .getJpTtsEnginePackage(activity.asActivity());
+                .getJpTtsEnginePackage(activity);
     }
 
     @Override

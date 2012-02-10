@@ -3,7 +3,8 @@ package org.nick.wwwjdic;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.support.v4.view.MenuItem;
+
+import com.actionbarsherlock.view.MenuItem;
 
 public class SentenceBreakdown extends ResultListBase {
 
