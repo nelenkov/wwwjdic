@@ -17,6 +17,9 @@ public class DictionaryEntry extends WwwjdicEntry implements Serializable {
     private static final int WORD_IDX = 0;
     private static final int READING_IDX = 1;
 
+    private static final String WORDNET_PREFIX = "JWN-";
+    private static final String WIP_MARKER_PREFIX = "WI";
+
     private String word;
     private String reading;
     private List<String> meanings = new ArrayList<String>();
@@ -34,7 +37,9 @@ public class DictionaryEntry extends WwwjdicEntry implements Serializable {
         result.word = fields[WORD_IDX];
         int firstSpaceIdx = edictStr.indexOf(" ");
         String translationString = edictStr.substring(firstSpaceIdx + 1);
-        result.tranlsationString = translationString.replace("/", " ").trim();
+        result.tranlsationString = translationString.replace("/", " ")
+                .replaceAll(WORDNET_PREFIX + "\\S+", "")
+                .replaceAll(WIP_MARKER_PREFIX + "\\S+", "").trim();
 
         String meaningsField = null;
         int openingBracketIdx = translationString.indexOf('[');
@@ -55,7 +60,9 @@ public class DictionaryEntry extends WwwjdicEntry implements Serializable {
         String[] meaningsArr = meaningsField.split("/");
         for (int i = 0; i < meaningsArr.length; i++) {
             String meaning = meaningsArr[i];
-            if (!"".equals(meaning) && !"(P)".equals(meaning)) {
+            if (!"".equals(meaning) && !"(P)".equals(meaning)
+                    && !meaning.startsWith(WORDNET_PREFIX)
+                    && !meaning.startsWith(WIP_MARKER_PREFIX)) {
                 result.meanings.add(meaning);
             }
         }
