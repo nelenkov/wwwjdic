@@ -117,6 +117,9 @@ public class OcrActivity extends WebServiceBackedActivity implements
             requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
         window.setFormat(PixelFormat.TRANSLUCENT);
+        if (UIUtils.isHoneycombTablet(this)) {
+            requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        }
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.ocr);
@@ -178,9 +181,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
         Analytics.startSession(this);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(
-                    UIUtils.isHoneycombTablet(this));
+        if (getSupportActionBar() != null && UIUtils.isHoneycombTablet(this)) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
