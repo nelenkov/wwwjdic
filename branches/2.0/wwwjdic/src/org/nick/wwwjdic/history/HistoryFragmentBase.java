@@ -371,7 +371,6 @@ public abstract class HistoryFragmentBase extends ListFragment implements
             return;
         }
 
-        // XXX
         android.view.MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.history_favorites_context, menu);
     }
