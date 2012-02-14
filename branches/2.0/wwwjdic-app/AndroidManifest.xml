@@ -1,128 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.nick.wwwjdic" 
     android:installLocation="auto"
-    android:versionName="2.1.1" 
-    android:versionCode="2110">
-    
+    package="org.nick.wwwjdic"
+    android:versionCode="2200"
+    android:versionName="2.2" >
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-     <!--  ACRA testing -->
-     <!-- 
+    <!-- ACRA testing -->
+    <!--
     <uses-permission android:name="android.permission.READ_LOGS" /> 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    --> 
+    -->
 
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-    <uses-feature android:name="android.hardware.camera.flash"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="false" />
-    <uses-feature android:name="android.hardware.touchscreen"
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
         android:required="false" />
-    
-    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="13" />
-    
-    <application android:icon="@drawable/icon"
-        android:label="@string/app_name" 
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="13" />
+
+    <application
+        android:name="org.nick.wwwjdic.WwwjdicApplication"
         android:debuggable="true"
-        android:name="org.nick.wwwjdic.WwwjdicApplication" 
-        android:hardwareAccelerated="true">
-        <meta-data android:name="android.app.default_searchable"
-               android:value="org.nick.wwwjdic.DictionaryResultList" />
-        <activity android:name="org.nick.wwwjdic.Wwwjdic"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" >
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value="org.nick.wwwjdic.DictionaryResultList" />
+
+        <activity
+            android:name="org.nick.wwwjdic.Wwwjdic"
             android:label="@string/app_name_short"
-            android:windowSoftInputMode="stateVisible|adjustPan" 
             android:theme="@style/Theme.WwwjdicAbMain"
-            android:uiOptions="splitActionBarWhenNarrow">
+            android:uiOptions="splitActionBarWhenNarrow"
+            android:windowSoftInputMode="stateVisible|adjustPan" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="org.nick.wwwjdic.AboutActivity"
+            android:theme="@style/Theme.WwwjdicAb" />
+        <activity
+            android:name="org.nick.wwwjdic.DictionaryResultList"
+            android:label="@string/dict_search"
+            android:taskAffinity=""
+            android:theme="@style/Theme.WwwjdicAb" >
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
 
-        <activity android:name="org.nick.wwwjdic.AboutActivity"
-            android:theme="@style/Theme.WwwjdicAb"/>
-        <activity android:name="org.nick.wwwjdic.DictionaryResultList"
-            android:label="@string/dict_search" 
-            android:taskAffinity="" 
-            android:theme="@style/Theme.WwwjdicAb">
-             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />            
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                       android:resource="@xml/searchable"/>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
-        <activity android:name="org.nick.wwwjdic.DictionaryEntryDetail" 
+        <activity
+            android:name="org.nick.wwwjdic.DictionaryEntryDetail"
             android:theme="@style/Theme.WwwjdicAb" />
-        <activity android:name="org.nick.wwwjdic.KanjiResultList"
-            android:label="@string/searching" 
-            android:theme="@style/Theme.WwwjdicAb"/>
-        <activity android:name="org.nick.wwwjdic.ExamplesResultList"
-            android:label="@string/searching" 
-            android:theme="@style/Theme.WwwjdicAb"/>
-        <activity android:name="org.nick.wwwjdic.SentenceBreakdown"
-            android:theme="@style/Theme.WwwjdicAb" 
-            android:uiOptions="splitActionBarWhenNarrow"/>
-        <activity android:name="org.nick.wwwjdic.KanjiEntryDetail"
-            android:taskAffinity="" 
-            android:theme="@style/Theme.WwwjdicAb"/>
-        <activity android:name="org.nick.wwwjdic.RadicalChart" 
-            android:theme="@style/Theme.WwwjdicAb"/>
-        <activity android:name="org.nick.wwwjdic.WwwjdicPreferences" 
-            android:theme="@style/Theme.WwwjdicAb"/>
-        <activity android:name="org.nick.wwwjdic.WwwjdicPreferencesHC" 
-            android:theme="@style/Theme.WwwjdicAb"/>    
-        <activity android:name="org.nick.wwwjdic.ocr.OcrActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard" 
-            android:hardwareAccelerated="false" 
-            android:theme="@style/WwwjdicAbTrans"/>
-        <activity android:name="org.nick.wwwjdic.ocr.crop.CropImage"
-            android:configChanges="orientation|keyboardHidden|keyboard" 
-            android:hardwareAccelerated="false"/>
-        <activity android:name="org.nick.wwwjdic.hkr.RecognizeKanjiActivity"
+        <activity
+            android:name="org.nick.wwwjdic.KanjiResultList"
+            android:label="@string/searching"
+            android:theme="@style/Theme.WwwjdicAb" />
+        <activity
+            android:name="org.nick.wwwjdic.ExamplesResultList"
+            android:label="@string/searching"
+            android:theme="@style/Theme.WwwjdicAb" />
+        <activity
+            android:name="org.nick.wwwjdic.SentenceBreakdown"
+            android:theme="@style/Theme.WwwjdicAb"
+            android:uiOptions="splitActionBarWhenNarrow" />
+        <activity
+            android:name="org.nick.wwwjdic.KanjiEntryDetail"
+            android:taskAffinity=""
+            android:theme="@style/Theme.WwwjdicAb" />
+        <activity
+            android:name="org.nick.wwwjdic.RadicalChart"
+            android:theme="@style/Theme.WwwjdicAb" />
+        <activity
+            android:name="org.nick.wwwjdic.WwwjdicPreferences"
+            android:theme="@style/Theme.WwwjdicAb" />
+        <activity
+            android:name="org.nick.wwwjdic.WwwjdicPreferencesHC"
+            android:theme="@style/Theme.WwwjdicAb" />
+        <activity
+            android:name="org.nick.wwwjdic.ocr.OcrActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"
-            android:exported="false" 
-            android:theme="@style/Theme.WwwjdicAb">
+            android:hardwareAccelerated="false"
+            android:theme="@style/WwwjdicAbTrans" />
+        <activity
+            android:name="org.nick.wwwjdic.ocr.crop.CropImage"
+            android:configChanges="orientation|keyboardHidden|keyboard"
+            android:hardwareAccelerated="false" />
+        <activity
+            android:name="org.nick.wwwjdic.hkr.RecognizeKanjiActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard"
+            android:exported="false"
+            android:theme="@style/Theme.WwwjdicAb" >
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="org.nick.wwwjdic.hkr.HkrCandidates" 
-            android:theme="@style/Theme.WwwjdicAb"/>
-        <activity android:name="org.nick.wwwjdic.history.FavoritesAndHistory"
-             android:theme="@style/Theme.WwwjdicAbMain" 
-             android:uiOptions="splitActionBarWhenNarrow"/>
-        <activity android:name="org.nick.wwwjdic.sod.SodActivity" 
-            android:theme="@style/Theme.WwwjdicAb"/>
-        <activity android:name="org.nick.wwwjdic.krad.KradChart"
-            android:theme="@style/Theme.WwwjdicAb"/>        
-            
-        <activity android:name="org.nick.wwwjdic.widgets.KodWidgetConfigure" 
-            android:label="@string/kod_widget_configuration" 
-            android:theme="@style/Theme.WwwjdicAb">
+        <activity
+            android:name="org.nick.wwwjdic.hkr.HkrCandidates"
+            android:theme="@style/Theme.WwwjdicAb" />
+        <activity
+            android:name="org.nick.wwwjdic.history.FavoritesAndHistory"
+            android:theme="@style/Theme.WwwjdicAbMain"
+            android:uiOptions="splitActionBarWhenNarrow" />
+        <activity
+            android:name="org.nick.wwwjdic.sod.SodActivity"
+            android:theme="@style/Theme.WwwjdicAb" />
+        <activity
+            android:name="org.nick.wwwjdic.krad.KradChart"
+            android:theme="@style/Theme.WwwjdicAb" />
+        <activity
+            android:name="org.nick.wwwjdic.widgets.KodWidgetConfigure"
+            android:label="@string/kod_widget_configuration"
+            android:theme="@style/Theme.WwwjdicAb" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
-        </activity>      
+        </activity>
 
-        <receiver android:name="org.nick.wwwjdic.widgets.KodWidgetProvider"
-            android:label="@string/kanji_of_the_day">
+        <receiver
+            android:name="org.nick.wwwjdic.widgets.KodWidgetProvider"
+            android:label="@string/kanji_of_the_day" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
+
+            <meta-data
+                android:name="android.appwidget.provider"
                 android:resource="@xml/kod_widget_info" />
         </receiver>
+
         <service android:name="org.nick.wwwjdic.widgets.GetKanjiService" />
         <service android:name="org.nick.wwwjdic.updates.UpdateCheckService" />
-        <provider android:name="org.nick.wwwjdic.SearchSuggestionProvider"
-              android:authorities="org.nick.wwwjdic.SearchSuggestionProvider" />
+
+        <provider
+            android:name="org.nick.wwwjdic.SearchSuggestionProvider"
+            android:authorities="org.nick.wwwjdic.SearchSuggestionProvider" />
     </application>
-</manifest> 
+
+</manifest>
