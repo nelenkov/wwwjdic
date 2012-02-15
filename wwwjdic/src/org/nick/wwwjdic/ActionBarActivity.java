@@ -19,4 +19,11 @@ public abstract class ActionBarActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
 }
