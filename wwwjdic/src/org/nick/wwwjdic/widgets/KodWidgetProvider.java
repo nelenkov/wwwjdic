@@ -100,7 +100,7 @@ public class KodWidgetProvider extends AppWidgetProvider {
                     updateIntent, 0);
             alarmManager.cancel(pendingIntent);
 
-            Log.d(TAG, "done");
+            ConnectivityMonitor.stop(context);
         }
     }
 

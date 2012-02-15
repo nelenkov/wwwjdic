@@ -146,13 +146,17 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/kod_widget_info" />
+        </receiver>
+        <receiver
+            android:name="org.nick.wwwjdic.widgets.ConnectivityMonitor"
+            android:enabled="false" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
         </receiver>
 
         <service android:name="org.nick.wwwjdic.widgets.GetKanjiService" />
