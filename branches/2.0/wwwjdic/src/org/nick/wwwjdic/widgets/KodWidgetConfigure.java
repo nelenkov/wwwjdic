@@ -21,6 +21,8 @@ import android.widget.TextView;
 public class KodWidgetConfigure extends ActionBarActivity implements
         OnClickListener, OnCheckedChangeListener {
 
+    private static final String TAG = KodWidgetConfigure.class.getSimpleName();
+
     private static final int ONE_DAY_IDX = 0;
     private static final int TWELVE_HOURS_IDX = 1;
     private static final int SIX_HOURS_IDX = 2;
@@ -142,6 +144,8 @@ public class KodWidgetConfigure extends ActionBarActivity implements
                     showReadingCb.isChecked());
 
             setUpdateInterval();
+
+            ConnectivityMonitor.start(context);
 
             startService(new Intent(context, GetKanjiService.class));
             Intent resultValue = new Intent();
