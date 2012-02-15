@@ -128,7 +128,7 @@ public class Wwwjdic extends ActionBarActivity {
 
         @Override
         public Object instantiateItem(View container, int position) {
-            Log.d(TAG, "instantiateItem at position " + position);
+            // Log.d(TAG, "instantiateItem at position " + position);
 
             LayoutInflater inflater = activity.getLayoutInflater();
             View view = inflater.inflate(tabLayouts.get(position), null);
@@ -144,7 +144,7 @@ public class Wwwjdic extends ActionBarActivity {
 
         @Override
         public void destroyItem(View container, int position, Object view) {
-            Log.d(TAG, "destroyItem at position " + position);
+            // Log.d(TAG, "destroyItem at position " + position);
 
             if (currentTransaction == null) {
                 currentTransaction = fragmentManager.beginTransaction();
