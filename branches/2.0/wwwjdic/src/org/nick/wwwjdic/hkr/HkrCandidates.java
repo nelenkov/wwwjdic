@@ -30,7 +30,7 @@ public class HkrCandidates extends ActionBarActivity implements
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         setContentView(R.layout.hkr_candidates);
-        setProgressBarIndeterminateVisibility(Boolean.FALSE);
+        setSupportProgressBarIndeterminateVisibility(false);
 
         View detailsFrame = findViewById(R.id.details);
         dualPane = detailsFrame != null

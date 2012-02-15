@@ -28,7 +28,7 @@ public class FavoritesAndHistory extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setProgressBarIndeterminateVisibility(Boolean.FALSE);
+        setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
 
         setContentView(R.layout.favorites_history);
         setTitle(R.string.favorites_hist);

@@ -169,7 +169,7 @@ public class HkrCandidatesFragment extends ListFragment implements
         index = position;
         Bundle args = new Bundle();
         args.putString("kanji", searchKey);
-        getActivity().setProgressBarIndeterminateVisibility(Boolean.TRUE);
+        getActivity().setSupportProgressBarIndeterminateVisibility(true);
         getLoaderManager().restartLoader(0, args, this);
     }
 
@@ -239,7 +239,7 @@ public class HkrCandidatesFragment extends ListFragment implements
     @Override
     public void onLoadFinished(Loader<LoaderResult<KanjiEntry>> loader,
             LoaderResult<KanjiEntry> result) {
-        getActivity().setProgressBarIndeterminateVisibility(Boolean.FALSE);
+        getActivity().setSupportProgressBarIndeterminateVisibility(false);
 
         if (result.isFailed()) {
             String message = selectErrorMessage(result.getError());
