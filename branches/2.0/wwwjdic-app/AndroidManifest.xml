@@ -30,7 +30,7 @@
 
     <uses-sdk
         android:minSdkVersion="7"
-        android:targetSdkVersion="13" />
+        android:targetSdkVersion="15" />
 
     <application
         android:name="org.nick.wwwjdic.WwwjdicApplication"
