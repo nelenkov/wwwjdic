@@ -30,6 +30,8 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
 
     protected static final String FONT_TAG = "<font";
 
+    protected static final String MAINTENANCE_MESSAGE = "WWWJDIC is undergoing file maintenance";
+
     public BackdoorSearchTask(String url, int timeoutSeconds,
             ResultList<T> resultListView, SearchCriteria criteria) {
         super(url, timeoutSeconds, resultListView, criteria);
@@ -44,6 +46,11 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
         for (String line : lines) {
             if (StringUtils.isEmpty(line)) {
                 continue;
+            }
+
+            // / XXX handle!
+            if (line.contains(MAINTENANCE_MESSAGE)) {
+                throw new RuntimeException(line);
             }
 
             if (line.startsWith(FONT_TAG)) {
