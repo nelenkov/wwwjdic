@@ -3,9 +3,11 @@ package org.nick.wwwjdic;
 import java.util.List;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 
-public class WwwjdicPreferencesHC extends PreferenceActivity {
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.actionbarsherlock.view.MenuItem;
+
+public class WwwjdicPreferencesHC extends SherlockPreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +26,11 @@ public class WwwjdicPreferencesHC extends PreferenceActivity {
     protected void onStart() {
         super.onStart();
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
-    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
             Activities.home(this);
