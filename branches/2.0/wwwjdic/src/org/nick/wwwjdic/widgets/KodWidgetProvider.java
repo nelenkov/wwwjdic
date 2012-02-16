@@ -1,6 +1,5 @@
 package org.nick.wwwjdic.widgets;
 
-import java.util.Date;
 import java.util.List;
 
 import org.nick.wwwjdic.KanjiEntryDetail;
@@ -18,7 +17,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -141,8 +139,6 @@ public class KodWidgetProvider extends AppWidgetProvider {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
                 intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        String dateStr = DateFormat.getDateFormat(context).format(new Date());
-        views.setTextViewText(R.id.kod_date_text, dateStr);
         views.setTextViewText(R.id.kod_text, kod);
         if (showReadingAndMeaning) {
             views.setTextViewText(R.id.kod_reading, entry.getReading());
