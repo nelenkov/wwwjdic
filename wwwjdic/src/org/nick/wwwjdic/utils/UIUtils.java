@@ -33,4 +33,8 @@ public class UIUtils {
     public static boolean isPortrait(Context context) {
         return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
     }
+
+    public static boolean isIcs() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+    }
 }

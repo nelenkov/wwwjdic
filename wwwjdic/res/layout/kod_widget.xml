@@ -6,7 +6,8 @@
     android:measureAllChildren="true"
     android:clickable="true" 
     android:focusable="true"
-    android:background="@drawable/appwidget_dark_bg_clickable">
+    android:background="@drawable/appwidget_dark_bg_clickable"
+    android:padding="@dimen/widget_margin">
   <TextView android:id="@+id/kod_message_text"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -31,10 +32,10 @@
             android:gravity="center"
             android:textColor="@color/yellow" 
             android:textStyle="bold"
-            android:textSize="9sp"
+            android:textSize="@dimen/kod_header_text_size"
             android:text="@string/kanji_of_the_day_jp"
-            android:includeFontPadding="false"
-            android:layout_marginTop="2dp"
+            android:includeFontPadding="true"
+            android:layout_marginTop="0dp"
             android:layout_alignParentTop="true"/>
         <TextView android:id="@+id/kod_text"
             android:layout_width="fill_parent"
@@ -42,19 +43,10 @@
             android:gravity="center"
             android:textColor="@color/white" 
             android:textStyle="bold"
-            android:textSize="48sp" 
+            android:textSize="@dimen/kod_text_size" 
             android:text="E"
-            android:includeFontPadding="false"
-            android:layout_below="@id/kod_header_text"/>
-        <TextView android:id="@+id/kod_date_text"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/yellow" 
-            android:textStyle="bold"
-            android:textSize="9sp"
-            android:includeFontPadding="false"
-            android:layout_marginBottom="2dp"
-            android:layout_alignParentBottom="true"></TextView>    
+            android:includeFontPadding="false" 
+            android:layout_below="@id/kod_header_text"
+            android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 </FrameLayout>
