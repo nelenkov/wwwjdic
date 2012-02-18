@@ -11,19 +11,19 @@
         android:title="@string/look_up_all_kanji"
         android:orderInCategory="1" 
         android:showAsAction="ifRoom|withText"/>
+     <item android:id="@+id/menu_example_share"
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="@string/share"
+        android:orderInCategory="2" 
+        android:showAsAction="ifRoom|withText"/>
      <item android:id="@+id/menu_example_copy_jp"
         android:icon="@drawable/ic_menu_copy"
         android:title="@string/copy_jp"
-        android:orderInCategory="2" 
+        android:orderInCategory="3" 
         android:showAsAction="ifRoom|withText"/>
      <item android:id="@+id/menu_example_copy_eng"
         android:icon="@drawable/ic_menu_copy"
         android:title="@string/copy_eng"
-        android:orderInCategory="3" 
-        android:showAsAction="ifRoom|withText"/>
-     <item android:id="@+id/menu_example_share"
-        android:icon="@android:drawable/ic_menu_share"
-        android:title="@string/share"
         android:orderInCategory="4" 
         android:showAsAction="ifRoom|withText"/>
 </menu>
