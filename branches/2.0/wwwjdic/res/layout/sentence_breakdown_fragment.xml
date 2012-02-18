@@ -7,6 +7,7 @@
     <TextView android:id="@+id/sentence" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" 
+        android:layout_alignParentTop="true"
         android:textColor="@color/white" 
         android:textSize="@dimen/details_heading_size"/>
     <TextView android:id="@+id/englishSentence"
