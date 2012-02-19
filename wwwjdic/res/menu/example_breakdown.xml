@@ -1,29 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android">
-     <item android:id="@+id/menu_ex_breakdown_speak"
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_ex_breakdown_speak"
         android:icon="@drawable/ic_action_tts"
-        android:title="@string/read_out"
         android:orderInCategory="0"
-        android:showAsAction="ifRoom|withText" />  
-     <item android:id="@+id/menu_example_lookup_kanji"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/read_out"/>
+    <item
+        android:id="@+id/menu_example_lookup_kanji"
         android:icon="@drawable/ic_menu_search"
-        android:title="@string/look_up_all_kanji"
-        android:orderInCategory="1" 
-        android:showAsAction="ifRoom|withText"/>
-      <item android:id="@+id/menu_example_share"
+        android:orderInCategory="1"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/look_up_all_kanji"/>
+    <item
+        android:id="@+id/menu_example_copy"
+        android:icon="@drawable/ic_menu_copy"
+        android:orderInCategory="2"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/copy">
+        <menu>
+            <item
+                android:id="@+id/menu_example_copy_jp"
+                android:icon="@drawable/ic_menu_copy"
+                android:orderInCategory="0"
+                android:showAsAction="ifRoom|withText"
+                android:title="@string/copy_jp">
+                <menu>
+                </menu>
+            </item>
+            <item
+                android:id="@+id/menu_example_copy_eng"
+                android:icon="@drawable/ic_menu_copy"
+                android:orderInCategory="1"
+                android:showAsAction="ifRoom|withText"
+                android:title="@string/copy_eng"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/menu_example_share"
         android:icon="@drawable/ic_menu_share"
-        android:title="@string/share"
-        android:orderInCategory="2" 
-        android:showAsAction="ifRoom|withText"/>
-     <item android:id="@+id/menu_example_copy_jp"
-        android:icon="@drawable/ic_menu_copy"
-        android:title="@string/copy_jp"
-        android:orderInCategory="3" 
-        android:showAsAction="ifRoom|withText"/>
-     <item android:id="@+id/menu_example_copy_eng"
-        android:icon="@drawable/ic_menu_copy"
-        android:title="@string/copy_eng"
-        android:orderInCategory="4" 
-        android:showAsAction="ifRoom|withText"/>
+        android:orderInCategory="3"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/share"/>
+
 </menu>
