@@ -3,8 +3,7 @@
     android:id="@+id/sentence_breakdown_root" 
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <fragment class="org.nick.wwwjdic.SentenceBreakdownFragment"
-            android:id="@+id/results_list"
+    <FrameLayout android:id="@+id/sentence_breakdown"
             android:layout_width="match_parent" 
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 </RelativeLayout>

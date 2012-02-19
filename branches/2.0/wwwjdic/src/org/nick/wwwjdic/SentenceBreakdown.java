@@ -26,13 +26,13 @@ public class SentenceBreakdown extends ResultListBase {
             exampleBreakdown = true;
         }
 
-        // setContentView(R.layout.sentence_breakdown);
+        setContentView(R.layout.sentence_breakdown);
         if (savedInstanceState == null) {
             SentenceBreakdownFragment breakDown = SentenceBreakdownFragment
                     .newInstance(0, sentence, translation);
             breakDown.setArguments(getIntent().getExtras());
             getSupportFragmentManager().beginTransaction()
-                    .add(android.R.id.content, breakDown).commit();
+                    .add(R.id.sentence_breakdown, breakDown).commit();
         }
     }
 
@@ -48,8 +48,7 @@ public class SentenceBreakdown extends ResultListBase {
         switch (item.getItemId()) {
         case android.R.id.home:
             Intent intent = new Intent(this,
-                    exampleBreakdown ? ExamplesResultList.class
-                            : Wwwjdic.class);
+                    exampleBreakdown ? ExamplesResultList.class : Wwwjdic.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
