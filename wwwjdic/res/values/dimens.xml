@@ -44,4 +44,7 @@
     <dimen name="kod_reading_meaning_text_size">10sp</dimen>
     <dimen name="kod_text_size">48sp</dimen>
     <dimen name="kod_details_text_size">28sp</dimen>
+    
+    <!-- ActivityChooserView -->
+    <dimen name="config_prefDialogWidth">320dp</dimen>
 </resources>
