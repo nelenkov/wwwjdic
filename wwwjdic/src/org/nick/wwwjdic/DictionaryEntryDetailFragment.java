@@ -173,9 +173,11 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
 
             return true;
         } else if (item.getItemId() == R.id.menu_dict_detail_share) {
-            share();
+            // mShareActionProvider.setShareIntent(createShareIntent());
+            return false;
+            // share();
 
-            return true;
+            // return true;
         }
 
         return super.onOptionsItemSelected(item);

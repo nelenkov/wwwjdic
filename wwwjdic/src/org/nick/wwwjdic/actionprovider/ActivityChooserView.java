@@ -147,8 +147,7 @@ public class ActivityChooserView extends ViewGroup implements
                 } else {
                     getListPopupWindow().show();
                     if (mProvider != null) {
-                        // XXX
-                        // mProvider.subUiVisibilityChanged(true);
+                        mProvider.subUiVisibilityChanged(true);
                     }
                 }
             }
@@ -378,8 +377,7 @@ public class ActivityChooserView extends ViewGroup implements
             popupWindow.setContentWidth(contentWidth);
             popupWindow.show();
             if (mProvider != null) {
-                // XXX
-                // mProvider.subUiVisibilityChanged(true);
+                mProvider.subUiVisibilityChanged(true);
             }
             popupWindow.getListView().setContentDescription(
                     getContext().getString(
@@ -642,8 +640,7 @@ public class ActivityChooserView extends ViewGroup implements
         public void onDismiss() {
             notifyOnDismissListener();
             if (mProvider != null) {
-                // XXX
-                // mProvider.subUiVisibilityChanged(false);
+                mProvider.subUiVisibilityChanged(false);
             }
         }
 

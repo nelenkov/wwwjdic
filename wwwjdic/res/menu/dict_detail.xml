@@ -16,5 +16,5 @@
         android:title="@string/share"
         android:orderInCategory="2"
         android:showAsAction="always|withText" 
-        android:actionProviderClass="org.nick.wwwjdic.utils.ShareActionProvider"/>   
+        android:actionProviderClass="org.nick.wwwjdic.actionprovider.ShareActionProvider"/>   
 </menu>
