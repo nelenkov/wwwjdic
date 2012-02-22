@@ -23,11 +23,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.widget.CursorAdapter;
 import android.text.ClipboardManager;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -41,14 +41,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 import au.com.bytecode.opencsv.CSVReader;
 
-import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 @SuppressWarnings("deprecation")
-public abstract class HistoryFragmentBase extends ListFragment implements
-        LoaderManager.LoaderCallbacks<LoaderResult<Cursor>>,
+public abstract class HistoryFragmentBase extends SherlockListFragment
+        implements LoaderManager.LoaderCallbacks<LoaderResult<Cursor>>,
         OnItemLongClickListener {
 
     private static final String TAG = HistoryFragmentBase.class.getSimpleName();
@@ -190,10 +190,10 @@ public abstract class HistoryFragmentBase extends ListFragment implements
             startActivity(intent);
         } else if (item.getItemId() == R.id.menu_import) {
             importItems();
-            getActivity().invalidateOptionsMenu();
+            getSherlockActivity().invalidateOptionsMenu();
         } else if (item.getItemId() == R.id.menu_export) {
             exportItems();
-            getActivity().invalidateOptionsMenu();
+            getSherlockActivity().invalidateOptionsMenu();
         } else if (item.getItemId() == R.id.menu_filter) {
             showFilterDialog();
         } else if (item.getItemId() == R.id.menu_delete) {
@@ -230,7 +230,7 @@ public abstract class HistoryFragmentBase extends ListFragment implements
                             public void onClick(DialogInterface dialog, int item) {
                                 selectedFilter = item - 1;
                                 filter();
-                                getActivity().invalidateOptionsMenu();
+                                getSherlockActivity().invalidateOptionsMenu();
                                 dialog.dismiss();
                             }
                         });
@@ -438,7 +438,7 @@ public abstract class HistoryFragmentBase extends ListFragment implements
                                 public void onClick(DialogInterface dialog,
                                         int id) {
                                     historyFragment.deleteAll();
-                                    historyFragment.getActivity()
+                                    historyFragment.getSherlockActivity()
                                             .invalidateOptionsMenu();
                                 }
                             })
@@ -538,19 +538,21 @@ public abstract class HistoryFragmentBase extends ListFragment implements
             this.position = position;
         }
 
-        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+        public boolean onCreateActionMode(ActionMode actionMode,
+                android.view.Menu menu) {
             // XXXX
             // MenuInflater inflater = getActivity().getMenuInflater();
             // inflater.inflate(R.menu.history_favorites_context, menu);
             return true;
         }
 
-        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+        public boolean onPrepareActionMode(ActionMode actionMode,
+                android.view.Menu menu) {
             return false;
         }
 
         public boolean onActionItemClicked(ActionMode actionMode,
-                MenuItem menuItem) {
+                android.view.MenuItem menuItem) {
             if (menuItem.getItemId() == R.id.menu_context_history_lookup) {
                 lookup(position);
                 actionMode.finish();

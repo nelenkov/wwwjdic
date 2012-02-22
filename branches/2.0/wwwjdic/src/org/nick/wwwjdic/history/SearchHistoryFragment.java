@@ -45,7 +45,8 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                 cursor);
         setListAdapter(adapter);
 
-        getActivity().setSupportProgressBarIndeterminateVisibility(true);
+        getSherlockActivity()
+                .setSupportProgressBarIndeterminateVisibility(true);
         getLoaderManager().initLoader(1, null, this);
     }
 
@@ -55,7 +56,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
             @Override
             protected void onPreExecute() {
-                getActivity()
+                getSherlockActivity()
                         .setSupportProgressBarIndeterminateVisibility(true);
             }
 
@@ -94,7 +95,8 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                 }
 
                 refresh();
-                getActivity().setSupportProgressBarIndeterminateVisibility(
+                getSherlockActivity()
+                        .setSupportProgressBarIndeterminateVisibility(
                         false);
             }
         }.execute();
@@ -174,7 +176,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
             @Override
             protected void onPreExecute() {
-                getActivity()
+                getSherlockActivity()
                         .setSupportProgressBarIndeterminateVisibility(true);
             }
 
@@ -230,7 +232,8 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                     return;
                 }
 
-                getActivity().setSupportProgressBarIndeterminateVisibility(
+                getSherlockActivity()
+                        .setSupportProgressBarIndeterminateVisibility(
                         false);
 
                 if (result) {
@@ -261,7 +264,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
             @Override
             protected void onPreExecute() {
-                getActivity()
+                getSherlockActivity()
                         .setSupportProgressBarIndeterminateVisibility(true);
             }
 
@@ -316,7 +319,8 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                     return;
                 }
 
-                getActivity().setSupportProgressBarIndeterminateVisibility(
+                getSherlockActivity()
+                        .setSupportProgressBarIndeterminateVisibility(
                         false);
 
                 if (result) {
@@ -367,7 +371,8 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     @Override
     public void onLoadFinished(Loader<LoaderResult<Cursor>> loader,
             LoaderResult<Cursor> data) {
-        getActivity().setSupportProgressBarIndeterminateVisibility(false);
+        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(
+                false);
 
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(data.getData());
@@ -382,7 +387,8 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
     @Override
     public void onLoaderReset(Loader<LoaderResult<Cursor>> loader) {
-        getActivity().setSupportProgressBarIndeterminateVisibility(false);
+        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(
+                false);
 
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(null);

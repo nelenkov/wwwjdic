@@ -411,13 +411,13 @@ public class SentenceBreakdownFragment extends
     @Override
     public void showTtsButtons() {
         showSpeakMenu = true;
-        getActivity().invalidateOptionsMenu();
+        getSherlockActivity().invalidateOptionsMenu();
     }
 
     @Override
     public void hideTtsButtons() {
         showSpeakMenu = false;
-        getActivity().invalidateOptionsMenu();
+        getSherlockActivity().invalidateOptionsMenu();
     }
 
     @Override
