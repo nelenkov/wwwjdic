@@ -7,9 +7,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
 
-public abstract class WebServiceBackedActivity extends FragmentActivity {
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
+public abstract class WebServiceBackedActivity extends SherlockFragmentActivity {
 
     public static abstract class WsResultHandler extends Handler {
 

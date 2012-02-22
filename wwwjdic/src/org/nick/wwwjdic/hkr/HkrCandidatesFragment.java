@@ -13,7 +13,6 @@ import org.nick.wwwjdic.utils.LoaderResult;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.ClipboardManager;
@@ -28,8 +27,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockListFragment;
+
 @SuppressWarnings("deprecation")
-public class HkrCandidatesFragment extends ListFragment implements
+public class HkrCandidatesFragment extends SherlockListFragment implements
         LoaderManager.LoaderCallbacks<LoaderResult<KanjiEntry>> {
 
     interface HkrCandidateSelectedListener {
@@ -169,7 +170,8 @@ public class HkrCandidatesFragment extends ListFragment implements
         index = position;
         Bundle args = new Bundle();
         args.putString("kanji", searchKey);
-        getActivity().setSupportProgressBarIndeterminateVisibility(true);
+        getSherlockActivity()
+                .setSupportProgressBarIndeterminateVisibility(true);
         getLoaderManager().restartLoader(0, args, this);
     }
 
@@ -239,7 +241,8 @@ public class HkrCandidatesFragment extends ListFragment implements
     @Override
     public void onLoadFinished(Loader<LoaderResult<KanjiEntry>> loader,
             LoaderResult<KanjiEntry> result) {
-        getActivity().setSupportProgressBarIndeterminateVisibility(false);
+        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(
+                false);
 
         if (result.isFailed()) {
             String message = selectErrorMessage(result.getError());

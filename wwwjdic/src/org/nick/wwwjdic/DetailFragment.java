@@ -26,7 +26,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.support.v4.app.Fragment;
 import android.text.ClipboardManager;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -44,8 +43,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockFragment;
+
 @SuppressWarnings("deprecation")
-public abstract class DetailFragment extends Fragment implements
+public abstract class DetailFragment extends SherlockFragment implements
         OnCheckedChangeListener, OnLongClickListener,
         TextToSpeech.OnInitListener {
 

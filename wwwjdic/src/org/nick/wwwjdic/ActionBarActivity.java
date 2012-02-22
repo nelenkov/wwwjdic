@@ -1,10 +1,9 @@
 package org.nick.wwwjdic;
 
-import android.support.v4.app.FragmentActivity;
-
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 
-public abstract class ActionBarActivity extends FragmentActivity {
+public abstract class ActionBarActivity extends SherlockFragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

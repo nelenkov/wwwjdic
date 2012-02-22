@@ -18,14 +18,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ListFragment;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockListFragment;
+
 @SuppressWarnings("deprecation")
-public abstract class ResultListFragmentBase<T> extends ListFragment implements
-        ResultList<T>, DialogInterface.OnCancelListener {
+public abstract class ResultListFragmentBase<T> extends SherlockListFragment
+        implements ResultList<T>, DialogInterface.OnCancelListener {
 
     private static final String TAG = ResultListFragmentBase.class
             .getSimpleName();
@@ -41,7 +42,6 @@ public abstract class ResultListFragmentBase<T> extends ListFragment implements
 
     protected ResultListFragmentBase() {
     }
-
 
     @Override
     public void onCreate(Bundle state) {
@@ -73,14 +73,12 @@ public abstract class ResultListFragmentBase<T> extends ListFragment implements
         cancelSearchTask();
     }
 
-
     @Override
     public void onDestroy() {
         cancelSearchTask();
 
         super.onDestroy();
     }
-
 
     private void cancelSearchTask() {
         if (transPending != null) {
@@ -101,7 +99,6 @@ public abstract class ResultListFragmentBase<T> extends ListFragment implements
     public void onCancel(DialogInterface dialog) {
         cancelSearchTask();
     }
-
 
     protected WwwjdicApplication getApp() {
         return WwwjdicApplication.getInstance();
