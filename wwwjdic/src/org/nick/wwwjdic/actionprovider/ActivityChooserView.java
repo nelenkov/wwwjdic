@@ -38,10 +38,10 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListPopupWindow;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.actionbarsherlock.internal.widget.IcsListPopupWindow;
 import com.actionbarsherlock.view.ActionProvider;
 
 /**
@@ -157,7 +157,7 @@ public class ActivityChooserView extends ViewGroup implements
     /**
      * Popup window for showing the activity overflow list.
      */
-    private ListPopupWindow mListPopupWindow;
+    private IcsListPopupWindow mListPopupWindow;
 
     /**
      * Listener for the dismissal of the popup/alert.
@@ -364,7 +364,7 @@ public class ActivityChooserView extends ViewGroup implements
             mAdapter.setMaxActivityCount(maxActivityCount);
         }
 
-        ListPopupWindow popupWindow = getListPopupWindow();
+        IcsListPopupWindow popupWindow = getListPopupWindow();
         if (!popupWindow.isShowing()) {
             if (mIsSelectingDefaultActivity || !defaultActivityButtonShown) {
                 mAdapter.setShowDefaultActivity(true,
@@ -509,9 +509,10 @@ public class ActivityChooserView extends ViewGroup implements
      * 
      * @return The popup.
      */
-    private ListPopupWindow getListPopupWindow() {
+    private IcsListPopupWindow getListPopupWindow() {
         if (mListPopupWindow == null) {
-            mListPopupWindow = new ListPopupWindow(getContext());
+            mListPopupWindow = new IcsListPopupWindow(getContext(), null,
+                    com.actionbarsherlock.R.attr.popupMenuStyle);
             mListPopupWindow.setAdapter(mAdapter);
             mListPopupWindow.setAnchorView(ActivityChooserView.this);
             mListPopupWindow.setModal(true);
@@ -773,9 +774,11 @@ public class ActivityChooserView extends ViewGroup implements
                 // Highlight the default.
                 if (mShowDefaultActivity && position == 0
                         && mHighlightDefaultActivity) {
-                    convertView.setActivated(true);
+                    // XXX
+                    // convertView.setActivated(true);
                 } else {
-                    convertView.setActivated(false);
+                    // XXX
+                    // convertView.setActivated(false);
                 }
                 return convertView;
             default:
