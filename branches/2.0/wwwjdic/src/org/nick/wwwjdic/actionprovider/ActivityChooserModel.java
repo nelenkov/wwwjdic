@@ -28,6 +28,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -563,7 +564,9 @@ public class ActivityChooserModel extends DataSetObservable {
             mCanReadHistoricalData = false;
             mReadShareHistoryCalled = true;
             if (!TextUtils.isEmpty(mHistoryFileName)) {
-                AsyncTask.SERIAL_EXECUTOR.execute(new HistoryLoader());
+                // AsyncTask.SERIAL_EXECUTOR.execute(new HistoryLoader());
+                Executors.newSingleThreadExecutor()
+                        .execute(new HistoryLoader());
             }
         }
     }
