@@ -30,7 +30,7 @@
         android:layout_gravity="center"
         android:focusable="true"
         android:addStatesFromChildren="true"
-        android:background="?android:attr/actionBarItemBackground">
+        android:background="@drawable/abs__item_background_holo_dark">
 
         <ImageView android:id="@+id/image"
             android:layout_width="32dip"
@@ -52,7 +52,7 @@
         android:layout_gravity="center"
         android:focusable="true"
         android:addStatesFromChildren="true"
-        android:background="?android:attr/actionBarItemBackground">
+        android:background="@drawable/abs__item_background_holo_dark">
 
         <ImageView android:id="@+id/image"
             android:layout_width="32dip"
