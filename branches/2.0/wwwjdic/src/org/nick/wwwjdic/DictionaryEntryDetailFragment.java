@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 
+import org.nick.wwwjdic.actionprovider.ShareActionProvider;
 import org.nick.wwwjdic.model.DictionaryEntry;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.DictUtils;
@@ -43,6 +44,8 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
 
     private DictionaryEntry entry;
     private String exampleSearchKey;
+
+    private ShareActionProvider mShareActionProvider;
 
     public DictionaryEntryDetailFragment() {
         setHasOptionsMenu(true);
@@ -147,6 +150,16 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.dict_detail, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.menu_dict_detail_share);
+        mShareActionProvider = (ShareActionProvider) menuItem
+                .getActionProvider();
+
+        // Attach an intent to this ShareActionProvider. You can update this at
+        // any time,
+        // like when the user selects a new piece of data they might like to
+        // share.
+        mShareActionProvider.setShareIntent(createShareIntent());
     }
 
     @Override

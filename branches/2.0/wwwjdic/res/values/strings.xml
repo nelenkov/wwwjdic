@@ -585,4 +585,19 @@
     <string name="random">Random</string>
     <string name="sequential">Sequentail</string>
 
+    <!-- ActivityChooserView -->
+    <string name="activitychooserview_choose_application">Choose an application</string>
+    <string name="activity_chooser_view_see_all">See all...</string>
+    <string name="activity_chooser_view_dialog_title_default">Select activity</string>
+    
+    <!-- Title for a button to expand the list of activities in ActivityChooserView [CHAR LIMIT=25] -->
+    <string name="activity_chooser_view_see_all">See all...</string>
+    <!-- Title default for a dialog showing possible activities in ActivityChooserView [CHAR LIMIT=25] -->
+    <string name="activity_chooser_view_dialog_title_default">Select activity</string>
+    
+    <!-- ShareActionProvider - accessibility support -->
+    <!-- Description of the choose target button in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] -->
+    <string name="shareactionprovider_share_with">Share with</string>
+    <!-- Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] -->
+    <string name="shareactionprovider_share_with_application">Share with %s</string>
 </resources>

@@ -360,12 +360,17 @@ public abstract class DetailFragment extends SherlockFragment implements
     }
 
     protected void share() {
+        Intent shareIntent = createShareIntent();
+        getActivity().startActivity(shareIntent);
+    }
+
+    protected Intent createShareIntent() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         String str = wwwjdicEntry.getDetailString();
         shareIntent.putExtra(Intent.EXTRA_TEXT, str);
 
-        getActivity().startActivity(shareIntent);
+        return shareIntent;
     }
 }
