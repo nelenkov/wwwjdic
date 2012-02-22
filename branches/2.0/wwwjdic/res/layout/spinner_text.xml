@@ -2,7 +2,7 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content"
-    android:textSize="13sp" 
+    android:textSize="@dimen/search_option_text_size"
     android:id="@+id/spinnerTarget"
     android:textColor="#000" 
     android:gravity="center" />
