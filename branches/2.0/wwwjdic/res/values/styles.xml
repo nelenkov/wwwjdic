@@ -215,18 +215,5 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">fill_parent</item>
     </style>
-
-    <!-- ActivityChooser -->
-     <style name="Widget.ActivityChooserView">
-        <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/ab_share_pack_holo_dark</item>
-        <item name="android:divider">?android:attr/dividerVertical</item>
-        <item name="android:showDividers">middle</item>
-        <item name="android:dividerPadding">6dip</item>
-    </style>
-
-    <style name="Widget.Holo.ActivityChooserView" parent="Widget.ActivityChooserView">
-    </style>
-     
     
 </resources>

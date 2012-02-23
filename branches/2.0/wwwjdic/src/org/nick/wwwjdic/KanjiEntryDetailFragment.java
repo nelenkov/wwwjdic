@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 
+import org.nick.wwwjdic.actionprovider.ShareActionProvider;
 import org.nick.wwwjdic.model.JlptLevels;
 import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.model.Radical;
@@ -57,6 +58,8 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
     private LinearLayout codesLayout;
 
     private KanjiEntry entry;
+
+    private ShareActionProvider shareActionProvider;
 
     public KanjiEntryDetailFragment() {
         setHasOptionsMenu(true);
@@ -280,6 +283,14 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.kanji_detail, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.menu_kanji_detail_share);
+        shareActionProvider = (ShareActionProvider) menuItem
+                .getActionProvider();
+
+        if (shareActionProvider != null) {
+            shareActionProvider.setShareIntent(createShareIntent());
+        }
     }
 
     @Override
@@ -288,6 +299,10 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
             copy();
             return true;
         } else if (item.getItemId() == R.id.menu_kanji_detail_share) {
+            if (shareActionProvider != null) {
+                return false;
+            }
+
             share();
 
             return true;

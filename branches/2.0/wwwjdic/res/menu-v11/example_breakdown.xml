@@ -39,6 +39,6 @@
         android:icon="@android:drawable/ic_menu_share"
         android:orderInCategory="3"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/share"/>
-
+        android:title="@string/share"  
+        android:actionProviderClass="org.nick.wwwjdic.actionprovider.ShareActionProvider" />
 </menu>

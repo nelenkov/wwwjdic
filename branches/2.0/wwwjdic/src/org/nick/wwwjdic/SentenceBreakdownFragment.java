@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.nick.wwwjdic.actionprovider.ShareActionProvider;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.model.SentenceBreakdownEntry;
 import org.nick.wwwjdic.model.WwwjdicQuery;
@@ -127,6 +128,8 @@ public class SentenceBreakdownFragment extends
     private boolean showSpeakMenu = false;
     private TtsManager ttsManager;
 
+    private ShareActionProvider shareActionProvider;
+
     public static SentenceBreakdownFragment newInstance(int index,
             String senteceStr, String sentenceTranslation) {
         SentenceBreakdownFragment f = new SentenceBreakdownFragment();
@@ -247,6 +250,14 @@ public class SentenceBreakdownFragment extends
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.example_breakdown, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.menu_example_share);
+        shareActionProvider = (ShareActionProvider) menuItem
+                .getActionProvider();
+
+        if (shareActionProvider != null) {
+            shareActionProvider.setShareIntent(createShareIntent());
+        }
     }
 
     @Override
@@ -276,6 +287,10 @@ public class SentenceBreakdownFragment extends
             }
             return true;
         } else if (item.getItemId() == R.id.menu_example_share) {
+            if (shareActionProvider != null) {
+                return false;
+            }
+
             share();
 
             return true;
@@ -285,6 +300,12 @@ public class SentenceBreakdownFragment extends
     }
 
     private void share() {
+        Intent shareIntent = createShareIntent();
+
+        getActivity().startActivity(shareIntent);
+    }
+
+    private Intent createShareIntent() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
@@ -294,7 +315,7 @@ public class SentenceBreakdownFragment extends
         }
         shareIntent.putExtra(Intent.EXTRA_TEXT, str);
 
-        getActivity().startActivity(shareIntent);
+        return shareIntent;
     }
 
     @Override
