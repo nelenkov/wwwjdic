@@ -103,23 +103,16 @@ public class OcrActivity extends WebServiceBackedActivity implements
     private boolean supportsFlash = false;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     protected void activityOnCreate(Bundle icicle) {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         if (!UIUtils.isHoneycombTablet(this)) {
-            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            requestWindowFeature(com.actionbarsherlock.view.Window.FEATURE_NO_TITLE);
+        } else {
+            requestWindowFeature(com.actionbarsherlock.view.Window.FEATURE_ACTION_BAR_OVERLAY);
         }
         window.setFormat(PixelFormat.TRANSLUCENT);
-        if (UIUtils.isHoneycombTablet(this)) {
-            requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-        }
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.ocr);

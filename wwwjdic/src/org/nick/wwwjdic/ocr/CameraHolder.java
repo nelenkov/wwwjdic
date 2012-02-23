@@ -117,7 +117,10 @@ public class CameraHolder {
     }
 
     public boolean supportsFlash(Camera.Parameters params) {
-        return ReflectionUtils.getFlashMode(params) != null;
+        List<String> flashModes = params.getSupportedFlashModes();
+
+        return flashModes.contains(Camera.Parameters.FLASH_MODE_ON)
+                && flashModes.contains(Camera.Parameters.FLASH_MODE_OFF);
     }
 
     public synchronized void toggleFlash(boolean useFlash,
@@ -126,14 +129,14 @@ public class CameraHolder {
             return;
         }
 
-        String flashMode = "off";
+        String flashMode = Camera.Parameters.FLASH_MODE_OFF;
         if (useFlash) {
-            flashMode = "on";
+            flashMode = Camera.Parameters.FLASH_MODE_ON;
         } else {
-            flashMode = "off";
+            flashMode = Camera.Parameters.FLASH_MODE_OFF;
         }
 
-        ReflectionUtils.setFlashMode(params, flashMode);
+        params.setFlashMode(flashMode);
         camera.setParameters(params);
     }
 
