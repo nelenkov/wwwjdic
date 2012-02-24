@@ -413,6 +413,7 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
         refresh();
     }
 
+    @SuppressLint("NewApi")
     static class ConfirmDeleteDialog extends DialogFragment {
 
         private HistoryFragmentBase historyFragment;
@@ -532,6 +533,7 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
         return true;
     }
 
+    @SuppressLint("NewApi")
     class ContextCallback implements ActionMode.Callback {
 
         private int position;
