@@ -26,13 +26,13 @@ public class SentenceBreakdown extends ResultListBase {
             exampleBreakdown = true;
         }
 
-        //        setContentView(R.layout.sentence_breakdown);
+        setContentView(R.layout.sentence_breakdown);
         if (savedInstanceState == null) {
             SentenceBreakdownFragment breakDown = SentenceBreakdownFragment
                     .newInstance(0, sentence, translation);
             breakDown.setArguments(getIntent().getExtras());
             getSupportFragmentManager().beginTransaction()
-                    .add(android.R.id.content, breakDown).commit();
+                    .add(R.id.sentence_breakdown, breakDown).commit();
         }
     }
 
