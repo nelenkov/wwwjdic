@@ -15,22 +15,23 @@ public class GuideView extends View {
     private static int GUIDE_HEIGHT = 50;
     private int firstGuideY;
 
+    private Paint paint;
+
     public GuideView(Context context) {
         super(context);
         firstGuideY = UIUtils.isHoneycombTablet(context) ? 58 : 0;
+        paint = new Paint();
     }
 
     public GuideView(Context context, AttributeSet attrs) {
         super(context, attrs);
         firstGuideY = UIUtils.isHoneycombTablet(context) ? 58 : 0;
+        paint = new Paint();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         float density = getResources().getDisplayMetrics().density;
-
-        final Paint paint = new Paint();
-        final Rect rect = new Rect();
 
         int width = canvas.getWidth();
         int height = canvas.getHeight();
@@ -52,6 +53,8 @@ public class GuideView extends View {
             if (i == numGuides - 1) {
                 bottom = height - 1;
             }
+
+            Rect rect = new Rect();
             rect.set(0, top, width, bottom);
             canvas.drawRect(rect, paint);
         }

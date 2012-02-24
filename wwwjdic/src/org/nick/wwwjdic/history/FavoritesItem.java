@@ -4,12 +4,13 @@ import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.model.WwwjdicEntry;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class FavoritesItem extends LinearLayout implements
         OnCheckedChangeListener {
@@ -26,6 +27,19 @@ public class FavoritesItem extends LinearLayout implements
     private FavoriteStatusChangedListener favoriteStatusChangedListener;
 
     private WwwjdicEntry entry;
+
+    public FavoritesItem(Context context) {
+        super(context);
+    }
+
+    public FavoritesItem(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+    }
+
+    public FavoritesItem(Context context, AttributeSet attributeSet,
+            int defStyle) {
+        super(context, attributeSet, defStyle);
+    }
 
     FavoritesItem(Context context,
             FavoriteStatusChangedListener statusChangedListener) {

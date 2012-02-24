@@ -4,6 +4,7 @@ import static org.nick.wwwjdic.WwwjdicPreferences.PREF_AUTO_SELECT_MIRROR_KEY;
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_DEFAULT_DICT_PREF_KEY;
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_JP_TTS_ENGINE;
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_WWWJDIC_MIRROR_URL_KEY;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -11,6 +12,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
 
+@SuppressLint("NewApi")
 public class WwwjdicPrefsFragment extends PreferenceFragment implements
         OnPreferenceChangeListener {
 

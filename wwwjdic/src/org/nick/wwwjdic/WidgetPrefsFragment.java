@@ -5,12 +5,14 @@ import static org.nick.wwwjdic.WwwjdicPreferences.PREF_KOD_KEY;
 import org.nick.wwwjdic.widgets.KodWidgetConfigure;
 import org.nick.wwwjdic.widgets.KodWidgetProvider;
 
+import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
 
+@TargetApi(11)
 public class WidgetPrefsFragment extends GenericPrefsFragment {
 
     @Override

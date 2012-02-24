@@ -10,6 +10,7 @@ import org.nick.wwwjdic.model.SentenceBreakdownEntry;
 import org.nick.wwwjdic.model.WwwjdicQuery;
 import org.nick.wwwjdic.utils.StringUtils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +32,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 @SuppressWarnings("deprecation")
+@SuppressLint("NewApi")
 public class SentenceBreakdownFragment extends
         ResultListFragmentBase<SentenceBreakdownEntry> implements
         TtsManager.TtsEnabled {

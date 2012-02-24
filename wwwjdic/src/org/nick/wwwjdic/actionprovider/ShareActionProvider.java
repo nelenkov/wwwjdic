@@ -18,6 +18,7 @@
 
 package org.nick.wwwjdic.actionprovider;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.actionbarsherlock.internal.view.menu.MenuWrapper;
 import com.actionbarsherlock.view.ActionProvider;
 import com.actionbarsherlock.view.SubMenu;
 
+@SuppressLint("NewApi")
 public class ShareActionProvider extends ActionProvider {
 
     private android.widget.ShareActionProvider icsActionProvider;
