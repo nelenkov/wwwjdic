@@ -12,6 +12,7 @@ import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.LoaderResult;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -47,6 +48,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 @SuppressWarnings("deprecation")
+@SuppressLint("NewApi")
 public abstract class HistoryFragmentBase extends SherlockListFragment
         implements LoaderManager.LoaderCallbacks<LoaderResult<Cursor>>,
         OnItemLongClickListener {

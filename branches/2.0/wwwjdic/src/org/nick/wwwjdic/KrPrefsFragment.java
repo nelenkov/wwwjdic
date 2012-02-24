@@ -1,12 +1,14 @@
 package org.nick.wwwjdic;
 
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_USE_KR_KEY;
+import android.annotation.TargetApi;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
 
+@TargetApi(11)
 public class KrPrefsFragment extends PreferenceFragment implements
         OnPreferenceChangeListener {
 

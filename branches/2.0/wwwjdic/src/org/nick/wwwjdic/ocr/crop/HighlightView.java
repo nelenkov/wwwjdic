@@ -26,6 +26,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.drawable.Drawable;
+import android.util.FloatMath;
 import android.view.View;
 
 // This class is used by CropImage to display a highlighted cropping rectangle
@@ -175,7 +176,7 @@ class HighlightView {
         if (mCircle) {
             float distX = x - r.centerX();
             float distY = y - r.centerY();
-            int distanceFromCenter = (int) Math.sqrt(distX * distX + distY
+            int distanceFromCenter = (int) FloatMath.sqrt(distX * distX + distY
                     * distY);
             int radius = mDrawRect.width() / 2;
             int delta = distanceFromCenter - radius;
@@ -236,8 +237,8 @@ class HighlightView {
             return;
         } else if (edge == MOVE) {
             // Convert to image space before sending to moveBy().
-            moveBy(dx * (mCropRect.width() / r.width()), dy
-                    * (mCropRect.height() / r.height()));
+            moveBy(dx * (mCropRect.width() / r.width()),
+                    dy * (mCropRect.height() / r.height()));
         } else {
             if (((GROW_LEFT_EDGE | GROW_RIGHT_EDGE) & edge) == 0) {
                 dx = 0;
@@ -262,11 +263,11 @@ class HighlightView {
         mCropRect.offset(dx, dy);
 
         // Put the cropping rectangle inside image rectangle.
-        mCropRect.offset(Math.max(0, mImageRect.left - mCropRect.left), Math
-                .max(0, mImageRect.top - mCropRect.top));
+        mCropRect.offset(Math.max(0, mImageRect.left - mCropRect.left),
+                Math.max(0, mImageRect.top - mCropRect.top));
 
-        mCropRect.offset(Math.min(0, mImageRect.right - mCropRect.right), Math
-                .min(0, mImageRect.bottom - mCropRect.bottom));
+        mCropRect.offset(Math.min(0, mImageRect.right - mCropRect.right),
+                Math.min(0, mImageRect.bottom - mCropRect.bottom));
 
         mDrawRect = computeLayout();
         invalRect.union(mDrawRect);
@@ -344,8 +345,8 @@ class HighlightView {
         RectF r = new RectF(mCropRect.left, mCropRect.top, mCropRect.right,
                 mCropRect.bottom);
         mMatrix.mapRect(r);
-        return new Rect(Math.round(r.left), Math.round(r.top), Math
-                .round(r.right), Math.round(r.bottom));
+        return new Rect(Math.round(r.left), Math.round(r.top),
+                Math.round(r.right), Math.round(r.bottom));
     }
 
     public void invalidate() {

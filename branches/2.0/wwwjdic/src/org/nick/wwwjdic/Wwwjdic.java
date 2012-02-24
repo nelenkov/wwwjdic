@@ -15,6 +15,7 @@ import org.nick.wwwjdic.ocr.OcrActivity;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.UIUtils;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -225,8 +226,8 @@ public class Wwwjdic extends ActionBarActivity {
 
     private boolean hasCamera;
 
-    /** Called when the activity is first created. */
     @Override
+    @SuppressLint("NewApi")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

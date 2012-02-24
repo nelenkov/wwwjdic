@@ -66,7 +66,7 @@
             android:textSize="@dimen/kod_reading_meaning_text_size"
             android:singleLine="true"
             android:includeFontPadding="false"
-            android:layout_above="@+id/kod_date_text" 
+            android:layout_below="@id/kod_reading" 
             android:layout_marginBottom="2dp" 
             android:layout_alignParentBottom="true"/>         
     </RelativeLayout>

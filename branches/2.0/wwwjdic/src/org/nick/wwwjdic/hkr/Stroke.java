@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.util.FloatMath;
 
 public class Stroke {
 
@@ -76,7 +77,7 @@ public class Stroke {
 
         float dx = points.get(annotationGap).x - firstPoint.x;
         float dy = points.get(annotationGap).y - firstPoint.y;
-        double length = Math.sqrt(dx * dx + dy * dy);
+        double length = FloatMath.sqrt(dx * dx + dy * dy);
         if (length > 0) {
             dx /= length;
             dy /= length;
@@ -138,7 +139,7 @@ public class Stroke {
         float dx = x2 - x;
         float dy = y2 - y;
 
-        float length = (float) Math.sqrt(dx * dx + dy * dy);
+        float length = (float) FloatMath.sqrt(dx * dx + dy * dy);
         if (length >= 1.0) {
             xOffset = -dx * ANNOTATION_OFFSET / length;
             yOffset = (float) (dy * ANNOTATION_OFFSET / length - 0.5 * ANNOTATION_OFFSET);
