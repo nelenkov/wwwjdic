@@ -313,10 +313,10 @@
         dictionary screen for editing before search.</string>
     <string name="import_items">Import</string>
     <string name="export_items">Export</string>
-    <string name="favorites_exported">avorites exported to %1$s (%2$d item(s))</string>
-    <string name="favorites_imported">avorites imported from %1$s (%2$d item(s))</string>
-    <string name="history_exported">earch history exported to %1$s (%2$d item(s))</string>
-    <string name="history_imported">earch history imported from %1$s (%2$d item(s))</string>
+    <string name="favorites_exported">Favorites exported to %1$s (%2$d item(s))</string>
+    <string name="favorites_imported">Favorites imported from %1$s (%2$d item(s))</string>
+    <string name="history_exported">Search history exported to %1$s (%2$d item(s))</string>
+    <string name="history_imported">Search history imported from %1$s (%2$d item(s))</string>
     <string name="filter">Filter</string>
     <string name="select_filter_type">Select type:</string>
 
