@@ -329,14 +329,6 @@ public class Wwwjdic extends ActionBarActivity {
         super.onStart();
 
         Analytics.startSession(this);
-
-        // XXX -- remove since the action bar is no collapsed
-        // boolean showHome = UIUtils.isHoneycombTablet(this)
-        // || UIUtils.isPortrait(this);
-        // boolean showTitle = !UIUtils.isHoneycombTablet(this)
-        // && UIUtils.isPortrait(this);
-        // getSupportActionBar().setDisplayShowHomeEnabled(showHome);
-        // getSupportActionBar().setDisplayShowTitleEnabled(showTitle);
     }
 
     @Override
