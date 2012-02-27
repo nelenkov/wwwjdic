@@ -23,6 +23,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
@@ -101,6 +102,10 @@ public class WwwjdicApplication extends Application {
     }
 
     private void initAcra() {
+        if (isDebug()) {
+            return;
+        }
+
         try {
             ACRAConfiguration.setResToastText(R.string.crash_toast_text);
             ACRA.init(this);
@@ -113,6 +118,11 @@ public class WwwjdicApplication extends Application {
                     e);
         }
     }
+
+    public boolean isDebug() {
+        return (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) > 0;
+    }
+
 
     private void updateJapanMirror() {
         String mirrorUlr = WwwjdicPreferences.getWwwjdicUrl(this);
