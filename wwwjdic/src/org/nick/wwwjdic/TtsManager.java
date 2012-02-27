@@ -1,5 +1,6 @@
 package org.nick.wwwjdic;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Locale;
@@ -37,9 +38,11 @@ public class TtsManager implements TextToSpeech.OnInitListener {
     private static final String MARKET_URL_TEMPLATE = "market://details?id=%s";
 
     private static final boolean IS_FROYO = Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO;
+    private static final boolean IS_ICS = Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 
     private static Method tts_getDefaultEngine;
     private static Method tts_setEngineByPackageName;
+    private static Constructor<TextToSpeech> tts_packageNameCtor;
 
     static {
         try {
@@ -47,6 +50,11 @@ public class TtsManager implements TextToSpeech.OnInitListener {
                     "getDefaultEngine", (Class[]) null);
             tts_setEngineByPackageName = TextToSpeech.class.getMethod(
                     "setEngineByPackageName", new Class[] { String.class });
+            if (IS_ICS) {
+                tts_packageNameCtor = TextToSpeech.class.getConstructor(
+                        Context.class, TextToSpeech.OnInitListener.class,
+                        String.class);
+            }
         } catch (SecurityException e) {
         } catch (NoSuchMethodException e) {
         }
@@ -77,7 +85,22 @@ public class TtsManager implements TextToSpeech.OnInitListener {
         boolean available = isPackageInstalled(ttsEnginePackage);
         if (available) {
             if (tts == null) {
-                tts = new TextToSpeech(context, this);
+                if (IS_ICS && ttsEnginePackage != null) {
+                    try {
+                        tts = tts_packageNameCtor.newInstance(context, this,
+                                ttsEnginePackage);
+                    } catch (InvocationTargetException e) {
+                        disableTts(e);
+                    } catch (IllegalArgumentException e) {
+                        disableTts(e);
+                    } catch (InstantiationException e) {
+                        disableTts(e);
+                    } catch (IllegalAccessException e) {
+                        disableTts(e);
+                    }
+                } else {
+                    tts = new TextToSpeech(context, this);
+                }
             } else {
                 if (showInstallDialog && ttsActivitiy.wantsTts()) {
                     Dialog dialog = createInstallTtsDataDialog();
@@ -87,6 +110,12 @@ public class TtsManager implements TextToSpeech.OnInitListener {
                 }
             }
         }
+    }
+
+    private void disableTts(Exception e) {
+        Log.e(TAG, "Failed to initialize TTS: " + e.getMessage(), e);
+        tts = null;
+        ttsActivitiy.hideTtsButtons();
     }
 
     @Override
@@ -102,7 +131,7 @@ public class TtsManager implements TextToSpeech.OnInitListener {
         }
 
         // XXX -- use default engine when null?
-        if (ttsEnginePackage != null && IS_FROYO) {
+        if (ttsEnginePackage != null && IS_FROYO && !IS_ICS) {
             try {
                 String defaultEngine = (String) tts_getDefaultEngine.invoke(
                         tts, (Object[]) null);
@@ -118,29 +147,28 @@ public class TtsManager implements TextToSpeech.OnInitListener {
                         return;
                     }
                 }
-
-                Locale locale = ttsActivitiy.getSpeechLocale();
-                if (locale == null) {
-                    Log.w(TAG, "TTS locale " + locale + "not recognized");
-                    ttsActivitiy.hideTtsButtons();
-                    return;
-                }
-
-                if (isLanguageAvailable(locale)) {
-                    tts.setLanguage(locale);
-                    ttsActivitiy.showTtsButtons();
-                } else {
-                    Log.w(TAG, "TTS locale " + locale + " not available");
-                    ttsActivitiy.hideTtsButtons();
-                }
             } catch (InvocationTargetException e) {
-                Log.e(TAG, "error calling by reflection: " + e.getMessage());
-                ttsActivitiy.hideTtsButtons();
+                disableTts(e);
             } catch (IllegalAccessException e) {
-                Log.e(TAG, "error calling by reflection: " + e.getMessage());
-                ttsActivitiy.hideTtsButtons();
+                disableTts(e);
             }
         }
+
+        Locale locale = ttsActivitiy.getSpeechLocale();
+        if (locale == null) {
+            Log.w(TAG, "TTS locale " + locale + "not recognized");
+            ttsActivitiy.hideTtsButtons();
+            return;
+        }
+
+        if (isLanguageAvailable(locale)) {
+            tts.setLanguage(locale);
+            ttsActivitiy.showTtsButtons();
+        } else {
+            Log.w(TAG, "TTS locale " + locale + " not available");
+            ttsActivitiy.hideTtsButtons();
+        }
+
     }
 
     private boolean isPackageInstalled(String packageName) {
