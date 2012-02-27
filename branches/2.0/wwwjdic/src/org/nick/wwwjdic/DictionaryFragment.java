@@ -252,6 +252,10 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
     }
 
     private void hideKeyboard() {
+        if (getActivity() == null) {
+            return;
+        }
+
         InputMethodManager mgr = (InputMethodManager) getActivity()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         mgr.hideSoftInputFromWindow(inputText.getWindowToken(), 0);
