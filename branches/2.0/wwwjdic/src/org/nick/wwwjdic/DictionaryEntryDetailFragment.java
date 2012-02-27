@@ -45,7 +45,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
     private DictionaryEntry entry;
     private String exampleSearchKey;
 
-    private ShareActionProvider mShareActionProvider;
+    private ShareActionProvider shareActionProvider;
 
     public DictionaryEntryDetailFragment() {
         setHasOptionsMenu(true);
@@ -152,14 +152,12 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         inflater.inflate(R.menu.dict_detail, menu);
 
         MenuItem menuItem = menu.findItem(R.id.menu_dict_detail_share);
-        mShareActionProvider = (ShareActionProvider) menuItem
+        shareActionProvider = (ShareActionProvider) menuItem
                 .getActionProvider();
 
-        // Attach an intent to this ShareActionProvider. You can update this at
-        // any time,
-        // like when the user selects a new piece of data they might like to
-        // share.
-        mShareActionProvider.setShareIntent(createShareIntent());
+        if (shareActionProvider != null) {
+            shareActionProvider.setShareIntent(createShareIntent());
+        }
     }
 
     @Override
@@ -173,11 +171,14 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
 
             return true;
         } else if (item.getItemId() == R.id.menu_dict_detail_share) {
-            // mShareActionProvider.setShareIntent(createShareIntent());
-            return false;
-            // share();
+            if (shareActionProvider != null) {
+                // let the provider handle it
+                return false;
+            }
 
-            // return true;
+            share();
+
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
