@@ -87,11 +87,11 @@ public class Wwwjdic extends ActionBarActivity {
         }
 
         @Override
-        public void onTabReselected(Tab tab) {
+        public void onTabReselected(Tab tab, FragmentTransaction ft) {
         }
 
         @Override
-        public void onTabSelected(Tab tab) {
+        public void onTabSelected(Tab tab, FragmentTransaction ft) {
             int position = tab.getPosition();
             viewPager.setCurrentItem(position);
             filterHistoryFragments(position);
@@ -99,7 +99,7 @@ public class Wwwjdic extends ActionBarActivity {
         }
 
         @Override
-        public void onTabUnselected(Tab tab) {
+        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
         }
 
         @Override
