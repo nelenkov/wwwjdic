@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
-import javax.jdo.Transaction;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -105,7 +104,7 @@ public class KanjiStrokesServlet extends HttpServlet {
         PersistenceManager pm = PMF.get().getPersistenceManager();
         Query q = null;
 
-        Transaction tx = null;
+        //        Transaction tx = null;
         try {
             Kanji k = null;
 
@@ -119,8 +118,8 @@ public class KanjiStrokesServlet extends HttpServlet {
                         + "where unicodeNumber == unicodeNumberParam "
                         + "parameters String unicodeNumberParam ");
 
-                tx = pm.currentTransaction();
-                tx.begin();
+                //                tx = pm.currentTransaction();
+                //                tx.begin();
 
                 List<Kanji> kanjis = (List<Kanji>) q.execute(unicodeNumber);
                 if (kanjis.isEmpty()) {
@@ -159,9 +158,9 @@ public class KanjiStrokesServlet extends HttpServlet {
             }
 
         } finally {
-            if (tx != null && tx.isActive()) {
-                tx.commit();
-            }
+            //            if (tx != null && tx.isActive()) {
+            //                tx.commit();
+            //            }
 
             if (q != null) {
                 q.closeAll();
@@ -177,7 +176,7 @@ public class KanjiStrokesServlet extends HttpServlet {
         PersistenceManager pm = PMF.get().getPersistenceManager();
         Query q = null;
 
-        Transaction tx = null;
+        //        Transaction tx = null;
         try {
             Kanji k = null;
 
@@ -190,8 +189,8 @@ public class KanjiStrokesServlet extends HttpServlet {
                         + "where unicodeNumber == unicodeNumberParam "
                         + "parameters String unicodeNumberParam ");
 
-                tx = pm.currentTransaction();
-                tx.begin();
+                //                tx = pm.currentTransaction();
+                //                tx.begin();
 
                 List<Kanji> kanjis = (List<Kanji>) q.execute(unicodeNumber);
                 if (kanjis.isEmpty()) {
@@ -220,9 +219,9 @@ public class KanjiStrokesServlet extends HttpServlet {
             return result;
 
         } finally {
-            if (tx != null && tx.isActive()) {
-                tx.commit();
-            }
+            //            if (tx != null && tx.isActive()) {
+            //                tx.commit();
+            //            }
 
             if (q != null) {
                 q.closeAll();
