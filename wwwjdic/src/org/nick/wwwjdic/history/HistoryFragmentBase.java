@@ -28,7 +28,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.widget.CursorAdapter;
 import android.text.ClipboardManager;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -43,6 +42,7 @@ import android.widget.Toast;
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -527,7 +527,7 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
         }
 
         getListView().setItemChecked(position, true);
-        currentActionMode = getActivity().startActionMode(
+        currentActionMode = getSherlockActivity().startActionMode(
                 new ContextCallback(position));
 
         return true;
@@ -542,21 +542,19 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
             this.position = position;
         }
 
-        public boolean onCreateActionMode(ActionMode actionMode,
-                android.view.Menu menu) {
-            // XXXX
-            // MenuInflater inflater = getActivity().getMenuInflater();
-            // inflater.inflate(R.menu.history_favorites_context, menu);
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            MenuInflater inflater = getSherlockActivity()
+                    .getSupportMenuInflater();
+            inflater.inflate(R.menu.history_favorites_context, menu);
             return true;
         }
 
-        public boolean onPrepareActionMode(ActionMode actionMode,
-                android.view.Menu menu) {
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
             return false;
         }
 
         public boolean onActionItemClicked(ActionMode actionMode,
-                android.view.MenuItem menuItem) {
+                MenuItem menuItem) {
             if (menuItem.getItemId() == R.id.menu_context_history_lookup) {
                 lookup(position);
                 actionMode.finish();
