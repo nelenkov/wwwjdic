@@ -26,6 +26,7 @@ public class KanjiDrawView extends View {
     private Paint strokePaint;
     private Paint strokeAnnotationPaint;
     private Paint outlinePaint;
+    private Rect outlineRect;
 
     private List<Stroke> strokes = new ArrayList<Stroke>();
     private Stroke currentStroke = null;
@@ -70,6 +71,8 @@ public class KanjiDrawView extends View {
         outlinePaint.setStyle(Style.STROKE);
         outlinePaint.setAntiAlias(true);
         outlinePaint.setStrokeWidth(OUTLINE_WIDTH);
+
+        outlineRect = new Rect();
     }
 
     @Override
@@ -85,10 +88,9 @@ public class KanjiDrawView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Rect r = new Rect();
-        getDrawingRect(r);
+        getDrawingRect(outlineRect);
 
-        canvas.drawRect(r, outlinePaint);
+        canvas.drawRect(outlineRect, outlinePaint);
 
         drawStrokes(canvas);
     }
