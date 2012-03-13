@@ -15,6 +15,5 @@
         android:icon="@android:drawable/ic_menu_share"
         android:title="@string/share"
         android:orderInCategory="2"
-        android:showAsAction="always|withText" 
-        android:actionProviderClass="org.nick.wwwjdic.actionprovider.ShareActionProvider"/>   
+        android:showAsAction="always|withText" />
 </menu>
