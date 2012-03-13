@@ -17,7 +17,7 @@ public class DictionaryEntry extends WwwjdicEntry implements Serializable {
     private static final int WORD_IDX = 0;
     private static final int READING_IDX = 1;
 
-    private static final String WORDNET_PREFIX = "JWN-";
+    private static final String WORDNET_PREFIX = "JWN";
     private static final String WIP_MARKER_PREFIX = "WI";
 
     private String word;
