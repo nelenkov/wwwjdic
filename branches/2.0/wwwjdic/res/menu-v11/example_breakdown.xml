@@ -23,13 +23,13 @@
             <item
                 android:id="@+id/menu_example_copy_jp"
                 android:icon="@drawable/ic_menu_copy"
-                android:orderInCategory="3"
+                android:orderInCategory="0"
                 android:showAsAction="ifRoom|withText"
                 android:title="@string/copy_jp"/>
             <item
                 android:id="@+id/menu_example_copy_eng"
                 android:icon="@drawable/ic_menu_copy"
-                android:orderInCategory="4"
+                android:orderInCategory="1"
                 android:showAsAction="ifRoom|withText"
                 android:title="@string/copy_eng"/>
         </menu>
