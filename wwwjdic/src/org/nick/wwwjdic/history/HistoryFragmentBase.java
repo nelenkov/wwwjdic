@@ -501,9 +501,8 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
     protected void showCopiedToast(String headword) {
         String messageTemplate = getResources().getString(
                 R.string.copied_to_clipboard);
-        Toast t = Toast.makeText(getActivity(),
-                String.format(messageTemplate, headword), Toast.LENGTH_SHORT);
-        t.show();
+        Toast.makeText(getActivity(), String.format(messageTemplate, headword),
+                Toast.LENGTH_SHORT).show();
     }
 
     public int getSelectedFilter() {
