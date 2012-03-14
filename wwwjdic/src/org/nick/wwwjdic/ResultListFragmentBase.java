@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import org.nick.wwwjdic.client.WwwjdicMaintenanceException;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.model.WwwjdicEntry;
@@ -127,6 +128,9 @@ public abstract class ResultListFragmentBase<T> extends SherlockListFragment
                         || ex.getCause() instanceof SocketException) {
                     alert.setMessage(getResources().getString(
                             R.string.socket_error_message));
+                } else if (ex instanceof WwwjdicMaintenanceException) {
+                    alert.setMessage(getResources().getString(
+                            R.string.wwwjdic_maintenace_message));
                 } else {
                     alert.setMessage(getResources().getString(
                             R.string.generic_error_message)

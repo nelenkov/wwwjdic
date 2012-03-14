@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.nick.wwwjdic.client.WwwjdicMaintenanceException;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.model.WwwjdicQuery;
 import org.nick.wwwjdic.utils.StringUtils;
@@ -48,9 +49,8 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
                 continue;
             }
 
-            // / XXX handle!
             if (line.contains(MAINTENANCE_MESSAGE)) {
-                throw new RuntimeException(line);
+                throw new WwwjdicMaintenanceException(line);
             }
 
             if (line.startsWith(FONT_TAG)) {

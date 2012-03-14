@@ -111,11 +111,11 @@
     <string name="about_bugtracking">More info/issue reporting</string>
     <string name="bugtracker_url">http://code.google.com/p/wwwjdic</string>
     <string name="uses_wwwjdic">Uses Jim Breen\'s WWWJDIC</string>
-    <string name="wwwjdic_link">ttp://wwwjdic.net</string>
+    <string name="wwwjdic_link">http://wwwjdic.net</string>
     <string name="uses_weocr">Uses WeOCR </string>
-    <string name="weocr_link">ttp://weocr.ocrgrid.org/</string>
+    <string name="weocr_link">http://weocr.ocrgrid.org/</string>
     <string name="uses_kr">Uses kanji recognizer at </string>
-    <string name="kr_link">ttp://kanji.sljfaq.org/kanji16/draw-canvas.html</string>
+    <string name="kr_link">http://kanji.sljfaq.org/kanji16/draw-canvas.html</string>
     <string name="select_dictionary">Select dictionary:</string>
     <string name="stroke_count">Stroke count:  </string>
     <string name="radical_number">Radical number: </string>
@@ -191,7 +191,6 @@
         <item>USA</item>
     </string-array>
     <string-array name="wwwjdic_mirror_coords">
-
         <!-- Sydney -->
         <item>033:51:35/151:12:40</item>
         <!-- Toronto -->
@@ -479,10 +478,8 @@
     <string name="widget_update_interval">Widget update interval</string>
     <string name="update_interval">Update interval:</string>
     <string name="kod_configure_message">Select display and update options for the kanji
-        of the day
-        widget below. Options are global, so all widgets will
-        be
-        affected.</string>
+        of the day widget below. Options are global, so all widgets will
+        be affected.</string>
     <string name="search_hint">Search WWWJDIC</string>
     <string name="dict_search">WWWJDIC Search</string>
     <string name="dict_search_description">Search default dictionary</string>
@@ -496,7 +493,7 @@
     <string name="ocr_search">OCR</string>
     <string name="multi_radical_search">Multi-radical</string>
     <string name="multi_radical_search_tip">* Tap (multiple)components to (de)select them\n* Select multiple components to drill down\n* Unavailable characters are greyed out\n* Tap on kanji at the top to dispaly details\n* Due to font limitations, some components are displayed as kanji that include them: \n  ひとやね: 个(top)\n  なおがしら: 尚(top)\n  こざとへん: 阡(left)\n  おおざと: 邦(right)</string>
-    <string name="kradfile_attribution">        Includes data from the<a href="http://www.kanjicafe.com/kradfile_license.htm#download">KRADFILE - Unicode file</a>        . The file is (C) 2001, 2007, 2009 by Michael Raine, Jim Breen,
+    <string name="kradfile_attribution">Includes data from the<a href="http://www.kanjicafe.com/kradfile_license.htm#download">KRADFILE - Unicode file</a>        . The file is (C) 2001, 2007, 2009 by Michael Raine, Jim Breen,
         The EDR&amp;D Group at Monash University, Jim Rose, The
         KanjiCafe.com, and is used in conformance with its<a href="http://www.kanjicafe.com/kradfile_license.htm">license</a></string>
     <string name="details">Details</string>
@@ -584,4 +581,7 @@
     <string name="kanji_selection">Kanji selection</string>
     <string name="random">Random</string>
     <string name="sequential">Sequentail</string>
+    
+    <string name="wwwjdic_maintenace_message">WWWJDIC is currently undergoing maintenance. Use another mirror or try again later.</string>
+
 </resources>
