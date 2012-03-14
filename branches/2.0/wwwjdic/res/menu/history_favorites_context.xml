@@ -2,17 +2,17 @@
 <menu
   xmlns:android="http://schemas.android.com/apk/res/android">
      <item android:id="@+id/menu_context_history_lookup"
-        android:icon="@android:drawable/ic_menu_search"
+        android:icon="@drawable/ic_menu_search"
         android:title="@string/look_up"
         android:orderInCategory="0" 
         android:showAsAction="ifRoom|withText"/>
      <item android:id="@+id/menu_context_history_copy"
-        android:icon="@android:drawable/ic_menu_share"
+        android:icon="@drawable/ic_menu_copy"
         android:title="@string/copy"
         android:orderInCategory="1" 
         android:showAsAction="ifRoom|withText"/>
      <item android:id="@+id/menu_context_history_delete"
-        android:icon="@android:drawable/ic_menu_delete"
+        android:icon="@drawable/ic_menu_delete"
         android:title="@string/delete"
         android:orderInCategory="2" 
         android:showAsAction="ifRoom|withText"/>
