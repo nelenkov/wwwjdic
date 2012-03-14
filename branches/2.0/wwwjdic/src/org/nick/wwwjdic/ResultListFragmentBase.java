@@ -195,16 +195,14 @@ public abstract class ResultListFragmentBase<T> extends SherlockListFragment
         clipboard.setText(headword);
         String message = getResources().getString(R.string.copied_to_clipboard,
                 headword);
-        Toast t = Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);
-        t.show();
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     protected void addToFavorites(WwwjdicEntry entry) {
         db.addFavorite(entry);
         String message = getResources().getString(R.string.added_to_favorites,
                 entry.getHeadword());
-        Toast t = Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);
-        t.show();
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
 }
