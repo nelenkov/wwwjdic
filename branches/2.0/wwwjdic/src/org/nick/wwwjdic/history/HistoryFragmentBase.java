@@ -520,9 +520,13 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
             return false;
         }
 
-        getListView().setItemChecked(position, true);
         currentActionMode = getSherlockActivity().startActionMode(
                 new ContextCallback(position));
+        getListView().setItemChecked(position, true);
+        //        view.setSelected(true);
+        System.out.println("************* onItemLongClick");
+        System.out.println("************* checkedPosition "
+                + getListView().getCheckedItemPosition());
 
         return true;
     }
