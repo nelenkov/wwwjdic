@@ -8,14 +8,17 @@ import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.widget.Checkable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class HistoryItem extends LinearLayout {
+public class HistoryItem extends LinearLayout implements Checkable {
 
     private TextView searchTypeText;
     private TextView searchKeyText;
     private TextView criteriaDetailsText;
+
+    private boolean checked;
 
     HistoryItem(Context context) {
         super(context);
@@ -53,6 +56,7 @@ public class HistoryItem extends LinearLayout {
         if (detailStr != null && !"".equals(detailStr)) {
             criteriaDetailsText.setText(detailStr);
         }
+        checked = false;
     }
 
     private Integer tryParseInt(String str) {
@@ -137,6 +141,25 @@ public class HistoryItem extends LinearLayout {
         }
 
         return result;
+    }
+
+    @Override
+    public boolean isChecked() {
+        return checked;
+    }
+
+    @Override
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+        // XXX -- resource not found?
+        //        int resource = UIUtils.isHoneycomb() ? android.R.attr.activatedBackgroundIndicator
+        //                : R.drawable.list_activated_holo;
+        setBackgroundResource(checked ? R.drawable.list_activated_holo : 0);
+    }
+
+    @Override
+    public void toggle() {
+        setChecked(!checked);
     }
 
 }

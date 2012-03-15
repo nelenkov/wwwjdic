@@ -7,13 +7,14 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.CheckBox;
+import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class FavoritesItem extends LinearLayout implements
-        OnCheckedChangeListener {
+        OnCheckedChangeListener, Checkable {
 
     static interface FavoriteStatusChangedListener {
         void onStatusChanged(boolean isFavorite, WwwjdicEntry entry);
@@ -23,6 +24,8 @@ public class FavoritesItem extends LinearLayout implements
     private TextView dictHeadingText;
     private TextView entryDetailsText;
     private CheckBox starCb;
+
+    private boolean checked;
 
     private FavoriteStatusChangedListener favoriteStatusChangedListener;
 
@@ -72,10 +75,32 @@ public class FavoritesItem extends LinearLayout implements
         // starCb.setChecked(criteria.isFavorite());
         starCb.setChecked(true);
         starCb.setOnCheckedChangeListener(this);
+
+        checked = false;
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         favoriteStatusChangedListener.onStatusChanged(isChecked, entry);
+    }
+
+
+    @Override
+    public boolean isChecked() {
+        return checked;
+    }
+
+    @Override
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+        // XXX -- resource not found?
+        //        int resource = UIUtils.isHoneycomb() ? android.R.attr.activatedBackgroundIndicator
+        //                : R.drawable.list_activated_holo;
+        setBackgroundResource(checked ? R.drawable.list_activated_holo : 0);
+    }
+
+    @Override
+    public void toggle() {
+        setChecked(!checked);
     }
 }
