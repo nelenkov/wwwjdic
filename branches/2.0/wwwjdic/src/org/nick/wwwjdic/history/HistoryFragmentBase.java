@@ -516,11 +516,6 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view,
             int position, long id) {
-        if (!IS_HONEYCOMB) {
-            // not supported on pre-HC
-            return false;
-        }
-
         if (currentActionMode != null) {
             return false;
         }
