@@ -174,6 +174,9 @@
 
     <style name="Theme.WwwjdicAb" parent="@style/Theme.Sherlock">
         <item name="actionBarStyle">@style/Widget.WwwjdicAb</item>
+        <item name="android:actionBarStyle">@style/Widget.WwwjdicAb</item>
+        <item name="actionModeStyle">@style/Widget.WwwjdicActionMode</item>
+        <item name="android:actionModeStyle">@style/Widget.WwwjdicActionMode</item>
     </style>
 
     <style name="Widget.WwwjdicAb" parent="Widget.Sherlock.ActionBar">
@@ -185,13 +188,27 @@
 
     <style name="Theme.WwwjdicAbMain" parent="@style/Theme.Sherlock">
         <item name="actionBarStyle">@style/Widget.WwwjdicAbMain</item>
+        <item name="android:actionBarStyle">@style/Widget.WwwjdicAbMain</item>
+        <item name="actionModeStyle">@style/Widget.WwwjdicActionMode</item>
+        <item name="android:actionModeStyle">@style/Widget.WwwjdicActionMode</item>
     </style>
     
     <style name="Widget.WwwjdicAbMain" parent="Widget.Sherlock.ActionBar">
         <item name="background">@drawable/action_bar_bg</item>
+        <item name="android:background">@drawable/action_bar_bg</item>
         <item name="backgroundSplit">@drawable/action_bar_bg</item>
+        <item name="android:backgroundSplit">@drawable/action_bar_bg</item>
         <item name="icon">@drawable/ic_action_home</item>
+        <item name="android:icon">@drawable/ic_action_home</item>
         <item name="titleTextStyle">@style/action_bar_title</item>
+        <item name="android:titleTextStyle">@style/action_bar_title</item>
+    </style>
+    
+    <style name="Widget.WwwjdicActionMode" parent="Widget.Sherlock.ActionMode">
+        <item name="background">@drawable/action_bar_bg</item>
+        <item name="android:background">@drawable/action_bar_bg</item>
+        <item name="backgroundSplit">@drawable/action_bar_bg</item>
+        <item name="android:backgroundSplit">@drawable/action_bar_bg</item>
     </style>
 
     <style name="WwwjdicAbTrans" parent="Theme.Sherlock.NoActionBar" />
