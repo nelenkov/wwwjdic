@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Checkable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,11 +50,14 @@ public class DictionaryEntryAdapter extends BaseAdapter {
         return result;
     }
 
-    private final class DictionaryEntryView extends LinearLayout {
+    private final class DictionaryEntryView extends LinearLayout implements
+            Checkable {
 
         private TextView entryText;
         private TextView readingText;
         private TextView translationText;
+
+        private boolean checked;
 
         public DictionaryEntryView(Context context, DictionaryEntry entry) {
             super(context);
@@ -76,6 +80,25 @@ public class DictionaryEntryAdapter extends BaseAdapter {
             String translationStr = StringUtils.join(entry.getMeanings(), "/",
                     0);
             translationText.setText(translationStr);
+        }
+
+        @Override
+        public boolean isChecked() {
+            return checked;
+        }
+
+        @Override
+        public void setChecked(boolean checked) {
+            this.checked = checked;
+            // XXX -- resource not found?
+            //        int resource = UIUtils.isHoneycomb() ? android.R.attr.activatedBackgroundIndicator
+            //                : R.drawable.list_activated_holo;
+            setBackgroundResource(checked ? R.drawable.list_activated_holo : 0);
+        }
+
+        @Override
+        public void toggle() {
+            setChecked(!checked);
         }
     }
 }
