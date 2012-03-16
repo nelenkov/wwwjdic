@@ -3,6 +3,7 @@ package org.nick.wwwjdic;
 import java.util.List;
 
 import org.nick.wwwjdic.model.KanjiEntry;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -95,10 +96,8 @@ public class KanjiEntryAdapter extends BaseAdapter {
         @Override
         public void setChecked(boolean checked) {
             this.checked = checked;
-            // XXX -- resource not found?
-            //        int resource = UIUtils.isHoneycomb() ? android.R.attr.activatedBackgroundIndicator
-            //                : R.drawable.list_activated_holo;
-            setBackgroundResource(checked ? R.drawable.list_activated_holo : 0);
+            setBackgroundResource(checked ? UIUtils
+                    .getListActivatedResource(getContext()) : 0);
         }
 
         @Override

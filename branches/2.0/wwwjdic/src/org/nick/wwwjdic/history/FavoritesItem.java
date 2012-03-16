@@ -2,6 +2,7 @@ package org.nick.wwwjdic.history;
 
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.model.WwwjdicEntry;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -93,10 +94,8 @@ public class FavoritesItem extends LinearLayout implements
     @Override
     public void setChecked(boolean checked) {
         this.checked = checked;
-        // XXX -- resource not found?
-        //        int resource = UIUtils.isHoneycomb() ? android.R.attr.activatedBackgroundIndicator
-        //                : R.drawable.list_activated_holo;
-        setBackgroundResource(checked ? R.drawable.list_activated_holo : 0);
+        setBackgroundResource(checked ? UIUtils
+                .getListActivatedResource(getContext()) : 0);
     }
 
     @Override
