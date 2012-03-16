@@ -4,6 +4,8 @@ import org.nick.wwwjdic.R;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 
 public class UIUtils {
@@ -40,20 +42,20 @@ public class UIUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
     }
 
-    public static int getListActivatedResource(Context ctx) {
-        int resource = R.drawable.list_activated_holo;
-        // null if used in layout?
-        if (ctx == null) {
-            return resource;
-        }
-        // XXX
-        //        if (isHoneycomb()) {
-        //            TypedArray a = ctx
-        //                    .obtainStyledAttributes(new int[] { android.R.attr.activatedBackgroundIndicator });
-        //            resource = a.getResourceId(0, 0);
-        //            a.recycle();
-        //        }
+    public static Drawable getListActivatedDrawable(Context ctx) {
+        Drawable result = ctx.getResources().getDrawable(
+                R.drawable.list_activated_holo);
+        if (isHoneycomb()) {
+            TypedArray a = ctx
+                    .obtainStyledAttributes(new int[] { android.R.attr.activatedBackgroundIndicator });
+            int resource = a.getResourceId(0, 0);
+            a.recycle();
 
-        return resource;
+            Drawable d = ctx.getResources().getDrawable(resource);
+            d.setState(new int[] { android.R.attr.state_activated });
+        }
+
+
+        return result;
     }
 }

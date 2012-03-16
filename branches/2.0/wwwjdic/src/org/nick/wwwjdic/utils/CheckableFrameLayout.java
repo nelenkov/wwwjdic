@@ -36,8 +36,8 @@ public class CheckableFrameLayout extends FrameLayout implements Checkable {
 
     public void setChecked(boolean checked) {
         mChecked = checked;
-        setBackgroundResource(checked ? UIUtils
-                .getListActivatedResource(getContext()) : 0);
+        setBackgroundDrawable(checked ? UIUtils
+                .getListActivatedDrawable(getContext()) : null);
     }
 
     public boolean isChecked() {
