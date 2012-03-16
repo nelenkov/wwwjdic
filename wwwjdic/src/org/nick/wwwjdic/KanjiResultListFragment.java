@@ -5,33 +5,35 @@ import java.util.List;
 import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.model.SearchCriteria;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
-public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry> {
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry>
+        implements OnItemLongClickListener {
 
     private static final String TAG = KanjiResultListFragment.class
             .getSimpleName();
-
-    private static final int MENU_ITEM_DETAILS = 0;
-    private static final int MENU_ITEM_COPY = 1;
-    private static final int MENU_ITEM_ADD_TO_FAVORITES = 2;
-    private static final int MENU_ITEM_STROKE_ORDER = 3;
-    private static final int MENU_ITEM_COMPOUNDS = 4;
 
     private List<KanjiEntry> entries;
 
     private boolean dualPane;
     private int currentCheckPosition = 0;
+
+    private ActionMode currentActionMode;
 
     public KanjiResultListFragment() {
     }
@@ -40,7 +42,8 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry> 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getListView().setOnCreateContextMenuListener(this);
+        getListView().setOnItemLongClickListener(this);
+        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         View detailsFrame = getActivity().findViewById(R.id.details);
         dualPane = detailsFrame != null
@@ -100,47 +103,6 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry> 
         }
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
-        menu.add(0, MENU_ITEM_DETAILS, 0, R.string.details);
-        menu.add(0, MENU_ITEM_COPY, 1, R.string.copy);
-        menu.add(0, MENU_ITEM_ADD_TO_FAVORITES, 2, R.string.add_to_favorites);
-        menu.add(0, MENU_ITEM_STROKE_ORDER, 3, R.string.stroke_order);
-        menu.add(0, MENU_ITEM_COMPOUNDS, 4, R.string.compounds);
-    }
-
-    @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info;
-        try {
-            info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        } catch (ClassCastException e) {
-            Log.e(TAG, "bad menuInfo", e);
-            return false;
-        }
-
-        KanjiEntry entry = entries.get(info.position);
-        switch (item.getItemId()) {
-        case MENU_ITEM_DETAILS:
-            showDetails(entry, info.position);
-            return true;
-        case MENU_ITEM_COPY:
-            copy(entry);
-            return true;
-        case MENU_ITEM_ADD_TO_FAVORITES:
-            addToFavorites(entry);
-            return true;
-        case MENU_ITEM_STROKE_ORDER:
-            Activities.showStrokeOrder(getActivity(), entry);
-            return true;
-        case MENU_ITEM_COMPOUNDS:
-            showCompounds(entry);
-            return true;
-        }
-        return false;
-    }
-
     private void showCompounds(KanjiEntry entry) {
         String dictionary = getApp().getCurrentDictionary();
         Log.d(TAG, String.format(
@@ -186,5 +148,70 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry> 
             }
         }
     }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view,
+            int position, long id) {
+        if (currentActionMode != null) {
+            return false;
+        }
+
+        currentActionMode = getSherlockActivity().startActionMode(
+                new ContextCallback(position));
+        getListView().setItemChecked(position, true);
+
+        return true;
+    }
+
+    @SuppressLint("NewApi")
+    class ContextCallback implements ActionMode.Callback {
+
+        private int position;
+
+        ContextCallback(int position) {
+            this.position = position;
+        }
+
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            MenuInflater inflater = getSherlockActivity()
+                    .getSupportMenuInflater();
+            inflater.inflate(R.menu.kanji_list_context, menu);
+            return true;
+        }
+
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        public boolean onActionItemClicked(ActionMode actionMode,
+                MenuItem menuItem) {
+
+            KanjiEntry entry = entries.get(position);
+            if (menuItem.getItemId() == R.id.menu_context_kanji_list_copy) {
+                copy(entry);
+                actionMode.finish();
+                return true;
+            } else if (menuItem.getItemId() == R.id.menu_context_kanji_list_favorite) {
+                addToFavorites(entry);
+                actionMode.finish();
+                return true;
+            } else if (menuItem.getItemId() == R.id.menu_context_kanji_list_stroke_order) {
+                Activities.showStrokeOrder(getActivity(), entry);
+                actionMode.finish();
+                return true;
+            } else if (menuItem.getItemId() == R.id.menu_context_kanji_list_compounds) {
+                showCompounds(entry);
+                actionMode.finish();
+                return true;
+            }
+
+            return false;
+        }
+
+        public void onDestroyActionMode(ActionMode actionMode) {
+            getListView().setItemChecked(position, false);
+            currentActionMode = null;
+        }
+    };
 
 }
