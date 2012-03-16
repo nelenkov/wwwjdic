@@ -5,6 +5,7 @@ import org.nick.wwwjdic.model.Radical;
 import org.nick.wwwjdic.model.Radicals;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.StringUtils;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -151,10 +152,8 @@ public class HistoryItem extends LinearLayout implements Checkable {
     @Override
     public void setChecked(boolean checked) {
         this.checked = checked;
-        // XXX -- resource not found?
-        //        int resource = UIUtils.isHoneycomb() ? android.R.attr.activatedBackgroundIndicator
-        //                : R.drawable.list_activated_holo;
-        setBackgroundResource(checked ? R.drawable.list_activated_holo : 0);
+        setBackgroundResource(checked ? UIUtils
+                .getListActivatedResource(getContext()) : 0);
     }
 
     @Override

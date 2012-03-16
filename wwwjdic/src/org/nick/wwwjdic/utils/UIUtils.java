@@ -1,5 +1,7 @@
 package org.nick.wwwjdic.utils;
 
+import org.nick.wwwjdic.R;
+
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -36,5 +38,18 @@ public class UIUtils {
 
     public static boolean isIcs() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+    }
+
+    public static int getListActivatedResource(Context ctx) {
+        int resource = R.drawable.list_activated_holo;
+        // XXX
+        //        if (isHoneycomb()) {
+        //            TypedArray a = ctx
+        //                    .obtainStyledAttributes(new int[] { android.R.attr.activatedBackgroundIndicator });
+        //            resource = a.getResourceId(0, 0);
+        //            a.recycle();
+        //        }
+
+        return resource;
     }
 }
