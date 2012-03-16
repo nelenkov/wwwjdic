@@ -4,22 +4,18 @@ import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.model.Radical;
 import org.nick.wwwjdic.model.Radicals;
 import org.nick.wwwjdic.model.SearchCriteria;
+import org.nick.wwwjdic.utils.CheckableLinearLayout;
 import org.nick.wwwjdic.utils.StringUtils;
-import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.widget.Checkable;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class HistoryItem extends LinearLayout implements Checkable {
+public class HistoryItem extends CheckableLinearLayout {
 
     private TextView searchTypeText;
     private TextView searchKeyText;
     private TextView criteriaDetailsText;
-
-    private boolean checked;
 
     HistoryItem(Context context) {
         super(context);
@@ -57,7 +53,7 @@ public class HistoryItem extends LinearLayout implements Checkable {
         if (detailStr != null && !"".equals(detailStr)) {
             criteriaDetailsText.setText(detailStr);
         }
-        checked = false;
+        setChecked(false);
     }
 
     private Integer tryParseInt(String str) {
@@ -142,23 +138,6 @@ public class HistoryItem extends LinearLayout implements Checkable {
         }
 
         return result;
-    }
-
-    @Override
-    public boolean isChecked() {
-        return checked;
-    }
-
-    @Override
-    public void setChecked(boolean checked) {
-        this.checked = checked;
-        setBackgroundResource(checked ? UIUtils
-                .getListActivatedResource(getContext()) : 0);
-    }
-
-    @Override
-    public void toggle() {
-        setChecked(!checked);
     }
 
 }
