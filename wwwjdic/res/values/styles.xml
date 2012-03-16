@@ -181,9 +181,13 @@
 
     <style name="Widget.WwwjdicAb" parent="Widget.Sherlock.ActionBar">
         <item name="background">@drawable/action_bar_bg</item>
+        <item name="android:background">@drawable/action_bar_bg</item>
         <item name="backgroundSplit">@drawable/action_bar_bg</item>
+        <item name="android:backgroundSplit">@drawable/action_bar_bg</item>
         <item name="icon">@drawable/ic_action_home</item>
+        <item name="android:icon">@drawable/ic_action_home</item>
         <item name="titleTextStyle">@style/action_bar_title</item>
+        <item name="android:titleTextStyle">@style/action_bar_title</item>
     </style>
 
     <style name="Theme.WwwjdicAbMain" parent="@style/Theme.Sherlock">

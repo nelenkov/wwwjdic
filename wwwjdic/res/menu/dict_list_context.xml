@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+     <item android:id="@+id/menu_context_dict_list_copy"
+        android:icon="@drawable/ic_menu_copy"
+        android:title="@string/copy"
+        android:orderInCategory="0" 
+        android:showAsAction="always|withText"/>
+     <item android:id="@+id/menu_context_dict_list_lookup_kanji"
+        android:icon="@drawable/ic_menu_search"
+        android:title="@string/lookup_kanji"
+        android:orderInCategory="1" 
+        android:showAsAction="always|withText"/>
+     <item android:id="@+id/menu_context_dict_list_favorite"
+        android:icon="@drawable/ic_menu_star"
+        android:title="@string/add_to_favorites"
+        android:orderInCategory="2" 
+        android:showAsAction="always|withText"/>
+     <item android:id="@+id/menu_context_dict_list_examples"
+        android:icon="@drawable/ic_menu_example"
+        android:title="@string/examples"
+        android:orderInCategory="3" 
+        android:showAsAction="always|withText"/>
+</menu>
