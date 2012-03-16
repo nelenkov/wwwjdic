@@ -23,6 +23,11 @@ public class FavoritesAndHistory extends ActionBarActivity {
     private ViewPager viewPager;
     private TabsPagerAdapter tabsAdapter;
 
+    public static final int FILTER_ALL = -1;
+    public static final int FILTER_DICT = 0;
+    public static final int FILTER_KANJI = 1;
+    public static final int FILTER_EXAMPLES = 2;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +39,7 @@ public class FavoritesAndHistory extends ActionBarActivity {
         setTitle(R.string.favorites_hist);
 
         Intent intent = getIntent();
-        int filterType = intent.getIntExtra(EXTRA_FILTER_TYPE,
-                HistoryBase.FILTER_ALL);
+        int filterType = intent.getIntExtra(EXTRA_FILTER_TYPE, FILTER_ALL);
         int tabIdx = intent.getIntExtra(EXTRA_SELECTED_TAB_IDX, 0);
         if (savedInstanceState != null) {
             tabIdx = savedInstanceState.getInt(EXTRA_SELECTED_TAB_IDX, 0);
