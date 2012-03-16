@@ -10,28 +10,32 @@ import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.utils.LoaderBase;
 import org.nick.wwwjdic.utils.LoaderResult;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.ClipboardManager;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 @SuppressWarnings("deprecation")
 public class HkrCandidatesFragment extends SherlockListFragment implements
-        LoaderManager.LoaderCallbacks<LoaderResult<KanjiEntry>> {
+        LoaderManager.LoaderCallbacks<LoaderResult<KanjiEntry>>,
+        OnItemLongClickListener {
 
     interface HkrCandidateSelectedListener {
         void onHkrCandidateSelected(KanjiEntry entry, int position);
@@ -73,16 +77,9 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
         }
     }
 
-    private static final String TAG = HkrCandidatesFragment.class
-            .getSimpleName();
-
     private static final String INDEX_KEY = "index";
 
     public static final String EXTRA_HKR_CANDIDATES = "org.nick.wwwjdic.hkrCandidates";
-
-    private static final int MENU_ITEM_DETAILS = 0;
-    private static final int MENU_ITEM_COPY = 1;
-    private static final int MENU_ITEM_APPEND = 2;
 
     protected ClipboardManager clipboard;
 
@@ -90,6 +87,8 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
     private int index = 0;
 
     private HkrCandidateSelectedListener candidateSelectedListener;
+
+    private ActionMode currentActionMode;
 
     public HkrCandidatesFragment() {
     }
@@ -104,7 +103,9 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
                 org.nick.wwwjdic.R.layout.text_list_item, R.id.item_text,
                 candidates));
 
-        getListView().setOnCreateContextMenuListener(this);
+        getListView().setOnItemLongClickListener(this);
+        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
         getListView().setTextFilterEnabled(true);
 
         getActivity().setTitle(
@@ -195,40 +196,6 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
-        menu.add(0, MENU_ITEM_DETAILS, 0, R.string.kanji_details);
-        menu.add(0, MENU_ITEM_COPY, 1, R.string.copy);
-        menu.add(0, MENU_ITEM_APPEND, 2, R.string.append);
-
-    }
-
-    @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info;
-        try {
-            info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        } catch (ClassCastException e) {
-            Log.e(TAG, "bad menuInfo", e);
-            return false;
-        }
-
-        String kanji = candidates[info.position];
-        switch (item.getItemId()) {
-        case MENU_ITEM_DETAILS:
-            loadDetails(kanji, info.position);
-            return true;
-        case MENU_ITEM_COPY:
-            copy(kanji);
-            return true;
-        case MENU_ITEM_APPEND:
-            append(kanji);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public Loader<LoaderResult<KanjiEntry>> onCreateLoader(int id, Bundle args) {
         String kanji = null;
         if (args != null) {
@@ -288,5 +255,63 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
 
         loadDetails(candidates[index], index);
     }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view,
+            int position, long id) {
+        if (currentActionMode != null) {
+            return false;
+        }
+
+        currentActionMode = getSherlockActivity().startActionMode(
+                new ContextCallback(position));
+        getListView().setItemChecked(position, true);
+
+        return true;
+    }
+
+    @SuppressLint("NewApi")
+    class ContextCallback implements ActionMode.Callback {
+
+        private int position;
+
+        ContextCallback(int position) {
+            this.position = position;
+        }
+
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            MenuInflater inflater = getSherlockActivity()
+                    .getSupportMenuInflater();
+            inflater.inflate(R.menu.hkr_list_context, menu);
+            return true;
+        }
+
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        public boolean onActionItemClicked(ActionMode actionMode,
+                MenuItem menuItem) {
+
+            String kanji = candidates[position];
+            if (menuItem.getItemId() == R.id.menu_context_hkr_list_copy) {
+                copy(kanji);
+                actionMode.finish();
+                return true;
+            } else if (menuItem.getItemId() == R.id.menu_context_hkr_list_append) {
+                append(kanji);
+                actionMode.finish();
+                return true;
+            }
+
+            return false;
+        }
+
+        public void onDestroyActionMode(ActionMode actionMode) {
+            getListView().setItemChecked(position, false);
+            currentActionMode = null;
+        }
+    };
+
 
 }
