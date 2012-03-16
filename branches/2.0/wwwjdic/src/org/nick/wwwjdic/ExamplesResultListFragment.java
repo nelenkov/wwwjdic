@@ -6,6 +6,7 @@ import org.nick.wwwjdic.model.ExampleSentence;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.Analytics;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -15,34 +16,30 @@ import android.text.ClipboardManager;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 @SuppressWarnings("deprecation")
 public class ExamplesResultListFragment extends
-        ResultListFragmentBase<ExampleSentence> {
-
-    private static final String TAG = ExamplesResultListFragment.class
-            .getSimpleName();
+        ResultListFragmentBase<ExampleSentence> implements
+        OnItemLongClickListener {
 
     public static String EXTRA_EXAMPLES_BACKDOOR_SEARCH = "org.nick.wwwjdic.EXAMPLES_BACKDOOR_SEARCH";
 
     private static final String EXAMPLE_SEARCH_QUERY_STR = "?11";
-
-    private static final int MENU_ITEM_BREAK_DOWN = 0;
-    private static final int MENU_ITEM_LOOKUP_ALL_KANJI = 1;
-    private static final int MENU_ITEM_COPY_JP = 2;
-    private static final int MENU_ITEM_COPY_ENG = 3;
 
     static class ExampleSentenceAdapter extends BaseAdapter {
 
@@ -158,6 +155,8 @@ public class ExamplesResultListFragment extends
     private boolean dualPane;
     private int currentCheckPosition = 0;
 
+    private ActionMode currentActionMode;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -165,7 +164,8 @@ public class ExamplesResultListFragment extends
         clipboardManager = (ClipboardManager) getActivity().getSystemService(
                 Context.CLIPBOARD_SERVICE);
 
-        getListView().setOnCreateContextMenuListener(this);
+        getListView().setOnItemLongClickListener(this);
+        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         View detailsFrame = getActivity().findViewById(R.id.details);
         dualPane = detailsFrame != null
@@ -203,43 +203,6 @@ public class ExamplesResultListFragment extends
                 false);
 
         return v;
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
-        menu.add(0, MENU_ITEM_BREAK_DOWN, 0, R.string.break_down_jap);
-        menu.add(0, MENU_ITEM_LOOKUP_ALL_KANJI, 1, R.string.look_up_all_kanji);
-        menu.add(0, MENU_ITEM_COPY_JP, 2, R.string.copy_jp);
-        menu.add(0, MENU_ITEM_COPY_ENG, 3, R.string.copy_eng);
-
-    }
-
-    @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info;
-        try {
-            info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        } catch (ClassCastException e) {
-            Log.e(TAG, "bad menuInfo", e);
-            return false;
-        }
-
-        switch (item.getItemId()) {
-        case MENU_ITEM_BREAK_DOWN:
-            breakDown(getCurrentSentence(info.position), info.position);
-            return true;
-        case MENU_ITEM_LOOKUP_ALL_KANJI:
-            lookupAllKanji(info.id);
-            return true;
-        case MENU_ITEM_COPY_JP:
-            copyJapanese(info.id);
-            return true;
-        case MENU_ITEM_COPY_ENG:
-            copyEnglish(info.id);
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -338,5 +301,66 @@ public class ExamplesResultListFragment extends
             }
         }
     }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view,
+            int position, long id) {
+        if (currentActionMode != null) {
+            return false;
+        }
+
+        currentActionMode = getSherlockActivity().startActionMode(
+                new ContextCallback(position));
+        getListView().setItemChecked(position, true);
+
+        return true;
+    }
+
+    @SuppressLint("NewApi")
+    class ContextCallback implements ActionMode.Callback {
+
+        private int position;
+
+        ContextCallback(int position) {
+            this.position = position;
+        }
+
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            MenuInflater inflater = getSherlockActivity()
+                    .getSupportMenuInflater();
+            inflater.inflate(R.menu.example_list_context, menu);
+            return true;
+        }
+
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        public boolean onActionItemClicked(ActionMode actionMode,
+                MenuItem menuItem) {
+
+            if (menuItem.getItemId() == R.id.menu_context_example_list_lookup_kanji) {
+                lookupAllKanji(position);
+                actionMode.finish();
+                return true;
+            } else if (menuItem.getItemId() == R.id.menu_context_example_list_copy_jp) {
+                copyJapanese(position);
+                actionMode.finish();
+                return true;
+            } else if (menuItem.getItemId() == R.id.menu_context_example_list_copy_eng) {
+                copyEnglish(position);
+                actionMode.finish();
+                return true;
+            }
+
+            return false;
+        }
+
+        public void onDestroyActionMode(ActionMode actionMode) {
+            getListView().setItemChecked(position, false);
+            currentActionMode = null;
+        }
+    };
+
 
 }

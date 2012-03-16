@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.nick.wwwjdic.history.FavoritesAndHistory;
 import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
-import org.nick.wwwjdic.history.HistoryBase;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.history.HistoryFragmentBase;
 import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
@@ -364,19 +363,19 @@ public class Wwwjdic extends ActionBarActivity {
         switch (position) {
         case 0:
             filterFavoritesHistoryFragment(R.id.favorites_fragment,
-                    HistoryBase.FILTER_DICT);
+                    FavoritesAndHistory.FILTER_DICT);
             filterFavoritesHistoryFragment(R.id.history_fragment,
-                    HistoryBase.FILTER_DICT);
+                    FavoritesAndHistory.FILTER_DICT);
             break;
         case 1:
             filterFavoritesHistoryFragment(R.id.kanji_favorites_fragment,
-                    HistoryBase.FILTER_KANJI);
+                    FavoritesAndHistory.FILTER_KANJI);
             filterFavoritesHistoryFragment(R.id.kanji_history_fragment,
-                    HistoryBase.FILTER_KANJI);
+                    FavoritesAndHistory.FILTER_KANJI);
             break;
         case 2:
             filterFavoritesHistoryFragment(R.id.examples_history_fragment,
-                    HistoryBase.FILTER_EXAMPLES);
+                    FavoritesAndHistory.FILTER_EXAMPLES);
             break;
         default:
             // do nothing
