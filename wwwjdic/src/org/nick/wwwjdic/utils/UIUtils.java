@@ -42,6 +42,10 @@ public class UIUtils {
 
     public static int getListActivatedResource(Context ctx) {
         int resource = R.drawable.list_activated_holo;
+        // null if used in layout?
+        if (ctx == null) {
+            return resource;
+        }
         // XXX
         //        if (isHoneycomb()) {
         //            TypedArray a = ctx

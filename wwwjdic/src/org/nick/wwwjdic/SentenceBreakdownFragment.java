@@ -8,8 +8,8 @@ import org.nick.wwwjdic.actionprovider.ShareActionProvider;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.model.SentenceBreakdownEntry;
 import org.nick.wwwjdic.model.WwwjdicQuery;
+import org.nick.wwwjdic.utils.CheckableLinearLayout;
 import org.nick.wwwjdic.utils.StringUtils;
-import org.nick.wwwjdic.utils.UIUtils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -24,8 +24,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Checkable;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,15 +72,12 @@ public class SentenceBreakdownFragment extends
             return convertView;
         }
 
-        static class SentenceBreakdownEntryView extends LinearLayout implements
-                Checkable {
+        static class SentenceBreakdownEntryView extends CheckableLinearLayout {
 
             private TextView explanationText;
             private TextView wordText;
             private TextView readingText;
             private TextView translationText;
-
-            private boolean checked;
 
             SentenceBreakdownEntryView(Context context) {
                 super(context);
@@ -111,22 +106,6 @@ public class SentenceBreakdownFragment extends
                 translationText.setText(entry.getTranslation());
             }
 
-            @Override
-            public boolean isChecked() {
-                return checked;
-            }
-
-            @Override
-            public void setChecked(boolean checked) {
-                this.checked = checked;
-                setBackgroundResource(checked ? UIUtils
-                        .getListActivatedResource(getContext()) : 0);
-            }
-
-            @Override
-            public void toggle() {
-                setChecked(!checked);
-            }
         }
     }
 

@@ -3,16 +3,14 @@ package org.nick.wwwjdic;
 import java.util.List;
 
 import org.nick.wwwjdic.model.DictionaryEntry;
+import org.nick.wwwjdic.utils.CheckableLinearLayout;
 import org.nick.wwwjdic.utils.StringUtils;
-import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Checkable;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class DictionaryEntryAdapter extends BaseAdapter {
@@ -51,14 +49,11 @@ public class DictionaryEntryAdapter extends BaseAdapter {
         return result;
     }
 
-    private final class DictionaryEntryView extends LinearLayout implements
-            Checkable {
+    private final class DictionaryEntryView extends CheckableLinearLayout {
 
         private TextView entryText;
         private TextView readingText;
         private TextView translationText;
-
-        private boolean checked;
 
         public DictionaryEntryView(Context context, DictionaryEntry entry) {
             super(context);
@@ -83,21 +78,5 @@ public class DictionaryEntryAdapter extends BaseAdapter {
             translationText.setText(translationStr);
         }
 
-        @Override
-        public boolean isChecked() {
-            return checked;
-        }
-
-        @Override
-        public void setChecked(boolean checked) {
-            this.checked = checked;
-            setBackgroundResource(checked ? UIUtils
-                    .getListActivatedResource(context) : 0);
-        }
-
-        @Override
-        public void toggle() {
-            setChecked(!checked);
-        }
     }
 }

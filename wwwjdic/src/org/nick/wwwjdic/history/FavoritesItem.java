@@ -2,20 +2,18 @@ package org.nick.wwwjdic.history;
 
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.model.WwwjdicEntry;
-import org.nick.wwwjdic.utils.UIUtils;
+import org.nick.wwwjdic.utils.CheckableLinearLayout;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.CheckBox;
-import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class FavoritesItem extends LinearLayout implements
-        OnCheckedChangeListener, Checkable {
+public class FavoritesItem extends CheckableLinearLayout implements
+        OnCheckedChangeListener {
 
     static interface FavoriteStatusChangedListener {
         void onStatusChanged(boolean isFavorite, WwwjdicEntry entry);
@@ -25,8 +23,6 @@ public class FavoritesItem extends LinearLayout implements
     private TextView dictHeadingText;
     private TextView entryDetailsText;
     private CheckBox starCb;
-
-    private boolean checked;
 
     private FavoriteStatusChangedListener favoriteStatusChangedListener;
 
@@ -77,7 +73,7 @@ public class FavoritesItem extends LinearLayout implements
         starCb.setChecked(true);
         starCb.setOnCheckedChangeListener(this);
 
-        checked = false;
+        setChecked(false);
     }
 
     @Override
@@ -85,21 +81,4 @@ public class FavoritesItem extends LinearLayout implements
         favoriteStatusChangedListener.onStatusChanged(isChecked, entry);
     }
 
-
-    @Override
-    public boolean isChecked() {
-        return checked;
-    }
-
-    @Override
-    public void setChecked(boolean checked) {
-        this.checked = checked;
-        setBackgroundResource(checked ? UIUtils
-                .getListActivatedResource(getContext()) : 0);
-    }
-
-    @Override
-    public void toggle() {
-        setChecked(!checked);
-    }
 }

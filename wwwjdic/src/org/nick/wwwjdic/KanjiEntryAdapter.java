@@ -3,15 +3,13 @@ package org.nick.wwwjdic;
 import java.util.List;
 
 import org.nick.wwwjdic.model.KanjiEntry;
-import org.nick.wwwjdic.utils.UIUtils;
+import org.nick.wwwjdic.utils.CheckableLinearLayout;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Checkable;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class KanjiEntryAdapter extends BaseAdapter {
@@ -50,15 +48,12 @@ public class KanjiEntryAdapter extends BaseAdapter {
         return result;
     }
 
-    private static final class KanjiEntryView extends LinearLayout implements
-            Checkable {
+    private static final class KanjiEntryView extends CheckableLinearLayout {
 
         private TextView entryText;
         private TextView onyomiText;
         private TextView kunyomiText;
         private TextView translationText;
-
-        private boolean checked;
 
         public KanjiEntryView(Context context, KanjiEntry entry) {
             super(context);
@@ -88,22 +83,6 @@ public class KanjiEntryAdapter extends BaseAdapter {
             translationText.setText(meaningsStr);
         }
 
-        @Override
-        public boolean isChecked() {
-            return checked;
-        }
-
-        @Override
-        public void setChecked(boolean checked) {
-            this.checked = checked;
-            setBackgroundResource(checked ? UIUtils
-                    .getListActivatedResource(getContext()) : 0);
-        }
-
-        @Override
-        public void toggle() {
-            setChecked(!checked);
-        }
     }
 
 

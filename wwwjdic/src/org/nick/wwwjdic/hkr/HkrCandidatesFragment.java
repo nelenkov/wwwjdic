@@ -100,8 +100,7 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
         Bundle extras = getActivity().getIntent().getExtras();
         candidates = extras.getStringArray(EXTRA_HKR_CANDIDATES);
         setListAdapter(new ArrayAdapter<String>(getActivity(),
-                org.nick.wwwjdic.R.layout.text_list_item, R.id.item_text,
-                candidates));
+                R.layout.text_list_item, R.id.item_text, candidates));
 
         getListView().setOnItemLongClickListener(this);
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
