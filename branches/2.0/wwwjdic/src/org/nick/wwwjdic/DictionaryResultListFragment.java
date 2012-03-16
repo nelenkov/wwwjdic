@@ -9,38 +9,36 @@ import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.DictUtils;
 import org.nick.wwwjdic.utils.StringUtils;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 public class DictionaryResultListFragment extends
-        ResultListFragmentBase<DictionaryEntry> {
+        ResultListFragmentBase<DictionaryEntry> implements
+        OnItemLongClickListener {
 
     private static final int NUM_EXAMPLE_RESULTS = 20;
-
-    private static final String TAG = DictionaryResultListFragment.class
-            .getSimpleName();
-
-    private static final int MENU_ITEM_DETAILS = 0;
-    private static final int MENU_ITEM_COPY = 1;
-    private static final int MENU_ITEM_LOOKUP_KANJI = 2;
-    private static final int MENU_ITEM_ADD_TO_FAVORITES = 3;
-    private static final int MENU_ITEM_EXAMPLES = 4;
 
     private List<DictionaryEntry> entries;
 
     private boolean dualPane;
     private int currentCheckPosition = 0;
+
+    private ActionMode currentActionMode;
 
     public DictionaryResultListFragment() {
     }
@@ -49,7 +47,8 @@ public class DictionaryResultListFragment extends
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getListView().setOnCreateContextMenuListener(this);
+        getListView().setOnItemLongClickListener(this);
+        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         View detailsFrame = getActivity().findViewById(R.id.details);
         dualPane = detailsFrame != null
@@ -128,47 +127,6 @@ public class DictionaryResultListFragment extends
         }
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
-        menu.add(0, MENU_ITEM_DETAILS, 0, R.string.details);
-        menu.add(0, MENU_ITEM_COPY, 1, R.string.copy);
-        menu.add(0, MENU_ITEM_LOOKUP_KANJI, 2, R.string.lookup_kanji);
-        menu.add(0, MENU_ITEM_ADD_TO_FAVORITES, 3, R.string.add_to_favorites);
-        menu.add(0, MENU_ITEM_EXAMPLES, 4, R.string.examples);
-    }
-
-    @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info;
-        try {
-            info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        } catch (ClassCastException e) {
-            Log.e(TAG, "bad menuInfo", e);
-            return false;
-        }
-
-        DictionaryEntry entry = entries.get(info.position);
-        switch (item.getItemId()) {
-        case MENU_ITEM_DETAILS:
-            showDetails(entry, info.position);
-            return true;
-        case MENU_ITEM_COPY:
-            copy(entry);
-            return true;
-        case MENU_ITEM_LOOKUP_KANJI:
-            Activities.lookupKanji(getActivity(), db, entry.getHeadword());
-            return true;
-        case MENU_ITEM_ADD_TO_FAVORITES:
-            addToFavorites(entry);
-            return true;
-        case MENU_ITEM_EXAMPLES:
-            searchExamples(entry);
-            return true;
-        }
-        return false;
-    }
-
     private void searchExamples(DictionaryEntry entry) {
         SearchCriteria criteria = SearchCriteria.createForExampleSearch(
                 DictUtils.extractSearchKey(entry), false, NUM_EXAMPLE_RESULTS);
@@ -220,4 +178,70 @@ public class DictionaryResultListFragment extends
             }
         }
     }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view,
+            int position, long id) {
+        if (currentActionMode != null) {
+            return false;
+        }
+
+        currentActionMode = getSherlockActivity().startActionMode(
+                new ContextCallback(position));
+        getListView().setItemChecked(position, true);
+
+        return true;
+    }
+
+    @SuppressLint("NewApi")
+    class ContextCallback implements ActionMode.Callback {
+
+        private int position;
+
+        ContextCallback(int position) {
+            this.position = position;
+        }
+
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            MenuInflater inflater = getSherlockActivity()
+                    .getSupportMenuInflater();
+            inflater.inflate(R.menu.dict_list_context, menu);
+            return true;
+        }
+
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        public boolean onActionItemClicked(ActionMode actionMode,
+                MenuItem menuItem) {
+
+            DictionaryEntry entry = entries.get(position);
+            if (menuItem.getItemId() == R.id.menu_context_dict_list_copy) {
+                copy(entry);
+                actionMode.finish();
+                return true;
+            } else if (menuItem.getItemId() == R.id.menu_context_dict_list_lookup_kanji) {
+                Activities.lookupKanji(getActivity(), db, entry.getHeadword());
+                actionMode.finish();
+                return true;
+            } else if (menuItem.getItemId() == R.id.menu_context_dict_list_favorite) {
+                addToFavorites(entry);
+                actionMode.finish();
+                return true;
+            } else if (menuItem.getItemId() == R.id.menu_context_dict_list_examples) {
+                searchExamples(entry);
+                actionMode.finish();
+                return true;
+            }
+
+            return false;
+        }
+
+        public void onDestroyActionMode(ActionMode actionMode) {
+            getListView().setItemChecked(position, false);
+            currentActionMode = null;
+        }
+    };
+
 }

@@ -20,21 +20,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.widget.CursorAdapter;
 import android.text.ClipboardManager;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -53,8 +48,6 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
         implements LoaderManager.LoaderCallbacks<LoaderResult<Cursor>>,
         OnItemLongClickListener {
 
-    private static final String TAG = HistoryFragmentBase.class.getSimpleName();
-
     protected static final int CONFIRM_DELETE_DIALOG_ID = 0;
 
     public static final int FILTER_ALL = -1;
@@ -64,8 +57,6 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
 
     private static final byte[] UTF8_BOM = { (byte) 0xef, (byte) 0xbb,
             (byte) 0xbf };
-
-    private static final boolean IS_HONEYCOMB = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 
     protected HistoryDbHelper db;
 
@@ -86,8 +77,6 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
 
         clipboardManager = (ClipboardManager) getActivity().getSystemService(
                 Context.CLIPBOARD_SERVICE);
-
-        getListView().setOnCreateContextMenuListener(this);
 
         if (getArguments() != null && savedInstanceState == null) {
             selectedFilter = getArguments().getInt(
@@ -351,50 +340,6 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
     }
 
     protected abstract void deleteAll();
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view,
-            ContextMenuInfo menuInfo) {
-        if (IS_HONEYCOMB) {
-            // we use action modes on HC
-            return;
-        }
-
-        AdapterView.AdapterContextMenuInfo info;
-        try {
-            info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        } catch (ClassCastException e) {
-            Log.e(TAG, "bad menuInfo", e);
-            return;
-        }
-
-        Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
-        if (cursor == null) {
-            return;
-        }
-
-        android.view.MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.history_favorites_context, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
-                .getMenuInfo();
-        int position = info.position;
-        if (item.getItemId() == R.id.menu_context_history_lookup) {
-            lookup(position);
-            return true;
-        } else if (item.getItemId() == R.id.menu_context_history_copy) {
-            copy(position);
-            return true;
-        } else if (item.getItemId() == R.id.menu_context_history_delete) {
-            delete(position);
-            return true;
-        }
-
-        return false;
-    }
 
     protected abstract void copy(int position);
 
