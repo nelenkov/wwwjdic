@@ -51,8 +51,8 @@ public class UIUtils {
             int resource = a.getResourceId(0, 0);
             a.recycle();
 
-            Drawable d = ctx.getResources().getDrawable(resource);
-            d.setState(new int[] { android.R.attr.state_activated });
+            result = ctx.getResources().getDrawable(resource);
+            result.setState(new int[] { android.R.attr.state_activated });
         }
 
 
