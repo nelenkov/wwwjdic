@@ -129,7 +129,8 @@
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.krad.KradChart"
-            android:theme="@style/Theme.WwwjdicAb" />
+            android:theme="@style/Theme.WwwjdicAb" 
+            android:hardwareAccelerated="false"/>
         <activity
             android:name="org.nick.wwwjdic.widgets.KodWidgetConfigure"
             android:label="@string/kod_widget_configuration"
