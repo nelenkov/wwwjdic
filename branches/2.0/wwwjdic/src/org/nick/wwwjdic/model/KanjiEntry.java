@@ -62,6 +62,7 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
     private String pinyin;
 
     private List<String> meanings = new ArrayList<String>();
+    private String meaningsAsString;
 
     private KanjiEntry(String dictStr) {
         super(dictStr);
@@ -300,7 +301,11 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
     }
 
     public String getMeaningsAsString() {
-        return StringUtils.join(getMeanings(), "/", 0);
+        if (meaningsAsString == null) {
+            meaningsAsString = StringUtils.join(getMeanings(), "/", 0);
+        }
+
+        return meaningsAsString;
     }
 
     @Override

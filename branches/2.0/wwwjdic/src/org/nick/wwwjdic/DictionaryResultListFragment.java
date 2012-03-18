@@ -154,7 +154,6 @@ public class DictionaryResultListFragment extends
                 DictionaryEntryAdapter adapter = new DictionaryEntryAdapter(
                         getActivity(), entries);
                 setListAdapter(adapter);
-                getListView().setTextFilterEnabled(true);
                 setTitleAndCurrentItem();
                 dismissProgressDialog();
             }

@@ -40,9 +40,11 @@ public class CheckableLinearLayout extends LinearLayout implements Checkable {
     }
 
     public void setChecked(boolean checked) {
-        mChecked = checked;
-        setBackgroundDrawable(checked ? UIUtils
-                .getListActivatedDrawable(getContext()) : null);
+        if (mChecked != checked) {
+            mChecked = checked;
+            setBackgroundDrawable(checked ? UIUtils
+                    .getListActivatedDrawable(getContext()) : null);
+        }
     }
 
     public boolean isChecked() {

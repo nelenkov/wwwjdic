@@ -129,7 +129,6 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry>
                 KanjiEntryAdapter adapter = new KanjiEntryAdapter(
                         getActivity(), entries);
                 setListAdapter(adapter);
-                getListView().setTextFilterEnabled(true);
                 setTitleAndCurrentItem();
                 dismissProgressDialog();
             }
