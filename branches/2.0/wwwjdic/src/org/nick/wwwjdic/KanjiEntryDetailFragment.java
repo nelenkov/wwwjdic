@@ -41,8 +41,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class KanjiEntryDetailFragment extends DetailFragment implements
-        OnClickListener {
+public class KanjiEntryDetailFragment extends DetailFragment {
 
     private static final String TAG = KanjiEntryDetailFragment.class
             .getSimpleName();
@@ -141,14 +140,9 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
                 .findViewById(R.id.strokeCountText);
         strokeCountView.setText(Integer.toString(entry.getStrokeCount()));
 
-        Button sodButton = (Button) v.findViewById(R.id.sod_button);
-        sodButton.setOnClickListener(this);
-        sodButton.setNextFocusDownId(R.id.compound_link_starting);
-
         TextView compoundsLinkStarting = (TextView) v
                 .findViewById(R.id.compound_link_starting);
         compoundsLinkStarting.setNextFocusDownId(R.id.compound_link_any);
-        compoundsLinkStarting.setNextFocusUpId(R.id.sod_button);
         Intent intent = createCompoundSearchIntent(
                 SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_STARTING, false);
         makeClickable(compoundsLinkStarting, intent);
@@ -460,13 +454,6 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
 
     private String getStr(int id) {
         return getResources().getText(id).toString();
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.sod_button) {
-            Activities.showStrokeOrder(getActivity(), entry);
-        }
     }
 
     @Override

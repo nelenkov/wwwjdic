@@ -1,64 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/detailLayout"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" 
-    android:paddingLeft="6dp">
-    <LinearLayout android:id="@+id/wordReadingLayout"
-        android:orientation="horizontal" 
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="6dp" >
+
+    <LinearLayout
+        android:id="@+id/wordReadingLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp">
-        <LinearLayout android:id="@+id/word_reading_layout"
-            android:layout_width="0dp" 
-            android:layout_weight="1"
-            android:layout_height="wrap_content" 
-            android:orientation="vertical">
-            <TextView android:id="@+id/details_word_text" 
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent" 
-                style="@style/dict_detail_heading"/>
-            <TextView android:id="@+id/details_word_reading_text" 
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent" 
-                style="@style/dict_detail_reading"/>    
-        </LinearLayout>
-        <Button android:id="@+id/jp_speak_button" 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:focusable="false"
-            android:background="@android:drawable/ic_lock_silent_mode_off"
-            android:gravity="center_vertical"
-            android:layout_gravity="center_vertical" 
-            android:layout_marginRight="4dp"
-            android:visibility="invisible"/>
-        <LinearLayout android:orientation="vertical" 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-            <CheckBox android:id="@+id/star_word"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" 
-                android:focusable="false"
-                android:button="@android:drawable/btn_star"
-                android:gravity="center" android:layout_gravity="center" />
-            <Button android:id="@+id/examples_button"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:gravity="center" 
-                android:layout_gravity="center"
-                style="@style/small_button"
-                android:text="@string/ex"/>
-        </LinearLayout>
-    </LinearLayout>
-    <TextView android:text="@string/translation"
-        style="@style/details_separator" />
-    <ScrollView android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <LinearLayout android:id="@+id/translations_layout"
-            android:layout_width="fill_parent" 
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/word_reading_layout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/details_word_text"
+                style="@style/dict_detail_heading"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/details_word_reading_text"
+                style="@style/dict_detail_reading"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/jp_speak_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="4dp"
+            android:background="@android:drawable/ic_lock_silent_mode_off"
+            android:focusable="false"
+            android:gravity="center_vertical"
+            android:visibility="invisible" />
+
+        <CheckBox
+            android:id="@+id/star_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:button="@android:drawable/btn_star"
+            android:focusable="false"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <TextView
+        style="@style/details_separator"
+        android:text="@string/translation" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:id="@+id/translations_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>
