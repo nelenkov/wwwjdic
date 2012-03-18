@@ -179,6 +179,17 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
             share();
 
             return true;
+        } else if (item.getItemId() == R.id.menu_dict_detail_examples) {
+            Intent intent = new Intent(getActivity(), ExamplesResultList.class);
+            SearchCriteria criteria = SearchCriteria.createForExampleSearch(
+                    exampleSearchKey, false, DEFAULT_MAX_NUM_EXAMPLES);
+            intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
+            intent.putExtra(
+                    ExamplesResultListFragment.EXTRA_EXAMPLES_BACKDOOR_SEARCH,
+                    true);
+            startActivity(intent);
+
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

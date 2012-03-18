@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android">
-     <item android:id="@+id/menu_kanji_detail_copy"
-        android:icon="@drawable/ic_menu_copy"
-        android:title="@string/copy"
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_kanji_detail_stroke_order"
+        android:icon="@drawable/ic_menu_edit"
         android:orderInCategory="0"
-        android:showAsAction="ifRoom|withText" />
-     <item android:id="@+id/menu_kanji_detail_share"
-        android:icon="@android:drawable/ic_menu_share"
-        android:title="@string/share"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/stroke_order"/>
+    <item
+        android:id="@+id/menu_kanji_detail_copy"
+        android:icon="@drawable/ic_menu_copy"
         android:orderInCategory="1"
-        android:showAsAction="ifRoom|withText" />
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/copy"/>
+    <item
+        android:id="@+id/menu_kanji_detail_share"
+        android:icon="@android:drawable/ic_menu_share"
+        android:orderInCategory="2"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/share"/>
+
 </menu>

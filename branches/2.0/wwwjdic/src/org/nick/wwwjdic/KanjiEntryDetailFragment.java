@@ -295,7 +295,10 @@ public class KanjiEntryDetailFragment extends DetailFragment implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_kanji_detail_copy) {
+        if (item.getItemId() == R.id.menu_kanji_detail_stroke_order) {
+            Activities.showStrokeOrder(getActivity(), entry);
+            return true;
+        } else if (item.getItemId() == R.id.menu_kanji_detail_copy) {
             copy();
             return true;
         } else if (item.getItemId() == R.id.menu_kanji_detail_share) {
