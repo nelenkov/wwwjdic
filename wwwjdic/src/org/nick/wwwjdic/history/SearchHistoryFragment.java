@@ -96,8 +96,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
                 refresh();
                 getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(
-                        false);
+                        .setSupportProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -233,8 +232,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                 }
 
                 getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(
-                        false);
+                        .setSupportProgressBarIndeterminateVisibility(false);
 
                 if (result) {
                     String message = getResources().getString(
@@ -320,8 +318,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                 }
 
                 getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(
-                        false);
+                        .setSupportProgressBarIndeterminateVisibility(false);
 
                 if (result) {
                     String message = getResources().getString(
