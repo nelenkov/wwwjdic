@@ -206,6 +206,15 @@ public class ExamplesResultListFragment extends
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        if (!dualPane) {
+            getListView().clearChoices();
+        }
+    }
+
+    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         ExampleSentence sentence = getCurrentSentence(id);
         breakDown(sentence, position);
@@ -361,6 +370,5 @@ public class ExamplesResultListFragment extends
             currentActionMode = null;
         }
     };
-
 
 }
