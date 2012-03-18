@@ -38,7 +38,7 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
     private static final String TAG = WwwjdicPreferences.class.getSimpleName();
 
     public static final boolean ACRA_DEBUG = false;
-    public static final boolean WWWJDIC_DEBUG = true;
+    public static final boolean WWWJDIC_DEBUG = false;
 
     public static final String PREF_USE_KR_KEY = "pref_kr_use_kanji_recognizer";
 
