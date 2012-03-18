@@ -29,8 +29,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class DictionaryEntryDetailFragment extends DetailFragment implements
-        OnClickListener {
+public class DictionaryEntryDetailFragment extends DetailFragment {
 
     private static final String TAG = DictionaryEntryDetailFragment.class
             .getSimpleName();
@@ -40,7 +39,6 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
     private LinearLayout translationsLayout;
     private TextView entryView;
     private CheckBox starCb;
-    private Button exampleSearchButton;
 
     private DictionaryEntry entry;
     private String exampleSearchKey;
@@ -128,9 +126,6 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         starCb.setChecked(isFavorite);
         starCb.setOnCheckedChangeListener(this);
 
-        exampleSearchButton = (Button) v.findViewById(R.id.examples_button);
-        exampleSearchButton.setOnClickListener(this);
-
         exampleSearchKey = DictUtils.extractSearchKey(wwwjdicEntry);
     }
 
@@ -205,20 +200,6 @@ public class DictionaryEntryDetailFragment extends DetailFragment implements
         Intent intent = new Intent(getActivity(), DictionaryResultList.class);
         intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
         return intent;
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.examples_button) {
-            Intent intent = new Intent(getActivity(), ExamplesResultList.class);
-            SearchCriteria criteria = SearchCriteria.createForExampleSearch(
-                    exampleSearchKey, false, DEFAULT_MAX_NUM_EXAMPLES);
-            intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
-            intent.putExtra(
-                    ExamplesResultListFragment.EXTRA_EXAMPLES_BACKDOOR_SEARCH,
-                    true);
-            startActivity(intent);
-        }
     }
 
     @Override
