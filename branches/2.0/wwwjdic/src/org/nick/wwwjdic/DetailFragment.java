@@ -368,7 +368,8 @@ public abstract class DetailFragment extends SherlockFragment implements
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        String str = wwwjdicEntry.getDetailString();
+        String str = wwwjdicEntry.getHeadword() + " "
+                + wwwjdicEntry.getDetailString();
         shareIntent.putExtra(Intent.EXTRA_TEXT, str);
 
         return shareIntent;
