@@ -38,8 +38,8 @@ public class FavoritesAndHistory extends ActionBarActivity {
         //        setTitle(R.string.favorites_hist);
 
         // collapse action bar
-        //        getSupportActionBar().setDisplayShowHomeEnabled(false);
-        //        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Intent intent = getIntent();
         int filterType = intent.getIntExtra(EXTRA_FILTER_TYPE, FILTER_ALL);
