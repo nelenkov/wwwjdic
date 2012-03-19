@@ -3,7 +3,6 @@ package org.nick.wwwjdic.history;
 import org.nick.wwwjdic.ActionBarActivity;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.utils.Dialogs;
-import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,7 +35,11 @@ public class FavoritesAndHistory extends ActionBarActivity {
         setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
 
         setContentView(R.layout.favorites_history);
-        setTitle(R.string.favorites_hist);
+        //        setTitle(R.string.favorites_hist);
+
+        // collapse action bar
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Intent intent = getIntent();
         int filterType = intent.getIntExtra(EXTRA_FILTER_TYPE, FILTER_ALL);
@@ -90,13 +93,13 @@ public class FavoritesAndHistory extends ActionBarActivity {
     protected void onStart() {
         super.onStart();
 
-        boolean showHome = UIUtils.isHoneycombTablet(this)
-                || UIUtils.isPortrait(this);
-        boolean showTitle = !UIUtils.isHoneycombTablet(this)
-                && UIUtils.isPortrait(this);
-        getSupportActionBar().setDisplayShowHomeEnabled(showHome);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(showHome);
-        getSupportActionBar().setDisplayShowTitleEnabled(showTitle);
+        //        boolean showHome = UIUtils.isHoneycombTablet(this)
+        //                || UIUtils.isPortrait(this);
+        //        boolean showTitle = !UIUtils.isHoneycombTablet(this)
+        //                && UIUtils.isPortrait(this);
+        //        getSupportActionBar().setDisplayShowHomeEnabled(showHome);
+        //        getSupportActionBar().setDisplayHomeAsUpEnabled(showHome);
+        //        getSupportActionBar().setDisplayShowTitleEnabled(showTitle);
     }
 
 }
