@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="horizontal"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  style="@style/listViewActivatedStyle">
-  <TextView android:id="@+id/kanji_text" 
-    style="@style/kanji_list_heading" />
-  <LinearLayout android:id="@+id/reading_meanings_layout"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <TextView android:id="@+id/onyomi_text" 
-        style="@style/kanji_list_reading" />
-     <TextView android:id="@+id/kunyomi_text" 
-        style="@style/kanji_list_reading" />
-     <TextView android:id="@+id/translation_text" 
-        style="@style/kanji_list_translation" />   
-  </LinearLayout>
-</LinearLayout>
+<org.nick.wwwjdic.utils.CheckableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/listViewActivatedStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/kanji_text"
+        style="@style/kanji_list_heading" />
+
+    <LinearLayout
+        android:id="@+id/reading_meanings_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/onyomi_text"
+            style="@style/kanji_list_reading" />
+
+        <TextView
+            android:id="@+id/kunyomi_text"
+            style="@style/kanji_list_reading" />
+
+        <TextView
+            android:id="@+id/translation_text"
+            style="@style/kanji_list_translation" />
+    </LinearLayout>
+
+</org.nick.wwwjdic.utils.CheckableLinearLayout>

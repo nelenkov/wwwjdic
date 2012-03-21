@@ -81,6 +81,7 @@ public class KanjiEntryAdapter extends BaseAdapter {
             }
             String meaningsStr = entry.getMeaningsAsString();
             translationText.setText(meaningsStr);
+            setChecked(false);
         }
 
     }

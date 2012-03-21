@@ -76,6 +76,7 @@ public class DictionaryEntryAdapter extends BaseAdapter {
             String translationStr = StringUtils.join(entry.getMeanings(), "/",
                     0);
             translationText.setText(translationStr);
+            setChecked(false);
         }
 
     }
