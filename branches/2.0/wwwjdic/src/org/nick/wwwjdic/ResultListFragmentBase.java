@@ -41,6 +41,10 @@ public abstract class ResultListFragmentBase<T> extends SherlockListFragment
 
     protected HistoryDbHelper db;
 
+    protected int currentCheckPosition = 0;
+
+    protected boolean dualPane;
+
     protected ResultListFragmentBase() {
     }
 
@@ -203,6 +207,17 @@ public abstract class ResultListFragmentBase<T> extends SherlockListFragment
         String message = getResources().getString(R.string.added_to_favorites,
                 entry.getHeadword());
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    protected void checkOrClearCurrentItem() {
+        if (!dualPane) {
+            getListView().clearChoices();
+        } else {
+            if (currentCheckPosition > 0
+                    && currentCheckPosition < getListView().getCount()) {
+                getListView().setItemChecked(currentCheckPosition, true);
+            }
+        }
     }
 
 }
