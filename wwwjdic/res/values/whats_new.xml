@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Improved UI and icons\n* Added Italian, Wordnet and Combined dictionaries\n* Sequential mode for widget\n* Widget preferences in Settings\n* Performance optimizations\n* Handle WWWJDIC maintenance\n* Bug fixes</string>
+    <string name="whats_new">* Improved UI and icons\n* Added Italian, Wordnet and Combined dictionaries\n* Added share action\n* Sequential mode for widget\n* Widget preferences in Settings\n* Performance optimizations\n* Handle WWWJDIC maintenance\n* Bug fixes</string>
 </resources>
