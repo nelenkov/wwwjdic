@@ -152,9 +152,6 @@ public class ExamplesResultListFragment extends
 
     private ClipboardManager clipboardManager;
 
-    private boolean dualPane;
-    private int currentCheckPosition = 0;
-
     private ActionMode currentActionMode;
 
     @Override
@@ -197,17 +194,19 @@ public class ExamplesResultListFragment extends
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        checkOrClearCurrentItem();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.search_results_fragment, container,
                 false);
 
         return v;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -223,6 +222,7 @@ public class ExamplesResultListFragment extends
 
         if (dualPane) {
             getListView().setItemChecked(index, true);
+            currentCheckPosition = index;
 
             SentenceBreakdownFragment breakdown = (SentenceBreakdownFragment) getFragmentManager()
                     .findFragmentById(R.id.details);

@@ -35,9 +35,6 @@ public class DictionaryResultListFragment extends
 
     private List<DictionaryEntry> entries;
 
-    private boolean dualPane;
-    private int currentCheckPosition = 0;
-
     private ActionMode currentActionMode;
 
     public DictionaryResultListFragment() {
@@ -81,17 +78,19 @@ public class DictionaryResultListFragment extends
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        checkOrClearCurrentItem();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.search_results_fragment, container,
                 false);
 
         return v;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -109,6 +108,7 @@ public class DictionaryResultListFragment extends
             }
 
             getListView().setItemChecked(index, true);
+            currentCheckPosition = index;
 
             DictionaryEntryDetailFragment details = (DictionaryEntryDetailFragment) getFragmentManager()
                     .findFragmentById(R.id.details);

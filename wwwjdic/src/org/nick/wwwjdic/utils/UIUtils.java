@@ -41,16 +41,17 @@ public class UIUtils {
     public static Drawable getListActivatedDrawable(Context ctx) {
         Drawable result = ctx.getResources().getDrawable(
                 R.drawable.list_activated_holo);
+
         if (isHoneycomb()) {
             TypedArray a = ctx
                     .obtainStyledAttributes(new int[] { android.R.attr.activatedBackgroundIndicator });
             int resource = a.getResourceId(0, 0);
             a.recycle();
 
-            result = ctx.getResources().getDrawable(resource);
-            result.setState(new int[] { android.R.attr.state_activated });
+            Drawable d = ctx.getResources().getDrawable(resource);
+            d.setState(new int[] { android.R.attr.state_activated });
+            result = d.getCurrent();
         }
-
 
         return result;
     }

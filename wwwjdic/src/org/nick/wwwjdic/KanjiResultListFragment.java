@@ -30,9 +30,6 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry>
 
     private List<KanjiEntry> entries;
 
-    private boolean dualPane;
-    private int currentCheckPosition = 0;
-
     private ActionMode currentActionMode;
 
     public KanjiResultListFragment() {
@@ -64,18 +61,19 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry>
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        checkOrClearCurrentItem();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.search_results_fragment, container,
                 false);
 
         return v;
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -89,6 +87,7 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry>
     private void showDetails(KanjiEntry entry, int index) {
         if (dualPane) {
             getListView().setItemChecked(index, true);
+            currentCheckPosition = index;
 
             KanjiEntryDetailFragment details = (KanjiEntryDetailFragment) getFragmentManager()
                     .findFragmentById(R.id.details);
