@@ -20,6 +20,8 @@ public class HkrCandidates extends ActionBarActivity implements
 
     private boolean dualPane;
 
+    private HkrCandidatesFragment candidatesFragment;
+
     public HkrCandidates() {
     }
 
@@ -35,6 +37,23 @@ public class HkrCandidates extends ActionBarActivity implements
         View detailsFrame = findViewById(R.id.details);
         dualPane = detailsFrame != null
                 && detailsFrame.getVisibility() == View.VISIBLE;
+        candidatesFragment = (HkrCandidatesFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.results_list);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!dualPane) {
+            candidatesFragment.getListView().clearChoices();
+        }
+    }
+
+    protected void checkOrClearCurrentItem() {
+        if (!dualPane) {
+            candidatesFragment.getListView().clearChoices();
+        }
     }
 
     @Override
@@ -58,6 +77,8 @@ public class HkrCandidates extends ActionBarActivity implements
                 ft.commitAllowingStateLoss();
             }
         } else {
+            candidatesFragment.getListView().clearChoices();
+
             Bundle extras = new Bundle();
             extras.putSerializable(KanjiEntryDetail.EXTRA_KANJI_ENTRY, entry);
 
@@ -73,8 +94,6 @@ public class HkrCandidates extends ActionBarActivity implements
         super.onStart();
 
         if (dualPane) {
-            HkrCandidatesFragment candidatesFragment = (HkrCandidatesFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.results_list);
             candidatesFragment.loadCurrentKanji();
         }
     }

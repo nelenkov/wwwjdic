@@ -128,7 +128,6 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
         outState.putInt(INDEX_KEY, index);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -162,7 +161,7 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        getListView().setItemChecked(index, true);
+        getListView().setItemChecked(position, true);
         loadDetails(candidates[position], position);
     }
 
@@ -311,6 +310,5 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
             currentActionMode = null;
         }
     };
-
 
 }
