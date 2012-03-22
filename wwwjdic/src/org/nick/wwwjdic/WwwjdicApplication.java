@@ -102,9 +102,9 @@ public class WwwjdicApplication extends Application {
     }
 
     private void initAcra() {
-        //        if (isDebug()) {
-        //            return;
-        //        }
+        if (isDebug()) {
+            return;
+        }
 
         try {
             ACRAConfiguration.setResToastText(R.string.crash_toast_text);
