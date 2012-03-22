@@ -9,11 +9,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- ACRA testing -->
-    <!--
-    <uses-permission android:name="android.permission.READ_LOGS" /> 
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    -->
 
     <uses-feature
         android:name="android.hardware.camera"
