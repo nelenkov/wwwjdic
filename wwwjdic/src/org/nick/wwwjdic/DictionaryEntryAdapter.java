@@ -49,7 +49,8 @@ public class DictionaryEntryAdapter extends BaseAdapter {
         return result;
     }
 
-    private final class DictionaryEntryView extends CheckableLinearLayout {
+    private static final class DictionaryEntryView extends
+            CheckableLinearLayout {
 
         private TextView entryText;
         private TextView readingText;
@@ -76,6 +77,7 @@ public class DictionaryEntryAdapter extends BaseAdapter {
             String translationStr = StringUtils.join(entry.getMeanings(), "/",
                     0);
             translationText.setText(translationStr);
+
             setChecked(false);
         }
 

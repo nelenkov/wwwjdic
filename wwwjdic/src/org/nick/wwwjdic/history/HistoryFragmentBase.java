@@ -355,8 +355,6 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
     public void onResume() {
         super.onResume();
 
-        getListView().clearChoices();
-
         refresh();
     }
 

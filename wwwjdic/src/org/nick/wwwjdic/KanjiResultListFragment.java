@@ -76,14 +76,12 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry>
     @Override
     public void onResume() {
         super.onResume();
-
-        if (!dualPane) {
-            getListView().clearChoices();
-        }
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        getListView().setItemChecked(position, false);
+
         KanjiEntry entry = entries.get(position);
         showDetails(entry, position);
     }
