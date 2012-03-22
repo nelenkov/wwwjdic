@@ -92,16 +92,13 @@ public class DictionaryResultListFragment extends
     @Override
     public void onResume() {
         super.onResume();
-
-        if (!dualPane) {
-            getListView().clearChoices();
-        }
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        DictionaryEntry entry = entries.get(position);
+        getListView().setItemChecked(position, false);
 
+        DictionaryEntry entry = entries.get(position);
         showDetails(entry, position);
     }
 

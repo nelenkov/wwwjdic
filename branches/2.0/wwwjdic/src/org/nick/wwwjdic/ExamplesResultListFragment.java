@@ -5,6 +5,7 @@ import java.util.List;
 import org.nick.wwwjdic.model.ExampleSentence;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.Analytics;
+import org.nick.wwwjdic.utils.CheckableLinearLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -22,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,7 +78,7 @@ public class ExamplesResultListFragment extends
             return convertView;
         }
 
-        static class ExampleSentenceView extends LinearLayout {
+        static class ExampleSentenceView extends CheckableLinearLayout {
 
             private static final int HILIGHT_COLOR = 0xff427ad7;
 
@@ -208,14 +208,12 @@ public class ExamplesResultListFragment extends
     @Override
     public void onResume() {
         super.onResume();
-
-        if (!dualPane) {
-            getListView().clearChoices();
-        }
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        getListView().setItemChecked(position, false);
+
         ExampleSentence sentence = getCurrentSentence(id);
         breakDown(sentence, position);
     }
