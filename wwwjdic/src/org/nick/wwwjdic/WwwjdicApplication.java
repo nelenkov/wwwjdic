@@ -35,7 +35,7 @@ import android.util.Log;
 
 import com.flurry.android.FlurryAgent;
 
-@ReportsCrashes(formKey = "dEJzcGZKazRWVGRkRTR0X2JKN0ozWFE6MQ", mode = ReportingInteractionMode.TOAST)
+@ReportsCrashes(formKey = "dGNNTWxOQlZRT194XzBLUEw3c0RCaXc6MQ", mode = ReportingInteractionMode.TOAST)
 public class WwwjdicApplication extends Application {
 
     private static final String TAG = WwwjdicApplication.class.getSimpleName();
@@ -102,9 +102,9 @@ public class WwwjdicApplication extends Application {
     }
 
     private void initAcra() {
-        if (isDebug()) {
-            return;
-        }
+        //        if (isDebug()) {
+        //            return;
+        //        }
 
         try {
             ACRAConfiguration.setResToastText(R.string.crash_toast_text);
