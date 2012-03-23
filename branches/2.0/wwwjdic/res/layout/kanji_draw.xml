@@ -1,31 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/draw_layout" android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:orientation="vertical">
-    <LinearLayout android:id="@+id/hwr_button_group"
-        android:layout_height="wrap_content" android:layout_width="fill_parent"
-        android:visibility="visible" android:orientation="horizontal"
+    android:id="@+id/draw_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/hwr_button_group"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="left|center_vertical"
-        android:layout_marginBottom="4dip" android:layout_marginTop="4dip"
-        android:layout_marginLeft="2dip" android:layout_marginRight="2dip">
-        <Button android:id="@+id/recognize_button"
+        android:layout_marginBottom="4dip"
+        android:layout_marginLeft="2dip"
+        android:layout_marginRight="2dip"
+        android:layout_marginTop="4dip"
+        android:orientation="horizontal"
+        android:visibility="visible" >
+
+        <Button
+            android:id="@+id/recognize_button"
             style="@style/hkr_toolbar_button"
-            android:text="@string/hkr_abbrev"/>
-        <Button android:id="@+id/ocr_button"
+            android:text="@string/hkr_abbrev" />
+
+        <Button
+            android:id="@+id/ocr_button"
             style="@style/hkr_toolbar_button"
-            android:text="@string/ocr"/>
-        <Button android:id="@+id/remove_stroke_button"
+            android:text="@string/ocr" />
+
+        <Button
+            android:id="@+id/remove_stroke_button"
             style="@style/hkr_toolbar_button"
-            android:text="@string/remove_stroke"/>
-        <Button android:id="@+id/clear_canvas_button"
+            android:text="@string/remove_stroke" />
+
+        <Button
+            android:id="@+id/clear_canvas_button"
             style="@style/hkr_toolbar_button"
-            android:text="@string/clear"/>
-        <CheckBox android:id="@+id/lookAheadCb"
+            android:text="@string/clear" />
+
+        <CheckBox
+            android:id="@+id/lookAheadCb"
             style="@style/hkr_toolbar_checbox"
             android:checked="false"
             android:text="@string/look_ahead" />
     </LinearLayout>
+
     <org.nick.wwwjdic.hkr.KanjiDrawView
-        android:id="@+id/kanji_draw_view" android:layout_width="fill_parent"
+        android:id="@+id/kanji_draw_view"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
+
 </LinearLayout>
