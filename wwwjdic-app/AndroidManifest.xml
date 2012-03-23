@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:installLocation="auto"
     package="org.nick.wwwjdic"
+    android:installLocation="auto"
     android:versionCode="2200"
     android:versionName="2.2" >
 
@@ -68,8 +68,8 @@
         </activity>
         <activity
             android:name="org.nick.wwwjdic.DictionaryEntryDetail"
-            android:theme="@style/Theme.WwwjdicAb" 
-            android:uiOptions="splitActionBarWhenNarrow"/>
+            android:theme="@style/Theme.WwwjdicAb"
+            android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name="org.nick.wwwjdic.KanjiResultList"
             android:label="@string/searching"
@@ -85,8 +85,8 @@
         <activity
             android:name="org.nick.wwwjdic.KanjiEntryDetail"
             android:taskAffinity=""
-            android:theme="@style/Theme.WwwjdicAb" 
-            android:uiOptions="splitActionBarWhenNarrow"/>
+            android:theme="@style/Theme.WwwjdicAb"
+            android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name="org.nick.wwwjdic.RadicalChart"
             android:theme="@style/Theme.WwwjdicAb" />
@@ -126,8 +126,8 @@
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.krad.KradChart"
-            android:theme="@style/Theme.WwwjdicAb" 
-            android:hardwareAccelerated="false"/>
+            android:hardwareAccelerated="false"
+            android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.widgets.KodWidgetConfigure"
             android:label="@string/kod_widget_configuration"
