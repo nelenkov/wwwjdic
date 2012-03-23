@@ -45,4 +45,6 @@
     <dimen name="kod_text_size">48sp</dimen>
     <dimen name="kod_details_text_size">28sp</dimen>
     
+    <dimen name="ab_tab_menu_text_size">12sp</dimen>
+    
 </resources>
