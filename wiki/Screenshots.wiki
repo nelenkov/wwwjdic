@@ -11,6 +11,7 @@ http://wwwjdic.googlecode.com/svn/branches/2.0/site/screenshots/examples-hc.png
 == Dictionary Lookup ==
 http://wwwjdic.googlecode.com/svn/branches/2.0/site/screenshots/dictionary.png
 http://wwwjdic.googlecode.com/svn/branches/2.0/site/screenshots/dict-result-list.png
+http://wwwjdic.googlecode.com/svn/branches/2.0/site/screenshots/dict-detail.png
 
 == Kanji Lookup ==
 http://wwwjdic.googlecode.com/svn/branches/2.0/site/screenshots/radical-selection.png
