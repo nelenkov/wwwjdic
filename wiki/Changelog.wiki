@@ -1,6 +1,8 @@
 #summary Full changelog
 
 = Changelog =
+ * v2.2.1 (2012/3/24) Bug fix
+  * Use larger action bar tab and menu font for Japanese
  * v2.2 (2012/3/24) New UI and dictionaries
   * Improved UI and icons
   * Italian, Wordnet and Combined dictionaries
