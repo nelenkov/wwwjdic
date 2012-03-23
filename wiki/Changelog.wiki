@@ -1,6 +1,14 @@
 #summary Full changelog
 
 = Changelog =
+ * v2.2 (2012/3/24) New UI and dictionaries
+  * Improved UI and icons
+  * Italian, Wordnet and Combined dictionaries
+  * Share action
+  * Sequential mode for widget
+  * Widget preferences in Settings
+  * Performance optimizations
+  * Handle WWWJDIC maintenance
  * v2.1.1 (2011/11/7) Bugfix release
   * Fixed Japanese TTS bug
   * Avoid crash when opening Settings in landscape mode
