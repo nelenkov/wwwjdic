@@ -205,6 +205,18 @@
         <item name="android:actionModeStyle">@style/Widget.WwwjdicActionMode</item>
         <item name="actionBarTabStyle">@style/Widget.WwwjdicAbTabView</item>
         <item name="android:actionBarTabStyle">@style/Widget.WwwjdicAbTabView</item>
+        <item name="android:actionBarTabTextStyle">@style/Widget.WwwjdicTabText</item>
+        <item name="actionBarTabTextStyle">@style/Widget.WwwjdicTabText</item>
+        <item name="android:actionMenuTextAppearance">@style/Widget.WwwjdicMenu</item>
+        <item name="actionMenuTextAppearance">@style/Widget.WwwjdicMenu</item>
+    </style>
+    
+    <style name="Widget.WwwjdicTabText" parent="Widget.Sherlock.ActionBar.TabText">
+        <item name="android:textSize">@dimen/ab_tab_menu_text_size</item>
+    </style>
+    
+    <style name="Widget.WwwjdicMenu" parent="TextAppearance.Sherlock.Widget.ActionBar.Menu">
+        <item name="android:textSize">@dimen/ab_tab_menu_text_size</item>
     </style>
 
     <style name="Widget.WwwjdicAbMain" parent="Widget.Sherlock.ActionBar">
