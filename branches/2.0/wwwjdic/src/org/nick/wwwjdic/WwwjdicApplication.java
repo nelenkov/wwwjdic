@@ -72,6 +72,7 @@ public class WwwjdicApplication extends Application {
 
         flurryKey = readKey();
         FlurryAgent.setCaptureUncaughtExceptions(false);
+        FlurryAgent.setLogEnabled(false);
 
         initAcra();
 

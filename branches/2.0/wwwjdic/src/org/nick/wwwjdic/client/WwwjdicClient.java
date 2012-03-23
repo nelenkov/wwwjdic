@@ -12,6 +12,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.nick.wwwjdic.BuildConfig;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.model.SearchCriteria;
@@ -56,7 +57,9 @@ public class WwwjdicClient {
         try {
             String lookupUrl = String.format("%s?%s", url,
                     generateKanjiBackdoorCode(criteria));
-            Log.d(TAG, "WWWJDIC URL: " + lookupUrl);
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "WWWJDIC URL: " + lookupUrl);
+            }
 
             HttpGet get = new HttpGet(lookupUrl);
             String responseStr = httpclient.execute(get, responseHandler);
@@ -103,7 +106,9 @@ public class WwwjdicClient {
                     hasEndPre = true;
                     line = line.replaceAll(PRE_END_TAG, "");
                 }
-                Log.d(TAG, "dic entry line: " + line);
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "dic entry line: " + line);
+                }
                 KanjiEntry entry = parseKanjiEntry(line);
                 if (entry != null) {
                     result.add(entry);
