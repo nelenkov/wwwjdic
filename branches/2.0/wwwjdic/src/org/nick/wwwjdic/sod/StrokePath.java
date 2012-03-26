@@ -148,7 +148,6 @@ public class StrokePath {
         PointF lastPoint = moveTo;
         PointF lastP2 = null;
 
-        int idx = 0;
         for (Curve c : curves) {
             PointF p1 = null;
             PointF p2 = null;
@@ -179,7 +178,6 @@ public class StrokePath {
                 lastPoint = c.getP3();
                 lastP2 = c.getP2();
             }
-            idx++;
         }
         return path;
     }
