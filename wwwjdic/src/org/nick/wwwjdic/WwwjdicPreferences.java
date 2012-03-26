@@ -118,6 +118,7 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
     private ListPreference defaultDictPreference;
     private ListPreference jpTtsEnginePreference;
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,6 +158,7 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onResume() {
         super.onResume();
@@ -209,6 +211,7 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
             Preference preference) {
