@@ -339,8 +339,8 @@ public class KanjiEntryDetailFragment extends DetailFragment {
             table.addView(row);
         }
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.FILL_PARENT);
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
         meaningsCodesLayout.addView(table, lp);
     }
 
