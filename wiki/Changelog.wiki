@@ -1,7 +1,11 @@
 #summary Full changelog
 
 = Changelog =
- * v2.2.2 (2012/3/25)
+ * v2.2.3 (2012/3/28) Bug fix release
+  * Avoid OCR crash on devices without flash
+  * Don't clear translation query string for OCR
+  * Fixed typos
+ * v2.2.2 (2012/3/25) Bug fix release
   * Fixed widget detailed layout bug
  * v2.2.1 (2012/3/24) Bug fix
   * Use larger action bar tab and menu font for Japanese
