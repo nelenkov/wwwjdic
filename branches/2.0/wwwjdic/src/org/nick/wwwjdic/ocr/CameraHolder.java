@@ -118,6 +118,9 @@ public class CameraHolder {
 
     public boolean supportsFlash(Camera.Parameters params) {
         List<String> flashModes = params.getSupportedFlashModes();
+        if (flashModes == null) {
+            return false;
+        }
 
         return flashModes.contains(Camera.Parameters.FLASH_MODE_ON)
                 && flashModes.contains(Camera.Parameters.FLASH_MODE_OFF);
