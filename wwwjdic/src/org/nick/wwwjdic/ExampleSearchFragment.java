@@ -160,23 +160,40 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
         }
 
         if (parent.getId() == R.id.modeSpinner) {
-            toggleExampleOptions(position == 0);
+            boolean isExampleSearch = position == 0;
+            boolean clear = getSearchKey() == null;
+            toggleExampleOptions(isExampleSearch, clear);
         }
     }
 
-    private void toggleExampleOptions(boolean isEnabled) {
+    private String getSearchKey() {
+        Bundle extras = getActivity().getIntent().getExtras();
+        if (extras == null) {
+            return null;
+        }
+
+        return extras.getString(Wwwjdic.EXTRA_SEARCH_TEXT);
+    }
+
+    private void toggleExampleOptions(boolean isEnabled, boolean clear) {
         maxNumExamplesText.setEnabled(isEnabled);
         exampleExactMatchCb.setEnabled(isEnabled);
         maxNumExamplesText.setFocusableInTouchMode(isEnabled);
 
-        exampleSearchInputText.setText("");
+        if (clear) {
+            exampleSearchInputText.setText("");
+        }
         exampleSearchInputText.requestFocus();
 
         if (!isEnabled) {
-            exampleSearchInputText.setHint(R.string.enter_japanese_text);
+            if (clear) {
+                exampleSearchInputText.setHint(R.string.enter_japanese_text);
+            }
             exampleSearchButton.setText(R.string.translate);
         } else {
-            exampleSearchInputText.setHint(R.string.enter_eng_or_jap);
+            if (clear) {
+                exampleSearchInputText.setHint(R.string.enter_eng_or_jap);
+            }
             exampleSearchButton.setText(R.string.search);
         }
     }
