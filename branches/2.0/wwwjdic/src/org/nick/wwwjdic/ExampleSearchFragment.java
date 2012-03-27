@@ -161,12 +161,12 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
 
         if (parent.getId() == R.id.modeSpinner) {
             boolean isExampleSearch = position == 0;
-            boolean clear = getSearchKey() == null;
+            boolean clear = getExtrasSearchKey() == null;
             toggleExampleOptions(isExampleSearch, clear);
         }
     }
 
-    private String getSearchKey() {
+    private String getExtrasSearchKey() {
         Bundle extras = getActivity().getIntent().getExtras();
         if (extras == null) {
             return null;
