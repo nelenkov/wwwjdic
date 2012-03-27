@@ -20,7 +20,6 @@ import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.ocr.crop.CropImage;
 import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Dialogs;
-import org.nick.wwwjdic.utils.MediaScannerWrapper;
 import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Context;
@@ -516,9 +515,12 @@ public class OcrActivity extends WebServiceBackedActivity implements
             out.flush();
             out.close();
 
-            if (UIUtils.isFroyo()) {
-                MediaScannerWrapper.scanFile(this, filename);
-            }
+            // XXX causes exception on GN
+            // MediaScannerService: IllegalStateException: Unable to create new
+            // file
+            // if (UIUtils.isFroyo()) {
+            // MediaScannerWrapper.scanFile(this, filename);
+            // }
 
         } catch (IOException e) {
             throw new RuntimeException(e);
