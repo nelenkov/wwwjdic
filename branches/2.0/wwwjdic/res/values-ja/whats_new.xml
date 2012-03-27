@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">%sの新規機能</string>
-    <string name="whats_new">* UIとアイコン改善\n* イタリア語、Wordnetと統合辞書を追加\n* 共有アクション追加\n* ウィジェットに順次モードを追加\n* 設定画面にウィジェット設定を追加\n* パフォーマンス向上\n* WWWJDICメンテナンス対応\n* バグ修正</string>
+    <string name="whats_new">* フラッシュのない端末でのOCRクラッシュを修正\n* OCRからの例文検索・解析文字列をクリアしない\n* タイポ修正</string>
 </resources>
