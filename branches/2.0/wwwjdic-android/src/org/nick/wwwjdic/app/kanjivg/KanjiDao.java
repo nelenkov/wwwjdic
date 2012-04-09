@@ -3,15 +3,16 @@ package org.nick.wwwjdic.app.kanjivg;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.inject.Singleton;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
 
+@Singleton
 public class KanjiDao {
 
     private static final Logger log = Logger
             .getLogger(KanjiDao.class.getName());
-
 
     @SuppressWarnings("unchecked")
     public Kanji findKanji(PersistenceManager pm, String unicodeNumber) {
@@ -45,7 +46,6 @@ public class KanjiDao {
             }
         }
     }
-
 
     public void saveKanji(PersistenceManager pm, Kanji kanji) {
         Transaction tx = null;

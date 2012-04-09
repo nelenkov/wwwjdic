@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.jdo.PersistenceManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +18,7 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.nick.wwwjdic.app.server.CacheController;
 
+@Singleton
 public class UpdateStrokesServlet extends HttpServlet {
 
     /**
@@ -23,16 +26,17 @@ public class UpdateStrokesServlet extends HttpServlet {
      */
     private static final long serialVersionUID = -8230188336713626037L;
 
-    private static final Logger log = Logger
-            .getLogger(UpdateStrokesServlet.class.getName());
+    @Inject
+    private Logger log;
+
+    @Inject
+    private KanjiDao dao;
 
     public void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
         try {
             ServletFileUpload upload = new ServletFileUpload();
             res.setContentType("text/plain");
-
-            KanjiDao dao = new KanjiDao();
 
             FileItemIterator iterator = upload.getItemIterator(req);
             while (iterator.hasNext()) {
