@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.servlet.ServletException;
@@ -18,7 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.nick.wwwjdic.app.server.CacheController;
 
-
+@Singleton
 public class KanjiStrokesServlet extends HttpServlet {
 
     /**
@@ -26,8 +28,15 @@ public class KanjiStrokesServlet extends HttpServlet {
      */
     private static final long serialVersionUID = 1176775953028953526L;
 
-    private static final Logger log = Logger
-            .getLogger(KanjiStrokesServlet.class.getName());
+    @Inject
+    private Logger log;
+
+    // @Inject
+    // @RequestParameters
+    // private Map<String, String[]> params;
+
+    @Inject
+    private KanjiDao kanjiDao;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -42,6 +51,8 @@ public class KanjiStrokesServlet extends HttpServlet {
             if (xDeviceVersion != null) {
                 log.info("X-Device-Version: " + xDeviceVersion);
             }
+
+            // log.fine("Params: " + params);
 
             boolean useJson = false;
             String format = req.getParameter("f");
@@ -94,7 +105,7 @@ public class KanjiStrokesServlet extends HttpServlet {
         }
     }
 
-    private static void error(String message, Throwable t) {
+    private void error(String message, Throwable t) {
         log.log(Level.SEVERE, message, t);
     }
 
@@ -104,7 +115,7 @@ public class KanjiStrokesServlet extends HttpServlet {
         PersistenceManager pm = PMF.get().getPersistenceManager();
         Query q = null;
 
-        //        Transaction tx = null;
+        // Transaction tx = null;
         try {
             Kanji k = null;
 
@@ -118,8 +129,8 @@ public class KanjiStrokesServlet extends HttpServlet {
                         + "where unicodeNumber == unicodeNumberParam "
                         + "parameters String unicodeNumberParam ");
 
-                //                tx = pm.currentTransaction();
-                //                tx.begin();
+                // tx = pm.currentTransaction();
+                // tx.begin();
 
                 List<Kanji> kanjis = (List<Kanji>) q.execute(unicodeNumber);
                 if (kanjis.isEmpty()) {
@@ -158,9 +169,9 @@ public class KanjiStrokesServlet extends HttpServlet {
             }
 
         } finally {
-            //            if (tx != null && tx.isActive()) {
-            //                tx.commit();
-            //            }
+            // if (tx != null && tx.isActive()) {
+            // tx.commit();
+            // }
 
             if (q != null) {
                 q.closeAll();
@@ -176,7 +187,7 @@ public class KanjiStrokesServlet extends HttpServlet {
         PersistenceManager pm = PMF.get().getPersistenceManager();
         Query q = null;
 
-        //        Transaction tx = null;
+        // Transaction tx = null;
         try {
             Kanji k = null;
 
@@ -189,8 +200,8 @@ public class KanjiStrokesServlet extends HttpServlet {
                         + "where unicodeNumber == unicodeNumberParam "
                         + "parameters String unicodeNumberParam ");
 
-                //                tx = pm.currentTransaction();
-                //                tx.begin();
+                // tx = pm.currentTransaction();
+                // tx.begin();
 
                 List<Kanji> kanjis = (List<Kanji>) q.execute(unicodeNumber);
                 if (kanjis.isEmpty()) {
@@ -219,9 +230,9 @@ public class KanjiStrokesServlet extends HttpServlet {
             return result;
 
         } finally {
-            //            if (tx != null && tx.isActive()) {
-            //                tx.commit();
-            //            }
+            // if (tx != null && tx.isActive()) {
+            // tx.commit();
+            // }
 
             if (q != null) {
                 q.closeAll();
