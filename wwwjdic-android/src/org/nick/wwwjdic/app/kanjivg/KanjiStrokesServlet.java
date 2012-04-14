@@ -8,8 +8,6 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +17,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.nick.wwwjdic.app.server.CacheController;
+
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
 
 @Singleton
 public class KanjiStrokesServlet extends HttpServlet {
@@ -109,137 +111,97 @@ public class KanjiStrokesServlet extends HttpServlet {
         log.log(Level.SEVERE, message, t);
     }
 
-    @SuppressWarnings("unchecked")
     private String findKanjiJson(String unicodeNumber) {
+        Kanji k = null;
 
-        PersistenceManager pm = PMF.get().getPersistenceManager();
-        Query q = null;
+        Kanji cachedKanji = (Kanji) CacheController
+                .get("json_" + unicodeNumber);
+        if (cachedKanji != null) {
+            k = cachedKanji;
+            log.info("Got kanji from cache: " + unicodeNumber);
+        } else {
+            Objectify ofy = ObjectifyService.begin();
 
-        // Transaction tx = null;
-        try {
-            Kanji k = null;
+            k = ofy.query(Kanji.class).filter("unicodeNumber", unicodeNumber)
+                    .get();
 
-            Kanji cachedKanji = (Kanji) CacheController.get("json_"
-                    + unicodeNumber);
-            if (cachedKanji != null) {
-                k = cachedKanji;
-                log.info("Got kanji from cache: " + unicodeNumber);
-            } else {
-                q = pm.newQuery("select from org.nick.wwwjdic.app.kanjivg.Kanji "
-                        + "where unicodeNumber == unicodeNumberParam "
-                        + "parameters String unicodeNumberParam ");
-
-                // tx = pm.currentTransaction();
-                // tx.begin();
-
-                List<Kanji> kanjis = (List<Kanji>) q.execute(unicodeNumber);
-                if (kanjis.isEmpty()) {
-                    log.info(String.format("KanjiVG data for %s not found",
-                            unicodeNumber));
-                    return null;
-                }
-
-                k = kanjis.get(0);
-                String key = "json_" + unicodeNumber;
-                CacheController.put(key, k);
-                log.info("Put kanji in cache: " + key);
+            if (k == null) {
+                log.info(String.format("KanjiVG data for %s not found",
+                        unicodeNumber));
+                return null;
             }
+            List<Stroke> strokes = ofy.query(Stroke.class)
+                    .ancestor(new Key<Kanji>(Kanji.class, k.getId())).list();
+            k.setStrokes(strokes);
 
-            try {
-                JSONObject jsonObj = new JSONObject();
-                jsonObj.put("kanji", k.getMidashi());
-                jsonObj.put("unicode", k.getUnicodeNumber());
-
-                JSONArray pathsArr = new JSONArray();
-                List<Stroke> strokes = k.getStrokes();
-                for (Stroke s : strokes) {
-                    String path = s.getPath();
-                    // log.info("path: " + path);
-                    if (!"".equals(path) && !"null".equals(path)
-                            && path != null) {
-                        pathsArr.put(s.getPath());
-                    }
-                }
-                jsonObj.put("paths", pathsArr);
-
-                return jsonObj.toString();
-            } catch (JSONException e) {
-                log.severe(e.getMessage());
-                throw new RuntimeException(e);
-            }
-
-        } finally {
-            // if (tx != null && tx.isActive()) {
-            // tx.commit();
-            // }
-
-            if (q != null) {
-                q.closeAll();
-            }
-
-            pm.close();
+            String key = "json_" + unicodeNumber;
+            CacheController.put(key, k);
+            log.info("Put kanji in cache: " + key);
         }
-    }
 
-    @SuppressWarnings("unchecked")
-    private String findKanji(String unicodeNumber) {
-
-        PersistenceManager pm = PMF.get().getPersistenceManager();
-        Query q = null;
-
-        // Transaction tx = null;
         try {
-            Kanji k = null;
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("kanji", k.getMidashi());
+            jsonObj.put("unicode", k.getUnicodeNumber());
 
-            Kanji cachedKanji = (Kanji) CacheController.get(unicodeNumber);
-            if (cachedKanji != null) {
-                k = cachedKanji;
-                log.info("Got kanji from cache: " + unicodeNumber);
-            } else {
-                q = pm.newQuery("select from org.nick.wwwjdic.app.kanjivg.Kanji "
-                        + "where unicodeNumber == unicodeNumberParam "
-                        + "parameters String unicodeNumberParam ");
-
-                // tx = pm.currentTransaction();
-                // tx.begin();
-
-                List<Kanji> kanjis = (List<Kanji>) q.execute(unicodeNumber);
-                if (kanjis.isEmpty()) {
-                    log.info(String.format("KanjiVG data for %s not found",
-                            unicodeNumber));
-                    return String.format("not found (%s)", unicodeNumber);
-                }
-
-                k = kanjis.get(0);
-                CacheController.put(unicodeNumber, k);
-                log.info("Put kanji in cache: " + unicodeNumber);
-            }
-            String result = k.getMidashi() + " " + k.getUnicodeNumber() + "\n";
-            log.info("returning " + result);
-
+            JSONArray pathsArr = new JSONArray();
             List<Stroke> strokes = k.getStrokes();
             for (Stroke s : strokes) {
                 String path = s.getPath();
                 // log.info("path: " + path);
                 if (!"".equals(path) && !"null".equals(path) && path != null) {
-                    result += s.getPath();
-                    result += "\n";
+                    pathsArr.put(s.getPath());
                 }
             }
+            jsonObj.put("paths", pathsArr);
 
-            return result;
-
-        } finally {
-            // if (tx != null && tx.isActive()) {
-            // tx.commit();
-            // }
-
-            if (q != null) {
-                q.closeAll();
-            }
-
-            pm.close();
+            return jsonObj.toString();
+        } catch (JSONException e) {
+            log.severe(e.getMessage());
+            throw new RuntimeException(e);
         }
+    }
+
+    private String findKanji(String unicodeNumber) {
+        Kanji k = null;
+
+        Kanji cachedKanji = (Kanji) CacheController.get(unicodeNumber);
+        if (cachedKanji != null) {
+            k = cachedKanji;
+            log.info("Got kanji from cache: " + unicodeNumber);
+        } else {
+            Objectify ofy = ObjectifyService.begin();
+
+            k = ofy.query(Kanji.class).filter("unicodeNumber", unicodeNumber)
+                    .get();
+
+            if (k == null) {
+                log.info(String.format("KanjiVG data for %s not found",
+                        unicodeNumber));
+                return null;
+            }
+            List<Stroke> strokes = ofy.query(Stroke.class)
+                    .ancestor(new Key<Kanji>(Kanji.class, k.getId())).list();
+            k.setStrokes(strokes);
+
+            CacheController.put(unicodeNumber, k);
+            log.info("Put kanji in cache: " + unicodeNumber);
+        }
+        String result = k.getMidashi() + " " + k.getUnicodeNumber() + "\n";
+        log.info("returning " + result);
+
+        List<Stroke> strokes = k.getStrokes();
+        for (Stroke s : strokes) {
+            String path = s.getPath();
+            // log.info("path: " + path);
+            if (!"".equals(path) && !"null".equals(path) && path != null) {
+                result += s.getPath();
+                result += "\n";
+            }
+        }
+
+        return result;
+
     }
 
 }
