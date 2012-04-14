@@ -2,34 +2,29 @@ package org.nick.wwwjdic.app.kanjivg;
 
 import java.io.Serializable;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.Id;
 
-import com.google.appengine.api.datastore.Key;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Parent;
 
-@PersistenceCapable
 public class Stroke implements Serializable {
-
 
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
 
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
+    @Id
+    private Long id;
 
-    @Persistent
     private int number;
 
-    @Persistent
     private String type;
 
-    @Persistent
     private String path;
+
+    @Parent
+    private Key<Kanji> kanji;
 
     public Stroke() {
     }
@@ -40,8 +35,16 @@ public class Stroke implements Serializable {
         this.path = path;
     }
 
-    public Key getKey() {
-        return key;
+    public Long getId() {
+        return id;
+    }
+
+    public Key<Kanji> getKanji() {
+        return kanji;
+    }
+
+    public void setKanji(Key<Kanji> kanji) {
+        this.kanji = kanji;
     }
 
     public int getNumber() {

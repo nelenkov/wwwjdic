@@ -4,17 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jdo.annotations.Extension;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.Order;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-import javax.persistence.OneToMany;
+import javax.persistence.Id;
 
-import com.google.appengine.api.datastore.Key;
-
-@PersistenceCapable
 public class Kanji implements Serializable {
 
     /**
@@ -22,18 +13,13 @@ public class Kanji implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
+    @Id
+    private Long id;
 
-    @Persistent
     private String midashi;
 
-    @Persistent
     private String unicodeNumber;
 
-    @Persistent
-    @Order(extensions = @Extension(vendorName = "datanucleus", key = "list-ordering", value = "number asc"))
     private List<Stroke> strokes = new ArrayList<Stroke>();
 
     public Kanji(String midashi, String unicodeNumber) {
@@ -44,8 +30,8 @@ public class Kanji implements Serializable {
     public Kanji() {
     }
 
-    public Key getKey() {
-        return key;
+    public Long getId() {
+        return id;
     }
 
     public String getMidashi() {
@@ -64,7 +50,6 @@ public class Kanji implements Serializable {
         this.unicodeNumber = unicodeNumber;
     }
 
-    @OneToMany
     public List<Stroke> getStrokes() {
         return strokes;
     }
