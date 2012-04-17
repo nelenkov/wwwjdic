@@ -20,8 +20,6 @@
                 android:orderInCategory="0"
                 android:showAsAction="ifRoom|withText"
                 android:title="@string/copy_jp">
-                <menu>
-                </menu>
             </item>
             <item
                 android:id="@+id/menu_context_example_list_copy_eng"
