@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -29,8 +28,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 public class DictionaryFragment extends WwwjdicFragmentBase implements
-        OnClickListener, OnFocusChangeListener, OnCheckedChangeListener,
-        OnItemSelectedListener {
+        OnClickListener, OnCheckedChangeListener, OnItemSelectedListener {
 
     private static final String TAG = DictionaryFragment.class.getSimpleName();
 
@@ -57,7 +55,6 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
         setupSpinners();
 
         inputText.requestFocus();
-        selectDictionary(savedInstanceState);
 
         Bundle extras = getArguments();
         if (extras == null) {
@@ -111,7 +108,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
         }
     }
 
-    private void selectDictionary(Bundle savedInstanceState) {
+    private void selectDictionary() {
         int dictIdx = WwwjdicPreferences.getDefaultDictionaryIdx(getActivity());
         if (dictIdx != 0) {
             // if it is not the default, use it
@@ -135,7 +132,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
     public void onResume() {
         super.onResume();
 
-        // selectDictionary();
+        selectDictionary();
     }
 
     @Override
@@ -250,16 +247,6 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
         }
     }
 
-    public void onFocusChange(View v, boolean hasFocus) {
-        if (v.getId() == R.id.inputText) {
-            if (hasFocus) {
-                showKeyboard();
-            } else {
-                hideKeyboard();
-            }
-        }
-    }
-
     private void hideKeyboard() {
         if (getActivity() == null) {
             return;
@@ -268,14 +255,6 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
         InputMethodManager mgr = (InputMethodManager) getActivity()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         mgr.hideSoftInputFromWindow(inputText.getWindowToken(), 0);
-    }
-
-    private void showKeyboard() {
-        EditText editText = (EditText) getView().findViewById(R.id.inputText);
-        editText.requestFocus();
-        InputMethodManager mgr = (InputMethodManager) getActivity()
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
-        mgr.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
     @Override

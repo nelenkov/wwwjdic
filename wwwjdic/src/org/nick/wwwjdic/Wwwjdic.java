@@ -32,6 +32,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -328,6 +329,15 @@ public class Wwwjdic extends ActionBarActivity {
         super.onStart();
 
         Analytics.startSession(this);
+
+        if (WwwjdicPreferences.isPopupKeyboard(this)) {
+            showKeyboard();
+        }
+    }
+
+    private void showKeyboard() {
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
     @Override

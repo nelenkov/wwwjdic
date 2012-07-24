@@ -41,7 +41,7 @@
             android:label="@string/app_name_short"
             android:theme="@style/Theme.WwwjdicAbMain"
             android:uiOptions="splitActionBarWhenNarrow"
-            android:windowSoftInputMode="stateVisible|adjustPan" >
+            android:windowSoftInputMode="stateAlwaysHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

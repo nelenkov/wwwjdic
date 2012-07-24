@@ -561,5 +561,9 @@ You can enable offline recognition using the Kanji Recognizer application. Would
     <string name="sequential">Sequential</string>
     
     <string name="wwwjdic_maintenace_message">WWWJDIC is currently undergoing maintenance. Use another mirror or try again later.</string>
+    
+    <string name="pref_popup_keyboard">Popup keyboard</string>
+    <string name="pref_popup_keyboard_summary">When checked, the software keyboard 
+        will be automatically opened on startup.</string>
 
 </resources>
