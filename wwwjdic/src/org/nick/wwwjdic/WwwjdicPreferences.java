@@ -112,6 +112,10 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
     private static String PREF_KOD_IS_RANDOM_KEY = "kod_is_random";
     private static String PREF_KOD_CURRENT_KANJI_KEY = "kod_current_kanji";
 
+    private static String PREF_SELECTED_DICTIONARY = "selected_dictionary";
+    private static String PREF_KANJI_SEARCH_TYPE_KEY = "kanji_search_type";
+    private static String PREF_SENTENCE_MODE_KEY = "sentence_mode";
+
     private CheckBoxPreference useKrPreference;
     private CheckBoxPreference autoSelectMirrorPreference;
     private ListPreference mirrorPreference;
@@ -552,9 +556,7 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
     }
 
     private static SharedPreferences.Editor getPrefsEditor(Context context) {
-        SharedPreferences.Editor editor = PreferenceManager
-                .getDefaultSharedPreferences(context).edit();
-        return editor;
+        return PreferenceManager.getDefaultSharedPreferences(context).edit();
     }
 
     private static boolean getBooleanPref(Context context, String key,
@@ -694,4 +696,35 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
 
         return super.onOptionsItemSelected(item);
     }
+
+    public static synchronized void setSelectedDictionaryIdx(Context context,
+            int selectedDictionary) {
+        getPrefsEditor(context).putInt(PREF_SELECTED_DICTIONARY,
+                selectedDictionary).commit();
+    }
+
+    public static int getSelectedDictionaryIdx(Context context) {
+        return getPrefs(context).getInt(PREF_SELECTED_DICTIONARY, 0);
+    }
+
+    public static synchronized void setKanjiSearchTypeIdx(Context context,
+            int kanjiSearchType) {
+        getPrefsEditor(context).putInt(PREF_KANJI_SEARCH_TYPE_KEY,
+                kanjiSearchType).commit();
+    }
+
+    public static int getKanjiSearchTypeIdx(Context context) {
+        return getPrefs(context).getInt(PREF_KANJI_SEARCH_TYPE_KEY, 0);
+    }
+
+    public static synchronized void setSentenceModeIdx(Context context,
+            int translationMode) {
+        getPrefsEditor(context).putInt(PREF_SENTENCE_MODE_KEY,
+                translationMode).commit();
+    }
+
+    public static int getSentenceModeIdx(Context context) {
+        return getPrefs(context).getInt(PREF_SENTENCE_MODE_KEY, 0);
+    }
+
 }
