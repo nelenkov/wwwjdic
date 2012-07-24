@@ -1,7 +1,5 @@
 package org.nick.wwwjdic;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
 import org.nick.wwwjdic.history.HistoryDbHelper;
@@ -13,6 +11,7 @@ import org.nick.wwwjdic.utils.StringUtils;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.SparseArrayCompat;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -40,7 +39,7 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
 
     private static final int RADICAL_RETURN_RESULT = 0;
 
-    private static final Map<Integer, String> IDX_TO_CODE = new HashMap<Integer, String>();
+    private static final SparseArrayCompat<String> IDX_TO_CODE = new SparseArrayCompat<String>();
 
     private EditText kanjiInputText;
     private Spinner kanjiSearchTypeSpinner;
@@ -96,7 +95,7 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
     }
 
     private void populateIdxToCode() {
-        if (IDX_TO_CODE.isEmpty()) {
+        if (IDX_TO_CODE.size() == 0) {
             String[] kanjiSearchCodesArray = getResources().getStringArray(
                     R.array.kanji_search_codes_array);
             for (int i = 0; i < kanjiSearchCodesArray.length; i++) {
@@ -111,8 +110,19 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+
+        WwwjdicPreferences.setKanjiSearchTypeIdx(getActivity(),
+                kanjiSearchTypeSpinner.getSelectedItemPosition());
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
+
+        kanjiSearchTypeSpinner.setSelection(WwwjdicPreferences
+                .getKanjiSearchTypeIdx(getActivity()));
     }
 
     private void setupListeners() {

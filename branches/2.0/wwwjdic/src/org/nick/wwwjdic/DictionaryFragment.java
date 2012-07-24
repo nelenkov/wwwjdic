@@ -1,7 +1,5 @@
 package org.nick.wwwjdic;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
 import org.nick.wwwjdic.history.HistoryDbHelper;
@@ -12,6 +10,7 @@ import org.nick.wwwjdic.utils.StringUtils;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.SparseArrayCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,7 +36,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
 
     private static final String SELECTED_DICTIONARY_IDX = "org.nick.wwwjdic.selectedDict";
 
-    private static final Map<Integer, String> IDX_TO_DICT_CODE = new HashMap<Integer, String>();
+    private static final SparseArrayCompat<String> IDX_TO_DICT_CODE = new SparseArrayCompat<String>();
 
     private EditText inputText;
     private CheckBox exactMatchCb;
@@ -100,7 +99,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
     }
 
     private void populateIdxToDictCode() {
-        if (IDX_TO_DICT_CODE.isEmpty()) {
+        if (IDX_TO_DICT_CODE.size() == 0) {
             String[] dictionaryIdxs = getResources().getStringArray(
                     R.array.dictionary_idxs_array);
             String[] dictionaryCodes = getResources().getStringArray(
@@ -113,13 +112,23 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
     }
 
     private void selectDictionary(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            int idx = savedInstanceState.getInt(SELECTED_DICTIONARY_IDX, 0);
-            dictSpinner.setSelection(idx);
+        int dictIdx = WwwjdicPreferences.getDefaultDictionaryIdx(getActivity());
+        if (dictIdx != 0) {
+            // if it is not the default, use it
+            dictSpinner.setSelection(dictIdx);
         } else {
+            // otherwise use saved value
             dictSpinner.setSelection(WwwjdicPreferences
-                    .getDefaultDictionaryIdx(getActivity()));
+                    .getSelectedDictionaryIdx(getActivity()));
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        WwwjdicPreferences.setSelectedDictionaryIdx(getActivity(),
+                dictSpinner.getSelectedItemPosition());
     }
 
     @Override

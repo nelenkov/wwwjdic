@@ -78,8 +78,19 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+
+        WwwjdicPreferences.setSentenceModeIdx(getActivity(),
+                sentenceModeSpinner.getSelectedItemPosition());
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
+
+        sentenceModeSpinner.setSelection(WwwjdicPreferences
+                .getSentenceModeIdx(getActivity()));
     }
 
     private void setupListeners() {
