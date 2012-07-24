@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nick.wwwjdic.widgets.JisGenerator;
+import org.nick.wwwjdic.widgets.JlptLevelGenerator;
 
 public class JisGeneratorTest {
 
@@ -42,5 +43,27 @@ public class JisGeneratorTest {
         g.setCurrentKanji("Í§");
         kanji = g.selectNextKanji();
         assertEquals("àü", kanji);
+    }
+
+    @Test
+    public void testJlptSequentialInitial() {
+        JlptLevelGenerator g = new JlptLevelGenerator(false, 5);
+        // start from 0
+        assertEquals("ì˙", g.selectNextKanji());
+        assertEquals("àÍ", g.selectNextKanji());
+    }
+
+    @Test
+    public void testJlptSequentialWrap() {
+        JlptLevelGenerator g = new JlptLevelGenerator(false, 5);
+        g.setCurrentKanji("óF");
+
+        assertEquals("ç∂", g.selectNextKanji());
+        assertEquals("ãx", g.selectNextKanji());
+        assertEquals("ïÉ", g.selectNextKanji());
+        assertEquals("âJ", g.selectNextKanji());
+        // wrap around
+        assertEquals("ì˙", g.selectNextKanji());
+        assertEquals("àÍ", g.selectNextKanji());
     }
 }

@@ -44,7 +44,16 @@ public class JlptLevelGenerator implements KanjiGenerator {
                 currentKanji = kanji;
             } else {
                 int idx = Arrays.asList(kanjis).indexOf(currentKanji);
-                kanji = idx == -1 ? kanjis[0] : kanjis[++idx];
+                if (idx == -1) {
+                    kanji = kanjis[0];
+                } else {
+                    if (idx + 1 >= kanjis.length) {
+                        idx = 0;
+                        kanji = kanjis[idx];
+                    } else {
+                        kanji = kanjis[++idx];
+                    }
+                }
                 currentKanji = kanji;
             }
         }
