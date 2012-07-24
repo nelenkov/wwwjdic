@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.WwwjdicAb" parent="@style/Theme.Sherlock">
+        <item name="android:actionBarStyle">@style/Widget.WwwjdicAb</item>
+        <item name="android:actionModeStyle">@style/Widget.WwwjdicActionMode</item>
+        <item name="android:actionBarTabStyle">@style/Widget.WwwjdicAbTabView</item>
+    </style>
+
+    <style name="Widget.WwwjdicAb" parent="Widget.Sherlock.ActionBar">
+        <item name="android:background">@drawable/action_bar_bg</item>
+        <item name="android:backgroundSplit">@drawable/action_bar_bg</item>
+        <item name="android:icon">@drawable/ic_action_home</item>
+        <item name="android:titleTextStyle">@style/action_bar_title</item>
+    </style>
+
+    <style name="Widget.WwwjdicAbTabView" parent="Widget.Sherlock.ActionBar.TabView">
+        <item name="android:background">@drawable/action_bar_tab_bg</item>
+    </style>
+
+    <style name="Theme.WwwjdicAbMain" parent="@style/Theme.Sherlock">
+        <item name="android:actionBarStyle">@style/Widget.WwwjdicAbMain</item>
+        <item name="android:actionModeStyle">@style/Widget.WwwjdicActionMode</item>
+        <item name="android:actionBarTabStyle">@style/Widget.WwwjdicAbTabView</item>
+        <item name="android:actionBarTabTextStyle">@style/Widget.WwwjdicTabText</item>
+        <item name="android:actionMenuTextAppearance">@style/Widget.WwwjdicMenu</item>
+    </style>
+    
+    <style name="Widget.WwwjdicAbMain" parent="Widget.Sherlock.ActionBar">
+        <item name="android:displayOptions"></item>
+        <item name="android:background">@null</item>
+        <item name="android:backgroundSplit">@drawable/action_bar_bg</item>
+        <item name="android:icon">@null</item>
+        <item name="android:titleTextStyle">@style/action_bar_title</item>
+    </style>
+
+    <style name="Widget.WwwjdicActionMode" parent="Widget.Sherlock.ActionMode">
+        <item name="android:background">@drawable/action_bar_bg</item>
+        <item name="android:backgroundSplit">@drawable/action_bar_bg</item>
+    </style>
+
+</resources>
