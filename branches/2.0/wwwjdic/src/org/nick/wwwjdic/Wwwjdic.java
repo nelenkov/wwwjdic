@@ -244,7 +244,7 @@ public class Wwwjdic extends ActionBarActivity {
         hasCamera = getPackageManager().hasSystemFeature(
                 PackageManager.FEATURE_CAMERA);
 
-        invalidateOptionsMenu();
+        supportInvalidateOptionsMenu();
 
         if (!isDonateVersion()
                 || WwwjdicPreferences.isDonationThanksShown(this)) {
