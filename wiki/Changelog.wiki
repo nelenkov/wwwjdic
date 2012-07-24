@@ -1,6 +1,11 @@
 #summary Full changelog
 
 = Changelog =
+ * v2.2.4 (2012/7/25) Jelly Bean support
+  * Jelly Bean (4.1) support
+  * Toggle keyboard popup on startup
+  * Persist search type for each tab
+  * Bug fixes
  * v2.2.3 (2012/3/28) Bug fix release
   * Avoid OCR crash on devices without flash
   * Don't clear translation query string for OCR
