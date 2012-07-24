@@ -1,14 +1,23 @@
 package org.nick.wwwjdic.history;
 
+import java.io.File;
+
 import org.nick.wwwjdic.ActionBarActivity;
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.Wwwjdic;
+import org.nick.wwwjdic.history.HistoryFragmentBase.ConfirmDeleteDialog;
 import org.nick.wwwjdic.utils.Dialogs;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
+import android.widget.ListAdapter;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 
 public class FavoritesAndHistory extends ActionBarActivity {
@@ -100,6 +109,61 @@ public class FavoritesAndHistory extends ActionBarActivity {
         //        getSupportActionBar().setDisplayShowHomeEnabled(showHome);
         //        getSupportActionBar().setDisplayHomeAsUpEnabled(showHome);
         //        getSupportActionBar().setDisplayShowTitleEnabled(showTitle);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getSupportMenuInflater();
+        inflater.inflate(R.menu.history_favorites, menu);
+
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        int currentTabIdx = getSupportActionBar().getSelectedNavigationIndex();
+        HistoryFragmentBase currentTab = (HistoryFragmentBase) tabsAdapter
+                .getItem(currentTabIdx);
+        ListAdapter adapter = currentTab.getListAdapter();
+        final boolean hasItems = adapter == null ? false
+                : adapter.getCount() > 0;
+        File backupFile = new File(currentTab.getImportExportFilename());
+
+        menu.findItem(R.id.menu_import).setEnabled(backupFile.exists());
+        menu.findItem(R.id.menu_export).setEnabled(hasItems);
+        menu.findItem(R.id.menu_delete).setEnabled(hasItems);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int currentTabIdx = getSupportActionBar().getSelectedNavigationIndex();
+        HistoryFragmentBase currentTab = (HistoryFragmentBase) tabsAdapter
+                .getItem(currentTabIdx);
+
+        if (item.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(this, Wwwjdic.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        } else if (item.getItemId() == R.id.menu_import) {
+            currentTab.importItems();
+            supportInvalidateOptionsMenu();
+        } else if (item.getItemId() == R.id.menu_export) {
+            currentTab.exportItems();
+            supportInvalidateOptionsMenu();
+        } else if (item.getItemId() == R.id.menu_filter) {
+            currentTab.showFilterDialog();
+        } else if (item.getItemId() == R.id.menu_delete) {
+            DialogFragment confirmDeleteDialog = ConfirmDeleteDialog
+                    .newInstance(currentTab);
+            confirmDeleteDialog.show(getSupportFragmentManager(),
+                    "confirmDeleteDialog");
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
