@@ -109,12 +109,14 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
 
     static final String PREF_KOD_KEY = "pref_kod";
 
-    private static String PREF_KOD_IS_RANDOM_KEY = "kod_is_random";
-    private static String PREF_KOD_CURRENT_KANJI_KEY = "kod_current_kanji";
+    private static final String PREF_KOD_IS_RANDOM_KEY = "kod_is_random";
+    private static final String PREF_KOD_CURRENT_KANJI_KEY = "kod_current_kanji";
 
-    private static String PREF_SELECTED_DICTIONARY = "selected_dictionary";
-    private static String PREF_KANJI_SEARCH_TYPE_KEY = "kanji_search_type";
-    private static String PREF_SENTENCE_MODE_KEY = "sentence_mode";
+    private static final String PREF_SELECTED_DICTIONARY = "selected_dictionary";
+    private static final String PREF_KANJI_SEARCH_TYPE_KEY = "kanji_search_type";
+    private static final String PREF_SENTENCE_MODE_KEY = "sentence_mode";
+
+    private static final String PREF_POPUP_KEYBOARD_KEY = "pref_popup_keyboard";
 
     private CheckBoxPreference useKrPreference;
     private CheckBoxPreference autoSelectMirrorPreference;
@@ -725,6 +727,10 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
 
     public static int getSentenceModeIdx(Context context) {
         return getPrefs(context).getInt(PREF_SENTENCE_MODE_KEY, 0);
+    }
+
+    public static boolean isPopupKeyboard(Context context) {
+        return getPrefs(context).getBoolean(PREF_POPUP_KEYBOARD_KEY, true);
     }
 
 }

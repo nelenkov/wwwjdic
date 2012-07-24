@@ -413,4 +413,7 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     <string name="sequential">順次</string>
     
     <string name="wwwjdic_maintenace_message">WWWJDIC はただいまメンテナンス中です。数分後に再試行してください。</string>
+    
+    <string name="pref_popup_keyboard">自動的にキーボードを開く</string>
+    <string name="pref_popup_keyboard_summary">チェックされている場合は、起動時にソフトキーボードを自動的に開きます。</string>
 </resources>
