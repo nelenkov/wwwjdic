@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">%sの新規機能</string>
-    <string name="whats_new">* フラッシュのない端末でのOCRクラッシュを修正\n* OCRからの例文検索・解析文字列をクリアしない\n* タイポ修正</string>
+    <string name="whats_new">* Jelly Bean (4.1)対応\n* ソフトキーボード自動開閉設定\n* 各タブの検索モードを保存\n* バグ修正</string>
 </resources>

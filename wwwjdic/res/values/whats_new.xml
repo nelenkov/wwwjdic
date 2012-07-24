@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Avoid OCR crash on devices without flash\n* Don\'t clear translation query string for OCR\n* Fixed typos</string>
+    <string name="whats_new">* Jelly Bean (4.1) support\n* Toggle keyboard popup on startup(Settings)\n* Persist search type for each tab\n* Bug fixes</string>
 </resources>
