@@ -241,7 +241,7 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
     }
 
     private void confirmOverwriteAndImport(final String filename) {
-        if (getListAdapter().isEmpty()) {
+        if (getListAdapter() == null || getListAdapter().isEmpty()) {
             doImport(filename);
             return;
         }
