@@ -58,7 +58,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
     public void onPageSelected(int position) {
         actionBar.setSelectedNavigationItem(position);
         // TODO -- refreshing kills action bar?
-        //        refresh(position);
+        // refresh(position);
         setTitle(position);
     }
 
@@ -74,11 +74,15 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
 
     @Override
     public void onTabSelected(Tab tab, FragmentTransaction ft) {
+        // fixes ABS #351
+        // https://github.com/JakeWharton/ActionBarSherlock/issues/351
         int position = tab.getPosition();
-        viewPager.setCurrentItem(position);
-        // TODO -- refreshing kills action bar?
-        //        refresh(position);
-        setTitle(position);
+        if (viewPager.getCurrentItem() != position) {
+            viewPager.setCurrentItem(position);
+            // TODO -- refreshing kills action bar?
+            // refresh(position);
+            setTitle(position);
+        }
     }
 
     @Override
