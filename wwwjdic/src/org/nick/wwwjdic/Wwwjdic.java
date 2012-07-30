@@ -1,5 +1,8 @@
 package org.nick.wwwjdic;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,6 +119,10 @@ public class Wwwjdic extends ActionBarActivity {
             actionBar.setSelectedNavigationItem(position);
             filterHistoryFragments(position);
             updateHistorySummary(position);
+
+            // for ABS#240
+            // https://github.com/JakeWharton/ActionBarSherlock/issues/240
+            selectInSpinnerIfPresent(position, true);
         }
 
         @Override
@@ -218,6 +225,71 @@ public class Wwwjdic extends ActionBarActivity {
         public void restoreState(Parcelable state, ClassLoader loader) {
         }
 
+        /**
+         * Hack that takes advantage of interface parity between
+         * ActionBarSherlock and the native interface to reach inside the
+         * classes to manually select the appropriate tab spinner position if
+         * the overflow tab spinner is showing.
+         * 
+         * Related issues:
+         * https://github.com/JakeWharton/ActionBarSherlock/issues/240 and
+         * https://android-review.googlesource.com/#/c/32492/
+         * 
+         * @author toulouse@crunchyroll.com
+         */
+        private void selectInSpinnerIfPresent(int position, boolean animate) {
+            try {
+                View actionBarView = findViewById(R.id.abs__action_bar);
+                if (actionBarView == null) {
+                    int id = getResources().getIdentifier("action_bar", "id",
+                            "android");
+                    actionBarView = findViewById(id);
+                }
+
+                Class<?> actionBarViewClass = actionBarView.getClass();
+                Field mTabScrollViewField = actionBarViewClass
+                        .getDeclaredField("mTabScrollView");
+                mTabScrollViewField.setAccessible(true);
+
+                Object mTabScrollView = mTabScrollViewField.get(actionBarView);
+                if (mTabScrollView == null) {
+                    return;
+                }
+
+                Field mTabSpinnerField = mTabScrollView.getClass()
+                        .getDeclaredField("mTabSpinner");
+                mTabSpinnerField.setAccessible(true);
+
+                Object mTabSpinner = mTabSpinnerField.get(mTabScrollView);
+                if (mTabSpinner == null) {
+                    return;
+                }
+
+                Method setSelectionMethod = mTabSpinner
+                        .getClass()
+                        .getSuperclass()
+                        .getDeclaredMethod("setSelection", Integer.TYPE,
+                                Boolean.TYPE);
+                setSelectionMethod.invoke(mTabSpinner, position, animate);
+
+            } catch (IllegalArgumentException e) {
+                Log.w(TAG,
+                        "WwwjdicTabsPagerAdapter.selectInSpinnerIfPresent()", e);
+            } catch (IllegalAccessException e) {
+                Log.w(TAG,
+                        "WwwjdicTabsPagerAdapter.selectInSpinnerIfPresent()", e);
+            } catch (NoSuchFieldException e) {
+                Log.w(TAG,
+                        "WwwjdicTabsPagerAdapter.selectInSpinnerIfPresent()", e);
+            } catch (NoSuchMethodException e) {
+                Log.w(TAG,
+                        "WwwjdicTabsPagerAdapter.selectInSpinnerIfPresent()", e);
+            } catch (InvocationTargetException e) {
+                Log.w(TAG,
+                        "WwwjdicTabsPagerAdapter.selectInSpinnerIfPresent()", e);
+            }
+        }
+
     }
 
     private static final int NUM_RECENT_HISTORY_ENTRIES = 5;
@@ -310,6 +382,7 @@ public class Wwwjdic extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("deprecation")
     private void showDonationThanks() {
         if (!isDonateVersion()) {
             return;
@@ -409,6 +482,7 @@ public class Wwwjdic extends ActionBarActivity {
         super.onDestroy();
     }
 
+    @SuppressWarnings("deprecation")
     private void showWhatsNew() {
         boolean whatsNewShown = WwwjdicPreferences.isWhatsNewShown(this,
                 getVersionName());
