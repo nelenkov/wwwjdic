@@ -92,10 +92,14 @@ public class Wwwjdic extends ActionBarActivity {
 
         @Override
         public void onTabSelected(Tab tab, FragmentTransaction ft) {
+            // fixes ABS #351
+            // https://github.com/JakeWharton/ActionBarSherlock/issues/351
             int position = tab.getPosition();
-            viewPager.setCurrentItem(position);
-            filterHistoryFragments(position);
-            updateHistorySummary(position);
+            if (viewPager.getCurrentItem() != position) {
+                viewPager.setCurrentItem(position);
+                filterHistoryFragments(position);
+                updateHistorySummary(position);
+            }
         }
 
         @Override
