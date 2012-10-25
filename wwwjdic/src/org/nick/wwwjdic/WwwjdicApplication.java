@@ -108,8 +108,12 @@ public class WwwjdicApplication extends Application {
         }
 
         try {
-            ACRAConfiguration.setResToastText(R.string.crash_toast_text);
+            ACRAConfiguration config = ACRA.getNewDefaultConfig(this);
+            config.setResToastText(R.string.crash_toast_text);
+            //            config.setSendReportsInDevMode(true);
+            ACRA.setConfig(config);
             ACRA.init(this);
+
             String bugsenseUrl = getResources()
                     .getString(R.string.bugsense_url);
             ACRA.getErrorReporter().addReportSender(
