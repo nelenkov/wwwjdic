@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import org.nick.wwwjdic.actionprovider.ShareActionProvider;
 import org.nick.wwwjdic.model.DictionaryEntry;
 import org.nick.wwwjdic.model.SearchCriteria;
+import org.nick.wwwjdic.utils.Dialogs;
 import org.nick.wwwjdic.utils.DictUtils;
 import org.nick.wwwjdic.utils.Pair;
 import org.nick.wwwjdic.utils.StringUtils;
@@ -188,6 +189,16 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (getActivity() != null) {
+            Dialogs.showTipOnce(getActivity(), "tip_jp_tts",
+                    R.string.tip_jp_tts);
+        }
     }
 
     private Intent createCrossRefIntent(String word) {
