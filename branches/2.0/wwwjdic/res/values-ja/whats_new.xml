@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">%sの新規機能</string>
-    <string name="whats_new">* Jelly Bean (4.1)対応\n* ソフトキーボード自動開閉設定\n* 各タブの検索モードを保存\n* バグ修正</string>
+    <string name="whats_new">* 新しい日本ミラーサイト対応\n* Nexus 7対応\n* ソフトキーボードから直接検索対応\n* バグ修正</string>
 </resources>
