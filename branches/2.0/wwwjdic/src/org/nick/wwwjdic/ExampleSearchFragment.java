@@ -8,10 +8,12 @@ import org.nick.wwwjdic.utils.StringUtils;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -19,6 +21,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class ExampleSearchFragment extends WwwjdicFragmentBase implements
         OnClickListener, OnItemSelectedListener {
@@ -111,47 +114,65 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
 
     public void onClick(View v) {
         if (v.getId() == R.id.exampleSearchButton) {
-            String queryString = exampleSearchInputText.getText().toString();
-            if (TextUtils.isEmpty(queryString)) {
-                return;
+            search();
+        }
+    }
+
+    private void search() {
+        String queryString = exampleSearchInputText.getText().toString();
+        if (TextUtils.isEmpty(queryString)) {
+            return;
+        }
+
+        if (sentenceModeSpinner.getSelectedItemPosition() == 0) {
+            int numMaxResults = 20;
+            try {
+                numMaxResults = Integer.parseInt(maxNumExamplesText
+                        .getText().toString());
+            } catch (NumberFormatException e) {
             }
-            if (sentenceModeSpinner.getSelectedItemPosition() == 0) {
-                int numMaxResults = 20;
-                try {
-                    numMaxResults = Integer.parseInt(maxNumExamplesText
-                            .getText().toString());
-                } catch (NumberFormatException e) {
-                }
-                SearchCriteria criteria = SearchCriteria
-                        .createForExampleSearch(queryString.trim(),
-                                exampleExactMatchCb.isChecked(), numMaxResults);
+            SearchCriteria criteria = SearchCriteria
+                    .createForExampleSearch(queryString.trim(),
+                            exampleExactMatchCb.isChecked(), numMaxResults);
 
-                Intent intent = new Intent(getActivity(),
-                        ExamplesResultList.class);
-                intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
+            Intent intent = new Intent(getActivity(),
+                    ExamplesResultList.class);
+            intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 
-                if (!StringUtils.isEmpty(criteria.getQueryString())) {
-                    dbHelper.addSearchCriteria(criteria);
-                }
-
-                Analytics.event("exampleSearch", getActivity());
-
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(getActivity(),
-                        SentenceBreakdown.class);
-                intent.putExtra(SentenceBreakdown.EXTRA_SENTENCE, queryString);
-
-                Analytics.event("sentenceTranslation", getActivity());
-
-                startActivity(intent);
+            if (!StringUtils.isEmpty(criteria.getQueryString())) {
+                dbHelper.addSearchCriteria(criteria);
             }
+
+            Analytics.event("exampleSearch", getActivity());
+
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(getActivity(),
+                    SentenceBreakdown.class);
+            intent.putExtra(SentenceBreakdown.EXTRA_SENTENCE, queryString);
+
+            Analytics.event("sentenceTranslation", getActivity());
+
+            startActivity(intent);
         }
     }
 
     private void findViews() {
         exampleSearchInputText = (EditText) getView().findViewById(
                 R.id.exampleInputText);
+        exampleSearchInputText
+                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId,
+                            KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                            search();
+
+                            return true;
+                        }
+                        return false;
+                    }
+                });
         maxNumExamplesText = (EditText) getView().findViewById(
                 R.id.maxExamplesInput);
         exampleExactMatchCb = (CheckBox) getView().findViewById(

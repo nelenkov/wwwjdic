@@ -169,45 +169,50 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
 
     public void onClick(View v) {
         if (v.getId() == R.id.kanjiSearchButton) {
-            String kanjiInput = kanjiInputText.getText().toString();
-            if (TextUtils.isEmpty(kanjiInput)) {
-                return;
-            }
-            try {
-                int searchTypeIdx = kanjiSearchTypeSpinner
-                        .getSelectedItemPosition();
-                String searchType = IDX_TO_CODE.get(searchTypeIdx);
-                Log.i(TAG, Integer.toString(searchTypeIdx));
-                Log.i(TAG, "kanji search type: " + searchType);
-                if (searchType == null) {
-                    // reading/kanji
-                    searchType = "J";
-                }
-
-                String minStr = strokeCountMinInput.getText().toString();
-                String maxStr = strokeCountMaxInput.getText().toString();
-                Integer minStrokeCount = tryParseInt(minStr);
-                Integer maxStrokeCount = tryParseInt(maxStr);
-                SearchCriteria criteria = SearchCriteria.createWithStrokeCount(
-                        kanjiInput.trim(), searchType, minStrokeCount,
-                        maxStrokeCount);
-
-                Intent intent = new Intent(getActivity(), KanjiResultList.class);
-                intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
-
-                if (!StringUtils.isEmpty(criteria.getQueryString())) {
-                    dbHelper.addSearchCriteria(criteria);
-                }
-
-                Analytics.event("kanjiSearch", getActivity());
-
-                startActivity(intent);
-            } catch (RejectedExecutionException e) {
-                Log.e(TAG, "RejectedExecutionException", e);
-            }
+            search();
         } else if (v.getId() == R.id.selectRadicalButton) {
             Intent i = new Intent(getActivity(), RadicalChart.class);
             startActivityForResult(i, RADICAL_RETURN_RESULT);
+        }
+    }
+
+    private void search() {
+        String kanjiInput = kanjiInputText.getText().toString();
+        if (TextUtils.isEmpty(kanjiInput)) {
+            return;
+        }
+
+        try {
+            int searchTypeIdx = kanjiSearchTypeSpinner
+                    .getSelectedItemPosition();
+            String searchType = IDX_TO_CODE.get(searchTypeIdx);
+            Log.i(TAG, Integer.toString(searchTypeIdx));
+            Log.i(TAG, "kanji search type: " + searchType);
+            if (searchType == null) {
+                // reading/kanji
+                searchType = "J";
+            }
+
+            String minStr = strokeCountMinInput.getText().toString();
+            String maxStr = strokeCountMaxInput.getText().toString();
+            Integer minStrokeCount = tryParseInt(minStr);
+            Integer maxStrokeCount = tryParseInt(maxStr);
+            SearchCriteria criteria = SearchCriteria.createWithStrokeCount(
+                    kanjiInput.trim(), searchType, minStrokeCount,
+                    maxStrokeCount);
+
+            Intent intent = new Intent(getActivity(), KanjiResultList.class);
+            intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
+
+            if (!StringUtils.isEmpty(criteria.getQueryString())) {
+                dbHelper.addSearchCriteria(criteria);
+            }
+
+            Analytics.event("kanjiSearch", getActivity());
+
+            startActivity(intent);
+        } catch (RejectedExecutionException e) {
+            Log.e(TAG, "RejectedExecutionException", e);
         }
     }
 
@@ -233,6 +238,19 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
 
     private void findViews() {
         kanjiInputText = (EditText) getView().findViewById(R.id.kanjiInputText);
+        kanjiInputText
+                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId,
+                            KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                            search();
+
+                            return true;
+                        }
+                        return false;
+                    }
+                });
         kanjiSearchTypeSpinner = (Spinner) getView().findViewById(
                 R.id.kanjiSearchTypeSpinner);
 

@@ -12,6 +12,8 @@
         <EditText android:id="@+id/exampleInputText"
             style="@style/search_input"
             android:hint="@string/enter_eng_or_jap" 
+            android:inputType="text"
+            android:imeOptions="actionSearch"
             android:maxLength="256" />
         <LinearLayout android:id="@+id/modeLayout"  
             android:layout_width="fill_parent"

@@ -13,10 +13,12 @@ import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -26,6 +28,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class DictionaryFragment extends WwwjdicFragmentBase implements
         OnClickListener, OnCheckedChangeListener, OnItemSelectedListener {
@@ -145,6 +148,19 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
 
     private void findViews() {
         inputText = (EditText) getView().findViewById(R.id.inputText);
+        inputText
+                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId,
+                            KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                            search();
+
+                            return true;
+                        }
+                        return false;
+                    }
+                });
         exactMatchCb = (CheckBox) getView().findViewById(R.id.exactMatchCb);
         commonWordsCb = (CheckBox) getView().findViewById(R.id.commonWordsCb);
         romanizedJapaneseCb = (CheckBox) getView().findViewById(
@@ -174,34 +190,39 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
 
     public void onClick(View v) {
         if (v.getId() == R.id.translateButton) {
-            hideKeyboard();
-            String input = inputText.getText().toString();
-            if (TextUtils.isEmpty(input)) {
-                return;
+            search();
+        }
+    }
+
+    private void search() {
+        hideKeyboard();
+        String input = inputText.getText().toString();
+        if (TextUtils.isEmpty(input)) {
+            return;
+        }
+
+        try {
+            int dictIdx = dictSpinner.getSelectedItemPosition();
+            String dict = getDictionaryFromSelection(dictIdx);
+
+            SearchCriteria criteria = SearchCriteria.createForDictionary(
+                    input.trim(), exactMatchCb.isChecked(),
+                    romanizedJapaneseCb.isChecked(), commonWordsCb.isChecked(),
+                    dict);
+
+            Intent intent = new Intent(getActivity(),
+                    DictionaryResultList.class);
+            intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
+
+            if (!StringUtils.isEmpty(criteria.getQueryString())) {
+                dbHelper.addSearchCriteria(criteria);
             }
-            try {
-                int dictIdx = dictSpinner.getSelectedItemPosition();
-                String dict = getDictionaryFromSelection(dictIdx);
 
-                SearchCriteria criteria = SearchCriteria.createForDictionary(
-                        input.trim(), exactMatchCb.isChecked(),
-                        romanizedJapaneseCb.isChecked(),
-                        commonWordsCb.isChecked(), dict);
+            Analytics.event("dictSearch", getActivity());
 
-                Intent intent = new Intent(getActivity(),
-                        DictionaryResultList.class);
-                intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
-
-                if (!StringUtils.isEmpty(criteria.getQueryString())) {
-                    dbHelper.addSearchCriteria(criteria);
-                }
-
-                Analytics.event("dictSearch", getActivity());
-
-                startActivity(intent);
-            } catch (RejectedExecutionException e) {
-                Log.e(TAG, e.getMessage(), e);
-            }
+            startActivity(intent);
+        } catch (RejectedExecutionException e) {
+            Log.e(TAG, e.getMessage(), e);
         }
     }
 

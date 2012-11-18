@@ -10,7 +10,8 @@
     <EditText android:id="@+id/inputText" 
         style="@style/search_input"
         android:hint="@string/enter_eng_or_jap" 
-        android:imeOptions="actionDone"/>
+        android:inputType="text"
+        android:imeOptions="actionSearch"/>
     <LinearLayout android:id="@+id/dictSelectionLayout"  
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" 
