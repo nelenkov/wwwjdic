@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Jelly Bean (4.1) support\n* Toggle keyboard popup on startup(Settings)\n* Persist search type for each tab\n* Bug fixes</string>
+    <string name="whats_new">* New Japan mirror support\n* Nexus 7 support\n* Direct search from soft keyboard\n* Bug fixes</string>
 </resources>
