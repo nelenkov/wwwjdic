@@ -1,6 +1,11 @@
 #summary Full changelog
 
 = Changelog =
+ * v2.2.5 (2012/11/19) New Japan mirror
+  * New Japan mirror support
+  * Nexus 7 support
+  * Direct search from soft keyboard
+  * Bug fixes
  * v2.2.4 (2012/7/25) Jelly Bean support
   * Jelly Bean (4.1) support
   * Toggle keyboard popup on startup
