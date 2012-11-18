@@ -46,7 +46,9 @@ public class WwwjdicApplication extends Application {
 
     private static final String OLD_JAPAN_MIRROR = "http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi";
 
-    private static final String NEW_JAPAN_MIRROR = "http://wwwjdic.mygengo.com/cgi-data/wwwjdic";
+    private static final String OLD_MYGENGO_MIRROR = "http://wwwjdic.mygengo.com/cgi-data/wwwjdic";
+
+    private static final String NEW_JAPAN_MIRROR = WwwjdicPreferences.DEFAULT_WWWJDIC_URL;
 
     private ExecutorService executorService;
 
@@ -110,7 +112,7 @@ public class WwwjdicApplication extends Application {
         try {
             ACRAConfiguration config = ACRA.getNewDefaultConfig(this);
             config.setResToastText(R.string.crash_toast_text);
-            //            config.setSendReportsInDevMode(true);
+            // config.setSendReportsInDevMode(true);
             ACRA.setConfig(config);
             ACRA.init(this);
 
@@ -132,6 +134,9 @@ public class WwwjdicApplication extends Application {
     private void updateJapanMirror() {
         String mirrorUlr = WwwjdicPreferences.getWwwjdicUrl(this);
         if (OLD_JAPAN_MIRROR.equals(mirrorUlr)) {
+            WwwjdicPreferences.setWwwjdicUrl(NEW_JAPAN_MIRROR, this);
+        }
+        if (OLD_MYGENGO_MIRROR.equals(mirrorUlr)) {
             WwwjdicPreferences.setWwwjdicUrl(NEW_JAPAN_MIRROR, this);
         }
     }
