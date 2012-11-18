@@ -565,5 +565,9 @@ You can enable offline recognition using the Kanji Recognizer application. Would
     <string name="pref_popup_keyboard">Popup keyboard</string>
     <string name="pref_popup_keyboard_summary">When checked, the software keyboard 
         will be automatically opened on startup.</string>
+        
+    <string name="tip_jp_tts">To enable Japense text-to-speech install one of 
+        N2 TTS, SVOX Japanese or AquesTalk TTS and select it in 
+        WWWJDIC Settings->Japanese TTS Engine.</string>
 
 </resources>

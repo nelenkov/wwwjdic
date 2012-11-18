@@ -416,4 +416,8 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     
     <string name="pref_popup_keyboard">自動的にキーボードを開く</string>
     <string name="pref_popup_keyboard_summary">チェックされている場合は、起動時にソフトキーボードを自動的に開きます。</string>
+    
+    <string name="tip_jp_tts">日本語読み上げ機能を有効にするには、N2 TTS, 
+        SVOX Japanese、またはAquesTalk TTSをインストールし、WWWJDIC設定->日本語読み上げエンジン
+        で選択してください。</string>
 </resources>
