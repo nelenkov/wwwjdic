@@ -47,6 +47,7 @@ public class WwwjdicApplication extends Application {
     private static final String OLD_JAPAN_MIRROR = "http://www.aa.tufs.ac.jp/~jwb/cgi-bin/wwwjdic.cgi";
 
     private static final String OLD_MYGENGO_MIRROR = "http://wwwjdic.mygengo.com/cgi-data/wwwjdic";
+    private static final String OLD_MYGENGO_MIRROR2 = "http://mygengo.com/wwwjdic/cgi-data/wwwjdic";
 
     private static final String NEW_JAPAN_MIRROR = WwwjdicPreferences.DEFAULT_WWWJDIC_URL;
 
@@ -88,7 +89,8 @@ public class WwwjdicApplication extends Application {
             try {
                 setMirrorBasedOnLocation();
             } catch (Exception e) {
-                // workaround: parsing mirror coords fails on Xperia (SO-01B) with 
+                // workaround: parsing mirror coords fails on Xperia (SO-01B)
+                // with
                 // StringIndexOutOfBoundsException
                 Log.w(TAG,
                         "Failed to set mirror based on location, setting default");
@@ -130,13 +132,13 @@ public class WwwjdicApplication extends Application {
         return (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) > 0;
     }
 
-
     private void updateJapanMirror() {
         String mirrorUlr = WwwjdicPreferences.getWwwjdicUrl(this);
         if (OLD_JAPAN_MIRROR.equals(mirrorUlr)) {
             WwwjdicPreferences.setWwwjdicUrl(NEW_JAPAN_MIRROR, this);
         }
-        if (OLD_MYGENGO_MIRROR.equals(mirrorUlr)) {
+        if (OLD_MYGENGO_MIRROR.equals(mirrorUlr)
+                || OLD_MYGENGO_MIRROR2.equals(mirrorUlr)) {
             WwwjdicPreferences.setWwwjdicUrl(NEW_JAPAN_MIRROR, this);
         }
     }
