@@ -2,15 +2,15 @@
 { 
     packageName: "org.nick.wwwjdic", 
     marketName: "AndroidMarket", 
-    versionCode: "2240", 
-    versionName: "2.2.4",
+    versionCode: "2250", 
+    versionName: "2.2.5",
     downloadUrl: "market://details?id=org.nick.wwwjdic"
 },
 {
     packageName: "org.nick.wwwjdic.donate", 
     marketName: "AndroidMarket", 
-    versionCode: "2240", 
-    versionName: "2.2.4",
+    versionCode: "2250", 
+    versionName: "2.2.5",
     downloadUrl: "market://details?id=org.nick.wwwjdic.donate"
 }, 
 {
