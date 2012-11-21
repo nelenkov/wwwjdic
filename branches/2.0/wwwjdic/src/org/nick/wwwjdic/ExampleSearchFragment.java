@@ -119,6 +119,10 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
     }
 
     private void search() {
+        if (getActivity() == null) {
+            return;
+        }
+
         String queryString = exampleSearchInputText.getText().toString();
         if (TextUtils.isEmpty(queryString)) {
             return;
