@@ -195,6 +195,10 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
     }
 
     private void search() {
+        if (getActivity() == null) {
+            return;
+        }
+
         hideKeyboard();
         String input = inputText.getText().toString();
         if (TextUtils.isEmpty(input)) {

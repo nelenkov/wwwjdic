@@ -177,6 +177,10 @@ public class KanjiLookupFragment extends WwwjdicFragmentBase implements
     }
 
     private void search() {
+        if (getActivity() == null) {
+            return;
+        }
+
         String kanjiInput = kanjiInputText.getText().toString();
         if (TextUtils.isEmpty(kanjiInput)) {
             return;
