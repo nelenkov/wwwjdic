@@ -39,6 +39,7 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -80,10 +81,20 @@ public class CropImage extends MonitoredActivity {
         super.onCreate(icicle);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.cropimage);
 
         mImageView = (CropImageView) findViewById(R.id.image);
         mImageView.mContext = this;
+        // disable hardware acceleration even if forced in 4.x developer
+        // settings. Since clipPath is not supported in HW, you get this 
+        // error if not disabled: 
+        // UnsupportedOperationException: android.view.GLES20Canvas.clipPath(GLES20Canvas.java:413)
+        // According to source code comments, clipPath() is still not fully 
+        // implemented in JB 4.2, although it seems to work
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
+            mImageView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
 
         // MenuHelper.showStorageToast(this);
 
