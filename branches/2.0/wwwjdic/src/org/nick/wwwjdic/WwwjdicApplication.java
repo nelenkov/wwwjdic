@@ -114,7 +114,7 @@ public class WwwjdicApplication extends Application {
         try {
             ACRAConfiguration config = ACRA.getNewDefaultConfig(this);
             config.setResToastText(R.string.crash_toast_text);
-            // config.setSendReportsInDevMode(true);
+            //            config.setSendReportsInDevMode(true);
             ACRA.setConfig(config);
             ACRA.init(this);
 
@@ -291,7 +291,7 @@ public class WwwjdicApplication extends Application {
 
             return FileUtils.readTextFile(in).trim();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return null;
         } finally {
             if (in != null) {
                 try {
