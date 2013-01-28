@@ -6,7 +6,7 @@ Uses the following open source libraries:
 
 opencsv (http://opencsv.sourceforge.net/) 
 by Glen Smith, Sean Sullivan, Scott Conway 
-(Apache License 2.0)
+Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0.html
 
 
 Application Crash Reporting for Android
@@ -14,10 +14,15 @@ Copyright 2010 Emmanuel Astier & Kevin Gaudin
 
 This product includes software developed at
 ACRA (http://acra.googlecode.com/).
-(Apache License 2.0)
+Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0.html
 
 
 ActionBarSherlock (http://actionbarsherlock.com/)
 by Jake Wharton
-(Apache License 2.0)
+Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0.html
+
+
+The radkfile-u-jis208.txt file is based on Jim Roses's kradfile-u and is 
+used in conformance with the following license:
+http://www.kanjicafe.com/kradfile_license.htm
 
