@@ -175,6 +175,10 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
         boolean foundNanori = false;
         boolean foundRadicalName = false;
         for (String r : readingFields) {
+            if (StringUtils.isEmpty(r)) {
+                continue;
+            }
+            
             Matcher m = KATAKANA_PATTERN.matcher(r);
             if (m.matches()) {
                 onyomiBuff.append(r.trim());
