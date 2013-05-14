@@ -189,8 +189,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
 
     public void onClick(View v) {
         if (v.getId() == R.id.translateButton) {
-            //search();
-            throw new RuntimeException("Foobar " + System.currentTimeMillis());
+            search();
         }
     }
 
