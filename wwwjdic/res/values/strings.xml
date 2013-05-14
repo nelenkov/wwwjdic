@@ -106,16 +106,13 @@
         <item>Korean reading</item>
     </string-array>
 
-    <string name="about_text">WWWJDIC for Android, 2010</string>
-    <string name="about_by">by Nikolay Elenkov</string>
+    <string name="about_text">WWWJDIC for Android</string>
+    <string name="about_by">&#169; 2010-2013 Nikolay Elenkov</string>
     <string name="about_bugtracking">More info/issue reporting</string>
     <string name="bugtracker_url">http://code.google.com/p/wwwjdic</string>
-    <string name="uses_wwwjdic">Uses Jim Breen\'s WWWJDIC</string>
-    <string name="wwwjdic_link">http://wwwjdic.net</string>
-    <string name="uses_weocr">Uses WeOCR </string>
-    <string name="weocr_link">http://weocr.ocrgrid.org/</string>
-    <string name="uses_kr">Uses kanji recognizer at </string>
-    <string name="kr_link">http://kanji.sljfaq.org/kanji16/draw-canvas.html</string>
+    <string name="uses_wwwjdic">Uses Jim Breen\'s <a href="http://wwwjdic.net">WWWJDIC</a></string>
+    <string name="uses_weocr">Uses <a href="http://weocr.ocrgrid.org">WeOCR</a></string>
+    <string name="uses_kr">Uses kanji recognizer at <a href="http://kanji.sljfaq.org/kanji16/draw-canvas.html">kanji.sljfaq.org</a></string>
     <string name="select_dictionary">Select dictionary:</string>
     <string name="stroke_count">Stroke count:  </string>
     <string name="radical_number">Radical number: </string>
@@ -259,8 +256,7 @@
     <string name="search_history">Search history</string>
     <string name="history">History</string>
     <string name="favorites_hist">Favorites/Hist.</string>
-    <string name="uses_kanjivg">Uses KanjiVG data, (C) 2009/2010 Ulrich Apel</string>
-    <string name="kanjivg_link">http://kanjivg.tagaini.net</string>
+    <string name="uses_kanjivg">Uses <a href="http://kanjivg.tagaini.net">KanjiVG data</a>, (C) 2009/2010 Ulrich Apel</string>
     <!-- for cropper -->
     <string name="crop_save_text">Crop</string>
     <string name="crop_discard_text">Discard</string>
@@ -337,8 +333,6 @@
     <string name="pref_analytics_summary">Send anonymous usage statistics to
  help make
  WWWJDIC a better app.</string>
-    <string name="uses_analytics">Uses Flurry Analytics to collect anonymous usage
- statistics (can be disabled in settings).</string>
     <string name="favorties_summary">Favorites (%d)</string>
     <string name="history_summary">Search History (%d)</string>
     <string name="remove_stroke">Undo</string>
@@ -483,6 +477,10 @@
     <string name="kradfile_attribution">Includes data from the <a href="http://www.kanjicafe.com/kradfile_license.htm#download">KRADFILE - Unicode file</a>        . The file is (C) 2001, 2007, 2009 by Michael Raine, Jim Breen,
         The EDR&amp;D Group at Monash University, Jim Rose, The
         KanjiCafe.com, and is used in conformance with its <a href="http://www.kanjicafe.com/kradfile_license.htm">license</a></string>
+    <string name="abs_attribution">Uses <a href="http://actionbarsherlock.com">ActionBarSherlock</a> by Jake Wharton</string>   
+    <string name="acra_attribution">Uses <a href="http://acra.ch">ACRA</a> by Emmanuel Astier &amp; Kevin Gaudin</string>   
+    <string name="opencsv_attribution">Uses <a href="http://opencsv.sourceforge.net">OpenCSV</a> by Glen Smith, Sean Sullivan, Scott Conway</string>   
+        
     <string name="details">Details</string>
     <string name="lookup_kanji">Lookup kanji</string>
     <string name="examples">Examples</string>
@@ -569,5 +567,7 @@ You can enable offline recognition using the Kanji Recognizer application. Would
     <string name="tip_jp_tts">To enable Japense text-to-speech install one of 
         N2 TTS, SVOX Japanese or AquesTalk TTS and select it in 
         WWWJDIC Settings->Japanese TTS Engine.</string>
+        
+    <string name="credits">Credits</string>
 
 </resources>
