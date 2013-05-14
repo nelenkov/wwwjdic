@@ -27,9 +27,5 @@
             android:summaryOn="@string/pref_acra_enabled"
             android:summaryOff="@string/pref_acra_disabled"
             android:defaultValue="true"/>
-        <CheckBoxPreference android:key="pref_enable_update_check"
-            android:title="@string/pref_enable_update_check"
-            android:summary="@string/pref_enable_update_check_summary"
-            android:defaultValue="true"/>        
     </PreferenceCategory>  
 </PreferenceScreen>

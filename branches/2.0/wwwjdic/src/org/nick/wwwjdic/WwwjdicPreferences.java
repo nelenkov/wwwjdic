@@ -89,10 +89,6 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
     private static final String PREF_KOD_SHOW_READING_KEY = "pref_kod_show_reading";
     private static final String PREF_KOD_UPDATE_INTERAVL_KEY = "pref_kod_update_interval";
 
-    private static final String PREF_ENABLE_UPDATE_CHECK_KEY = "pref_enable_update_check";
-    private static final String PREF_LAST_UPDATE_CHECK_KEY = "pref_last_update_check";
-    public static final long UPDATE_CHECK_INTERVAL_SECS = 24L * 60L * 60L;
-
     private static final String PREF_WANTS_TTS_KEY = "pref_wants_tts";
 
     public static final long KOD_DEFAULT_UPDATE_INTERVAL = 24 * DateUtils.HOUR_IN_MILLIS;
@@ -622,21 +618,6 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
         SharedPreferences.Editor editor = getPrefsEditor(context);
         editor.putBoolean(PREF_WANTS_TTS_KEY, wantsTts);
         editor.commit();
-    }
-
-    public static boolean isUpdateCheckEnabled(Context context) {
-        return getBooleanPref(context, PREF_ENABLE_UPDATE_CHECK_KEY, true);
-    }
-
-    public static synchronized void setLastUpdateCheck(Context context,
-            long lastUpdateCheck) {
-        SharedPreferences.Editor editor = getPrefsEditor(context);
-        editor.putLong(PREF_LAST_UPDATE_CHECK_KEY, lastUpdateCheck);
-        editor.commit();
-    }
-
-    public static long getLastUpdateCheck(Context context) {
-        return getPrefs(context).getLong(PREF_LAST_UPDATE_CHECK_KEY, 0);
     }
 
     public static synchronized void setLastKodUpdateError(Context context,

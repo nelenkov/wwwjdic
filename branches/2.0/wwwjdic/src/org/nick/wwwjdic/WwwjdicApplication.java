@@ -3,7 +3,6 @@ package org.nick.wwwjdic;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,11 +13,9 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpPostSender;
 import org.nick.wwwjdic.model.Radicals;
-import org.nick.wwwjdic.updates.UpdateCheckService;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -90,8 +87,6 @@ public class WwwjdicApplication extends Application {
 
         WwwjdicPreferences.setStrokeAnimationDelay(this,
                 WwwjdicPreferences.DEFAULT_STROKE_ANIMATION_DELAY);
-
-        startCheckUpdateService();
     }
 
     private void initAcra() {
@@ -128,22 +123,6 @@ public class WwwjdicApplication extends Application {
         if (OLD_MYGENGO_MIRROR.equals(mirrorUlr)
                 || OLD_MYGENGO_MIRROR2.equals(mirrorUlr)) {
             WwwjdicPreferences.setWwwjdicUrl(NEW_JAPAN_MIRROR, this);
-        }
-    }
-
-    private void startCheckUpdateService() {
-        if (!WwwjdicPreferences.isUpdateCheckEnabled(this)) {
-            return;
-        }
-
-        long now = new Date().getTime();
-        long lastCheck = WwwjdicPreferences.getLastUpdateCheck(this);
-        long elapsed = now - lastCheck;
-        if (elapsed >= WwwjdicPreferences.UPDATE_CHECK_INTERVAL_SECS * 1000L) {
-            Intent intent = UpdateCheckService.createStartIntent(this,
-                    getResources().getString(R.string.versions_url),
-                    getResources().getString(R.string.market_name));
-            startService(intent);
         }
     }
 

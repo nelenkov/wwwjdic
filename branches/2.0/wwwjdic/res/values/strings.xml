@@ -537,7 +537,7 @@ You can enable offline recognition using the Kanji Recognizer application. Would
     <string name="gallery">Gallery</string>
     <string name="none">(none)</string>
     <string name="pref_other">Other</string>
-    <string name="pref_other_summary">App maintenance, etc.</string>
+    <string name="pref_other_summary">App maintenance, error reporting</string>
     <string name="read_out">Read out</string>
     <string name="pref_jp_tts_engine">Japanese TTS Engine</string>
 
