@@ -51,3 +51,7 @@ A: If you moved the app to the SD card, the widget cannot be used. Unfortunately
 A: Install and enable the [https://market.android.com/details?id=jp.kddilabs.n2tts N2 TTS] Japanese text-to-speech engine (free). After installing, open Settings->Voice input & output->Text-to-speech settings and check 'KDDLABS N2 TTS'. You don't have to set it as the default engine (if you do, readout for other languages may be disabled).
 
 Using two separate engines at the same time (one for Japanese and one for English, etc.) requires Android 2.2 (Froyo), so this feature is not available on 2.1 (Eclair).
+
+Other supported Japanese TTS engines
+ * [https://play.google.com/store/apps/details?id=com.svox.classic.langpack.jpn_jpn_fem SVOX Japanese]
+ * [https://play.google.com/store/apps/details?id=com.a_quest.aquestalka AquesTalk TTS]
