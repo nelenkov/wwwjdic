@@ -24,6 +24,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -88,6 +90,9 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
 
     private HkrCandidateSelectedListener candidateSelectedListener;
 
+    private ProgressBar progressSpinner;
+    private TextView emptyText;
+
     private ActionMode currentActionMode;
 
     public HkrCandidatesFragment() {
@@ -101,6 +106,7 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
         candidates = extras.getStringArray(EXTRA_HKR_CANDIDATES);
         setListAdapter(new ArrayAdapter<String>(getActivity(),
                 R.layout.text_list_item, R.id.item_text, candidates));
+        progressSpinner.setVisibility(View.INVISIBLE);
 
         getListView().setOnItemLongClickListener(this);
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -133,6 +139,8 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.search_results_fragment, container,
                 false);
+        progressSpinner = (ProgressBar) v.findViewById(R.id.progress_spinner);
+        emptyText = (TextView) v.findViewById(android.R.id.empty);
 
         return v;
     }

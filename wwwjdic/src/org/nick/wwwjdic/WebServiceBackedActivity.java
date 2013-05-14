@@ -70,6 +70,7 @@ public abstract class WebServiceBackedActivity extends SherlockFragmentActivity 
 
     public void showProgressDialog(String message) {
         progressDialog = ProgressDialog.show(this, "", message, true);
+        progressDialog.setCancelable(true);
     }
 
     public void dismissProgressDialog() {

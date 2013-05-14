@@ -21,7 +21,6 @@ import org.nick.wwwjdic.utils.LoaderBase;
 import org.nick.wwwjdic.utils.LoaderResult;
 import org.nick.wwwjdic.utils.Pair;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -30,6 +29,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class SodActivity extends ActionBarActivity implements OnClickListener,
@@ -120,6 +120,7 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
     private Button clearButton;
     private Button animateButton;
 
+    private ProgressBar progressSpinner;
     private StrokeOrderView strokeOrderView;
 
     private String unicodeNumber;
@@ -127,8 +128,6 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
 
     private StrokedCharacter character;
     private String strokePathsStr;
-
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,6 +189,7 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
         drawButton = (Button) findViewById(R.id.draw_sod_button);
         clearButton = (Button) findViewById(R.id.clear_sod_button);
         animateButton = (Button) findViewById(R.id.animate_button);
+        progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner);
         strokeOrderView = (StrokeOrderView) findViewById(R.id.sod_draw_view);
     }
 
@@ -225,9 +225,7 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
         Loader<LoaderResult<Pair<String, Boolean>>> loader = getSupportLoaderManager()
                 .initLoader(0, args, this);
         if (loader.isStarted()) {
-            String message = getResources()
-                    .getString(R.string.getting_sod_info);
-            showProgressDialog(message);
+            showProgress();
         }
     }
 
@@ -290,16 +288,12 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
         this.strokePathsStr = strokePathsStr;
     }
 
-    void showProgressDialog(String message) {
-        progressDialog = ProgressDialog.show(this, "", message, true);
+    void showProgress() {
+        progressSpinner.setVisibility(View.VISIBLE);
     }
 
-    void dismissProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()
-                && !isFinishing()) {
-            progressDialog.dismiss();
-            progressDialog = null;
-        }
+    void dismissProgress() {
+        progressSpinner.setVisibility(View.GONE);
     }
 
     @Override
@@ -315,7 +309,7 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
     public void onLoadFinished(
             Loader<LoaderResult<Pair<String, Boolean>>> loader,
             LoaderResult<Pair<String, Boolean>> loaderResult) {
-        dismissProgressDialog();
+        dismissProgress();
 
         if (loaderResult.isFailed()) {
             String message = getResources().getString(

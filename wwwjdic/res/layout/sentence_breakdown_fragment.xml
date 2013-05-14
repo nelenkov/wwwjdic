@@ -1,26 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/sentence_breakdown" 
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" 
-    android:paddingLeft="6dp">
-    <TextView android:id="@+id/sentence" 
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ProgressBar
+        android:id="@+id/progress_spinner"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:indeterminateBehavior="cycle" />
+
+    <RelativeLayout
+        android:id="@+id/sentence_breakdown"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:layout_alignParentTop="true"
-        android:textColor="@color/white" 
-        android:textSize="@dimen/details_heading_size"/>
-    <TextView android:id="@+id/englishSentence"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" 
-        android:layout_below="@id/sentence" 
-        android:textSize="@dimen/details_reading_size"/>    
-    <TextView android:id="@+id/breakdown_text" 
-        style="@style/details_separator"
-        android:text="@string/sentence_words"
-        android:layout_below="@id/englishSentence" />
-    <ListView android:id="@android:id/list"
-        android:layout_width="fill_parent" 
         android:layout_height="fill_parent"
-        android:layout_below="@id/breakdown_text" />
-</RelativeLayout>
+        android:paddingLeft="6dp" >
+
+        <TextView
+            android:id="@+id/sentence"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/details_heading_size" />
+
+        <TextView
+            android:id="@+id/englishSentence"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sentence"
+            android:textSize="@dimen/details_reading_size" />
+
+        <TextView
+            android:id="@+id/breakdown_text"
+            style="@style/details_separator"
+            android:layout_below="@id/englishSentence"
+            android:text="@string/sentence_words" />
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/breakdown_text" />
+    </RelativeLayout>
+
+</FrameLayout>

@@ -44,9 +44,25 @@
             android:text="@string/look_ahead" />
     </LinearLayout>
 
-    <org.nick.wwwjdic.hkr.KanjiDrawView
-        android:id="@+id/kanji_draw_view"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <ProgressBar
+            android:id="@+id/progress_spinner"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateBehavior="cycle" 
+            android:visibility="invisible"/>
+
+        <org.nick.wwwjdic.hkr.KanjiDrawView
+            android:id="@+id/kanji_draw_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </FrameLayout>
 
 </LinearLayout>

@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -244,6 +245,9 @@ public class SentenceBreakdownFragment extends
 
         View v = inflater.inflate(R.layout.sentence_breakdown_fragment,
                 container, false);
+        progressSpinner = (ProgressBar) v.findViewById(R.id.progress_spinner);
+        emptyText = (TextView) v.findViewById(android.R.id.empty);
+
         sentenceView = (TextView) v.findViewById(R.id.sentence);
         englishSentenceText = (TextView) v.findViewById(R.id.englishSentence);
 
@@ -398,7 +402,7 @@ public class SentenceBreakdownFragment extends
         guiThread.post(new Runnable() {
             public void run() {
                 updateEntries(result);
-                dismissProgressDialog();
+                dismissProgress();
             }
         });
     }
