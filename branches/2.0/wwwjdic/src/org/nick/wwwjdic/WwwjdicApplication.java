@@ -11,7 +11,7 @@ import org.acra.ACRA;
 import org.acra.ACRAConfiguration;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
-import org.acra.sender.HttpPostSender;
+import org.acra.sender.HttpSender;
 import org.nick.wwwjdic.model.Radicals;
 
 import android.app.Application;
@@ -26,7 +26,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-@ReportsCrashes(formKey = "dGNNTWxOQlZRT194XzBLUEw3c0RCaXc6MQ", mode = ReportingInteractionMode.TOAST)
+@ReportsCrashes(formKey = "dummy", mode = ReportingInteractionMode.TOAST)
 public class WwwjdicApplication extends Application {
 
     private static final String TAG = WwwjdicApplication.class.getSimpleName();
@@ -103,8 +103,9 @@ public class WwwjdicApplication extends Application {
 
             String bugsenseUrl = getResources()
                     .getString(R.string.bugsense_url);
-            ACRA.getErrorReporter().addReportSender(
-                    new HttpPostSender(bugsenseUrl, null));
+            HttpSender bugSenseSender = new HttpSender(HttpSender.Method.POST,
+                    HttpSender.Type.FORM, bugsenseUrl, null);
+            ACRA.getErrorReporter().setReportSender(bugSenseSender);
         } catch (IllegalStateException e) {
             Log.w(TAG, "ACRA.init() called more than once?: " + e.getMessage(),
                     e);
