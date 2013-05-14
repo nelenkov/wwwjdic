@@ -218,8 +218,6 @@
     <string name="pref_analytics">Analytics</string>
     <string name="pref_enable_analytics">Analyticsを有効にする</string>
     <string name="pref_analytics_summary">アプリ改善に役立つ匿名利用情報を収集します。</string>
-    <string name="uses_analytics">Flurry Analyticsを利用して匿名利用情報を収集します。(設定画面で無効にできます)
-    </string>
     <string name="favorties_summary">お気に入り (%d)</string>
     <string name="history_summary">検索履歴 (%d)</string>
     <string name="remove_stroke">画削除</string>
