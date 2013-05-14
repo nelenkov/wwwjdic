@@ -18,7 +18,6 @@ import org.nick.wwwjdic.history.FavoritesItem.FavoriteStatusChangedListener;
 import org.nick.wwwjdic.model.DictionaryEntry;
 import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.model.WwwjdicEntry;
-import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.LoaderResult;
 import org.nick.wwwjdic.utils.MediaScannerWrapper;
 import org.nick.wwwjdic.utils.UIUtils;
@@ -169,8 +168,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
             intent.putExtra(DictionaryEntryDetail.EXTRA_DICTIONARY_ENTRY, entry);
             intent.putExtra(DictionaryEntryDetail.EXTRA_IS_FAVORITE, true);
         }
-
-        Analytics.event("lookupFromFavorites", getActivity());
 
         startActivity(intent);
     }
@@ -372,7 +369,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                     words);
         }
 
-        Analytics.event("favoritesAnkiExport", getActivity());
         Log.d(TAG,
                 String.format("Exported %d entries to %s", size,
                         exportFile.getAbsolutePath()));
@@ -448,8 +444,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                         MediaScannerWrapper.scanFile(getActivity(),
                                 exportFilename);
                     }
-
-                    Analytics.event("favoritesLocalCsvExport", getActivity());
 
                     return true;
                 } catch (Exception e) {
@@ -605,8 +599,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                         MediaScannerWrapper.scanFile(getActivity(), exportFile);
                     }
 
-                    Analytics.event("favoritesExport", getActivity());
-
                     return true;
                 } catch (IOException e) {
                     Log.e(TAG, "error exporting to file", e);
@@ -689,8 +681,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                         count++;
                     }
                     db.setTransactionSuccessful();
-
-                    Analytics.event("favoritesImport", getActivity());
 
                     return true;
                 } catch (IOException e) {

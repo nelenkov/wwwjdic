@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.nick.wwwjdic.model.ExampleSentence;
 import org.nick.wwwjdic.model.SearchCriteria;
-import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.CheckableLinearLayout;
 
 import android.annotation.SuppressLint;
@@ -218,8 +217,6 @@ public class ExamplesResultListFragment extends
     }
 
     private void breakDown(ExampleSentence sentence, int index) {
-        Analytics.event("sentenceBreakdown", getActivity());
-
         if (dualPane) {
             getListView().setItemChecked(index, true);
             currentCheckPosition = index;

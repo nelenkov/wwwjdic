@@ -17,7 +17,6 @@ import org.nick.wwwjdic.ActionBarActivity;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.client.HttpClientFactory;
-import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.LoaderBase;
 import org.nick.wwwjdic.utils.LoaderResult;
 import org.nick.wwwjdic.utils.Pair;
@@ -162,24 +161,10 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        Analytics.startSession(this);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
 
         drawSod();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        Analytics.endSession(this);
     }
 
     void drawSod(StrokedCharacter character) {
@@ -225,8 +210,6 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
     }
 
     private void drawSod() {
-        Analytics.event("drawSod", this);
-
         if (character == null) {
             getStrokes();
         } else {
@@ -249,8 +232,6 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
     }
 
     private void animate() {
-        Analytics.event("animateSod", this);
-
         if (character == null) {
             getStrokes();
         } else {

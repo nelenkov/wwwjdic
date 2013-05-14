@@ -17,7 +17,6 @@ import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.ocr.WeOcrClient;
 import org.nick.wwwjdic.sod.StrokePath;
 import org.nick.wwwjdic.sod.StrokedCharacter;
-import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Dialogs;
 
 import android.app.AlertDialog;
@@ -132,8 +131,6 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     protected void onStart() {
         super.onStart();
 
-        Analytics.startSession(this);
-
         if (WwwjdicPreferences.isUseKanjiRecognizer(this) && !bound) {
             bindToKanjiRecognizer();
             setTitle(R.string.offline_hkr);
@@ -159,8 +156,6 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     @Override
     protected void onStop() {
         super.onStop();
-
-        Analytics.endSession(this);
 
         if (bound) {
             bound = false;
@@ -361,8 +356,6 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         OcrTask task = new OcrTask(bitmap, handler);
         String message = getResources().getString(R.string.doing_hkr);
         submitWsTask(task, message);
-
-        Analytics.event("recognizeKanjiOcr", this);
     }
 
     class OcrTask implements Runnable {
@@ -508,16 +501,12 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     }
 
     private void recognizeWs(List<Stroke> strokes) {
-        Analytics.event("recognizeKanji", this);
-
         HkrTask task = new HkrTask(strokes, handler);
         String message = getResources().getString(R.string.doing_hkr);
         submitWsTask(task, message);
     }
 
     private void reconizeKanjiRecognizer(final List<Stroke> strokes) {
-        Analytics.event("recognizeKanjiKr", this);
-
         Runnable krTask = new Runnable() {
             public void run() {
                 try {

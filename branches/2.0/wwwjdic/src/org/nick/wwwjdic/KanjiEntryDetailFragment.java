@@ -13,7 +13,6 @@ import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.model.Radical;
 import org.nick.wwwjdic.model.Radicals;
 import org.nick.wwwjdic.model.SearchCriteria;
-import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.DictUtils;
 import org.nick.wwwjdic.utils.Pair;
 import org.nick.wwwjdic.utils.StringUtils;
@@ -96,19 +95,12 @@ public class KanjiEntryDetailFragment extends DetailFragment {
         }
 
         Bundle args = getArguments();
-        boolean kodWidgetClicked = false;
         if (args != null) {
             entry = (KanjiEntry) args
                     .getSerializable(KanjiEntryDetail.EXTRA_KANJI_ENTRY);
             wwwjdicEntry = entry;
             isFavorite = args.getBoolean(KanjiEntryDetail.EXTRA_IS_FAVORITE,
                     false);
-            kodWidgetClicked = args.getBoolean(
-                    KanjiEntryDetail.EXTRA_KOD_WIDGET_CLICK, false);
-        }
-        if (kodWidgetClicked) {
-            Analytics.startSession(getActivity());
-            Analytics.event("kodWidgetClicked", getActivity());
         }
 
         String message = getResources().getString(R.string.details_for);

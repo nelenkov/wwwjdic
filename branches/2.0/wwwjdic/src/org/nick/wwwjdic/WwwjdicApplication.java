@@ -1,8 +1,6 @@
 package org.nick.wwwjdic;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -17,7 +15,6 @@ import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpPostSender;
 import org.nick.wwwjdic.model.Radicals;
 import org.nick.wwwjdic.updates.UpdateCheckService;
-import org.nick.wwwjdic.utils.FileUtils;
 
 import android.app.Application;
 import android.content.Context;
@@ -26,14 +23,11 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.res.AssetManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
-import com.flurry.android.FlurryAgent;
 
 @ReportsCrashes(formKey = "dGNNTWxOQlZRT194XzBLUEw3c0RCaXc6MQ", mode = ReportingInteractionMode.TOAST)
 public class WwwjdicApplication extends Application {
@@ -57,8 +51,6 @@ public class WwwjdicApplication extends Application {
 
     private static String version;
 
-    private static String flurryKey;
-
     // EDICT by default
     private String currentDictionary = "1";
     private String currentDictionaryName = "General";
@@ -72,10 +64,6 @@ public class WwwjdicApplication extends Application {
         instance = this;
 
         version = getVersionName();
-
-        flurryKey = readKey();
-        FlurryAgent.setCaptureUncaughtExceptions(false);
-        FlurryAgent.setLogEnabled(false);
 
         initAcra();
 
@@ -282,27 +270,6 @@ public class WwwjdicApplication extends Application {
         }
     }
 
-    private String readKey() {
-        AssetManager assetManager = getAssets();
-
-        InputStream in = null;
-        try {
-            in = assetManager.open("keys");
-
-            return FileUtils.readTextFile(in).trim();
-        } catch (IOException e) {
-            return null;
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException ignored) {
-                }
-            }
-        }
-
-    }
-
     public WwwjdicApplication() {
         executorService = Executors.newSingleThreadExecutor();
     }
@@ -317,10 +284,6 @@ public class WwwjdicApplication extends Application {
 
     public static String getUserAgentString() {
         return "Android-WWWJDIC/" + getVersion();
-    }
-
-    public static String getFlurryKey() {
-        return flurryKey;
     }
 
     private void initRadicals() {

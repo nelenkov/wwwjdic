@@ -10,7 +10,6 @@ import org.nick.wwwjdic.client.WwwjdicMaintenanceException;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.model.WwwjdicEntry;
-import org.nick.wwwjdic.utils.Analytics;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -55,20 +54,6 @@ public abstract class ResultListFragmentBase<T> extends SherlockListFragment
         setRetainInstance(true);
         guiThread = new Handler();
         db = HistoryDbHelper.getInstance(getActivity());
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        Analytics.startSession(getActivity());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        Analytics.endSession(getActivity());
     }
 
     @Override

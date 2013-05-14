@@ -154,7 +154,7 @@ public class FavoritesAndHistory extends ActionBarActivity {
             currentTab.exportItems();
             supportInvalidateOptionsMenu();
         } else if (item.getItemId() == R.id.menu_filter) {
-            currentTab.showFilterDialog();
+            //            currentTab.showFilterDialog();
         } else if (item.getItemId() == R.id.menu_delete) {
             DialogFragment confirmDeleteDialog = ConfirmDeleteDialog
                     .newInstance(currentTab);

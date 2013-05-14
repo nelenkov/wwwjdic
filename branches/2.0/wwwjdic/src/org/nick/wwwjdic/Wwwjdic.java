@@ -14,7 +14,6 @@ import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
 import org.nick.wwwjdic.krad.KradChart;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.ocr.OcrActivity;
-import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.UIUtils;
 
 import android.annotation.SuppressLint;
@@ -405,8 +404,6 @@ public class Wwwjdic extends ActionBarActivity {
     protected void onStart() {
         super.onStart();
 
-        Analytics.startSession(this);
-
         if (WwwjdicPreferences.isPopupKeyboard(this)) {
             showKeyboard();
         }
@@ -473,8 +470,6 @@ public class Wwwjdic extends ActionBarActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
-        Analytics.endSession(this);
     }
 
     @Override
