@@ -4,7 +4,7 @@
 
 == Q: Are all those permissions really needed? What are they for? ==
 
-A:  Each permission is needed to implement on or more features. Even if you don't use all features, all permissions need to be set at install time, that's how Android works. See below for details.
+A:  Each permission is needed to implement one or more features. Even if you don't use all features, all permissions need to be set at install time, that's how Android works. See below for details.
 
  * android.permission.INTERNET
   * needed to access the WWWJDIC site, OCR and kanji recognizer services as well as Google Docs
