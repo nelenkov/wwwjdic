@@ -18,7 +18,6 @@ import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.hkr.HkrCandidates;
 import org.nick.wwwjdic.model.SearchCriteria;
-import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Dialogs;
 
 import android.app.ProgressDialog;
@@ -383,7 +382,6 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
                 startActivity(intent);
             }
         } else if (parent.getId() == R.id.kradChartGrid) {
-            Analytics.event("multiradicalSelect", this);
             String radical = state.radicals.get(position).trim();
             if (state.selectedRadicals.contains(radical)) {
                 state.selectedRadicals.remove(radical);
@@ -470,8 +468,6 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
     }
 
     private void showCandidates() {
-        Analytics.event("multiradicalShowAll", this);
-
         Intent intent = createShowAllIntent();
         startActivity(intent);
     }

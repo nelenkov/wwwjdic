@@ -78,8 +78,6 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
 
     private static final String PREF_ACCOUNT_NAME_KEY = "pref_account_name";
 
-    private static final String PREF_ENABLE_ANALYTICS_KEY = "pref_enable_analytics";
-
     public static final String PREF_WHATS_NEW_SHOWN = "pref_whats_new_shown";
     public static final String PREF_DONATION_THANKS_SHOWN = "pref_donation_thanks_shown";
 
@@ -504,12 +502,6 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(PREF_ACCOUNT_NAME_KEY, accountName);
         editor.commit();
-    }
-
-    public static boolean isAnalyticsEnabled(Context ctx) {
-        SharedPreferences preferences = getPrefs(ctx);
-
-        return preferences.getBoolean(PREF_ENABLE_ANALYTICS_KEY, true);
     }
 
     public static boolean isDonationThanksShown(Context context) {

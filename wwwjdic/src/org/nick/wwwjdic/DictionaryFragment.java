@@ -4,7 +4,6 @@ import java.util.concurrent.RejectedExecutionException;
 
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.model.SearchCriteria;
-import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Context;
@@ -221,8 +220,6 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
             if (!StringUtils.isEmpty(criteria.getQueryString())) {
                 dbHelper.addSearchCriteria(criteria);
             }
-
-            Analytics.event("dictSearch", getActivity());
 
             startActivity(intent);
         } catch (RejectedExecutionException e) {

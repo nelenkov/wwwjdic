@@ -4,7 +4,6 @@ import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.sod.SodActivity;
-import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Context;
@@ -26,8 +25,6 @@ public class Activities {
 
         Intent intent = new Intent(context, KanjiResultList.class);
         intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
-
-        Analytics.event("kanjiSearch", context);
 
         context.startActivity(intent);
     }

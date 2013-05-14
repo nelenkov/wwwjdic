@@ -2,7 +2,6 @@ package org.nick.wwwjdic;
 
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.model.SearchCriteria;
-import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.StringUtils;
 
 import android.content.Intent;
@@ -147,15 +146,11 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
                 dbHelper.addSearchCriteria(criteria);
             }
 
-            Analytics.event("exampleSearch", getActivity());
-
             startActivity(intent);
         } else {
             Intent intent = new Intent(getActivity(),
                     SentenceBreakdown.class);
             intent.putExtra(SentenceBreakdown.EXTRA_SENTENCE, queryString);
-
-            Analytics.event("sentenceTranslation", getActivity());
 
             startActivity(intent);
         }

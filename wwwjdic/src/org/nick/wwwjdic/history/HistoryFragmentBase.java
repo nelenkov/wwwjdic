@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.LoaderResult;
 
 import android.annotation.SuppressLint;
@@ -122,20 +121,6 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        Analytics.startSession(getActivity());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        Analytics.endSession(getActivity());
     }
 
     protected abstract int getContentView();
@@ -358,17 +343,19 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
     }
 
     @SuppressLint("NewApi")
-    static class ConfirmDeleteDialog extends DialogFragment {
+    public static class ConfirmDeleteDialog extends DialogFragment {
 
         private HistoryFragmentBase historyFragment;
 
-        ConfirmDeleteDialog(HistoryFragmentBase historyFragment) {
-            this.historyFragment = historyFragment;
+        public ConfirmDeleteDialog() {
         }
 
         public static ConfirmDeleteDialog newInstance(
                 HistoryFragmentBase historyFragment) {
-            return new ConfirmDeleteDialog(historyFragment);
+            ConfirmDeleteDialog result = new ConfirmDeleteDialog();
+            result.historyFragment = historyFragment;
+
+            return result;
         }
 
         @Override

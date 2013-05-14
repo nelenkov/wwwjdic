@@ -11,7 +11,6 @@ import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.SearchSuggestionProvider;
 import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.model.SearchCriteria;
-import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.LoaderResult;
 import org.nick.wwwjdic.utils.MediaScannerWrapper;
 import org.nick.wwwjdic.utils.UIUtils;
@@ -124,8 +123,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
         intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
 
-        Analytics.event("lookupFromHistory", getActivity());
-
         startActivity(intent);
     }
 
@@ -201,8 +198,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                     if (UIUtils.isFroyo()) {
                         MediaScannerWrapper.scanFile(getActivity(), filename);
                     }
-
-                    Analytics.event("historyExport", getActivity());
 
                     return true;
 
@@ -289,8 +284,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                         count++;
                     }
                     db.setTransactionSuccessful();
-
-                    Analytics.event("historyImport", getActivity());
 
                     return true;
                 } catch (IOException e) {

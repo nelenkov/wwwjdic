@@ -18,7 +18,6 @@ import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.ocr.crop.CropImage;
-import org.nick.wwwjdic.utils.Analytics;
 import org.nick.wwwjdic.utils.Dialogs;
 import org.nick.wwwjdic.utils.UIUtils;
 
@@ -171,18 +170,9 @@ public class OcrActivity extends WebServiceBackedActivity implements
     protected void onStart() {
         super.onStart();
 
-        Analytics.startSession(this);
-
         if (getSupportActionBar() != null && UIUtils.isHoneycombTablet(this)) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        Analytics.endSession(this);
     }
 
     @Override
@@ -348,7 +338,6 @@ public class OcrActivity extends WebServiceBackedActivity implements
             return super.onKeyDown(keyCode, event);
         }
         if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
-            Analytics.event("ocrTake", this);
             requestAutoFocus();
         }
 
@@ -432,8 +421,6 @@ public class OcrActivity extends WebServiceBackedActivity implements
                     if (WwwjdicPreferences.isDumpCroppedImages(this)) {
                         dumpBitmap(blackAndWhiteBitmap, "cropped.jpg");
                     }
-
-                    Analytics.event("ocr", this);
 
                     OcrTask task = new OcrTask(blackAndWhiteBitmap, handler);
                     String message = getResources().getString(
@@ -789,7 +776,6 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        Analytics.event("ocrTouch", this);
         requestAutoFocus();
 
         return false;
