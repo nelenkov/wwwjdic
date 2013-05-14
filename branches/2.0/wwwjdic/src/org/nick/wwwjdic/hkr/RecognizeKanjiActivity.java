@@ -173,13 +173,13 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     }
 
     private void findViews() {
-        drawView = (KanjiDrawView) this.findViewById(R.id.kanji_draw_view);
-
         recognizeButton = (Button) findViewById(R.id.recognize_button);
         ocrButton = (Button) findViewById(R.id.ocr_button);
         removeStrokeButton = (Button) findViewById(R.id.remove_stroke_button);
         clearButton = (Button) findViewById(R.id.clear_canvas_button);
         lookAheadCb = (CheckBox) findViewById(R.id.lookAheadCb);
+
+        drawView = (KanjiDrawView) findViewById(R.id.kanji_draw_view);
     }
 
     public static class RecognizeKanjiHandler extends WsResultHandler {

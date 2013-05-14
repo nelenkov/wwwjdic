@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
@@ -72,6 +74,8 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry>
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.search_results_fragment, container,
                 false);
+        progressSpinner = (ProgressBar) v.findViewById(R.id.progress_spinner);
+        emptyText = (TextView) v.findViewById(android.R.id.empty);
 
         return v;
     }
@@ -137,7 +141,7 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry>
                         getActivity(), entries);
                 setListAdapter(adapter);
                 setTitleAndCurrentItem();
-                dismissProgressDialog();
+                dismissProgress();
             }
         });
     }

@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -204,6 +205,8 @@ public class ExamplesResultListFragment extends
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.search_results_fragment, container,
                 false);
+        progressSpinner = (ProgressBar) v.findViewById(R.id.progress_spinner);
+        emptyText = (TextView) v.findViewById(android.R.id.empty);
 
         return v;
     }
@@ -285,7 +288,7 @@ public class ExamplesResultListFragment extends
                 setListAdapter(adapter);
                 getListView().setTextFilterEnabled(true);
                 setTitleAndCurrentItem();
-                dismissProgressDialog();
+                dismissProgress();
             }
         });
 

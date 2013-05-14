@@ -12,7 +12,6 @@ import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.model.WwwjdicEntry;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +19,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.ClipboardManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -36,7 +38,8 @@ public abstract class ResultListFragmentBase<T> extends SherlockListFragment
     protected Handler guiThread;
     protected Future<?> transPending;
 
-    protected ProgressDialog progressDialog;
+    protected ProgressBar progressSpinner;
+    protected TextView emptyText;
 
     protected HistoryDbHelper db;
 
@@ -78,8 +81,10 @@ public abstract class ResultListFragmentBase<T> extends SherlockListFragment
     }
 
     protected void submitSearchTask(SearchTask<T> searchTask) {
-        progressDialog = ProgressDialog.show(getActivity(), "", getResources()
-                .getText(R.string.loading).toString(), true, true, this);
+        progressSpinner.setVisibility(View.VISIBLE);
+        if (emptyText != null) {
+            emptyText.setVisibility(View.INVISIBLE);
+        }
 
         ExecutorService executorService = getApp().getExecutorService();
         transPending = executorService.submit(searchTask);
@@ -102,7 +107,7 @@ public abstract class ResultListFragmentBase<T> extends SherlockListFragment
         guiThread.post(new Runnable() {
             public void run() {
                 getActivity().setTitle(getResources().getText(R.string.error));
-                dismissProgressDialog();
+                dismissProgress();
 
                 AlertDialog.Builder alert = new AlertDialog.Builder(
                         getActivity());
@@ -158,14 +163,10 @@ public abstract class ResultListFragmentBase<T> extends SherlockListFragment
         return WwwjdicPreferences.getWwwjdicTimeoutSeconds(getActivity());
     }
 
-    protected void dismissProgressDialog() {
-        try {
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-                progressDialog = null;
-            }
-        } catch (Throwable t) {
-            Log.w(TAG, "error dismissing progress dialog: " + t.getMessage(), t);
+    protected void dismissProgress() {
+        progressSpinner.setVisibility(View.INVISIBLE);
+        if (emptyText != null) {
+            emptyText.setVisibility(View.VISIBLE);
         }
     }
 

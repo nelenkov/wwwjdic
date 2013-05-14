@@ -20,7 +20,6 @@ import org.nick.wwwjdic.hkr.HkrCandidates;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.Dialogs;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -40,6 +39,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -96,7 +96,7 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
 
     private KradDb kradDb;
 
-    private ProgressDialog progressDialog;
+    private ProgressBar progressSpinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,6 +117,7 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
         clearButton.setOnClickListener(this);
         toggleButtons();
 
+        progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner);
         radicalChartGrid = (GridView) findViewById(R.id.kradChartGrid);
         radicalChartGrid.setOnItemClickListener(this);
 
@@ -142,15 +143,7 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
 
             @Override
             protected void onPreExecute() {
-                if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-
-                }
-                progressDialog = new ProgressDialog(KradChart.this);
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.setMessage(getString(R.string.loading));
-                progressDialog.setCancelable(false);
-                progressDialog.show();
+                progressSpinner.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -187,12 +180,10 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
 
             @Override
             protected void onPostExecute(Boolean result) {
+                progressSpinner.setVisibility(View.INVISIBLE);
+
                 if (isFinishing()) {
                     return;
-                }
-
-                if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.dismiss();
                 }
 
                 if (result) {
@@ -204,10 +195,9 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
                     Dialogs.showTipOnce(KradChart.this, MULTI_RADICAL_TIP,
                             R.string.multi_radical_search_tip);
                 } else {
-                    Toast t = Toast.makeText(KradChart.this,
+                    Toast.makeText(KradChart.this,
                             "error loading radkfile-u " + error.getMessage(),
-                            Toast.LENGTH_SHORT);
-                    t.show();
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
