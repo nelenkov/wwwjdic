@@ -543,11 +543,15 @@ You can enable offline recognition using the Kanji Recognizer application. Would
         <item>N2 TTS</item>
         <item>SVOX Japanese</item>
         <item>AquesTalk TTS</item>
+        <item>DTalker Japanese TTS Demo</item>
+        <item>DTalker Japanese TTS</item>
     </string-array>
     <string-array name="jp_tts_engine_packages">
         <item>jp.kddilabs.n2tts</item>
         <item>com.svox.classic</item>
         <item>com.a_quest.aquestalka</item>
+        <item>jp.co.createsystem.DTalkerTtsDemo</item>
+        <item>jp.co.createsystem</item>
     </string-array>
 
     <string name="share">Share</string>
