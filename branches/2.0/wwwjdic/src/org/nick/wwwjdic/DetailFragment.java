@@ -61,6 +61,10 @@ public abstract class DetailFragment extends SherlockFragment implements
 
     private static final boolean IS_FROYO = Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO;
 
+    protected static final String CREATE_FLASHCARD_ACTION = "org.openintents.action.CREATE_FLASHCARD";
+    protected static final String EXTRA_SOURCE_TEXT = "SOURCE_TEXT";
+    protected static final String EXTRA_TARGET_TEXT = "TARGET_TEXT";
+
     private static Method tts_getDefaultEngine;
     private static Method tts_setEngineByPackageName;
 
@@ -374,4 +378,28 @@ public abstract class DetailFragment extends SherlockFragment implements
 
         return shareIntent;
     }
+
+    protected boolean canCreateFlashcards() {
+        return getActivity().getPackageManager().resolveActivity(
+                new Intent(CREATE_FLASHCARD_ACTION), 0) != null;
+    }
+
+    protected Intent createFlashcardIntent() {
+        Intent intent = new Intent(CREATE_FLASHCARD_ACTION);
+        intent.putExtra(EXTRA_SOURCE_TEXT, wwwjdicEntry.getHeadword());
+        StringBuilder buff = new StringBuilder();
+        buff.append(wwwjdicEntry.getReading());
+        buff.append("\n");
+        List<String> meanings = wwwjdicEntry.getMeanings();
+        for (int i = 0; i < meanings.size(); i++) {
+            buff.append(meanings.get(i));
+            if (i != meanings.size() - 1) {
+                buff.append("\n");
+            }
+        }
+        intent.putExtra(EXTRA_TARGET_TEXT, buff.toString());
+
+        return intent;
+    }
+
 }

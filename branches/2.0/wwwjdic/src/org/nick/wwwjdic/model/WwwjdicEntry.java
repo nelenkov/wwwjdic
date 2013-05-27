@@ -1,6 +1,7 @@
 package org.nick.wwwjdic.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public abstract class WwwjdicEntry implements Serializable {
 
@@ -33,9 +34,13 @@ public abstract class WwwjdicEntry implements Serializable {
 
     public abstract String getHeadword();
 
+    public abstract String getReading();
+
     public abstract boolean isKanji();
 
     public abstract String getDetailString();
+
+    public abstract List<String> getMeanings();
 
     public boolean isSingleKanji() {
         return getHeadword().length() == 1;
