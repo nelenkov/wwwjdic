@@ -573,5 +573,6 @@ You can enable offline recognition using the Kanji Recognizer application. Would
         WWWJDIC Settings->Japanese TTS Engine.</string>
         
     <string name="credits">Credits</string>
+    <string name="transparent_bg">Transparent background</string>
 
 </resources>

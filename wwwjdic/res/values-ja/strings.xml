@@ -418,4 +418,6 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     <string name="tip_jp_tts">日本語読み上げ機能を有効にするには、N2 TTS, 
         SVOX Japanese、またはAquesTalk TTSをインストールし、WWWJDIC設定->日本語読み上げエンジン
         で選択してください。</string>
+        
+    <string name="transparent_bg">透明な背景</string>
 </resources>
