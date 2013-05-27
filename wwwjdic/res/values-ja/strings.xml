@@ -213,6 +213,7 @@
     <string name="file_not_found">%sは存在しません。</string>
     <string name="import_error">インポートエラー: %s。</string>
     <string name="export_error">エックスポートエラー: %s。</string>
+    <string name="export_finished">エックスポート完了。</string>
     <string name="overwrite_file">%sはすでに存在しています。上書きしますか?</string>
     <string name="import_and_overwrite">既存のエントリを上書きしてインポートしますか?</string>
     <string name="pref_analytics">Analytics</string>

@@ -118,8 +118,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
                 refresh();
                 getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(
-                        false);
+                        .setSupportProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -319,8 +318,9 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                     .getString(R.string.anki_export_failure);
             String message = result ? String.format(template, exportFilename)
                     : String.format(template, error.getMessage());
-            Toast t = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
-            t.show();
+            Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+            notifyExportFinished(NOTIFICATION_ID_FAVORITES_EXPORT_ANKI,
+                    message, exportFilename);
         }
     }
 
@@ -461,16 +461,15 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                 }
 
                 getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(
-                        false);
+                        .setSupportProgressBarIndeterminateVisibility(false);
 
                 if (result) {
                     String message = getResources().getString(
-                            R.string.favorites_exported);
-                    Toast t = Toast.makeText(getActivity(),
-                            String.format(message, exportFilename, count),
-                            Toast.LENGTH_SHORT);
-                    t.show();
+                            R.string.favorites_exported, exportFilename, count);
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
+                            .show();
+                    notifyExportFinished(NOTIFICATION_ID_FAVORITES_EXPORT_CSV,
+                            message, exportFilename);
                 } else {
                     String message = getResources().getString(
                             R.string.export_error);
@@ -626,16 +625,17 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                 }
 
                 getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(
-                        false);
+                        .setSupportProgressBarIndeterminateVisibility(false);
 
                 if (result) {
-                    String message = getResources().getString(
-                            R.string.favorites_exported);
-                    Toast t = Toast.makeText(getActivity(),
-                            String.format(message, exportFile, count),
-                            Toast.LENGTH_SHORT);
-                    t.show();
+                    String message = String.format(
+                            getResources().getString(
+                                    R.string.favorites_exported), exportFile,
+                            count);
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
+                            .show();
+                    notifyExportFinished(NOTIFICATION_ID_FAVORITES_EXPORT_CSV,
+                            message, exportFile);
                 } else {
                     String message = getResources().getString(
                             R.string.export_error);
@@ -707,8 +707,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                 }
 
                 getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(
-                        false);
+                        .setSupportProgressBarIndeterminateVisibility(false);
 
                 if (result) {
                     String message = getResources().getString(
