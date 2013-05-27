@@ -230,12 +230,13 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                         .setSupportProgressBarIndeterminateVisibility(false);
 
                 if (result) {
-                    String message = getResources().getString(
-                            R.string.history_exported);
-                    Toast t = Toast.makeText(getActivity(),
-                            String.format(message, filename, count),
-                            Toast.LENGTH_SHORT);
-                    t.show();
+                    String message = String
+                            .format(getResources().getString(
+                                    R.string.history_exported), filename, count);
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
+                            .show();
+                    notifyExportFinished(NOTIFICATION_ID_HISTORY_EXPORT,
+                            message, filename);
                 } else {
                     String message = getResources().getString(
                             R.string.export_error);
@@ -316,10 +317,9 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                 if (result) {
                     String message = getResources().getString(
                             R.string.history_imported);
-                    Toast t = Toast.makeText(getActivity(),
+                    Toast.makeText(getActivity(),
                             String.format(message, importFile, count),
-                            Toast.LENGTH_SHORT);
-                    t.show();
+                            Toast.LENGTH_SHORT).show();
                 } else {
                     String message = getResources().getString(
                             R.string.import_error);

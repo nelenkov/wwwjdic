@@ -8,19 +8,27 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.WwwjdicApplication;
 import org.nick.wwwjdic.utils.LoaderResult;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.BigTextStyle;
+import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.widget.CursorAdapter;
 import android.text.ClipboardManager;
 import android.view.LayoutInflater;
@@ -46,6 +54,11 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
 
     protected static final int CONFIRM_DELETE_DIALOG_ID = 0;
 
+    protected static final int NOTIFICATION_ID_FAVORITES_EXPORT_BACKUP = 0;
+    protected static final int NOTIFICATION_ID_FAVORITES_EXPORT_CSV = 1;
+    protected static final int NOTIFICATION_ID_FAVORITES_EXPORT_ANKI = 2;
+    protected static final int NOTIFICATION_ID_HISTORY_EXPORT = 3;
+
     public static final int FILTER_ALL = -1;
     public static final int FILTER_DICT = 0;
     public static final int FILTER_KANJI = 1;
@@ -62,6 +75,8 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
 
     private ActionMode currentActionMode;
 
+    protected NotificationManager notificationManager;
+
     protected HistoryFragmentBase() {
     }
 
@@ -73,6 +88,8 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
 
         clipboardManager = (ClipboardManager) getActivity().getSystemService(
                 Context.CLIPBOARD_SERVICE);
+        notificationManager = (NotificationManager) getActivity()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (getArguments() != null && savedInstanceState == null) {
             selectedFilter = getArguments().getInt(
@@ -501,5 +518,56 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
             currentActionMode = null;
         }
     };
+
+
+    protected void notifyExportFinished(int notificationId, String message,
+            String filename) {
+        notifyExportFinished(notificationId, message, filename,
+                "application/text");
+    }
+
+    protected void notifyExportFinished(int notificationId, String message,
+            String filename, String mimeType) {
+        // clear progress notification
+        notificationManager.cancel(notificationId);
+
+        Context appCtx = WwwjdicApplication.getInstance();
+
+        Intent shareIntent = createShareFileIntent(filename, mimeType);
+        PendingIntent pendingIntent = PendingIntent.getActivity(appCtx, 0,
+                shareIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        String title = getResources().getString(R.string.app_name) + ": "
+                + appCtx.getString(R.string.export_finished);
+
+        Builder builder = new NotificationCompat.Builder(appCtx);
+        builder.setSmallIcon(R.drawable.icon);
+        builder.setContentTitle(title);
+        builder.setContentText(message);
+        BigTextStyle style = new BigTextStyle(builder);
+        style.bigText(message);
+        style.setBigContentTitle(title);
+        //        style.setSummaryText(accountName);
+        builder.setStyle(style);
+        builder.setContentIntent(pendingIntent);
+        builder.setWhen(System.currentTimeMillis());
+        builder.setDefaults(Notification.DEFAULT_ALL);
+        builder.setAutoCancel(true);
+        builder.setOngoing(false);
+        builder.addAction(android.R.drawable.ic_menu_share,
+                appCtx.getString(R.string.share), pendingIntent);
+
+        notificationManager.notify(notificationId, builder.build());
+    }
+
+    private Intent createShareFileIntent(String filename, String mimeType) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType(mimeType);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        File file = new File(filename);
+        intent.putExtra(Intent.EXTRA_STREAM,
+                android.net.Uri.parse(file.getAbsolutePath()));
+
+        return Intent.createChooser(intent, (getString(R.string.share)));
+    }
 
 }
