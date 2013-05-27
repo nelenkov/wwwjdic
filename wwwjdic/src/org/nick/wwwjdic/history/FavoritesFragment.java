@@ -399,7 +399,9 @@ public class FavoritesFragment extends HistoryFragmentBase implements
             case EXPORT_LOCAL_EXPORT_IDX:
                 return singleType;
             case EXPORT_ANKI_IDX:
-                return singleType;
+                //return singleType;
+                // XXX disable until Anki 2.0 is supported
+                return false;
             default:
                 return false;
             }
