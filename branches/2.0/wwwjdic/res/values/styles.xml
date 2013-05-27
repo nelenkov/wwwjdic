@@ -109,6 +109,11 @@
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/semi_white</item>
     </style>
+    
+     <style name="kod_loading_transparent">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/semi_black</item>
+    </style>
 
     <style name="listViewActivatedStyle" />
 

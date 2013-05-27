@@ -143,13 +143,7 @@ public class KodWidgetProvider extends AppWidgetProvider {
         RemoteViews views = null;
         boolean showReadingAndMeaning = WwwjdicPreferences
                 .isKodShowReading(context);
-        if (showReadingAndMeaning) {
-            views = new RemoteViews(context.getPackageName(),
-                    R.layout.kod_widget_details);
-        } else {
-            views = new RemoteViews(context.getPackageName(),
-                    R.layout.kod_widget);
-        }
+        views = currentRemoveViews(context, showReadingAndMeaning);
 
         float textSize = getKodTextSize(context, newOptions, appWidgetId,
                 showReadingAndMeaning);
@@ -166,9 +160,25 @@ public class KodWidgetProvider extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
+    static RemoteViews currentRemoveViews(Context context,
+            boolean showReadingAndMeaning) {
+        boolean transparent = WwwjdicPreferences.isKodTransparentBg(context);
+
+        if (showReadingAndMeaning) {
+            return new RemoteViews(context.getPackageName(),
+                    transparent ? R.layout.kod_widget_details_transparent
+                            : R.layout.kod_widget_details);
+        }
+
+        return new RemoteViews(context.getPackageName(),
+                transparent ? R.layout.kod_widget_transparent
+                        : R.layout.kod_widget);
+    }
+
     static float getKodTextSize(Context ctx, Bundle options, int id,
             boolean showMeaning) {
-        float ratio = showMeaning ? DETAILED_KOD_TEXT_SIZE_RATIO : KOD_TEXT_SIZE_RATIO;
+        float ratio = showMeaning ? DETAILED_KOD_TEXT_SIZE_RATIO
+                : KOD_TEXT_SIZE_RATIO;
 
         return getTextSize(ctx, options, id, ratio);
     }

@@ -38,6 +38,7 @@ public class KodWidgetConfigure extends ActionBarActivity implements
     private TextView jlptLevelLabel;
     private Spinner jlptLevelSpinner;
     private CheckBox showReadingCb;
+    private CheckBox transparentBackgroundCb;
     private Spinner updateIntervalSpinner;
     private RadioButton kodRandomRb;
     private RadioButton kodSequentialRb;
@@ -66,6 +67,9 @@ public class KodWidgetConfigure extends ActionBarActivity implements
         jlptLevelLabel.setEnabled(isUseJlpt);
 
         showReadingCb.setChecked(WwwjdicPreferences.isKodShowReading(this));
+        transparentBackgroundCb.setChecked(WwwjdicPreferences
+                .isKodTransparentBg(this));
+
         long updateInterval = WwwjdicPreferences.getKodUpdateInterval(this);
         if (updateInterval == TWELVE_HOURS_MILLIS) {
             updateIntervalSpinner.setSelection(TWELVE_HOURS_IDX);
@@ -104,6 +108,7 @@ public class KodWidgetConfigure extends ActionBarActivity implements
         jlptLevelLabel = (TextView) findViewById(R.id.jlpt_level_label);
         jlptLevelSpinner = (Spinner) findViewById(R.id.kod_jlpt_level_spinner);
         showReadingCb = (CheckBox) findViewById(R.id.kod_show_reading_cb);
+        transparentBackgroundCb = (CheckBox) findViewById(R.id.kod_transparent_bg_cb);
         updateIntervalSpinner = (Spinner) findViewById(R.id.kod_update_interval_spinner);
         kodRandomRb = (RadioButton) findViewById(R.id.kod_random);
         kodSequentialRb = (RadioButton) findViewById(R.id.kod_sequential);
@@ -140,6 +145,8 @@ public class KodWidgetConfigure extends ActionBarActivity implements
                     jlptLevelSpinner.getSelectedItemPosition() + 1);
             WwwjdicPreferences.setKodShowReading(this,
                     showReadingCb.isChecked());
+            WwwjdicPreferences.setKodTransparentBg(this,
+                    transparentBackgroundCb.isChecked());
 
             setUpdateInterval();
 

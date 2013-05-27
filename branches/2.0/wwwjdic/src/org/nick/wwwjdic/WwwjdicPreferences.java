@@ -106,6 +106,7 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
 
     private static final String PREF_KOD_IS_RANDOM_KEY = "kod_is_random";
     private static final String PREF_KOD_CURRENT_KANJI_KEY = "kod_current_kanji";
+    private static final String PREF_KOD_TRANSPARENT_BG_KEY = "kod_transparent_bg";
 
     private static final String PREF_SELECTED_DICTIONARY = "selected_dictionary";
     private static final String PREF_KANJI_SEARCH_TYPE_KEY = "kanji_search_type";
@@ -642,20 +643,32 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
                 DEFAULT_JP_TTS_ENGINE_PACKAGE);
     }
 
-    public static boolean isKodRandom(Context context) {
+    public static synchronized boolean isKodRandom(Context context) {
         return getPrefs(context).getBoolean(PREF_KOD_IS_RANDOM_KEY, true);
     }
 
-    public static void setKodRandom(Context context, boolean isRandom) {
+    public static synchronized void setKodRandom(Context context,
+            boolean isRandom) {
         getPrefsEditor(context).putBoolean(PREF_KOD_IS_RANDOM_KEY, isRandom)
                 .commit();
     }
 
-    public static String getKodCurrentKanji(Context context) {
+    public static synchronized boolean isKodTransparentBg(Context context) {
+        return getPrefs(context).getBoolean(PREF_KOD_TRANSPARENT_BG_KEY, false);
+    }
+
+    public static void setKodTransparentBg(Context context,
+            boolean isTransparent) {
+        getPrefsEditor(context).putBoolean(PREF_KOD_TRANSPARENT_BG_KEY,
+                isTransparent).commit();
+    }
+
+    public static synchronized String getKodCurrentKanji(Context context) {
         return getPrefs(context).getString(PREF_KOD_CURRENT_KANJI_KEY, null);
     }
 
-    public static void setKodCurrentKanji(Context context, String kanji) {
+    public static synchronized void setKodCurrentKanji(Context context,
+            String kanji) {
         getPrefsEditor(context).putString(PREF_KOD_CURRENT_KANJI_KEY, kanji)
                 .commit();
     }
@@ -695,8 +708,8 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
 
     public static synchronized void setSentenceModeIdx(Context context,
             int translationMode) {
-        getPrefsEditor(context).putInt(PREF_SENTENCE_MODE_KEY,
-                translationMode).commit();
+        getPrefsEditor(context).putInt(PREF_SENTENCE_MODE_KEY, translationMode)
+                .commit();
     }
 
     public static int getSentenceModeIdx(Context context) {

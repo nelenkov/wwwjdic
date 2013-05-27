@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
+    android:gravity="center" 
+    android:measureAllChildren="true"
+    android:clickable="true" 
+    android:focusable="true"
+    android:background="@drawable/kod_border"
+    android:padding="@dimen/widget_margin">
+  <TextView android:id="@+id/kod_message_text"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:textColor="@color/semi_black" 
+        android:gravity="center"
+        android:text="@string/widget_loading"
+        android:includeFontPadding="false"
+        style="@style/kod_loading"
+        android:visibility="visible">
+    </TextView> 
+    <RelativeLayout android:id="@+id/widget"
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent"
+        android:clickable="true" 
+        android:focusable="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView android:id="@+id/kod_header_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/semi_black" 
+            android:textStyle="bold"
+            android:textSize="@dimen/kod_header_text_size"
+            android:text="@string/kanji_of_the_day_jp"
+            android:includeFontPadding="true"
+            android:layout_marginTop="0dp"
+            android:layout_alignParentTop="true"/>
+        <TextView android:id="@+id/kod_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/semi_black" 
+            android:textStyle="bold"
+            android:textSize="@dimen/kod_text_size" 
+            android:text="E"
+            android:includeFontPadding="false" 
+            android:layout_below="@id/kod_header_text"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+</FrameLayout>

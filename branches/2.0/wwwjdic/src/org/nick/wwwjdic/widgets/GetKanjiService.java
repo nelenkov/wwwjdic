@@ -19,7 +19,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
-import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.client.HttpClientFactory;
 import org.nick.wwwjdic.model.KanjiEntry;
@@ -128,35 +127,22 @@ public class GetKanjiService extends Service {
 
     private void showLoading(Context context, int id) {
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
-        RemoteViews views = null;
-
         boolean showReadingAndMeaning = WwwjdicPreferences
                 .isKodShowReading(this);
-        if (showReadingAndMeaning) {
-            views = new RemoteViews(context.getPackageName(),
-                    R.layout.kod_widget_details);
-        } else {
-            views = new RemoteViews(context.getPackageName(),
-                    R.layout.kod_widget);
-        }
+        RemoteViews views = KodWidgetProvider.currentRemoveViews(context,
+                showReadingAndMeaning);
+
         KodWidgetProvider.showLoading(this, views);
         manager.updateAppWidget(id, views);
     }
 
     private RemoteViews buildUpdate(Context context, String wwwjdicResponse,
             int id) {
-        RemoteViews views = null;
-
         try {
             boolean showReadingAndMeaning = WwwjdicPreferences
                     .isKodShowReading(this);
-            if (showReadingAndMeaning) {
-                views = new RemoteViews(context.getPackageName(),
-                        R.layout.kod_widget_details);
-            } else {
-                views = new RemoteViews(context.getPackageName(),
-                        R.layout.kod_widget);
-            }
+            RemoteViews views = KodWidgetProvider.currentRemoveViews(context,
+                    showReadingAndMeaning);
 
             if (wwwjdicResponse == null) {
                 Log.e(TAG, String.format("Failed to get WWWJDIC response "
@@ -195,8 +181,8 @@ public class GetKanjiService extends Service {
 
         } catch (Exception e) {
             Log.e(TAG, "Couldn't contact WWWJDIC", e);
-            views = new RemoteViews(context.getPackageName(),
-                    R.layout.kod_widget);
+            RemoteViews views = KodWidgetProvider.currentRemoveViews(context,
+                    false);
             WwwjdicPreferences.setLastKodUpdateError(context,
                     System.currentTimeMillis());
             KodWidgetProvider.showError(this, views);
