@@ -6,7 +6,7 @@
     android:measureAllChildren="true"
     android:clickable="true" 
     android:focusable="true"
-    android:background="@drawable/kod_border"
+    android:background="@drawable/kod_transparent_bg"
     android:padding="@dimen/widget_margin">
   <TextView android:id="@+id/kod_message_text"
         android:layout_width="fill_parent"
