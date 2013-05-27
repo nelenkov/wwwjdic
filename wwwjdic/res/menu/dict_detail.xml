@@ -27,7 +27,7 @@
         android:title="@string/examples"/>
      <item
         android:id="@+id/menu_dict_detail_create_flashcard"
-        android:icon="@android:drawable/ic_menu_send"
+        android:icon="@drawable/ic_action_flashcard"
         android:orderInCategory="4"
         android:showAsAction="ifRoom|withText"
         android:title="@string/create_flashcard"/>
