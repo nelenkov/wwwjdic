@@ -77,21 +77,29 @@ public class GetKanjiService extends Service {
     private class GetKanjiTask implements Runnable {
         public void run() {
             try {
-                RemoteViews updateViews = buildUpdate(GetKanjiService.this);
-                updateKodWidgets(GetKanjiService.this, updateViews);
+                Context ctx = GetKanjiService.this;
+                ComponentName kodWidget = new ComponentName(ctx,
+                        KodWidgetProvider.class);
+                AppWidgetManager manager = AppWidgetManager.getInstance(ctx);
+                int[] ids = manager.getAppWidgetIds(kodWidget);
+
+                for (int id : ids) {
+                    showLoading(ctx, id);
+                }
+
+                String wwwjdicResponse = fetchKanjiFromWwwjdic(ctx);
+
+                for (int id : ids) {
+                    RemoteViews updateViews = buildUpdate(ctx, wwwjdicResponse,
+                            id);
+                    manager.updateAppWidget(id, updateViews);
+                }
             } finally {
                 scheduleNextUpdate();
 
                 stopSelf();
             }
         }
-    }
-
-    private void updateKodWidgets(Context context, RemoteViews updateViews) {
-        ComponentName allKodWidgets = new ComponentName(context,
-                KodWidgetProvider.class);
-        AppWidgetManager manager = AppWidgetManager.getInstance(context);
-        manager.updateAppWidget(allKodWidgets, updateViews);
     }
 
     private void scheduleNextUpdate() {
@@ -118,7 +126,25 @@ public class GetKanjiService extends Service {
         alarmManager.set(AlarmManager.RTC, nextUpdate, pendingIntent);
     }
 
-    private RemoteViews buildUpdate(Context context) {
+    private void showLoading(Context context, int id) {
+        AppWidgetManager manager = AppWidgetManager.getInstance(context);
+        RemoteViews views = null;
+
+        boolean showReadingAndMeaning = WwwjdicPreferences
+                .isKodShowReading(this);
+        if (showReadingAndMeaning) {
+            views = new RemoteViews(context.getPackageName(),
+                    R.layout.kod_widget_details);
+        } else {
+            views = new RemoteViews(context.getPackageName(),
+                    R.layout.kod_widget);
+        }
+        KodWidgetProvider.showLoading(this, views);
+        manager.updateAppWidget(id, views);
+    }
+
+    private RemoteViews buildUpdate(Context context, String wwwjdicResponse,
+            int id) {
         RemoteViews views = null;
 
         try {
@@ -130,38 +156,6 @@ public class GetKanjiService extends Service {
             } else {
                 views = new RemoteViews(context.getPackageName(),
                         R.layout.kod_widget);
-            }
-            KodWidgetProvider.showLoading(this, views);
-            updateKodWidgets(this, views);
-
-            String unicodeCp = selectKanji(context);
-            if (WWWJDIC_DEBUG) {
-                Log.d(TAG, "KOD Unicode CP: " + unicodeCp);
-            }
-            String backdoorCode = generateBackdoorCode(unicodeCp);
-            if (WWWJDIC_DEBUG) {
-                Log.d(TAG, "backdoor code: " + backdoorCode);
-            }
-            String wwwjdicResponse = null;
-
-            for (int i = 0; i < NUM_RETRIES; i++) {
-                try {
-                    wwwjdicResponse = query(
-                            WwwjdicPreferences.getWwwjdicUrl(this),
-                            backdoorCode);
-                    if (wwwjdicResponse != null) {
-                        break;
-                    }
-                } catch (Exception e) {
-                    if (i < NUM_RETRIES - 1) {
-                        Log.w(TAG, String.format("Couldn't contact "
-                                + "WWWJDIC, will retry after %d ms.",
-                                RETRY_INTERVAL), e);
-                        Thread.sleep(RETRY_INTERVAL * (i + 1));
-                    } else {
-                        Log.e(TAG, "Couldn't contact WWWJDIC.", e);
-                    }
-                }
             }
 
             if (wwwjdicResponse == null) {
@@ -194,7 +188,7 @@ public class GetKanjiService extends Service {
             }
 
             KodWidgetProvider.showKanji(context, views, showReadingAndMeaning,
-                    entries);
+                    entries, id);
             WwwjdicPreferences.setLastKodUpdateError(context, 0);
 
             return views;
@@ -208,6 +202,43 @@ public class GetKanjiService extends Service {
             KodWidgetProvider.showError(this, views);
 
             return views;
+        }
+    }
+
+    private String fetchKanjiFromWwwjdic(Context context) {
+        try {
+            String unicodeCp = selectKanji(context);
+            if (WWWJDIC_DEBUG) {
+                Log.d(TAG, "KOD Unicode CP: " + unicodeCp);
+            }
+            String backdoorCode = generateBackdoorCode(unicodeCp);
+            if (WWWJDIC_DEBUG) {
+                Log.d(TAG, "backdoor code: " + backdoorCode);
+            }
+            String wwwjdicResponse = null;
+
+            for (int i = 0; i < NUM_RETRIES; i++) {
+                try {
+                    wwwjdicResponse = query(
+                            WwwjdicPreferences.getWwwjdicUrl(this),
+                            backdoorCode);
+                    if (wwwjdicResponse != null) {
+                        break;
+                    }
+                } catch (Exception e) {
+                    if (i < NUM_RETRIES - 1) {
+                        Log.w(TAG, String.format("Couldn't contact "
+                                + "WWWJDIC, will retry after %d ms.",
+                                RETRY_INTERVAL), e);
+                        Thread.sleep(RETRY_INTERVAL * (i + 1));
+                    } else {
+                        Log.e(TAG, "Couldn't contact WWWJDIC.", e);
+                    }
+                }
+            }
+            return wwwjdicResponse;
+        } catch (InterruptedException e) {
+            return null;
         }
     }
 
