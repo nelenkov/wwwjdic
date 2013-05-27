@@ -402,6 +402,7 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     <string name="pref_jp_tts_engine">日本語読み上げエンジン</string>
     
     <string name="share">共有</string>
+    <string name="create_flashcard">フラッシュカード作成</string>
     
     <string name="pref_widget">ウィジェット設定</string>
     <string name="pref_kod">今日の漢字</string>

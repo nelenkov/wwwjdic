@@ -17,6 +17,7 @@ import org.nick.wwwjdic.utils.DictUtils;
 import org.nick.wwwjdic.utils.Pair;
 import org.nick.wwwjdic.utils.StringUtils;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -295,6 +296,10 @@ public class KanjiEntryDetailFragment extends DetailFragment {
             share();
 
             return true;
+        } else if (item.getItemId() == R.id.menu_kanji_detail_create_flashcard) {
+            if (canCreateFlashcards()) {
+                startActivity(createFlashcardIntent());
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -360,6 +365,7 @@ public class KanjiEntryDetailFragment extends DetailFragment {
         makeClickable(textView, 0, textView.getText().length(), intent);
     }
 
+    @SuppressLint("DefaultLocale")
     private List<Pair<String, String>> createCodesData(KanjiEntry entry) {
         ArrayList<Pair<String, String>> data = new ArrayList<Pair<String, String>>();
 

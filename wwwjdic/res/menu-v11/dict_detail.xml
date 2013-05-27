@@ -25,5 +25,11 @@
         android:orderInCategory="3"
         android:showAsAction="ifRoom|withText"
         android:title="@string/examples"/>
+    <item
+        android:id="@+id/menu_dict_detail_create_flashcard"
+        android:icon="@android:drawable/ic_menu_send"
+        android:orderInCategory="4"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/create_flashcard"/>
 
 </menu>

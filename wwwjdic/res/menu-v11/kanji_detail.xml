@@ -19,5 +19,11 @@
         android:orderInCategory="2"
         android:showAsAction="ifRoom|withText"
         android:title="@string/share"/>
+     <item
+        android:id="@+id/menu_kanji_detail_create_flashcard"
+        android:icon="@android:drawable/ic_menu_send"
+        android:orderInCategory="3"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/create_flashcard"/>
 
 </menu>

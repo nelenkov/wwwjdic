@@ -186,6 +186,10 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
             startActivity(intent);
 
             return true;
+        } else if (item.getItemId() == R.id.menu_dict_detail_create_flashcard) {
+            if (canCreateFlashcards()) {
+                startActivity(createFlashcardIntent());
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -341,4 +345,5 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
             jpTts.speak(word, TextToSpeech.QUEUE_ADD, null);
         }
     }
+
 }
