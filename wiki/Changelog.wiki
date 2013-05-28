@@ -1,6 +1,14 @@
 #summary Full changelog
 
 = Changelog =
+ * v2.3.0
+  * Widget text scaling on resize (4.1+)
+  * Added transparent widget option
+  * Added 'Create flashcard' menu (requires Anki 2.0+)
+  * Support DTalker TTS
+  * UI improvements
+  * Removed analytics and update check
+  * Bug fixes
  * v2.2.5 (2012/11/19) New Japan mirror
   * New Japan mirror support
   * Nexus 7 support
