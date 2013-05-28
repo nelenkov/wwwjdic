@@ -158,7 +158,7 @@ public class KodWidgetConfigure extends ActionBarActivity implements
                     appWidgetId);
             setResult(RESULT_OK, resultValue);
             finish();
-        } else if (v.getId() == R.id.okButton) {
+        } else if (v.getId() == R.id.cancelButton) {
             finish();
         }
     }
