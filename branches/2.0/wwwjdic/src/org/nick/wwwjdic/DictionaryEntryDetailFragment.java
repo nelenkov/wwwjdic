@@ -144,6 +144,12 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.menu_dict_detail_create_flashcard);
+        item.setEnabled(canCreateFlashcards());
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.dict_detail, menu);
 
