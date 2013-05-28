@@ -28,6 +28,7 @@ import java.util.concurrent.CountDownLatch;
 import org.acra.ACRA;
 import org.nick.wwwjdic.R;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -53,6 +54,7 @@ import android.widget.Toast;
 /**
  * The activity can crop specific region of interest from an image.
  */
+@SuppressLint("InlinedApi")
 public class CropImage extends MonitoredActivity {
 
     private static final String TAG = CropImage.class.getSimpleName();

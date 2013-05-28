@@ -122,6 +122,7 @@ public class ExamplesResultListFragment extends
                 return result;
             }
 
+            @SuppressLint("DefaultLocale")
             private void markQueryString(SpannableString result,
                     String sentenceStr, String queryString, boolean italicize) {
                 String sentenceUpper = sentenceStr.toUpperCase();

@@ -546,7 +546,6 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
         BigTextStyle style = new BigTextStyle(builder);
         style.bigText(message);
         style.setBigContentTitle(title);
-        //        style.setSummaryText(accountName);
         builder.setStyle(style);
         builder.setContentIntent(pendingIntent);
         builder.setWhen(System.currentTimeMillis());
