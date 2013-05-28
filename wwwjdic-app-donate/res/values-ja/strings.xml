@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_text">WWWJDIC for Android (寄付版), 2010
+    <string name="about_text">WWWJDIC for Android (寄付版)
     </string>
     <string name="donate_thanks">寄付版をご購入いただき、ありがとうございます。</string>
     <string name="donation_thanks_title">ありがとうございます</string>
