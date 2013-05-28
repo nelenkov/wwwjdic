@@ -550,7 +550,7 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
         builder.setStyle(style);
         builder.setContentIntent(pendingIntent);
         builder.setWhen(System.currentTimeMillis());
-        builder.setDefaults(Notification.DEFAULT_ALL);
+        builder.setDefaults(Notification.DEFAULT_LIGHTS);
         builder.setAutoCancel(true);
         builder.setOngoing(false);
         builder.addAction(android.R.drawable.ic_menu_share,
