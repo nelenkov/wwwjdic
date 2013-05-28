@@ -43,6 +43,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressWarnings("deprecation")
 public class KradChart extends ActionBarActivity implements OnClickListener,
         OnItemClickListener {
 

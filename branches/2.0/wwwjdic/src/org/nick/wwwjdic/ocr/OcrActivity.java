@@ -676,6 +676,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
         return result;
     }
 
+    @SuppressWarnings("deprecation")
     private Size getOptimalPreviewSize(List<Size> sizes) {
         WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         int targetHeight = windowManager.getDefaultDisplay().getHeight();
