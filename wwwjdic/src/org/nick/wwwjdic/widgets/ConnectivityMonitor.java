@@ -16,6 +16,7 @@ public class ConnectivityMonitor extends BroadcastReceiver {
 
     private static final String TAG = ConnectivityMonitor.class.getSimpleName();
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onReceive(Context context, Intent intent) {
         if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
