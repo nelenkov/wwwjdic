@@ -60,6 +60,15 @@ public abstract class ResultListFragmentBase<T> extends SherlockListFragment
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        if (transPending == null || transPending.isDone()) {
+            dismissProgress();
+        }
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
 

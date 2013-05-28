@@ -90,13 +90,11 @@ public class DictionaryResultListFragment extends
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.search_results_fragment, container,
                 false);
-        progressSpinner = (ProgressBar) v
-                .findViewById(R.id.progress_spinner);
+        progressSpinner = (ProgressBar) v.findViewById(R.id.progress_spinner);
         emptyText = (TextView) v.findViewById(android.R.id.empty);
 
         return v;
     }
-
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
