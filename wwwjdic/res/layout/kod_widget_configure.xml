@@ -1,143 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" 
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_marginLeft="@dimen/single_fragment_margin"
     android:layout_marginRight="@dimen/single_fragment_margin"
-    android:fillViewport="true">
-<LinearLayout 
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-    <TextView android:text="@string/kod_configure_message"
-        android:id="@+id/kod_configure_message" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:layout_margin="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="20dp">
-        <TextView android:text="@string/kanji_selection" 
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:paddingLeft="5dp"
-            android:textSize="16sp" 
-            android:textColor="@color/white"
-            android:enabled="false"/>
-        <RadioGroup
-            android:id="@+id/kanji_selection"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" 
-            android:orientation="vertical"
-            android:checkedButton="@+id/kod_random">
-            <RadioButton
-                android:id="@id/kod_random"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/random" />
-            <RadioButton
-                android:id="@+id/kod_sequential"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sequential" />
-    </RadioGroup>
-    </LinearLayout>      
+    android:fillViewport="true" >
 
-    <CheckBox android:id="@+id/kod_level1_only_cb"
-        android:layout_width="match_parent" 
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/limit_to_frequently_used_kanji"
-        android:layout_marginLeft="5dp"
-        android:layout_marginBottom="5dp"/>
-   <CheckBox android:id="@+id/kod_use_jlpt_cb"
-        android:layout_width="match_parent" 
-        android:layout_height="wrap_content"
-        android:text="@string/limit_to_jlpt_level"
-        android:layout_marginLeft="5dp"
-        android:layout_marginBottom="5dp"/>
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="20dp">
-        <TextView android:id="@+id/jlpt_level_label"
-            android:text="@string/jlpt_level_label" 
-            android:layout_width="0px"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/kod_configure_message"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:paddingLeft="5dp"
-            android:textSize="16sp" 
-            android:textColor="#FFFF"
-            android:enabled="false"/>
-        <Spinner android:id="@+id/kod_jlpt_level_spinner"
-            android:layout_width="0px" 
+            android:layout_margin="5dp"
+            android:text="@string/kod_configure_message"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:entries="@array/jlpt_levels"
-            android:prompt="@string/select_jlpt_level"
+            android:layout_marginBottom="20dp"
             android:layout_marginLeft="5dp"
-            android:enabled="false"/>
-    </LinearLayout>          
-    <CheckBox android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:id="@+id/kod_show_reading_cb"
-        android:layout_marginLeft="5dp"
-        android:text="@string/display_reading_and_meaning"/>
-     <CheckBox android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:id="@+id/kod_transparent_bg_cb"
-        android:layout_marginLeft="5dp"
-        android:text="@string/transparent_bg"/>
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:layout_gravity="center"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="20dp">
-        <TextView android:id="@+id/update_interval_label"
-            android:text="@string/update_interval" 
-            android:layout_width="0px"
+            android:layout_marginRight="5dp" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:paddingLeft="5dp"
+                android:text="@string/kanji_selection"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <RadioGroup
+                android:id="@+id/kanji_selection"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checkedButton="@+id/kod_random"
+                android:orientation="vertical" >
+
+                <RadioButton
+                    android:id="@id/kod_random"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/random" />
+
+                <RadioButton
+                    android:id="@+id/kod_sequential"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sequential" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/kod_level1_only_cb"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" 
-            android:paddingLeft="5dp"
-            android:textSize="16sp" 
-            android:textColor="#FFFF"/>
-        <Spinner android:id="@+id/kod_update_interval_spinner"
-            android:layout_width="0px" 
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="@string/limit_to_frequently_used_kanji" />
+
+        <CheckBox
+            android:id="@+id/kod_use_jlpt_cb"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" 
-            android:entries="@array/kod_update_times" 
-            android:prompt="@string/widget_update_interval"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="@string/limit_to_jlpt_level" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" >
+
+            <TextView
+                android:id="@+id/jlpt_level_label"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:paddingLeft="5dp"
+                android:text="@string/jlpt_level_label"
+                android:textColor="#FFFF"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/kod_jlpt_level_spinner"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:entries="@array/jlpt_levels"
+                android:prompt="@string/select_jlpt_level" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/kod_show_reading_cb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="@string/display_reading_and_meaning" />
+
+        <CheckBox
+            android:id="@+id/kod_transparent_bg_cb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="@string/transparent_bg" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" >
+
+            <TextView
+                android:id="@+id/update_interval_label"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="5dp"
+                android:text="@string/update_interval"
+                android:textColor="#FFFF"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/kod_update_interval_spinner"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:entries="@array/kod_update_times"
+                android:prompt="@string/widget_update_interval" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0px"
+            android:layout_weight="1" />
+
+        <include layout="@layout/ok_cancel_bar" />
     </LinearLayout>
-    <View android:layout_width="fill_parent"
-          android:layout_height="0px"
-          android:layout_weight="1" />
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:layout_gravity="center"
-        android:layout_marginLeft="5dp" 
-        android:layout_marginRight="5dp">
-        <Button android:id="@+id/kod_configure_ok_button"
-            android:layout_width="0px" 
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" 
-            android:text="@string/ok"/>
-        <Button android:id="@+id/kod_configure_cancel_button" 
-            android:layout_width="0px" 
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" 
-            android:text="@string/cancel"/>
-    </LinearLayout>
-</LinearLayout>
+
 </ScrollView>

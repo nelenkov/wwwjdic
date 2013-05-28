@@ -85,8 +85,8 @@ public class KodWidgetConfigure extends ActionBarActivity implements
         int jlptLevel = WwwjdicPreferences.getKodJlptLevel(this);
         jlptLevelSpinner.setSelection(jlptLevel - 1);
 
-        findViewById(R.id.kod_configure_ok_button).setOnClickListener(this);
-        findViewById(R.id.kod_configure_cancel_button).setOnClickListener(this);
+        findViewById(R.id.okButton).setOnClickListener(this);
+        findViewById(R.id.cancelButton).setOnClickListener(this);
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -118,7 +118,7 @@ public class KodWidgetConfigure extends ActionBarActivity implements
     public void onClick(View v) {
         final Context context = KodWidgetConfigure.this;
 
-        if (v.getId() == R.id.kod_configure_ok_button) {
+        if (v.getId() == R.id.okButton) {
             boolean isRandom = kodRandomRb.isChecked();
             WwwjdicPreferences.setKodRandom(this, isRandom);
             if (isRandom) {
@@ -158,7 +158,7 @@ public class KodWidgetConfigure extends ActionBarActivity implements
                     appWidgetId);
             setResult(RESULT_OK, resultValue);
             finish();
-        } else if (v.getId() == R.id.kod_configure_cancel_button) {
+        } else if (v.getId() == R.id.okButton) {
             finish();
         }
     }
