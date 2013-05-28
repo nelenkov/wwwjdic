@@ -2,6 +2,7 @@ package org.nick.wwwjdic.utils;
 
 import org.nick.wwwjdic.R;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -38,6 +39,7 @@ public class UIUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static Drawable getListActivatedDrawable(Context ctx) {
         Drawable result = ctx.getResources().getDrawable(
                 R.drawable.list_activated_holo);

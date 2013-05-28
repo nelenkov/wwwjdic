@@ -34,6 +34,7 @@ public class CheckableFrameLayout extends FrameLayout implements Checkable {
         super(context, attrs);
     }
 
+    @SuppressWarnings("deprecation")
     public void setChecked(boolean checked) {
         if (mChecked != checked) {
             mChecked = checked;
