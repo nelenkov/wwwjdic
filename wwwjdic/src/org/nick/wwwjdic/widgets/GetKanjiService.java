@@ -24,6 +24,7 @@ import org.nick.wwwjdic.client.HttpClientFactory;
 import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.utils.StringUtils;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -37,6 +38,7 @@ import android.text.format.Time;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+@SuppressLint("Registered")
 public class GetKanjiService extends Service {
 
     private static final String TAG = GetKanjiService.class.getSimpleName();

@@ -39,6 +39,7 @@ public class CheckableLinearLayout extends LinearLayout implements Checkable {
         super(context, attributeSet, defStyle);
     }
 
+    @SuppressWarnings("deprecation")
     public void setChecked(boolean checked) {
         if (mChecked != checked) {
             mChecked = checked;
