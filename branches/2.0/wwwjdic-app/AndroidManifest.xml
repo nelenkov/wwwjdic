@@ -158,7 +158,6 @@
         </receiver>
 
         <service android:name="org.nick.wwwjdic.widgets.GetKanjiService" />
-        <service android:name="org.nick.wwwjdic.updates.UpdateCheckService" />
 
         <provider
             android:name="org.nick.wwwjdic.SearchSuggestionProvider"
