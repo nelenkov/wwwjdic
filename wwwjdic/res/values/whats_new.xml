@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* Widget text scaling on resize (4.1+)\n* Added transparent widget option\n* Added 'Create flashcard' menu (requires Anki 2.0+)\n* Support DTalker TTS\n* UI improvements\n* Removed analytics and update check\n* Bug fixes</string>
+    <string name="whats_new">* Widget text scaling on resize (4.1+)\n* Added transparent widget option\n* Added \'Create flashcard\' menu (requires Anki 2.0+)\n* Support DTalker TTS\n* UI improvements\n* Removed analytics and update check\n* Bug fixes</string>
 </resources>
