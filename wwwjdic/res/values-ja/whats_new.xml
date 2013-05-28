@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">%sの新規機能</string>
-    <string name="whats_new">* 新しい日本ミラーサイト対応\n* Nexus 7対応\n* ソフトキーボードから直接検索対応\n* バグ修正</string>
+    <string name="whats_new">* ウィジェット文字スケーリング (4.1+)\n* 透明ウィジェットオプション追加\n* 「フラッシュカード作成」メニューを追加 (要 Anki 2.0+)\n* DTalker TTS 対応\n* UI改善\n* Analyticsと更新チェックを削除\n* バグ修正</string>
 </resources>
