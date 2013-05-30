@@ -1,0 +1,1 @@
+{"estTimes":true,"timeLim":0,"nextPos":1,"activeDecks":[1],"addToCur":true,"curModel":"1360234932701","dueCounts":true,"sortBackwards":false,"sortType":"noteFld","nextPOS":8,"curDeck":"1","newSpread":0,"collapseTime":1200}

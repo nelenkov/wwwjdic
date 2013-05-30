@@ -1,6 +1,10 @@
 package org.nick.wwwjdic.history;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
@@ -8,9 +12,15 @@ import java.security.SecureRandom;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.nick.wwwjdic.model.DictionaryEntry;
 import org.nick.wwwjdic.model.KanjiEntry;
+import org.nick.wwwjdic.utils.MediaScannerWrapper;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -76,32 +86,62 @@ public class AnkiGenerator {
         }
     }
 
-    public int createKanjiAnkiFile(String path, List<KanjiEntry> kanjis) {
+    public int createKanjiAnkiFile(String path, List<KanjiEntry> kanjis)
+            throws IOException {
         SQLiteDatabase db = null;
 
         try {
-            db = SQLiteDatabase.openDatabase(path, null,
+            String dbPath = path.replaceAll("\\.apkg", ".db");
+            db = SQLiteDatabase.openDatabase(dbPath, null,
                     SQLiteDatabase.CREATE_IF_NECESSARY);
             db.beginTransaction();
 
             execSqlFromFile(db, "anki-create-tables.sql");
 
-            execSqlFromFile(db, "anki-kanji-model.sql");
+            //            execSqlFromFile(db, "anki-kanji-model.sql");
 
-            addKanjis(kanjis, db);
+            //            addKanjis(kanjis, db);
 
             // should we set it or just leave it as -1?
-            setUtcOffset(db);
+            //            setUtcOffset(db);
 
             db.setTransactionSuccessful();
+            db.endTransaction();
+            db.close();
+
+            addToZip(path, dbPath);
 
             return kanjis.size();
         } finally {
-            if (db != null) {
-                db.endTransaction();
-                db.close();
-            }
+            //            if (db != null) {
+            //                db.endTransaction();
+            //                db.close();
+            //            }
         }
+    }
+
+    private void addToZip(String path, String dbPath)
+            throws FileNotFoundException, IOException {
+        FileInputStream sqliteIn = new FileInputStream(dbPath);
+        File zipFile = new File(path);
+        ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(zipFile));
+
+        try {
+            zip.putNextEntry(new ZipEntry("collection.anki2"));
+            int read = -1;
+            byte[] buff = new byte[4 * 1024];
+            while ((read = sqliteIn.read(buff)) > 0) {
+                zip.write(buff, 0, read);
+            }
+            zip.flush();
+        } catch (IOException e) {
+            Log.d(TAG, "Zip error, deleting incomplete file.");
+            zipFile.delete();
+        } finally {
+            zip.close();
+        }
+
+        MediaScannerWrapper.scanFile(context, zipFile.getAbsolutePath());
     }
 
     private void addKanjis(List<KanjiEntry> kanjis, SQLiteDatabase db) {
@@ -123,8 +163,8 @@ public class AnkiGenerator {
         int utcOffset = calUtcOffsetSecs + 60 * 60 * 4;
         ContentValues values = new ContentValues();
         values.put("utcOffset", utcOffset);
-        db.update("decks", values, "id = ?", new String[] { Long
-                .toString(DECK_ID) });
+        db.update("decks", values, "id = ?",
+                new String[] { Long.toString(DECK_ID) });
     }
 
     private void updateDeckCounts(SQLiteDatabase db, int count) {
@@ -132,8 +172,8 @@ public class AnkiGenerator {
         values.put("cardCount", count);
         values.put("factCount", count);
         values.put("newCount", count);
-        db.update("decks", values, "id = ?", new String[] { Long
-                .toString(DECK_ID) });
+        db.update("decks", values, "id = ?",
+                new String[] { Long.toString(DECK_ID) });
     }
 
     private void addKanji(SQLiteDatabase db, KanjiEntry k) {
@@ -162,7 +202,7 @@ public class AnkiGenerator {
     }
 
     private void execSqlFromFile(SQLiteDatabase db, String resourceName) {
-        String schema = readSchema(resourceName);
+        String schema = readTextAsset(resourceName);
         String[] statements = schema.split(";");
         for (String s : statements) {
             if (s == null) {
@@ -177,32 +217,78 @@ public class AnkiGenerator {
         }
     }
 
-    public int createDictAnkiFile(String path, List<DictionaryEntry> words) {
+    public int createDictAnkiFile(String path, List<DictionaryEntry> words)
+            throws IOException, JSONException {
         SQLiteDatabase db = null;
 
         try {
-            db = SQLiteDatabase.openDatabase(path, null,
+            String dbPath = path.replaceAll("\\.apkg", ".db");
+            db = SQLiteDatabase.openDatabase(dbPath, null,
                     SQLiteDatabase.CREATE_IF_NECESSARY);
             db.beginTransaction();
 
             execSqlFromFile(db, "anki-create-tables.sql");
 
-            execSqlFromFile(db, "anki-dict-model.sql");
+            createAnkiCollection(db);
 
-            addWords(words, db);
+            //            execSqlFromFile(db, "anki-dict-model.sql");
+
+            //            addWords(words, db);
 
             // should we set it or just leave it as -1?
-            setUtcOffset(db);
+            //            setUtcOffset(db);
 
             db.setTransactionSuccessful();
+            db.endTransaction();
+            db.close();
+
+            addToZip(path, dbPath);
 
             return words.size();
         } finally {
-            if (db != null) {
-                db.endTransaction();
-                db.close();
-            }
+            //            if (db != null) {
+            //                db.endTransaction();
+            //                db.close();
+            //            }
         }
+    }
+
+    private void createAnkiCollection(SQLiteDatabase db) throws JSONException {
+        ContentValues values = new ContentValues();
+        // from https://gist.github.com/sartak/3921255
+        //id integer primary key, -- seems to be an autoincrement
+        //crt integer not null, -- there's the created timestamp
+        values.put("crt", System.currentTimeMillis());
+        //mod integer not null, -- last modified in milliseconds
+        values.put("mod", System.currentTimeMillis());
+        //scm integer not null, -- a timestamp in milliseconds. "schema mod time" - contributed by Fletcher Moore
+        values.put("scm", System.currentTimeMillis());
+        //ver integer not null, -- version? I have "11"
+        values.put("ver", 11);
+        //dty integer not null, -- 0
+        values.put("dty", 0);
+        //usn integer not null, -- 0
+        values.put("usn", 0);
+        //ls  integer not null, -- "last sync time" - contributed by Fletcher Moore
+        values.put("ls", 0);
+        //conf text not null, -- json blob of configuration
+        String confStr = readTextAsset("conf.txt");
+        values.put("conf", confStr);
+        //models text not null, -- json object with keys being ids(epoch ms), values being configuration
+        String modelStr = readTextAsset("deck-model.txt");
+        values.put("models", modelStr);
+        //decks text not null, -- json object with keys being ids(epoch ms), values being configuration
+        String decksStr = readTextAsset("decks.txt");
+        JSONObject jo = new JSONObject(decksStr);
+        JSONArray ids = jo.names();
+        values.put("decks", decksStr);
+        //dconf text not null, -- json object. deck configuration?
+        String dconfStr = readTextAsset("dconf.txt");
+        values.put("dconf", dconfStr);
+        //tags text not null -- a cache of tags used in this collection (probably for autocomplete etc)
+        values.put("tags", "");
+
+        long colId = db.insert("col", null, values);
     }
 
     private void addWords(List<DictionaryEntry> words, SQLiteDatabase db) {
@@ -349,7 +435,7 @@ public class AnkiGenerator {
         return id;
     }
 
-    private String readSchema(String name) {
+    private String readTextAsset(String name) {
         AssetManager assetManager = context.getAssets();
 
         InputStream in = null;
