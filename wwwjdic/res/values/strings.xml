@@ -576,5 +576,7 @@ You can enable offline recognition using the Kanji Recognizer application. Would
         
     <string name="credits">Credits</string>
     <string name="transparent_bg">Transparent background</string>
+    
+    <string name="open">Open</string>
 
 </resources>

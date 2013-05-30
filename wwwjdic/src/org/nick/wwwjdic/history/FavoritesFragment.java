@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONException;
 import org.nick.wwwjdic.DictionaryEntryDetail;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
@@ -320,14 +321,15 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                     : String.format(template, error.getMessage());
             Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
             notifyExportFinished(NOTIFICATION_ID_FAVORITES_EXPORT_ANKI,
-                    message, exportFilename);
+                    message, exportFilename, "application/vnd.anki", true);
         }
     }
 
-    private String exportToAnkiDeck(boolean isKanji) {
+    private String exportToAnkiDeck(boolean isKanji) throws IOException,
+            JSONException {
         AnkiGenerator generator = new AnkiGenerator(getActivity());
         String filename = getCsvExportFilename(isKanji).replace(".csv", "")
-                + ".anki";
+                + ".apkg";
         File exportFile = new File(WwwjdicApplication.getWwwjdicDir(), filename);
         Log.d(TAG,
                 "exporting favorites to Anki: " + exportFile.getAbsolutePath());
@@ -399,9 +401,9 @@ public class FavoritesFragment extends HistoryFragmentBase implements
             case EXPORT_LOCAL_EXPORT_IDX:
                 return singleType;
             case EXPORT_ANKI_IDX:
-                //return singleType;
+                return singleType;
                 // XXX disable until Anki 2.0 is supported
-                return false;
+                //return false;
             default:
                 return false;
             }

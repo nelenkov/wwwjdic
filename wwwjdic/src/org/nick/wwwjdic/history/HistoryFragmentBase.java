@@ -523,19 +523,20 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
     protected void notifyExportFinished(int notificationId, String message,
             String filename) {
         notifyExportFinished(notificationId, message, filename,
-                "application/text");
+                "application/text", false);
     }
 
     protected void notifyExportFinished(int notificationId, String message,
-            String filename, String mimeType) {
+            String filename, String mimeType, boolean open) {
         // clear progress notification
         notificationManager.cancel(notificationId);
 
         Context appCtx = WwwjdicApplication.getInstance();
 
-        Intent shareIntent = createShareFileIntent(filename, mimeType);
+        Intent intent = open ? createOpenIntent(filename, mimeType)
+                : createShareFileIntent(filename, mimeType);
         PendingIntent pendingIntent = PendingIntent.getActivity(appCtx, 0,
-                shareIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
         String title = getResources().getString(R.string.app_name) + ": "
                 + appCtx.getString(R.string.export_finished);
 
@@ -556,6 +557,17 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
                 appCtx.getString(R.string.share), pendingIntent);
 
         notificationManager.notify(notificationId, builder.build());
+    }
+
+    private Intent createOpenIntent(String filename, String mimeType) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setType(mimeType);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        File file = new File(filename);
+        intent.putExtra(Intent.EXTRA_STREAM,
+                android.net.Uri.parse(file.getAbsolutePath()));
+
+        return Intent.createChooser(intent, (getString(R.string.open)));
     }
 
     private Intent createShareFileIntent(String filename, String mimeType) {
