@@ -86,6 +86,7 @@ public class DictionaryEntry extends WwwjdicEntry implements Serializable {
         return tranlsationString;
     }
 
+    @Override
     public String getMeaningsAsString() {
         return StringUtils.join(getMeanings(), "/", 0);
     }

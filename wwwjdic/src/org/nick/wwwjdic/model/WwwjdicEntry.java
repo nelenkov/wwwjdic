@@ -42,6 +42,8 @@ public abstract class WwwjdicEntry implements Serializable {
 
     public abstract List<String> getMeanings();
 
+    public abstract String getMeaningsAsString();
+
     public boolean isSingleKanji() {
         return getHeadword().length() == 1;
     }
