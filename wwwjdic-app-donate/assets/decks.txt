@@ -1,0 +1,1 @@
+{"1":{"newToday":[112,0],"timeToday":[112,0],"desc":"","mod":1368799008,"dyn":0,"conf":1,"extendRev":50,"collapsed":false,"id":1,"name":"Default","revToday":[112,0],"extendNew":10,"lrnToday":[112,0],"usn":-1}}
