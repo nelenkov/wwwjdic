@@ -1,0 +1,1 @@
+{"1":{"id":1,"rev":{"minSpace":1,"perDay":100,"ivlFct":1,"fuzz":0.05,"maxIvl":36500,"ease4":1.3},"new":{"separate":true,"perDay":20,"ints":[1,4,7],"order":1,"delays":[1,10],"initialFactor":2500},"lapse":{"mult":0,"leechAction":0,"leechFails":8,"minInt":1,"delays":[10]},"timer":0,"name":"Default","mod":0,"maxTaken":60,"dyn":0,"replayq":true,"usn":0,"autoplay":true}}
