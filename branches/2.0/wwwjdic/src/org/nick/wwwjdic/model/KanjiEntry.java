@@ -304,6 +304,7 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
         return Collections.unmodifiableList(meanings);
     }
 
+    @Override
     public String getMeaningsAsString() {
         if (meaningsAsString == null) {
             meaningsAsString = StringUtils.join(getMeanings(), "/", 0);

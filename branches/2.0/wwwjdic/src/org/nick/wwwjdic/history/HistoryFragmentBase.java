@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.DialogFragment;
@@ -535,6 +536,9 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
 
         Intent intent = open ? createOpenIntent(filename, mimeType)
                 : createShareFileIntent(filename, mimeType);
+        //        if (mimeType.contains("anki")) {
+        //            intent.addCategory("com.ankidroid.category.DECK");
+        //        }
         PendingIntent pendingIntent = PendingIntent.getActivity(appCtx, 0,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
         String title = getResources().getString(R.string.app_name) + ": "
@@ -553,30 +557,32 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
         builder.setDefaults(Notification.DEFAULT_LIGHTS);
         builder.setAutoCancel(true);
         builder.setOngoing(false);
-        builder.addAction(android.R.drawable.ic_menu_share,
-                appCtx.getString(R.string.share), pendingIntent);
+        if (open) {
+            builder.addAction(android.R.drawable.ic_menu_view,
+                    appCtx.getString(R.string.open), pendingIntent);
+        } else {
+            builder.addAction(android.R.drawable.ic_menu_share,
+                    appCtx.getString(R.string.share), pendingIntent);
+        }
 
         notificationManager.notify(notificationId, builder.build());
     }
 
     private Intent createOpenIntent(String filename, String mimeType) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setType(mimeType);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        File file = new File(filename);
-        intent.putExtra(Intent.EXTRA_STREAM,
-                android.net.Uri.parse(file.getAbsolutePath()));
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setDataAndType(Uri.fromFile(new File(filename)), mimeType);
 
-        return Intent.createChooser(intent, (getString(R.string.open)));
+        return Intent.createChooser(intent, getString(R.string.open));
     }
 
     private Intent createShareFileIntent(String filename, String mimeType) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType(mimeType);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        File file = new File(filename);
         intent.putExtra(Intent.EXTRA_STREAM,
-                android.net.Uri.parse(file.getAbsolutePath()));
+                android.net.Uri.fromFile(new File(filename)));
 
         return Intent.createChooser(intent, (getString(R.string.share)));
     }

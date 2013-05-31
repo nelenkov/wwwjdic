@@ -16,8 +16,6 @@ import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicApplication;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.history.FavoritesItem.FavoriteStatusChangedListener;
-import org.nick.wwwjdic.model.DictionaryEntry;
-import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.model.WwwjdicEntry;
 import org.nick.wwwjdic.utils.LoaderResult;
 import org.nick.wwwjdic.utils.MediaScannerWrapper;
@@ -53,9 +51,13 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
     private static final String EXPORT_FILENAME = "wwwjdic/favorites.csv";
 
-    private static final String KANJI_CSV_EXPORT_FILENAME_BASE = "wwwjdic-favorites-kanji";
-    private static final String DICT_CSV_EXPORT_FILENAME_BASE = "wwwjdic-favorites-dict";
+    private static final String FAVORITES_EXPORT_FILENAME_BASE = "wwwjdic-favorites";
+    private static final String KANJI_CSV_EXPORT_FILENAME_BASE = FAVORITES_EXPORT_FILENAME_BASE
+            + "-kanji";
+    private static final String DICT_CSV_EXPORT_FILENAME_BASE = FAVORITES_EXPORT_FILENAME_BASE
+            + "-dict";
     private static final String CSV_EXPORT_FILENAME_EXT = "csv";
+    private static final String ANKI_EXPORT_FILENAME_EXT = "apkg";
 
     private static final int EXPORT_LOCAL_BACKUP_IDX = 0;
     private static final int EXPORT_LOCAL_EXPORT_IDX = 1;
@@ -265,8 +267,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         @Override
         protected Boolean doInBackground(Boolean... params) {
             try {
-                boolean isKanji = params[0];
-                exportFilename = exportToAnkiDeck(isKanji);
+                exportFilename = exportToAnkiDeck();
 
                 if (UIUtils.isFroyo()) {
                     MediaScannerWrapper.scanFile(getActivity(), exportFilename);
@@ -325,51 +326,29 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         }
     }
 
-    private String exportToAnkiDeck(boolean isKanji) throws IOException,
-            JSONException {
+    private String exportToAnkiDeck() throws IOException, JSONException {
         AnkiGenerator generator = new AnkiGenerator(getActivity());
-        String filename = getCsvExportFilename(isKanji).replace(".csv", "")
-                + ".apkg";
+        String filename = getAnkiExportFilename();
         File exportFile = new File(WwwjdicApplication.getWwwjdicDir(), filename);
         Log.d(TAG,
                 "exporting favorites to Anki: " + exportFile.getAbsolutePath());
 
-        int size = 0;
-        if (isKanji) {
-            List<KanjiEntry> kanjis = new ArrayList<KanjiEntry>();
-            Cursor c = null;
-            try {
-                c = filterCursor();
-                while (c.moveToNext()) {
-                    WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
-                    kanjis.add((KanjiEntry) entry);
-                }
-            } finally {
-                if (c != null) {
-                    c.close();
-                }
+        List<WwwjdicEntry> entries = new ArrayList<WwwjdicEntry>();
+        Cursor c = null;
+        try {
+            c = filterCursor();
+            while (c.moveToNext()) {
+                WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
+                entries.add(entry);
             }
-
-            size = generator.createKanjiAnkiFile(exportFile.getAbsolutePath(),
-                    kanjis);
-        } else {
-            List<DictionaryEntry> words = new ArrayList<DictionaryEntry>();
-            Cursor c = null;
-            try {
-                c = filterCursor();
-                while (c.moveToNext()) {
-                    WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
-                    words.add((DictionaryEntry) entry);
-                }
-            } finally {
-                if (c != null) {
-                    c.close();
-                }
+        } finally {
+            if (c != null) {
+                c.close();
             }
-
-            size = generator.createDictAnkiFile(exportFile.getAbsolutePath(),
-                    words);
         }
+
+        int size = generator.createAnkiFile(exportFile.getAbsolutePath(),
+                entries);
 
         Log.d(TAG,
                 String.format("Exported %d entries to %s", size,
@@ -401,9 +380,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
             case EXPORT_LOCAL_EXPORT_IDX:
                 return singleType;
             case EXPORT_ANKI_IDX:
-                return singleType;
-                // XXX disable until Anki 2.0 is supported
-                //return false;
+                return true;
             default:
                 return false;
             }
@@ -562,6 +539,13 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                 isKanji ? KANJI_CSV_EXPORT_FILENAME_BASE
                         : DICT_CSV_EXPORT_FILENAME_BASE, dateStr,
                 CSV_EXPORT_FILENAME_EXT);
+    }
+
+    private String getAnkiExportFilename() {
+        String dateStr = DateFormat.format("yyyyMMdd-kkmmss", new Date())
+                .toString();
+        return String.format("%s-%s.%s", FAVORITES_EXPORT_FILENAME_BASE,
+                dateStr, ANKI_EXPORT_FILENAME_EXT);
     }
 
     @Override
