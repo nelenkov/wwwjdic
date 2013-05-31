@@ -5,11 +5,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import org.json.JSONException;
 import org.nick.wwwjdic.DictionaryEntryDetail;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
@@ -22,10 +19,8 @@ import org.nick.wwwjdic.utils.MediaScannerWrapper;
 import org.nick.wwwjdic.utils.UIUtils;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -62,8 +57,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     private static final int EXPORT_LOCAL_BACKUP_IDX = 0;
     private static final int EXPORT_LOCAL_EXPORT_IDX = 1;
     private static final int EXPORT_ANKI_IDX = 2;
-
-    private ProgressDialog progressDialog;
 
     public FavoritesFragment() {
     }
@@ -232,129 +225,18 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     }
 
     private void exportToAnkiDeckAsync(boolean isKanji) {
-        AnkiExportTask task = new AnkiExportTask();
-        task.execute(isKanji);
-    }
+        if (getActivity() != null) {
+            Intent intent = new Intent(getActivity(), AnkiExportService.class);
+            intent.putExtra(AnkiExportService.EXTRA_FILTER_TYPE, selectedFilter);
+            intent.putExtra(AnkiExportService.EXTRA_FILENAME,
+                    getAnkiExportFilename());
 
-    private class AnkiExportTask extends AsyncTask<Boolean, Object, Boolean> {
-
-        private Throwable error;
-        private String exportFilename;
-
-        AnkiExportTask() {
-        }
-
-        @Override
-        protected void onPreExecute() {
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-
-            }
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setMessage(getString(R.string.exporting_to_anki));
-            progressDialog.setCancelable(true);
-            progressDialog.setButton(ProgressDialog.BUTTON_NEUTRAL,
-                    getString(R.string.cancel), new OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            cancel(true);
-                        }
-                    });
-            progressDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(Boolean... params) {
-            try {
-                exportFilename = exportToAnkiDeck();
-
-                if (UIUtils.isFroyo()) {
-                    MediaScannerWrapper.scanFile(getActivity(), exportFilename);
-                }
-
-                return true;
-            } catch (Exception e) {
-                error = e;
-                Log.d(TAG, "Error exporting favorites to Anki", e);
-                deleteIncompleteFile();
-
-                return false;
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-
-            deleteIncompleteFile();
-        }
-
-        private void deleteIncompleteFile() {
-            Log.d(TAG, "Anki export cancelled, deleting incomplete files...");
-            if (exportFilename == null) {
-                return;
-            }
-            File f = new File(exportFilename);
-            boolean success = f.delete();
-            if (success) {
-                Log.d(TAG, "successfully deleted " + f.getAbsolutePath());
-            } else {
-                Log.d(TAG, "failed to delet " + f.getAbsolutePath());
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            if (isDetached() || getActivity() == null) {
-                return;
-            }
-
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-
-            Resources r = getResources();
-            String template = result ? r
-                    .getString(R.string.anki_export_success) : r
-                    .getString(R.string.anki_export_failure);
-            String message = result ? String.format(template, exportFilename)
-                    : String.format(template, error.getMessage());
+            String message = getActivity()
+                    .getString(R.string.exporting_to_anki);
             Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
-            notifyExportFinished(NOTIFICATION_ID_FAVORITES_EXPORT_ANKI,
-                    message, exportFilename, "application/vnd.anki", true);
+
+            getActivity().startService(intent);
         }
-    }
-
-    private String exportToAnkiDeck() throws IOException, JSONException {
-        AnkiGenerator generator = new AnkiGenerator(getActivity());
-        String filename = getAnkiExportFilename();
-        File exportFile = new File(WwwjdicApplication.getWwwjdicDir(), filename);
-        Log.d(TAG,
-                "exporting favorites to Anki: " + exportFile.getAbsolutePath());
-
-        List<WwwjdicEntry> entries = new ArrayList<WwwjdicEntry>();
-        Cursor c = null;
-        try {
-            c = filterCursor();
-            while (c.moveToNext()) {
-                WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
-                entries.add(entry);
-            }
-        } finally {
-            if (c != null) {
-                c.close();
-            }
-        }
-
-        int size = generator.createAnkiFile(exportFile.getAbsolutePath(),
-                entries);
-
-        Log.d(TAG,
-                String.format("Exported %d entries to %s", size,
-                        exportFile.getAbsolutePath()));
-
-        return exportFile.getAbsolutePath();
     }
 
     private static class ExportItemsAdapter extends ArrayAdapter<String> {

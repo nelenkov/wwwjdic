@@ -158,6 +158,7 @@
         </receiver>
 
         <service android:name="org.nick.wwwjdic.widgets.GetKanjiService" />
+        <service android:name="org.nick.wwwjdic.history.AnkiExportService" />
 
         <provider
             android:name="org.nick.wwwjdic.SearchSuggestionProvider"

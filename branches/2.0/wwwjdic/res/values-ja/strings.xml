@@ -422,4 +422,7 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
         で選択してください。</string>
         
     <string name="transparent_bg">透明な背景</string>
+    
+    <string name="open">開く</string>
+    <string name="import_into_anki">Anki単語帳へインポート</string>
 </resources>
