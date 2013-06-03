@@ -545,7 +545,7 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
                 + appCtx.getString(R.string.export_finished);
 
         Builder builder = new NotificationCompat.Builder(appCtx);
-        builder.setSmallIcon(R.drawable.icon);
+        builder.setSmallIcon(R.drawable.ic_stat_export);
         builder.setContentTitle(title);
         builder.setContentText(message);
         BigTextStyle style = new BigTextStyle(builder);
