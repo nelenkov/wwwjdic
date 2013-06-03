@@ -210,7 +210,7 @@ public class AnkiGenerator {
         note.put("tags", "");
         //-- the values of the fields in this note. separated by 0x1f (31).
         String fields = entry.getHeadword() + createFieldSeparator()
-                + nonNullString(entry.getReading()) + "\n"
+                + nonNullString(entry.getReading()) + "<br>"
                 + meaningsOnNewLines(entry);
         note.put("flds", fields);
         //-- the text of the first field, used for anki2's new (simplistic) uniqueness checking
