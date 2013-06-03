@@ -14,6 +14,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.nick.wwwjdic.model.WwwjdicEntry;
 import org.nick.wwwjdic.utils.MediaScannerWrapper;
 
@@ -166,6 +167,13 @@ public class AnkiGenerator {
         values.put("models", modelStr);
         //decks text not null, -- json object with keys being ids(epoch ms), values being configuration
         String decksStr = readTextAsset("decks.txt");
+        JSONObject decksObj = new JSONObject(decksStr);
+        if (decksObj.has("1")) {
+            JSONObject conf = decksObj.getJSONObject("1");
+            conf.put("name", "WWWJDIC");
+            conf.put("desc", "WWWJDIC for Android favorites");
+            decksStr = decksObj.toString();
+        }
         values.put("decks", decksStr);
         //dconf text not null, -- json object. deck configuration?
         String dconfStr = readTextAsset("dconf.txt");
@@ -230,7 +238,7 @@ public class AnkiGenerator {
         for (int i = 0; i < meanings.size(); i++) {
             buff.append(meanings.get(i));
             if (i != meanings.size() - 1) {
-                buff.append("\n");
+                buff.append("<br>");
             }
         }
 
