@@ -151,7 +151,7 @@ public class AnkiExportService extends IntentService {
         String title = appCtx.getString(R.string.export_finished);
 
         Builder builder = new NotificationCompat.Builder(appCtx);
-        builder.setSmallIcon(R.drawable.icon);
+        builder.setSmallIcon(R.drawable.ic_stat_export);
         builder.setContentTitle(title);
         builder.setContentText(message);
         BigTextStyle style = new BigTextStyle(builder);
@@ -184,7 +184,7 @@ public class AnkiExportService extends IntentService {
 
         Builder builder = new NotificationCompat.Builder(
                 getApplicationContext());
-        builder.setSmallIcon(R.drawable.icon);
+        builder.setSmallIcon(R.drawable.ic_stat_export);
         builder.setContentTitle(getResources().getString(
                 R.string.exporting_to_anki));
         builder.setContentText(message);
