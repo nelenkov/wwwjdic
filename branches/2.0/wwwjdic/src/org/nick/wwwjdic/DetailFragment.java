@@ -386,6 +386,7 @@ public abstract class DetailFragment extends SherlockFragment implements
 
     protected Intent createFlashcardIntent() {
         Intent intent = new Intent(CREATE_FLASHCARD_ACTION);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         intent.putExtra(EXTRA_SOURCE_TEXT, wwwjdicEntry.getHeadword());
         StringBuilder buff = new StringBuilder();
         buff.append(wwwjdicEntry.getReading());
