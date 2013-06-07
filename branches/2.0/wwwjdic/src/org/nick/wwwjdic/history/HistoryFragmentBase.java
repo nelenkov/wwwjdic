@@ -201,6 +201,11 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
     // }
 
     void showFilterDialog() {
+        // XXX workaround for support library bug(?)
+        if (getFragmentManager() == null) {
+            return;
+        }
+
         new DialogFragment() {
 
             @Override
