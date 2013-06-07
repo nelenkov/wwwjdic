@@ -27,9 +27,10 @@ import android.widget.RemoteViews;
 
 public class KodWidgetProvider extends AppWidgetProvider {
 
-    private static final float KOD_TEXT_SIZE_RATIO = 0.7f;
-    private static final float DETAILED_KOD_TEXT_SIZE_RATIO = 0.5f;
-    private static final float DETAILS_TEXT_SIZE_RATIO = 0.1f;
+    // private static final float KOD_TEXT_SIZE_RATIO = 0.7f;
+    // private static final float DETAILED_KOD_TEXT_SIZE_RATIO = 0.5f;
+    // private static final float DETAILS_TEXT_SIZE_RATIO = 0.1f;
+
     private static final String TAG = KodWidgetProvider.class.getSimpleName();
 
     @Override
@@ -177,14 +178,35 @@ public class KodWidgetProvider extends AppWidgetProvider {
 
     static float getKodTextSize(Context ctx, Bundle options, int id,
             boolean showMeaning) {
-        float ratio = showMeaning ? DETAILED_KOD_TEXT_SIZE_RATIO
-                : KOD_TEXT_SIZE_RATIO;
+        float ratio = showMeaning ? getDetailedKodTextSizeRatio(ctx)
+                : getKodTextSizeRatio(ctx);
 
         return getTextSize(ctx, options, id, ratio);
     }
 
+    private static float getDetailedKodTextSizeRatio(Context ctx) {
+        int ratio = ctx.getResources().getInteger(
+                R.integer.kod_detailed_text_size_ratio);
+
+        return ratio / 100.0f;
+    }
+
+    private static float getKodTextSizeRatio(Context ctx) {
+        int ratio = ctx.getResources()
+                .getInteger(R.integer.kod_text_size_ratio);
+
+        return ratio / 100.0f;
+    }
+
     static float getDetailsTextSize(Context ctx, Bundle options, int id) {
-        return getTextSize(ctx, options, id, DETAILS_TEXT_SIZE_RATIO);
+        return getTextSize(ctx, options, id, getKodDetailsTextSizeRatio(ctx));
+    }
+
+    private static float getKodDetailsTextSizeRatio(Context ctx) {
+        int ratio = ctx.getResources().getInteger(
+                R.integer.kod_details_text_size_ratio);
+
+        return ratio / 100.0f;
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -243,7 +265,6 @@ public class KodWidgetProvider extends AppWidgetProvider {
             }
         }
     }
-
 
     public static void showError(Context context, RemoteViews views) {
         views.setViewVisibility(R.id.kod_message_text, View.VISIBLE);
