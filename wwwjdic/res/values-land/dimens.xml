@@ -2,4 +2,9 @@
 <resources>
     <dimen name="kod_text_size">26sp</dimen>
     <dimen name="kod_details_text_size">28sp</dimen>
+    
+    <!-- in %  -->
+    <integer name="kod_text_size_ratio">60</integer>
+    <integer name="kod_detailed_text_size_ratio">38</integer>
+    <integer name="kod_details_text_size_ratio">10</integer>
 </resources>

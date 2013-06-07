@@ -47,4 +47,9 @@
     
     <dimen name="ab_tab_menu_text_size">12sp</dimen>
     
+    <!-- in %  -->
+    <integer name="kod_text_size_ratio">70</integer>
+    <integer name="kod_detailed_text_size_ratio">50</integer>
+    <integer name="kod_details_text_size_ratio">10</integer>
+    
 </resources>
