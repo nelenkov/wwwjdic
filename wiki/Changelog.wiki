@@ -1,6 +1,10 @@
 #summary Full changelog
 
 = Changelog =
+ * v2.3.1
+  * Support for Anki 2.0 export pacakges (.apkg)
+  * Improved landscape support for widget
+  * Bug fixes
  * v2.3.0
   * Widget text scaling on resize (4.1+)
   * Added transparent widget option
