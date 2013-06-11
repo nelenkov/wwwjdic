@@ -1,11 +1,11 @@
 #summary Full changelog
 
 = Changelog =
- * v2.3.1
+ * v2.3.1 (2013/6/10) Anki 2.0 support
   * Support for Anki 2.0 export pacakges (.apkg)
   * Improved landscape support for widget
   * Bug fixes
- * v2.3.0
+ * v2.3.0 (2013/5/29) Resizable widget
   * Widget text scaling on resize (4.1+)
   * Added transparent widget option
   * Added 'Create flashcard' menu (requires Anki 2.0+)
