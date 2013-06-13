@@ -131,7 +131,8 @@ public class KanjiStrokesServlet extends HttpServlet {
                 return null;
             }
             List<Stroke> strokes = ofy.query(Stroke.class)
-                    .ancestor(new Key<Kanji>(Kanji.class, k.getId())).list();
+                    .ancestor(new Key<Kanji>(Kanji.class, k.getId()))
+                    .order("number").list();
             k.setStrokes(strokes);
 
             String key = "json_" + unicodeNumber;
