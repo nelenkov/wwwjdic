@@ -27,10 +27,6 @@ import android.widget.RemoteViews;
 
 public class KodWidgetProvider extends AppWidgetProvider {
 
-    // private static final float KOD_TEXT_SIZE_RATIO = 0.7f;
-    // private static final float DETAILED_KOD_TEXT_SIZE_RATIO = 0.5f;
-    // private static final float DETAILS_TEXT_SIZE_RATIO = 0.1f;
-
     private static final String TAG = KodWidgetProvider.class.getSimpleName();
 
     @Override
