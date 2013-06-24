@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/appwidget_dark_bg_clickable"
+    android:background="@drawable/kod_transparent_bg"
     android:clickable="true"
     android:focusable="true"
     android:gravity="center"
@@ -16,7 +16,7 @@
         android:layout_height="fill_parent"
         android:gravity="center"
         android:text="@string/widget_loading"
-        android:textColor="@color/yellow" >
+        android:textColor="@color/white" >
     </TextView>
 
     <RelativeLayout
@@ -38,7 +38,7 @@
             android:gravity="center"
             android:includeFontPadding="false"
             android:text="@string/kanji_of_the_day_jp"
-            android:textColor="@color/yellow"
+            android:textColor="@color/white"
             android:textSize="@dimen/kod_header_text_size"
             android:textStyle="normal" />
 
