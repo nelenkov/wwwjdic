@@ -94,7 +94,14 @@ public class HkrCandidates extends ActionBarActivity implements
         super.onStart();
 
         if (dualPane) {
-            candidatesFragment.loadCurrentKanji();
+            if (candidatesFragment.isEmpty()) {
+                View details = findViewById(R.id.details);
+                if (details != null) {
+                    details.setVisibility(View.GONE);
+                }
+            } else {
+                candidatesFragment.loadCurrentKanji();
+            }
         }
     }
 

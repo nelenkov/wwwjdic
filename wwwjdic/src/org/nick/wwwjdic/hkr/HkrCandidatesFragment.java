@@ -262,6 +262,10 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
         loadDetails(candidates[index], index);
     }
 
+    public boolean isEmpty() {
+        return candidates == null || candidates.length == 0;
+    }
+
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view,
             int position, long id) {

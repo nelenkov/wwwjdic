@@ -51,6 +51,7 @@ public class DictionaryResultListFragment extends
         View detailsFrame = getActivity().findViewById(R.id.details);
         dualPane = detailsFrame != null
                 && detailsFrame.getVisibility() == View.VISIBLE;
+        detailsFrame.setVisibility(View.GONE);
 
         if (entries != null) {
             // we are being re-created after rotation, use existing data
@@ -178,6 +179,8 @@ public class DictionaryResultListFragment extends
 
         if (dualPane) {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            View detailsFrame = getActivity().findViewById(R.id.details);
+            detailsFrame.setVisibility(View.VISIBLE);
             if (!entries.isEmpty()) {
                 showDetails(entries.get(currentCheckPosition),
                         currentCheckPosition);
