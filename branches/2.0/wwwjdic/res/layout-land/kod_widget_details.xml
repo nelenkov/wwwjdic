@@ -6,7 +6,8 @@
     android:clickable="true"
     android:focusable="true"
     android:gravity="center"
-    android:measureAllChildren="true" >
+    android:measureAllChildren="true"
+    android:padding="@dimen/widget_margin" >
 
     <TextView
         android:id="@+id/kod_message_text"
@@ -16,7 +17,7 @@
         android:gravity="center"
         android:text="@string/widget_loading"
         android:textColor="@color/yellow"
-        android:visibility="gone" >
+        android:visibility="visible" >
     </TextView>
 
     <RelativeLayout
@@ -27,7 +28,7 @@
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <TextView
             android:id="@+id/kod_header_text"
@@ -40,7 +41,7 @@
             android:text="@string/kanji_of_the_day_jp"
             android:textColor="@color/yellow"
             android:textSize="@dimen/kod_header_text_size"
-            android:textStyle="bold" />
+            android:textStyle="normal" />
 
         <RelativeLayout
             android:layout_width="fill_parent"

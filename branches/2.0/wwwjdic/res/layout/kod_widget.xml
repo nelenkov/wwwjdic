@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/white" 
-            android:textStyle="bold"
+            android:textStyle="normal"
             android:textSize="@dimen/kod_text_size" 
             android:text="E"
             android:includeFontPadding="false" 
