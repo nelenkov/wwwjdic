@@ -47,7 +47,9 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry>
         View detailsFrame = getActivity().findViewById(R.id.details);
         dualPane = detailsFrame != null
                 && detailsFrame.getVisibility() == View.VISIBLE;
-        detailsFrame.setVisibility(View.GONE);
+        if (detailsFrame != null) {
+            detailsFrame.setVisibility(View.GONE);
+        }
 
         if (entries != null) {
             // we are being re-created after rotation, use existing data
