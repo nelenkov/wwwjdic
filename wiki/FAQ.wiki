@@ -55,4 +55,4 @@ Using two separate engines at the same time (one for Japanese and one for Englis
 Other supported Japanese TTS engines
  * [https://play.google.com/store/apps/details?id=com.svox.classic.langpack.jpn_jpn_fem SVOX Japanese]
  * [https://play.google.com/store/apps/details?id=com.a_quest.aquestalka AquesTalk TTS]
- * [https://play.google.com/store/apps/details?id=jp.co.createsystem https://play.google.com/store/apps/details?id=jp.co.createsystem]
+ * [https://play.google.com/store/apps/details?id=jp.co.createsystem DTalker Japanese TTS]
