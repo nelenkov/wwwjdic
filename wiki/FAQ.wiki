@@ -56,3 +56,7 @@ Other supported Japanese TTS engines
  * [https://play.google.com/store/apps/details?id=com.svox.classic.langpack.jpn_jpn_fem SVOX Japanese]
  * [https://play.google.com/store/apps/details?id=com.a_quest.aquestalka AquesTalk TTS]
  * [https://play.google.com/store/apps/details?id=jp.co.createsystem DTalker Japanese TTS]
+
+== Q: Why do kanji look weird? ==
+
+Most Android devices sold outside of Japan will use a font with Chinese glyphs to display Japanese characters. The only supported way to use a Japanese font is to set the language of the device to Japanese from Settings. If your device doesn't support Japanese and you have root access, you can change the default font setting as described [http://sindu.blogspot.jp/2012/12/fixing-japanese-font-rendering-in.html here]. Another option is to use a custom ROM like [http://www.cyanogenmod.org/ CyanogenMod] which supports Japanese. 
