@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.utils.CheckableLinearLayout;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -62,8 +63,11 @@ public class KanjiEntryAdapter extends BaseAdapter {
             inflater.inflate(R.layout.kanji_item, this);
 
             entryText = (TextView) findViewById(R.id.kanji_text);
+            UIUtils.setJpTextLocale(entryText);
             onyomiText = (TextView) findViewById(R.id.onyomi_text);
+            UIUtils.setJpTextLocale(onyomiText);
             kunyomiText = (TextView) findViewById(R.id.kunyomi_text);
+            UIUtils.setJpTextLocale(kunyomiText);
             translationText = (TextView) findViewById(R.id.translation_text);
         }
 

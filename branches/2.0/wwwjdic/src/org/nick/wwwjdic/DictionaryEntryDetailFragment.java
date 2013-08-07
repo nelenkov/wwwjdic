@@ -12,6 +12,7 @@ import org.nick.wwwjdic.utils.Dialogs;
 import org.nick.wwwjdic.utils.DictUtils;
 import org.nick.wwwjdic.utils.Pair;
 import org.nick.wwwjdic.utils.StringUtils;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -89,12 +90,14 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
         }
 
         entryView = (TextView) v.findViewById(R.id.details_word_text);
+        UIUtils.setJpTextLocale(entryView);
         entryView.setText(entry.getWord());
         entryView.setOnLongClickListener(this);
 
         if (entry.getReading() != null) {
             TextView readingView = (TextView) v
                     .findViewById(R.id.details_word_reading_text);
+            UIUtils.setJpTextLocale(readingView);
             readingView.setText(entry.getReading());
         }
 

@@ -3,6 +3,7 @@ package org.nick.wwwjdic.history;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.model.WwwjdicEntry;
 import org.nick.wwwjdic.utils.CheckableLinearLayout;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -50,8 +51,11 @@ public class FavoritesItem extends CheckableLinearLayout implements
         inflater.inflate(R.layout.favorites_item, this);
 
         isKanjiText = (TextView) findViewById(R.id.is_kanji);
+        UIUtils.setJpTextLocale(isKanjiText);
         dictHeadingText = (TextView) findViewById(R.id.dict_heading);
+        UIUtils.setJpTextLocale(dictHeadingText);
         entryDetailsText = (TextView) findViewById(R.id.entry_details);
+        UIUtils.setJpTextLocale(entryDetailsText);
         starCb = (CheckBox) findViewById(R.id.star);
         starCb.setOnCheckedChangeListener(this);
     }

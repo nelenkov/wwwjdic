@@ -100,6 +100,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
     private ToggleButton flashToggle;
     private boolean supportsFlash = false;
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void activityOnCreate(Bundle icicle) {
         Window window = getWindow();
@@ -130,6 +131,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         ocrredTextView = (TextView) findViewById(R.id.ocrredText);
+        UIUtils.setJpTextLocale(ocrredTextView);
         ocrredTextView.setTextSize(30f);
 
         dictSearchButton = (Button) findViewById(R.id.send_to_dict);

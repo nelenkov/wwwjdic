@@ -19,6 +19,7 @@ import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.hkr.HkrCandidates;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.Dialogs;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -310,6 +311,7 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
         public View getView(int position, View convertView, ViewGroup viewGroup) {
             TextView result = (TextView) super.getView(position, convertView,
                     viewGroup);
+            UIUtils.setJpTextLocale(result);
             result.setTextColor(Color.WHITE);
             result.setBackgroundColor(Color.TRANSPARENT);
             float textSize = getResources().getDimension(
