@@ -5,6 +5,7 @@ import java.util.List;
 import org.nick.wwwjdic.model.DictionaryEntry;
 import org.nick.wwwjdic.utils.CheckableLinearLayout;
 import org.nick.wwwjdic.utils.StringUtils;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -63,7 +64,9 @@ public class DictionaryEntryAdapter extends BaseAdapter {
             inflater.inflate(R.layout.dict_item, this);
 
             entryText = (TextView) findViewById(R.id.entry_text);
+            UIUtils.setJpTextLocale(entryText);
             readingText = (TextView) findViewById(R.id.reading_text);
+            UIUtils.setJpTextLocale(readingText);
             translationText = (TextView) findViewById(R.id.translation_text);
         }
 

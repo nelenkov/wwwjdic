@@ -2,6 +2,7 @@ package org.nick.wwwjdic;
 
 import org.nick.wwwjdic.model.Radical;
 import org.nick.wwwjdic.model.Radicals;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -87,6 +88,7 @@ public class RadicalChart extends ActionBarActivity implements
             radicalNumberText = (TextView) findViewById(R.id.radical_number_text);
             numStrokesText = (TextView) findViewById(R.id.num_strokes_text);
             radicalText = (TextView) findViewById(R.id.radical_text);
+            UIUtils.setJpTextLocale(radicalText);
         }
 
         void populate(Radical radical) {

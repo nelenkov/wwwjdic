@@ -16,6 +16,7 @@ import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.DictUtils;
 import org.nick.wwwjdic.utils.Pair;
 import org.nick.wwwjdic.utils.StringUtils;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -113,11 +114,13 @@ public class KanjiEntryDetailFragment extends DetailFragment {
         }
 
         TextView entryView = (TextView) v.findViewById(R.id.kanjiText);
+        UIUtils.setJpTextLocale(entryView);
         entryView.setText(entry.getKanji());
         entryView.setOnLongClickListener(this);
 
         TextView radicalGlyphText = (TextView) v
                 .findViewById(R.id.radicalGlyphText);
+        UIUtils.setJpTextLocale(radicalGlyphText);
         // radicalGlyphText.setTextSize(30f);
         Radicals radicals = Radicals.getInstance();
         Radical radical = radicals.getRadicalByNumber(entry.getRadicalNumber());
@@ -165,10 +168,12 @@ public class KanjiEntryDetailFragment extends DetailFragment {
         if (entry.getReading() != null) {
             TextView onyomiView = (TextView) v
                     .findViewById(R.id.details_onyomi_text);
+            UIUtils.setJpTextLocale(onyomiView);
             onyomiView.setText(entry.getOnyomi());
 
             TextView kunyomiView = (TextView) v
                     .findViewById(R.id.details_kunyomi_text);
+            UIUtils.setJpTextLocale(kunyomiView);
             kunyomiView.setText(entry.getKunyomi());
         }
 
@@ -190,6 +195,7 @@ public class KanjiEntryDetailFragment extends DetailFragment {
 
             TextView textView = new TextView(getActivity(), null,
                     R.style.dict_detail_reading);
+            UIUtils.setJpTextLocale(textView);
             textView.setText(entry.getNanori());
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources()
                     .getDimension(R.dimen.details_reading_size));
@@ -214,6 +220,7 @@ public class KanjiEntryDetailFragment extends DetailFragment {
 
             TextView textView = new TextView(getActivity(), null,
                     R.style.dict_detail_reading);
+            UIUtils.setJpTextLocale(textView);
             textView.setText(entry.getRadicalName());
             layout.addView(textView, lp);
 

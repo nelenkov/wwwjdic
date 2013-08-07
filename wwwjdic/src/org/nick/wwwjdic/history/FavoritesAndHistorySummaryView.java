@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -197,6 +198,7 @@ public class FavoritesAndHistorySummaryView extends ListView implements
 
                 summary = (TextView) findViewById(R.id.summary);
                 itemList = (TextView) findViewById(R.id.item_list);
+                UIUtils.setJpTextLocale(itemList);
             }
 
             void populate(long numAllEntries, List<String> recentEntries,

@@ -10,6 +10,7 @@ import org.nick.wwwjdic.model.SentenceBreakdownEntry;
 import org.nick.wwwjdic.model.WwwjdicQuery;
 import org.nick.wwwjdic.utils.CheckableLinearLayout;
 import org.nick.wwwjdic.utils.StringUtils;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -88,7 +89,9 @@ public class SentenceBreakdownFragment extends
 
                 explanationText = (TextView) findViewById(R.id.explanationText);
                 wordText = (TextView) findViewById(R.id.wordText);
+                UIUtils.setJpTextLocale(wordText);
                 readingText = (TextView) findViewById(R.id.readingText);
+                UIUtils.setJpTextLocale(readingText);
                 translationText = (TextView) findViewById(R.id.translationText);
             }
 
@@ -249,6 +252,7 @@ public class SentenceBreakdownFragment extends
         emptyText = (TextView) v.findViewById(android.R.id.empty);
 
         sentenceView = (TextView) v.findViewById(R.id.sentence);
+        UIUtils.setJpTextLocale(sentenceView);
         englishSentenceText = (TextView) v.findViewById(R.id.englishSentence);
 
         return v;

@@ -1,5 +1,7 @@
 package org.nick.wwwjdic.utils;
 
+import java.util.Locale;
+
 import org.nick.wwwjdic.R;
 
 import android.annotation.TargetApi;
@@ -8,6 +10,7 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.widget.TextView;
 
 public class UIUtils {
 
@@ -56,5 +59,15 @@ public class UIUtils {
         }
 
         return result;
+    }
+
+    public static void setTextLocale(TextView tv, Locale locale) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            tv.setTextLocale(locale);
+        }
+    }
+
+    public static void setJpTextLocale(TextView tv) {
+        setTextLocale(tv, Locale.JAPAN);
     }
 }

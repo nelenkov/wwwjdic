@@ -6,6 +6,7 @@ import org.nick.wwwjdic.model.Radicals;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.CheckableLinearLayout;
 import org.nick.wwwjdic.utils.StringUtils;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -24,7 +25,9 @@ public class HistoryItem extends CheckableLinearLayout {
         inflater.inflate(R.layout.search_history_item, this);
 
         searchTypeText = (TextView) findViewById(R.id.search_type);
+        UIUtils.setJpTextLocale(searchTypeText);
         searchKeyText = (TextView) findViewById(R.id.search_key);
+        UIUtils.setJpTextLocale(searchKeyText);
         criteriaDetailsText = (TextView) findViewById(R.id.criteria_details);
     }
 

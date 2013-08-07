@@ -5,6 +5,7 @@ import java.util.List;
 import org.nick.wwwjdic.model.ExampleSentence;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.CheckableLinearLayout;
+import org.nick.wwwjdic.utils.UIUtils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -92,6 +93,7 @@ public class ExamplesResultListFragment extends
                 inflater.inflate(R.layout.example_sentence_item, this);
 
                 japaneseSentenceText = (TextView) findViewById(R.id.japaneseSentenceText);
+                UIUtils.setJpTextLocale(japaneseSentenceText);
                 englishSentenceText = (TextView) findViewById(R.id.englishSentenceText);
             }
 
