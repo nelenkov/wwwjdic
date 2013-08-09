@@ -148,6 +148,10 @@ public class OcrActivity extends WebServiceBackedActivity implements
         flashToggle = (ToggleButton) findViewById(R.id.auto_flash_toggle);
         flashToggle.setOnCheckedChangeListener(this);
 
+        UIUtils.setJpTextLocale((TextView) findViewById(R.id.hint1_text));
+        UIUtils.setJpTextLocale((TextView) findViewById(R.id.hint2_text));
+        UIUtils.setJpTextLocale((TextView) findViewById(R.id.hint3_text));
+
         if (icicle != null) {
             imageCaptureUri = icicle.getParcelable(IMAGE_CAPTURE_URI_KEY);
         }

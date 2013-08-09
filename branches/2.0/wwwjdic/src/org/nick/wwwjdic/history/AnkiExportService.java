@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicApplication;
 import org.nick.wwwjdic.model.WwwjdicEntry;
+import org.nick.wwwjdic.utils.ActivityUtils;
 import org.nick.wwwjdic.utils.MediaScannerWrapper;
 import org.nick.wwwjdic.utils.UIUtils;
 
@@ -165,6 +166,12 @@ public class AnkiExportService extends IntentService {
         builder.setOngoing(false);
         builder.addAction(android.R.drawable.ic_menu_view,
                 appCtx.getString(R.string.import_into_anki), pendingIntent);
+        Intent shareIntent = ActivityUtils.createShareFileIntent(appCtx,
+                filename, mimeType);
+        PendingIntent sharePendingIntent = PendingIntent.getActivity(appCtx, 1,
+                shareIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.addAction(android.R.drawable.ic_menu_share,
+                appCtx.getString(R.string.share), sharePendingIntent);
         notificationManager.notify(notificationId, builder.build());
     }
 
