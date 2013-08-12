@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.nick.wwwjdic.ActionBarActivity;
+import org.nick.wwwjdic.CandidatesAdapter;
 import org.nick.wwwjdic.KanjiResultList;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.Wwwjdic;
@@ -229,8 +230,9 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
 
     private void showCandidates(String[] candidates) {
         if (candidates != null) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    R.layout.candidates_item, candidates);
+            CandidatesAdapter adapter = new CandidatesAdapter(this,
+                    R.layout.candidates_item,
+                    candidates);
 
             candidatesGallery.setAdapter(adapter);
             setupGallerySelection();
@@ -240,7 +242,7 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
     private void clearCandidates() {
         candidates = new String[0];
         if (candidatesGallery != null) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+            CandidatesAdapter adapter = new CandidatesAdapter(this,
                     R.layout.candidates_item, candidates);
             candidatesGallery.setAdapter(adapter);
         }

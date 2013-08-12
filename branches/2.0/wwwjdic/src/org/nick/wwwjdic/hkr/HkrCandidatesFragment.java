@@ -4,12 +4,12 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.List;
 
+import org.nick.wwwjdic.CandidatesAdapter;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.client.WwwjdicClient;
 import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.utils.LoaderBase;
 import org.nick.wwwjdic.utils.LoaderResult;
-import org.nick.wwwjdic.utils.UIUtils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -80,50 +79,6 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
         }
     }
 
-    static class HkrCandidatesAdapter extends ArrayAdapter<String> {
-
-        public HkrCandidatesAdapter(Context context, int resource,
-                String[] objects) {
-            super(context, resource, objects);
-        }
-
-        public HkrCandidatesAdapter(Context context, int textViewResourceId,
-                List<String> objects) {
-            super(context, textViewResourceId, objects);
-        }
-
-        public HkrCandidatesAdapter(Context context, int resource,
-                int textViewResourceId, String[] objects) {
-            super(context, resource, textViewResourceId, objects);
-        }
-
-        public HkrCandidatesAdapter(Context context, int resource,
-                int textViewResourceId, List<String> objects) {
-            super(context, resource, textViewResourceId, objects);
-        }
-
-        public HkrCandidatesAdapter(Context context, int resource,
-                int textViewResourceId) {
-            super(context, resource, textViewResourceId);
-        }
-
-        public HkrCandidatesAdapter(Context context, int resource) {
-            super(context, resource);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view = super.getView(position, convertView, parent);
-            TextView tv = (TextView) view.findViewById(R.id.item_text);
-            if (tv != null) {
-                UIUtils.setJpTextLocale(tv);
-            }
-
-            return view;
-        }
-
-    }
-
     private static final String INDEX_KEY = "index";
 
     public static final String EXTRA_HKR_CANDIDATES = "org.nick.wwwjdic.hkrCandidates";
@@ -149,7 +104,7 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
 
         Bundle extras = getActivity().getIntent().getExtras();
         candidates = extras.getStringArray(EXTRA_HKR_CANDIDATES);
-        setListAdapter(new HkrCandidatesAdapter(getActivity(),
+        setListAdapter(new CandidatesAdapter(getActivity(),
                 R.layout.text_list_item, R.id.item_text, candidates));
         progressSpinner.setVisibility(View.INVISIBLE);
 
