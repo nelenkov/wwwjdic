@@ -258,12 +258,20 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
             @Override
             protected void onPreExecute() {
+                if (isDetached() || getActivity() == null) {
+                    return;
+                }
+
                 getSherlockActivity()
                         .setSupportProgressBarIndeterminateVisibility(true);
             }
 
             @Override
             protected Boolean doInBackground(Void... params) {
+                if (isDetached() || getActivity() == null) {
+                    return null;
+                }
+
                 CSVReader reader = null;
 
                 db.beginTransaction();
@@ -313,6 +321,10 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
                 getSherlockActivity()
                         .setSupportProgressBarIndeterminateVisibility(false);
+
+                if (result == null) {
+                    return;
+                }
 
                 if (result) {
                     String message = getResources().getString(

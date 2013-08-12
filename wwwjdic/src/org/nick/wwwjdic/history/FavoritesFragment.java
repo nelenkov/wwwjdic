@@ -527,12 +527,20 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
             @Override
             protected void onPreExecute() {
+                if (isDetached() || getActivity() == null) {
+                    return;
+                }
+
                 getSherlockActivity()
                         .setSupportProgressBarIndeterminateVisibility(true);
             }
 
             @Override
             protected Boolean doInBackground(Void... params) {
+                if (isDetached() || getActivity() == null) {
+                    return null;
+                }
+
                 CSVReader reader = null;
 
                 db.beginTransaction();
@@ -573,6 +581,10 @@ public class FavoritesFragment extends HistoryFragmentBase implements
             @Override
             protected void onPostExecute(Boolean result) {
                 if (isDetached() || getActivity() == null) {
+                    return;
+                }
+
+                if (result == null) {
                     return;
                 }
 
