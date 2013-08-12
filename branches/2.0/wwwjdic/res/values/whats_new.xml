@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">What\'s new in %s</string>
-    <string name="whats_new">* White text for transparent widget\n* Widget layout adjustments\n* Search UI improvements</string>
+    <string name="whats_new">* Use Japanese font on non-Japanese locales (4.2+)\n* Added action to share Anki deck\n* Bug fixes</string>
 </resources>
