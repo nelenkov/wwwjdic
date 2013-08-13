@@ -59,4 +59,6 @@ Other supported Japanese TTS engines
 
 == Q: Why do kanji look weird? ==
 
-Most Android devices sold outside of Japan will use a font with Chinese glyphs to display Japanese characters. The only supported way to use a Japanese font is to set the language of the device to Japanese from Settings. If your device doesn't support Japanese and you have root access, you can change the default font setting as described [http://sindu.blogspot.jp/2012/12/fixing-japanese-font-rendering-in.html here]. Another option is to use a custom ROM like [http://www.cyanogenmod.org/ CyanogenMod] which supports Japanese. 
+Most Android devices sold outside of Japan will use a font with Chinese glyphs to display Japanese characters. The only supported way to use a Japanese font is to set the language of the device to Japanese from Settings. If your device doesn't support Japanese and you have root access, you can change the default font setting as described [http://sindu.blogspot.jp/2012/12/fixing-japanese-font-rendering-in.html here]. Another option is to use a custom ROM like [http://www.cyanogenmod.org/ CyanogenMod] which supports Japanese. WWWJDIC for Android 2.3.3 and later automatically uses a Japanese font (if available) on Android 4.2+. However, widget fonts cannot be changed by the app and the only way to get the 'Kanji of the Day' widget to use Japanese glyhps is to set the system language to Japanese (Android 4.2+). 
+
+If you are using a device sold in Japan with vendor firmware (ROM), it is most probably using a Japanese font by default. 
