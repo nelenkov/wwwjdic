@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.nick.wwwjdic"
     android:installLocation="auto"
-    android:versionCode="2340"
+    android:versionCode="2341"
     android:versionName="2.3.4" >
 
     <uses-permission android:name="android.permission.INTERNET" />
