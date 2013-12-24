@@ -1,6 +1,9 @@
 #summary Full changelog
 
 = Changelog =
+ * v2.3.4 (2013/12/24) Backup file selection
+  * Android 4.4 support
+  * Added backup file selection dialog (4.4+)
  * v2.3.3 (2013/8/12) Force Japanese font
   * Use Japanese font on non-Japanese locales (4.2+)
   * Added action to share Anki deck
