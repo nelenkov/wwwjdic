@@ -1,3 +1,4 @@
+
 package org.nick.wwwjdic.history;
 
 import java.io.File;
@@ -108,17 +109,17 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     private void lookup(SearchCriteria criteria) {
         Intent intent = null;
         switch (criteria.getType()) {
-        case SearchCriteria.CRITERIA_TYPE_DICT:
-            intent = new Intent(getActivity(), DictionaryResultList.class);
-            break;
-        case SearchCriteria.CRITERIA_TYPE_KANJI:
-            intent = new Intent(getActivity(), KanjiResultList.class);
-            break;
-        case SearchCriteria.CRITERIA_TYPE_EXAMPLES:
-            intent = new Intent(getActivity(), ExamplesResultList.class);
-            break;
-        default:
-            // do nothing?
+            case SearchCriteria.CRITERIA_TYPE_DICT:
+                intent = new Intent(getActivity(), DictionaryResultList.class);
+                break;
+            case SearchCriteria.CRITERIA_TYPE_KANJI:
+                intent = new Intent(getActivity(), KanjiResultList.class);
+                break;
+            case SearchCriteria.CRITERIA_TYPE_EXAMPLES:
+                intent = new Intent(getActivity(), ExamplesResultList.class);
+                break;
+            default:
+                // do nothing?
         }
 
         intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
@@ -251,7 +252,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     }
 
     @Override
-    protected void doImport(final String importFile) {
+    protected void doImport(final File importFile, final boolean deleteAfterImport) {
         new AsyncTask<Void, Void, Boolean>() {
             Exception exception;
             int count = 0;
@@ -310,6 +311,9 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
                     }
                     db.endTransaction();
+                    if (deleteAfterImport) {
+                        importFile.delete();
+                    }
                 }
             }
 

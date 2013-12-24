@@ -1,14 +1,9 @@
+
 package org.nick.wwwjdic.history;
 
-import java.io.File;
-
-import org.nick.wwwjdic.ActionBarActivity;
-import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.Wwwjdic;
-import org.nick.wwwjdic.history.HistoryFragmentBase.ConfirmDeleteDialog;
-import org.nick.wwwjdic.utils.Dialogs;
-
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
@@ -19,6 +14,17 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
+
+import org.nick.wwwjdic.ActionBarActivity;
+import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.Wwwjdic;
+import org.nick.wwwjdic.history.HistoryFragmentBase.ConfirmDeleteDialog;
+import org.nick.wwwjdic.utils.Dialogs;
+import org.nick.wwwjdic.utils.FileUtils;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class FavoritesAndHistory extends ActionBarActivity {
 
@@ -44,7 +50,7 @@ public class FavoritesAndHistory extends ActionBarActivity {
         setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
 
         setContentView(R.layout.favorites_history);
-        //        setTitle(R.string.favorites_hist);
+        // setTitle(R.string.favorites_hist);
 
         // collapse action bar
         getSupportActionBar().setDisplayShowHomeEnabled(false);
@@ -102,13 +108,13 @@ public class FavoritesAndHistory extends ActionBarActivity {
     protected void onStart() {
         super.onStart();
 
-        //        boolean showHome = UIUtils.isHoneycombTablet(this)
-        //                || UIUtils.isPortrait(this);
-        //        boolean showTitle = !UIUtils.isHoneycombTablet(this)
-        //                && UIUtils.isPortrait(this);
-        //        getSupportActionBar().setDisplayShowHomeEnabled(showHome);
-        //        getSupportActionBar().setDisplayHomeAsUpEnabled(showHome);
-        //        getSupportActionBar().setDisplayShowTitleEnabled(showTitle);
+        // boolean showHome = UIUtils.isHoneycombTablet(this)
+        // || UIUtils.isPortrait(this);
+        // boolean showTitle = !UIUtils.isHoneycombTablet(this)
+        // && UIUtils.isPortrait(this);
+        // getSupportActionBar().setDisplayShowHomeEnabled(showHome);
+        // getSupportActionBar().setDisplayHomeAsUpEnabled(showHome);
+        // getSupportActionBar().setDisplayShowTitleEnabled(showTitle);
     }
 
     @Override
@@ -130,7 +136,11 @@ public class FavoritesAndHistory extends ActionBarActivity {
                 : adapter.getCount() > 0;
         File backupFile = new File(currentTab.getImportExportFilename());
 
-        menu.findItem(R.id.menu_import).setEnabled(backupFile.exists());
+        boolean importEnabled = backupFile.exists();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            importEnabled = true;
+        }
+        menu.findItem(R.id.menu_import).setEnabled(importEnabled);
         menu.findItem(R.id.menu_export).setEnabled(hasItems);
         menu.findItem(R.id.menu_delete).setEnabled(hasItems);
 

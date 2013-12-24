@@ -1,15 +1,5 @@
+
 package org.nick.wwwjdic.history;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStream;
-
-import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.WwwjdicApplication;
-import org.nick.wwwjdic.utils.LoaderResult;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -23,8 +13,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.OpenableColumns;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NotificationCompat;
@@ -39,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -46,6 +39,18 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+
+import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.WwwjdicApplication;
+import org.nick.wwwjdic.utils.FileUtils;
+import org.nick.wwwjdic.utils.LoaderResult;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStream;
 
 @SuppressWarnings("deprecation")
 @SuppressLint("NewApi")
@@ -65,8 +70,12 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
     public static final int FILTER_KANJI = 1;
     public static final int FILTER_EXAMPLES = 2;
 
-    private static final byte[] UTF8_BOM = { (byte) 0xef, (byte) 0xbb,
-            (byte) 0xbf };
+    protected static final int REQUEST_OPEN_DOCUMENT = 42;
+
+    private static final byte[] UTF8_BOM = {
+            (byte) 0xef, (byte) 0xbb,
+            (byte) 0xbf
+    };
 
     protected HistoryDbHelper db;
 
@@ -241,16 +250,31 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
     protected abstract String[] getFilterTypes();
 
     protected void importItems() {
-        String importFile = getImportExportFilename();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Intent openIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            openIntent.addCategory(Intent.CATEGORY_OPENABLE);
+            openIntent.setType("*/*");
+            // Google drive doesn't seem to recognize CSV files
+            openIntent.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {
+                    "*/*"
+            });
+            // hidden
+            openIntent.putExtra("android.content.extra.SHOW_ADVANCED", true);
+            startActivityForResult(openIntent, REQUEST_OPEN_DOCUMENT);
+        }
+        else {
+            String importFile = getImportExportFilename();
 
-        confirmOverwriteAndImport(importFile);
+            confirmOverwriteAndImport(importFile, false);
 
-        showAll();
+            showAll();
+        }
     }
 
-    private void confirmOverwriteAndImport(final String filename) {
+    void confirmOverwriteAndImport(final String filename, final boolean deleteAfterImport) {
+        final File file = new File(filename);
         if (getListAdapter() == null || getListAdapter().isEmpty()) {
-            doImport(filename);
+            doImport(new File(filename), deleteAfterImport);
             return;
         }
 
@@ -266,7 +290,7 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,
                                             int id) {
-                                        doImport(filename);
+                                        doImport(file, deleteAfterImport);
                                     }
                                 })
                         .setNegativeButton(R.string.no,
@@ -281,7 +305,7 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
         }.show(getFragmentManager(), "overwriteImportDialog");
     }
 
-    protected abstract void doImport(String filename);
+    protected abstract void doImport(File file, boolean delete);
 
     protected void exportItems() {
         createWwwjdicDirIfNecessary();
@@ -430,10 +454,9 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
         }
     }
 
-    protected CSVReader openImportFile(String importFile)
+    protected CSVReader openImportFile(File importFile)
             throws FileNotFoundException {
-        File file = new File(importFile);
-        if (!file.exists()) {
+        if (!importFile.exists()) {
             String message = getResources().getString(R.string.file_not_found);
             Toast.makeText(getActivity(), String.format(message, importFile),
                     Toast.LENGTH_SHORT).show();
@@ -525,7 +548,6 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
         }
     };
 
-
     protected void notifyExportFinished(int notificationId, String message,
             String filename) {
         notifyExportFinished(notificationId, message, filename,
@@ -541,9 +563,9 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
 
         Intent intent = open ? createOpenIntent(filename, mimeType)
                 : createShareFileIntent(filename, mimeType);
-        //        if (mimeType.contains("anki")) {
-        //            intent.addCategory("com.ankidroid.category.DECK");
-        //        }
+        // if (mimeType.contains("anki")) {
+        // intent.addCategory("com.ankidroid.category.DECK");
+        // }
         PendingIntent pendingIntent = PendingIntent.getActivity(appCtx, 0,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
         String title = getResources().getString(R.string.app_name) + ": "
@@ -590,6 +612,61 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
                 android.net.Uri.fromFile(new File(filename)));
 
         return Intent.createChooser(intent, (getString(R.string.share)));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_OPEN_DOCUMENT) {
+            Uri uri = data.getData();
+            String filePath = uri.getPath();
+            if (!isCsvFile(uri)) {
+                Toast.makeText(getActivity(), getString(R.string.invalid_backup_file),
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            File tempFile = null;
+            if (!uri.getScheme().equalsIgnoreCase("file")) {
+                try {
+                    tempFile = copyToTempFile(uri);
+                    filePath = tempFile.getAbsolutePath();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            confirmOverwriteAndImport(filePath, tempFile != null);
+
+            showAll();
+        }
+    }
+
+    private boolean isCsvFile(Uri uri) {
+        Cursor cursor = getActivity().getContentResolver()
+                .query(uri, null, null, null, null, null);
+
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                String displayName = cursor.getString(
+                        cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                return displayName.endsWith("csv") || displayName.endsWith("CSV");
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return false;
+    }
+
+    private File copyToTempFile(Uri uri) throws IOException {
+        File tempFile = File.createTempFile("wwwjdic-import", ".csv");
+        FileOutputStream out = new FileOutputStream(tempFile);
+        byte[] zipBytes = FileUtils.readFromUri(getActivity(), uri);
+        out.write(zipBytes);
+        out.flush();
+        out.close();
+
+        return tempFile;
     }
 
 }

@@ -1,3 +1,4 @@
+
 package org.nick.wwwjdic.history;
 
 import java.io.File;
@@ -206,17 +207,17 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 switch (item) {
-                case EXPORT_LOCAL_BACKUP_IDX:
-                    FavoritesFragment.super.exportItems();
-                    break;
-                case EXPORT_LOCAL_EXPORT_IDX:
-                    exportLocalCsv(isKanji);
-                    break;
-                case EXPORT_ANKI_IDX:
-                    exportToAnkiDeckAsync(isKanji);
-                    break;
-                default:
-                    // do noting
+                    case EXPORT_LOCAL_BACKUP_IDX:
+                        FavoritesFragment.super.exportItems();
+                        break;
+                    case EXPORT_LOCAL_EXPORT_IDX:
+                        exportLocalCsv(isKanji);
+                        break;
+                    case EXPORT_ANKI_IDX:
+                        exportToAnkiDeckAsync(isKanji);
+                        break;
+                    default:
+                        // do noting
                 }
             }
         });
@@ -257,14 +258,14 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         @Override
         public boolean isEnabled(int idx) {
             switch (idx) {
-            case EXPORT_LOCAL_BACKUP_IDX:
-                return true;
-            case EXPORT_LOCAL_EXPORT_IDX:
-                return singleType;
-            case EXPORT_ANKI_IDX:
-                return true;
-            default:
-                return false;
+                case EXPORT_LOCAL_BACKUP_IDX:
+                    return true;
+                case EXPORT_LOCAL_EXPORT_IDX:
+                    return singleType;
+                case EXPORT_ANKI_IDX:
+                    return true;
+                default:
+                    return false;
             }
         }
 
@@ -520,7 +521,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     }
 
     @Override
-    protected void doImport(final String importFile) {
+    protected void doImport(final File importFile, final boolean deleteAfterImport) {
         new AsyncTask<Void, Void, Boolean>() {
             Exception exception;
             int count = 0;
@@ -575,6 +576,9 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                         }
                     }
                     db.endTransaction();
+                    if (deleteAfterImport) {
+                        importFile.delete();
+                    }
                 }
             }
 
