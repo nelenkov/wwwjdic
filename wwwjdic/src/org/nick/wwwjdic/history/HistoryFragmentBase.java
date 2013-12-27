@@ -643,7 +643,7 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
 
     private boolean isCsvFile(Uri uri) {
         Cursor cursor = getActivity().getContentResolver()
-                .query(uri, null, null, null, null, null);
+                .query(uri, null, null, null, null);
 
         try {
             if (cursor != null && cursor.moveToFirst()) {
