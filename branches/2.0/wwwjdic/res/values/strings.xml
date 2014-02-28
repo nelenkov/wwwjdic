@@ -177,7 +177,7 @@
     <string-array name="wwwjdic_mirror_names">
         <item>Australia</item>
         <item>Canada</item>
-        <item>EU</item>
+        <item>Germany</item>
         <item>Japan</item>
         <item>Sweden</item>
         <item>USA</item>
@@ -187,8 +187,8 @@
         <item>033:51:35/151:12:40</item>
         <!-- Toronto -->
         <item>043:42:59/079:20:26</item>
-        <!-- Vienna -->
-        <item>048:12:32/016:22:21</item>
+        <!-- Berlin -->
+        <item>052:31:00/013:23:00</item>
         <!-- Tokyo -->
         <item>035:42:20/139:42:54</item>
         <!-- Stockholm -->
@@ -199,7 +199,7 @@
     <string-array name="wwwjdic_mirror_urls">
         <item>http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi</item>
         <item>http://ryouko.imsb.nrc.ca/cgi-bin/wwwjdic</item>
-        <item>http://jp.celltica.com/cgi-bin/wwwjdic</item>
+        <item>http://wwwjdic.biz/cgi-bin/wwwjdic</item>
         <item>http://gengo.com/wwwjdic/cgi-data/wwwjdic</item>
         <item>http://wwwjdic.se/cgi-bin/wwwjdic.cgi</item>
         <item>http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic</item>

@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.nick.wwwjdic.donate"
     android:installLocation="auto"
-    android:versionCode="2341"
-    android:versionName="2.3.4" >
+    android:versionCode="2350"
+    android:versionName="2.3.5" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
