@@ -1,10 +1,5 @@
 package org.nick.wwwjdic;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -12,6 +7,11 @@ import org.apache.http.message.BasicNameValuePair;
 import org.nick.wwwjdic.model.ExampleSentence;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.model.WwwjdicQuery;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class ExampleSearchTask extends SearchTask<ExampleSentence> {
 
@@ -102,7 +102,7 @@ public class ExampleSearchTask extends SearchTask<ExampleSentence> {
             pairs.add(pair);
 
             UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs,
-                    "EUC-JP");
+                    "UTF-8");
             post.setEntity(formEntity);
 
             String responseStr = httpclient.execute(post, responseHandler);
