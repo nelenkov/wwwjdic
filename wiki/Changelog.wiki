@@ -1,6 +1,8 @@
 #summary Full changelog
 
 = Changelog =
+ * v2.3.6 (2014/3/18)
+  * Bug fixes
  * v2.3.5 (2014/2/28) 
   * Added new Germany mirror
  * v2.3.4 (2013/12/24) Backup file selection
