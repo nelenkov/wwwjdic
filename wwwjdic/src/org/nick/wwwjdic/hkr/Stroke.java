@@ -1,13 +1,13 @@
 package org.nick.wwwjdic.hkr;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.util.FloatMath;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Stroke {
 
@@ -156,27 +156,31 @@ public class Stroke {
     public String toBase36Points() {
         StringBuffer buff = new StringBuffer();
 
-        for (int i = 0; i < points.size(); i++) {
+        for (PointF p : points) {
             String pointStr = "";
-            int x = (int) points.get(i).x;
+            int x = (int) p.x;
             pointStr += toBase36(x);
-            int y = (int) points.get(i).y;
+            int y = (int) p.y;
             pointStr += toBase36(y);
 
             buff.append(pointStr);
         }
+        String result = buff.toString();
+        if (result.length() % 4 != 0) {
+            result = result.substring(0, result.length() - 2);
+        }
 
-        return buff.toString();
+        return result;
     }
 
     public String toPoints() {
         StringBuffer buff = new StringBuffer();
 
-        for (int i = 0; i < points.size(); i++) {
+        for (PointF p : points) {
             String pointStr = "";
-            int x = (int) points.get(i).x;
+            int x = (int) p.x;
             pointStr += " " + x;
-            int y = (int) points.get(i).y;
+            int y = (int) p.y;
             pointStr += " " + y;
 
             buff.append(pointStr);
