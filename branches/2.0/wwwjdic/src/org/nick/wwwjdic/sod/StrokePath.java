@@ -3,14 +3,6 @@
  */
 package org.nick.wwwjdic.sod;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.nick.wwwjdic.BuildConfig;
-import org.xmlpull.v1.XmlPullParser;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -23,11 +15,20 @@ import android.graphics.PointF;
 import android.util.Log;
 import android.util.Xml;
 
+import org.nick.wwwjdic.BuildConfig;
+import org.xmlpull.v1.XmlPullParser;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 public class StrokePath {
 
     private static final String TAG = StrokePath.class.getSimpleName();
 
     private static final float STROKE_WIDTH = 6f;
+    public static final float DEFAULT_ANNOTATION_TEXT_SIZE = 12f;
 
     private PointF moveTo;
     private List<Curve> curves = new ArrayList<Curve>();
@@ -35,6 +36,8 @@ public class StrokePath {
     private boolean pathScaled = false;
     private float translationDx = -1;
     private float translationDy = -1;
+
+    private float annotationTextSize = DEFAULT_ANNOTATION_TEXT_SIZE;
 
     private Paint strokePaint;
     private Paint strokeAnnotationPaint;
@@ -66,7 +69,7 @@ public class StrokePath {
         strokeAnnotationPaint.setColor(Color.GREEN);
         strokeAnnotationPaint.setStyle(Style.FILL);
         strokeAnnotationPaint.setAntiAlias(true);
-        strokeAnnotationPaint.setStrokeWidth(4f);
+        strokeAnnotationPaint.setStrokeWidth(annotationTextSize);
     }
 
     public void addCurve(Curve curve) {
@@ -472,6 +475,15 @@ public class StrokePath {
 
     public void setStrokePaintColor(int color) {
         strokePaint.setColor(color);
+    }
+
+    public float getAnnotationTextSize() {
+        return annotationTextSize;
+    }
+
+    public void setAnnotationTextSize(float annotationTextSize) {
+        this.annotationTextSize = annotationTextSize;
+        strokeAnnotationPaint.setTextSize(annotationTextSize);
     }
 
 }
