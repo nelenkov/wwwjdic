@@ -1,3 +1,4 @@
+
 package org.nick.wwwjdic;
 
 import java.io.File;
@@ -22,6 +23,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -97,7 +99,7 @@ public class WwwjdicApplication extends Application {
         try {
             ACRAConfiguration config = ACRA.getNewDefaultConfig(this);
             config.setResToastText(R.string.crash_toast_text);
-            //            config.setSendReportsInDevMode(true);
+            // config.setSendReportsInDevMode(true);
             ACRA.setConfig(config);
             ACRA.init(this);
 
@@ -263,7 +265,8 @@ public class WwwjdicApplication extends Application {
     }
 
     public static String getUserAgentString() {
-        return "Android-WWWJDIC/" + getVersion();
+        return String.format("Android-WWWJDIC/%s: %s (%s)", getVersion(), Build.MODEL,
+                Build.VERSION.RELEASE);
     }
 
     private void initRadicals() {
