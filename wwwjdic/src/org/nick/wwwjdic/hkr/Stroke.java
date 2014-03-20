@@ -158,9 +158,9 @@ public class Stroke {
 
         for (PointF p : points) {
             String pointStr = "";
-            int x = (int) p.x;
+            int x = Math.abs((int) p.x);
             pointStr += toBase36(x);
-            int y = (int) p.y;
+            int y = Math.abs((int) p.y);
             pointStr += toBase36(y);
 
             buff.append(pointStr);
