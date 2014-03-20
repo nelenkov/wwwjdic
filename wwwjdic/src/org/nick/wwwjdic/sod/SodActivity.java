@@ -1,7 +1,16 @@
 package org.nick.wwwjdic.sod;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -21,16 +30,8 @@ import org.nick.wwwjdic.utils.LoaderBase;
 import org.nick.wwwjdic.utils.LoaderResult;
 import org.nick.wwwjdic.utils.Pair;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SodActivity extends ActionBarActivity implements OnClickListener,
         LoaderManager.LoaderCallbacks<LoaderResult<Pair<String, Boolean>>> {
@@ -137,6 +138,8 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
 
         findViews();
 
+        setAnnotationTextSize();
+
         drawButton.setOnClickListener(this);
         clearButton.setOnClickListener(this);
         animateButton.setOnClickListener(this);
@@ -152,6 +155,13 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
         // otherwise bad stuff happens: loader is not started, state is not
         // properly retained
         getStrokes();
+    }
+
+    private void setAnnotationTextSize() {
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        float annotationWidth = dm.scaledDensity * StrokePath.DEFAULT_ANNOTATION_TEXT_SIZE;
+        strokeOrderView.setAnnotationTextSize(annotationWidth);
     }
 
     @Override

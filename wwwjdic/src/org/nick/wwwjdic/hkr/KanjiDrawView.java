@@ -1,8 +1,5 @@
 package org.nick.wwwjdic.hkr;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,10 +11,14 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class KanjiDrawView extends View {
 
     private static final float STROKE_WIDTH = 8f;
     private static final float OUTLINE_WIDTH = 2f;
+    private static final float ANNOTATION_TEXT_SIZE = 12f;
 
     public static interface OnStrokesChangedListener {
         void strokesUpdated(int numStrokes);
@@ -25,6 +26,7 @@ public class KanjiDrawView extends View {
 
     private Paint strokePaint;
     private Paint strokeAnnotationPaint;
+    private float annotationTextSize = ANNOTATION_TEXT_SIZE;
     private Paint outlinePaint;
     private Rect outlineRect;
 
@@ -65,6 +67,7 @@ public class KanjiDrawView extends View {
         strokeAnnotationPaint.setColor(Color.GREEN);
         strokeAnnotationPaint.setStyle(Style.FILL);
         strokeAnnotationPaint.setAntiAlias(true);
+        strokeAnnotationPaint.setTextSize(annotationTextSize);
 
         outlinePaint = new Paint();
         outlinePaint.setColor(Color.GRAY);
@@ -186,6 +189,15 @@ public class KanjiDrawView extends View {
 
     public void setAnnotateStrokesMidway(boolean annotateStrokesMidway) {
         this.annotateStrokesMidway = annotateStrokesMidway;
+    }
+
+    public float getAnnotationTextSize() {
+        return annotationTextSize;
+    }
+
+    public void setAnnotationTextSize(float annotationTextSize) {
+        this.annotationTextSize = annotationTextSize;
+        strokeAnnotationPaint.setTextSize(annotationTextSize);
     }
 
 }

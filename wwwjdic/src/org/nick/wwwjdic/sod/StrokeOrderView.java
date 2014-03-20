@@ -1,7 +1,5 @@
 package org.nick.wwwjdic.sod;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,6 +9,8 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
+
+import java.util.List;
 
 public class StrokeOrderView extends View {
 
@@ -29,6 +29,8 @@ public class StrokeOrderView extends View {
     private long lastTick = 0;
 
     private boolean animate = false;
+
+    private float annotationTextSize = -1;
 
     public StrokeOrderView(Context context) {
         super(context);
@@ -101,6 +103,9 @@ public class StrokeOrderView extends View {
         if (!animate) {
             List<StrokePath> strokePaths = character.getStrokes();
             for (StrokePath sp : strokePaths) {
+                if (annotationTextSize != -1) {
+                    sp.setAnnotationTextSize(annotationTextSize);
+                }
                 sp.draw(canvas, scale, dx, dy, strokeNum, annotate);
                 strokeNum++;
             }
@@ -120,6 +125,9 @@ public class StrokeOrderView extends View {
         for (int i = 0; i < strokePaths.size(); i++) {
             StrokePath sp = strokePaths.get(i);
             if (sp.isFullyDrawn()) {
+                if (annotationTextSize != -1) {
+                    sp.setAnnotationTextSize(annotationTextSize);
+                }
                 sp.draw(canvas, scale, dx, dy, strokeNum, annotate);
                 strokeNum++;
 
@@ -188,6 +196,14 @@ public class StrokeOrderView extends View {
             character.resetSegments();
         }
         invalidate();
+    }
+
+    public float getAnnotationTextSize() {
+        return annotationTextSize;
+    }
+
+    public void setAnnotationTextSize(float annotationWidth) {
+        this.annotationTextSize = annotationWidth;
     }
 
 }

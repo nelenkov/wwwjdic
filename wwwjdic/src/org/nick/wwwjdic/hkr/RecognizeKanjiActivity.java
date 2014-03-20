@@ -1,24 +1,5 @@
 package org.nick.wwwjdic.hkr;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.nick.kanjirecognizer.hkr.CharacterRecognizer;
-import org.nick.wwwjdic.Activities;
-import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.WebServiceBackedActivity;
-import org.nick.wwwjdic.WwwjdicPreferences;
-import org.nick.wwwjdic.ocr.WeOcrClient;
-import org.nick.wwwjdic.sod.StrokePath;
-import org.nick.wwwjdic.sod.StrokedCharacter;
-import org.nick.wwwjdic.utils.Dialogs;
-
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -38,6 +19,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,6 +28,25 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.MenuItem;
+
+import org.nick.kanjirecognizer.hkr.CharacterRecognizer;
+import org.nick.wwwjdic.Activities;
+import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.WebServiceBackedActivity;
+import org.nick.wwwjdic.WwwjdicPreferences;
+import org.nick.wwwjdic.ocr.WeOcrClient;
+import org.nick.wwwjdic.sod.StrokePath;
+import org.nick.wwwjdic.sod.StrokedCharacter;
+import org.nick.wwwjdic.utils.Dialogs;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         OnClickListener {
@@ -109,10 +110,18 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         drawView.setAnnotateStrokes(WwwjdicPreferences.isAnnoateStrokes(this));
         drawView.setAnnotateStrokesMidway(WwwjdicPreferences
                 .isAnnotateStrokesMidway(this));
+        setAnnotationTextSize();
 
         drawView.requestFocus();
 
         Dialogs.showTipOnce(this, KR_USAGE_TIP_DIALOG, R.string.kr_usage_tip);
+    }
+
+    private void setAnnotationTextSize() {
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        float annotationWidth = dm.scaledDensity * StrokePath.DEFAULT_ANNOTATION_TEXT_SIZE;
+        drawView.setAnnotationTextSize(annotationWidth);
     }
 
     private ServiceConnection connection = new ServiceConnection() {
