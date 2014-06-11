@@ -1,11 +1,6 @@
 package org.nick.wwwjdic;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.nick.wwwjdic.widgets.KodWidgetConfigure;
-import org.nick.wwwjdic.widgets.KodWidgetProvider;
-
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.appwidget.AppWidgetManager;
@@ -31,6 +26,12 @@ import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
+
+import org.nick.wwwjdic.widgets.KodWidgetConfigure;
+import org.nick.wwwjdic.widgets.KodWidgetProvider;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class WwwjdicPreferences extends SherlockPreferenceActivity implements
         OnPreferenceChangeListener {
@@ -263,18 +264,19 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
         showInstallKrDialog(this);
     }
 
-    static void showInstallKrDialog(final Context ctx) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+    public static void showInstallKrDialog(final Activity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setMessage(R.string.install_kr)
                 .setCancelable(false)
                 .setPositiveButton(R.string.yes,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                String kanjiRecognizerUri = ctx.getResources()
+                                String kanjiRecognizerUri = activity.getResources()
                                         .getString(R.string.kr_download_uri);
                                 Intent intent = new Intent(Intent.ACTION_VIEW,
                                         Uri.parse(kanjiRecognizerUri));
-                                ctx.startActivity(intent);
+                                activity.startActivity(intent);
+                                activity.finish();
                             }
                         })
                 .setNegativeButton(R.string.no,

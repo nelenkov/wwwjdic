@@ -1,20 +1,6 @@
 
 package org.nick.wwwjdic;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import org.acra.ACRA;
-import org.acra.ACRAConfiguration;
-import org.acra.ReportingInteractionMode;
-import org.acra.annotation.ReportsCrashes;
-import org.acra.sender.HttpSender;
-import org.nick.wwwjdic.model.Radicals;
-
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -27,6 +13,20 @@ import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import org.acra.ACRA;
+import org.acra.ACRAConfiguration;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
+import org.acra.sender.HttpSender;
+import org.nick.wwwjdic.model.Radicals;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @ReportsCrashes(formKey = "dummy", mode = ReportingInteractionMode.TOAST)
 public class WwwjdicApplication extends Application {
@@ -89,6 +89,8 @@ public class WwwjdicApplication extends Application {
 
         WwwjdicPreferences.setStrokeAnimationDelay(this,
                 WwwjdicPreferences.DEFAULT_STROKE_ANIMATION_DELAY);
+
+        WwwjdicPreferences.setUseKanjiRecognizer(true, this);
     }
 
     private void initAcra() {

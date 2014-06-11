@@ -222,8 +222,7 @@
     <string name="favorties_summary">お気に入り (%d)</string>
     <string name="history_summary">検索履歴 (%d)</string>
     <string name="remove_stroke">画削除</string>
-    <string name="kr_not_initialized">Kanji
-        Recogninzerは初期化されていません。Webサービスベース手書き認識を使用します。</string>
+    <string name="kr_not_initialized">KanjiRecogninzerは初期化されていません。</string>
     <string name="install_kr">このオプションを有効にするには、Kanji Recognizer (v.1.1以上)
         アプリをインストールする必要があります。手書き認識モデルをインストールするために、Kanji
         Recognizerを少なくとも一回起動してください。インストールしますか?

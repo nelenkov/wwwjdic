@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">%sの新規機能</string>
-    <string name="whats_new">* 画番号自動スケール対応\n* 特定の端末で発生する手書き問題を修正</string>
+    <string name="whats_new">* 手書き認識機能にKanji Recognizer アプリを使用する。\n* バグ修正</string>
 </resources>

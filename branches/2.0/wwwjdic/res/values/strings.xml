@@ -107,12 +107,11 @@
     </string-array>
 
     <string name="about_text">WWWJDIC for Android</string>
-    <string name="about_by">&#169; 2010-2013 Nikolay Elenkov</string>
+    <string name="about_by">&#169; 2010-2014 Nikolay Elenkov</string>
     <string name="about_bugtracking">More info/issue reporting</string>
     <string name="bugtracker_url">http://code.google.com/p/wwwjdic</string>
     <string name="uses_wwwjdic">Uses Jim Breen\'s <a href="http://wwwjdic.net">WWWJDIC</a></string>
     <string name="uses_weocr">Uses <a href="http://weocr.ocrgrid.org">WeOCR</a></string>
-    <string name="uses_kr">Uses kanji recognizer at <a href="http://kanji.sljfaq.org/kanji16/draw-canvas.html">kanji.sljfaq.org</a></string>
     <string name="select_dictionary">Select dictionary:</string>
     <string name="stroke_count">Stroke count:  </string>
     <string name="radical_number">Radical number: </string>
@@ -337,7 +336,7 @@
     <string name="favorties_summary">Favorites (%d)</string>
     <string name="history_summary">Search History (%d)</string>
     <string name="remove_stroke">Undo</string>
-    <string name="kr_not_initialized">Kanji Recogninzer not properly initialized. Falling back to WS-based recognition.</string>
+    <string name="kr_not_initialized">Kanji Recogninzer not properly initialized.</string>
     <string name="install_kr">To enable this option you need to install the
  Kanji Recognizer (v.1.1 or above) application first. Start it at
         least once after installing, so that it can download the
