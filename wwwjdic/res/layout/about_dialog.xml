@@ -107,13 +107,6 @@
             android:text="@string/uses_weocr" />
 
         <TextView
-            android:id="@+id/uses_kr"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="@string/uses_kr" />
-
-        <TextView
             android:id="@+id/uses_kanjivg"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

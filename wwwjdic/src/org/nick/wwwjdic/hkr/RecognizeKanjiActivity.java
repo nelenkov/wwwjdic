@@ -1,3 +1,4 @@
+
 package org.nick.wwwjdic.hkr;
 
 import android.app.AlertDialog;
@@ -33,6 +34,7 @@ import org.nick.kanjirecognizer.hkr.CharacterRecognizer;
 import org.nick.wwwjdic.Activities;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WebServiceBackedActivity;
+import org.nick.wwwjdic.WwwjdicApplication;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.ocr.WeOcrClient;
 import org.nick.wwwjdic.sod.StrokePath;
@@ -211,31 +213,30 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
             RecognizeKanjiActivity krActivity = (RecognizeKanjiActivity) activity;
 
             switch (msg.what) {
-            case HKR_RESULT:
-                krActivity.dismissProgressDialog();
+                case HKR_RESULT:
+                    krActivity.dismissProgressDialog();
 
-                if (msg.arg1 == 1) {
-                    String[] results = (String[]) msg.obj;
-                    String[] candidates = filterOutNonKanji(results);
-                    krActivity.sendToDictionary(candidates);
-                } else {
-                    if (msg.arg2 == HKR_RESULT_TYPE_WS) {
-                        if (WwwjdicPreferences.isKrInstalled(krActivity,
-                                krActivity.getApplication())) {
-                            showEnableKrDialog();
-                        } else {
-                            showInstallKrDialog();
-                        }
-
+                    if (msg.arg1 == 1) {
+                        String[] results = (String[]) msg.obj;
+                        String[] candidates = filterOutNonKanji(results);
+                        krActivity.sendToDictionary(candidates);
                     } else {
-                        Toast t = Toast.makeText(krActivity,
-                                R.string.hkr_failed, Toast.LENGTH_SHORT);
-                        t.show();
+                        if (msg.arg2 == HKR_RESULT_TYPE_WS) {
+                            if (WwwjdicPreferences.isKrInstalled(krActivity,
+                                    krActivity.getApplication())) {
+                                showEnableKrDialog();
+                            } else {
+                                showInstallKrDialog();
+                            }
+
+                        } else {
+                            Toast.makeText(krActivity,
+                                    R.string.hkr_failed, Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-                break;
-            default:
-                super.handleMessage(msg);
+                    break;
+                default:
+                    super.handleMessage(msg);
             }
         }
 
@@ -346,6 +347,12 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.recognize_button) {
+            if (!WwwjdicPreferences.isKrInstalled(this,
+                    WwwjdicApplication.getInstance())) {
+                WwwjdicPreferences.showInstallKrDialog(this);
+                return;
+            }
+
             recognizeKanji();
         } else if (v.getId() == R.id.ocr_button) {
             ocrKanji();
@@ -433,10 +440,10 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         }
 
         drawToBitmap(character, canvas, dx, dy);
-        //        dumpBitmap(bitmap, "drawView.jpg");
+        // dumpBitmap(bitmap, "drawView.jpg");
 
         Bitmap resized = scaleBitmap(width, height, bitmap, canvas);
-        //        dumpBitmap(resized, "ocrView.jpg");
+        // dumpBitmap(resized, "ocrView.jpg");
 
         return resized;
     }
@@ -491,15 +498,11 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
 
         if (WwwjdicPreferences.isUseKanjiRecognizer(this)) {
             if (recognizer == null) {
-                Toast t = Toast.makeText(this, R.string.kr_not_initialized,
-                        Toast.LENGTH_SHORT);
-                t.show();
-                recognizeWs(strokes);
+                Toast.makeText(this, R.string.kr_not_initialized,
+                        Toast.LENGTH_SHORT).show();
             } else {
                 reconizeKanjiRecognizer(strokes);
             }
-        } else {
-            recognizeWs(strokes);
         }
     }
 
@@ -507,12 +510,6 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
         List<Stroke> strokes = drawView.getStrokes();
 
         return strokes != null && !strokes.isEmpty();
-    }
-
-    private void recognizeWs(List<Stroke> strokes) {
-        HkrTask task = new HkrTask(strokes, handler);
-        String message = getResources().getString(R.string.doing_hkr);
-        submitWsTask(task, message);
     }
 
     private void reconizeKanjiRecognizer(final List<Stroke> strokes) {
@@ -565,11 +562,11 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case android.R.id.home:
-            Activities.home(this);
-            return true;
-        default:
-            // do nothing
+            case android.R.id.home:
+                Activities.home(this);
+                return true;
+            default:
+                // do nothing
         }
 
         return super.onOptionsItemSelected(item);
