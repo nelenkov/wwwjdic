@@ -1,6 +1,8 @@
 #summary Full changelog
 
 = Changelog =
+ * v2.3.8 (2014/6/12)
+  * Use Kanji Recognizer for handwriting recognition
  * v2.3.7 (2014/3/21) 
   * Scale stroke annotations
   * Handwriting recognition fixes for some devices
