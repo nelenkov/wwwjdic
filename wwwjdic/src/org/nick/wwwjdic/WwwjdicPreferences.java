@@ -96,7 +96,7 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
 
     private static final String PREF_LAST_KOD_UPDATE_ERROR_KEY = "pref_last_kod_update_error";
 
-    public static final String DEFAULT_STROKE_ANIMATION_DELAY = "150";
+    public static final String DEFAULT_STROKE_ANIMATION_DELAY = "50";
 
     private static final String PREF_RANDOM_EXAMPLES_KEY = "pref_random_examples";
 

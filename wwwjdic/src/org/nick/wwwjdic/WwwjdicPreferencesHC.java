@@ -1,11 +1,11 @@
 package org.nick.wwwjdic;
 
-import java.util.List;
-
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
+
+import java.util.List;
 
 public class WwwjdicPreferencesHC extends SherlockPreferenceActivity {
 
@@ -42,5 +42,16 @@ public class WwwjdicPreferencesHC extends SherlockPreferenceActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean isValidFragment(String fragment) {
+        if (fragment.equals(WwwjdicPrefsFragment.class.getName()) ||
+            fragment.equals(WidgetPrefsFragment.class.getName()) ||
+            fragment.equals(KrPrefsFragment.class.getName()) ||
+            fragment.equals(GenericPrefsFragment.class.getName())) {
+            return true;
+        }
+
+        return false;
+    }
 
 }

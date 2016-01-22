@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.nick.wwwjdic"
     android:installLocation="auto"
-    android:versionCode="2380"
-    android:versionName="2.3.8" >
+    android:versionCode="2390"
+    android:versionName="2.3.9" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -42,7 +43,8 @@
             android:label="@string/app_name_short"
             android:theme="@style/Theme.WwwjdicAbMain"
             android:uiOptions="splitActionBarWhenNarrow"
-            android:windowSoftInputMode="stateAlwaysHidden" >
+            android:windowSoftInputMode="stateAlwaysHidden"
+            tools:replace="android:label,android:windowSoftInputMode">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,7 +58,8 @@
             android:name="org.nick.wwwjdic.DictionaryResultList"
             android:label="@string/dict_search"
             android:taskAffinity=""
-            android:theme="@style/Theme.WwwjdicAb" >
+            android:theme="@style/Theme.WwwjdicAb"
+            tools:replace="android:label">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 

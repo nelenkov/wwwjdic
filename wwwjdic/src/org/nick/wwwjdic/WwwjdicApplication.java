@@ -87,8 +87,8 @@ public class WwwjdicApplication extends Application {
 
         updateKanjiRecognizerUrl();
 
-        WwwjdicPreferences.setStrokeAnimationDelay(this,
-                WwwjdicPreferences.DEFAULT_STROKE_ANIMATION_DELAY);
+//        WwwjdicPreferences.setStrokeAnimationDelay(this,
+//                WwwjdicPreferences.DEFAULT_STROKE_ANIMATION_DELAY);
 
         WwwjdicPreferences.setUseKanjiRecognizer(true, this);
     }
