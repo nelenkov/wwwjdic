@@ -1,0 +1,12 @@
+target
+bin
+gen
+proguard
+.DS_Store
+**/build
+/.gradle
+local.properties
+.idea/
+*.iml
+*.keystore
+*.apk
