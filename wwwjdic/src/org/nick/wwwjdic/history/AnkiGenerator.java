@@ -255,7 +255,8 @@ public class AnkiGenerator {
 
     private long insertCard(SQLiteDatabase db, long noteId) {
         ContentValues card = new ContentValues();
-        long cardId = System.currentTimeMillis();//generateId();
+        //long cardId = System.currentTimeMillis();//generateId();
+        long cardId = generateId();
         double now = now();
 
         //-- the epoch milliseconds of when the card was created

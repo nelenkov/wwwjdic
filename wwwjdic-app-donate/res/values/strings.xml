@@ -5,4 +5,7 @@
     </string>
     <string name="donate_thanks">Thank you for supporting this project and buying
         the donate version.</string>
+    <string name="donation_thanks_title">Thank you</string>
+    <string name="donation_thanks">Thank you for supporting this project and buying
+        the donate version.</string>
 </resources>

@@ -1,1 +1,1 @@
-include ':wwwjdic', 'wwwjdic-app'
+include ':wwwjdic', 'wwwjdic-app', 'wwwjdic-app-donate'
