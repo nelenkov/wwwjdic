@@ -33,7 +33,6 @@ Android frontend for Jim Breen's [WWWJDIC](http://wwwjdic.net)
 ## Acknowledgements
 
  * Thanks to Jim Breen for all his nihongo work and for adding raw output to WWWJDIC.
- * Thanks to the WeOCR Project for providing the OCR service.
- * Uses the kanji recognizer at kanji.sljfaq.org
- * Uses KanjiVG data for stroke order diagrams
+ * Thanks to the [WeOCR Project](http://weocr.ocrgrid.org/) for providing the OCR service.
+ * Uses [KanjiVG](http://kanjivg.tagaini.net/) data for stroke order diagrams
 
