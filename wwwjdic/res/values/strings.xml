@@ -540,6 +540,7 @@ You can enable offline recognition using the Kanji Recognizer application. Would
     <string name="pref_jp_tts_engine">Japanese TTS Engine</string>
 
     <string-array name="jp_tts_engine_names">
+        <item>Google TTS</item>
         <item>N2 TTS</item>
         <item>SVOX Japanese</item>
         <item>AquesTalk TTS</item>
@@ -547,6 +548,7 @@ You can enable offline recognition using the Kanji Recognizer application. Would
         <item>DTalker Japanese TTS</item>
     </string-array>
     <string-array name="jp_tts_engine_packages">
+        <item>com.google.android.tts</item>
         <item>jp.kddilabs.n2tts</item>
         <item>com.svox.classic</item>
         <item>com.a_quest.aquestalka</item>
@@ -570,7 +572,7 @@ You can enable offline recognition using the Kanji Recognizer application. Would
         will be automatically opened on startup.</string>
         
     <string name="tip_jp_tts">To enable Japense text-to-speech install one of 
-        N2 TTS, SVOX Japanese or AquesTalk TTS and select it in 
+        Google TTS, N2 TTS, SVOX Japanese or AquesTalk TTS and select it in
         WWWJDIC Settings->Japanese TTS Engine.</string>
         
     <string name="credits">Credits</string>

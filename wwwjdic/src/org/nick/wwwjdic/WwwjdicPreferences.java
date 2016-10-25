@@ -101,7 +101,7 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
     private static final String PREF_RANDOM_EXAMPLES_KEY = "pref_random_examples";
 
     static final String PREF_JP_TTS_ENGINE = "pref_jp_tts_engine";
-    static final String DEFAULT_JP_TTS_ENGINE_PACKAGE = "jp.kddilabs.n2tts";
+    static final String DEFAULT_JP_TTS_ENGINE_PACKAGE = "com.google.android.tts";//"jp.kddilabs.n2tts";
 
     static final String PREF_KOD_KEY = "pref_kod";
 

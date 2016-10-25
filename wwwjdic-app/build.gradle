@@ -36,7 +36,7 @@ android {
     release {
       storeFile file ("nick.keystore")
     }
-   }
+  }
 
    buildTypes {
      release {
@@ -70,7 +70,9 @@ android {
 
 if (project.hasProperty('storePassword')
         && project.hasProperty('keyAlias')
-        && project.hasProperty('keyPassword')) {
+        && project.hasProperty('keyPassword')
+        && project.hasProperty('storeFile')) {
+    android.signingConfigs.release.storeFile = file storeFile
     android.signingConfigs.release.storePassword = storePassword
     android.signingConfigs.release.keyAlias = keyAlias
     android.signingConfigs.release.keyPassword = keyPassword

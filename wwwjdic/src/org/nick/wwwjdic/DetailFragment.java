@@ -1,17 +1,5 @@
 package org.nick.wwwjdic;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Locale;
-import java.util.regex.Pattern;
-
-import org.nick.wwwjdic.history.HistoryDbHelper;
-import org.nick.wwwjdic.model.WwwjdicEntry;
-import org.nick.wwwjdic.utils.DictUtils;
-import org.nick.wwwjdic.utils.IntentSpan;
-import org.nick.wwwjdic.utils.Pair;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -44,6 +32,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
+
+import org.nick.wwwjdic.history.HistoryDbHelper;
+import org.nick.wwwjdic.model.WwwjdicEntry;
+import org.nick.wwwjdic.utils.DictUtils;
+import org.nick.wwwjdic.utils.IntentSpan;
+import org.nick.wwwjdic.utils.Pair;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Pattern;
 
 @SuppressWarnings("deprecation")
 public abstract class DetailFragment extends SherlockFragment implements
@@ -295,7 +295,8 @@ public abstract class DetailFragment extends SherlockFragment implements
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == TTS_DATA_CHECK_CODE) {
             if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-                tts = new TextToSpeech(getActivity(), this);
+                tts = new TextToSpeech(getActivity(), this);//, "com.google.android.tts");
+//                tts.setEngineByPackageName();
             } else {
                 if (WwwjdicPreferences.wantsTts(getActivity())) {
                     Dialog dialog = createInstallTtsDataDialog();

@@ -27,7 +27,7 @@
             android:defaultValue="false" />
         <ListPreference android:title="@string/pref_jp_tts_engine"
             android:key="pref_jp_tts_engine" 
-            android:defaultValue="jp.kddilabs.n2tts"
+            android:defaultValue="com.google.android.tts"
             android:entries="@array/jp_tts_engine_names"
             android:entryValues="@array/jp_tts_engine_packages" />
         <CheckBoxPreference android:key="pref_popup_keyboard"

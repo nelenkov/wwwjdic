@@ -43,8 +43,13 @@
             android:label="@string/app_name_short"
             android:theme="@style/Theme.WwwjdicAbMain"
             android:uiOptions="splitActionBarWhenNarrow"
+<<<<<<< Updated upstream
             android:windowSoftInputMode="stateAlwaysHidden" 
             tools:replace="android:label,android:windowSoftInputMode">
+=======
+            android:windowSoftInputMode="stateAlwaysHidden"
+            tools:replace="android:windowSoftInputMode,android:label">
+>>>>>>> Stashed changes
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -58,7 +63,11 @@
             android:name="org.nick.wwwjdic.DictionaryResultList"
             android:label="@string/dict_search"
             android:taskAffinity=""
+<<<<<<< Updated upstream
             android:theme="@style/Theme.WwwjdicAb" 
+=======
+            android:theme="@style/Theme.WwwjdicAb"
+>>>>>>> Stashed changes
             tools:replace="android:label">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
