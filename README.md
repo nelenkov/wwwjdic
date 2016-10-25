@@ -1,8 +1,8 @@
-= WWWJDIC for Android
+# WWWJDIC for Android
 
-Android frontend for Jim Breen's WWWJDIC[http://wwwjdic.net]
+Android frontend for Jim Breen's [WWWJDIC](http://wwwjdic.net)
 
-== Features
+## Features
 
 * Japanese text-to-speech for dictionary entry/kanji pronunciation, as well as example sentences
 * Text-to-speech for kanji and dictionary entries translation (English/German/French/Spanish)
@@ -27,10 +27,10 @@ Android frontend for Jim Breen's WWWJDIC[http://wwwjdic.net]
 * Kanji lookup by reading, English meaning, radical number, stroke count and code (Unicode/JIS)
 * Radical table showing radical variations
 
-== Download
+## Download
  * Google Play Store: https://play.google.com/store/apps/details?id=org.nick.wwwjdic
 
-== Acknowledgements
+## Acknowledgements
 
  * Thanks to Jim Breen for all his nihongo work and for adding raw output to WWWJDIC.
  * Thanks to the WeOCR Project for providing the OCR service.
