@@ -2,6 +2,8 @@
 
 Android frontend for Jim Breen's [WWWJDIC](http://wwwjdic.net)
 
+![wwwjdic-app](https://github.com/nelenkov/wwwjdic/raw/2.0/site/screenshots/dictionary.png)
+
 ## Features
 
 * Japanese text-to-speech for dictionary entries, kanji, and example sentences
