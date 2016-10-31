@@ -4,7 +4,7 @@ Android frontend for Jim Breen's [WWWJDIC](http://wwwjdic.net)
 
 ## Features
 
-* Japanese text-to-speech for dictionary entry/kanji pronunciation, as well as example sentences
+* Japanese text-to-speech for dictionary entries, kanji, and example sentences
 * Text-to-speech for kanji and dictionary entries translation (English/German/French/Spanish)
 * Multi-radical kanji search.
 * Kanji of the day widget, can limit scope by JLPT level
@@ -17,10 +17,9 @@ Android frontend for Jim Breen's [WWWJDIC](http://wwwjdic.net)
  * favorites Anki Export
  * filtering by type (dictionary/kanji/examples)
 * Animated stroke order diagrams for over 6000 kanji
-* Handwritten kanji recognition
-* High-accuracy vector-based handwritten recogntion (using the Kanji Recognizer app)
+* High-accuracy vector-based handwriting recogntion (using the Kanji Recognizer app)
 * OCR-based handwritten kanji recognition, does not require correct stroke order
-* OCR
+* OCR for Japanese text
 * Multiple dictionary lookup (General/Japanese Names/Computing/Life Sciences and more)
 * Multiple languages supported (German/French/Russian/Swedish/Hungarian/Spanish/Dutch/Slovenian)
 * Romaji input
