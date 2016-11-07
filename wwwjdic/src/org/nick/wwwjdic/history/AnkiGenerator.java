@@ -303,11 +303,7 @@ public class AnkiGenerator {
     }
 
     private long generateId() {
-        long time = System.currentTimeMillis();
-        int rand = random.nextInt(2 ^ 23);
-        long id = rand << 41 | time;
-
-        return id;
+        return random.nextLong();
     }
 
     private String readTextAsset(String name) {

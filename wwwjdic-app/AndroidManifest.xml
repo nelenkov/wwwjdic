@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.nick.wwwjdic"
     android:installLocation="auto"
-    android:versionCode="2391"
+    android:versionCode="2392"
     android:versionName="2.3.9.1" >
 
     <uses-permission android:name="android.permission.INTERNET" />
