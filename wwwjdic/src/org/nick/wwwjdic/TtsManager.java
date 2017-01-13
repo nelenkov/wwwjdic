@@ -162,8 +162,14 @@ public class TtsManager implements TextToSpeech.OnInitListener {
         }
 
         if (isLanguageAvailable(locale)) {
-            tts.setLanguage(locale);
-            ttsActivitiy.showTtsButtons();
+            try {
+                tts.setLanguage(locale);
+                ttsActivitiy.showTtsButtons();
+                // Handle Samsung TTS: java.lang.IllegalArgumentException: Invalid int: "OS"
+            } catch (Exception e) {
+                Log.w(TAG, "TTS locale " + locale + " not available");
+                ttsActivitiy.hideTtsButtons();
+            }
         } else {
             Log.w(TAG, "TTS locale " + locale + " not available");
             ttsActivitiy.hideTtsButtons();
