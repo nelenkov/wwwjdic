@@ -135,7 +135,9 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
         addPreferencesFromResource(R.xml.misc_prefs);
 
         useKrPreference = (CheckBoxPreference) findPreference(PREF_USE_KR_KEY);
-        useKrPreference.setOnPreferenceChangeListener(this);
+        if (useKrPreference != null){
+            useKrPreference.setOnPreferenceChangeListener(this);
+        }
 
         autoSelectMirrorPreference = (CheckBoxPreference) findPreference(PREF_AUTO_SELECT_MIRROR_KEY);
         autoSelectMirrorPreference.setOnPreferenceChangeListener(this);

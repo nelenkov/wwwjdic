@@ -492,8 +492,8 @@
         Would you like to install it now?\n(no ads are displayed when used from WWWJDIC)</string>
     <string name="wskr_unavailable_enable_kr">Online kanji recogntion is not available at this time. 
 You can enable offline recognition using the Kanji Recognizer application. Would you like to enable offline recognition now? </string>
-    <string name="online_hkr">Hand written kanji recognition (online)</string>
-    <string name="offline_hkr">Hand written kanji recognition (offline)</string>
+    <string name="online_hkr">Hand written kanji recognition</string>
+    <string name="offline_hkr">Hand written kanji recognition</string>
     <string name="ocr_error">Initializing the camera for OCR failed. Please contact the developer (see About) to get your device supported. Please note that 
     errors specific to a particular device cannot be resolved without a detailed error report (logcat). Thank you.</string>
     <string name="kr_download_uri">market://details?id=org.nick.kanjirecognizer</string>

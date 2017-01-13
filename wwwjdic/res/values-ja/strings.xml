@@ -355,8 +355,8 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
         Kanji Recognizer アプリケーションと連携して、オフライン手書き認識をご利用いただけます。
         オフライン手書き認識を有効にしますか?
     </string>
-    <string name="online_hkr">手書き認識 (オンライン)</string>
-    <string name="offline_hkr">手書き認識 (オフライン)</string>
+    <string name="online_hkr">手書き認識</string>
+    <string name="offline_hkr">手書き認識</string>
     <string name="ocr_error">カメラを初期化できませんでした。お使いの端末も対応するために、
         開発者にご連絡ください (情報画面を参照)。端末固有なエラーは詳細なエラーレポート(logcat)を
        いただかないと、解決は基本的にできません。ご了承ください。</string>
