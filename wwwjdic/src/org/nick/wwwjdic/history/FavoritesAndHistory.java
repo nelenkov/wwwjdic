@@ -81,13 +81,13 @@ public class FavoritesAndHistory extends ActionBarActivity {
         FavoritesFragment favoritesFragment = new FavoritesFragment();
         favoritesFragment.setArguments(favoritesArgs);
         favoritesTab.setText(R.string.favorites).setIcon(
-                R.drawable.ic_tab_history);
+                R.drawable.ic_tab_favorites);
         tabsAdapter.addTab(favoritesTab, favoritesFragment);
 
         ActionBar.Tab historyTab = getSupportActionBar().newTab();
         SearchHistoryFragment historyFragment = new SearchHistoryFragment();
         historyFragment.setArguments(historyArgs);
-        historyTab.setIcon(R.drawable.ic_tab_favorites).setText(
+        historyTab.setIcon(R.drawable.ic_tab_history).setText(
                 R.string.history);
         tabsAdapter.addTab(historyTab, historyFragment);
 
