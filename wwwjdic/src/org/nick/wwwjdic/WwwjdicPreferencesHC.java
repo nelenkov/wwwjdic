@@ -1,13 +1,12 @@
 package org.nick.wwwjdic;
 
 import android.os.Bundle;
-
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-import com.actionbarsherlock.view.MenuItem;
+import android.preference.PreferenceActivity;
+import android.view.MenuItem;
 
 import java.util.List;
 
-public class WwwjdicPreferencesHC extends SherlockPreferenceActivity {
+public class WwwjdicPreferencesHC extends PreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +25,7 @@ public class WwwjdicPreferencesHC extends SherlockPreferenceActivity {
     protected void onStart() {
         super.onStart();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

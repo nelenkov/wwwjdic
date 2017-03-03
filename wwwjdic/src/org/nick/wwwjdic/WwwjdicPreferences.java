@@ -19,13 +19,12 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.text.format.DateUtils;
 import android.util.Log;
-
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.MenuItem;
 
 import org.nick.wwwjdic.widgets.KodWidgetConfigure;
 import org.nick.wwwjdic.widgets.KodWidgetProvider;
@@ -33,7 +32,7 @@ import org.nick.wwwjdic.widgets.KodWidgetProvider;
 import java.util.Arrays;
 import java.util.List;
 
-public class WwwjdicPreferences extends SherlockPreferenceActivity implements
+public class WwwjdicPreferences extends PreferenceActivity implements
         OnPreferenceChangeListener {
 
     private static final String TAG = WwwjdicPreferences.class.getSimpleName();
@@ -160,7 +159,7 @@ public class WwwjdicPreferences extends SherlockPreferenceActivity implements
     protected void onStart() {
         super.onStart();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @SuppressWarnings("deprecation")

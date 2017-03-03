@@ -1,24 +1,18 @@
 package org.nick.wwwjdic.hkr;
 
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.util.List;
-
-import org.nick.wwwjdic.CandidatesAdapter;
-import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.client.WwwjdicClient;
-import org.nick.wwwjdic.model.KanjiEntry;
-import org.nick.wwwjdic.utils.LoaderBase;
-import org.nick.wwwjdic.utils.LoaderResult;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ListFragment;
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Loader;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.text.ClipboardManager;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,14 +22,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import org.nick.wwwjdic.CandidatesAdapter;
+import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.client.WwwjdicClient;
+import org.nick.wwwjdic.model.KanjiEntry;
+import org.nick.wwwjdic.utils.LoaderBase;
+import org.nick.wwwjdic.utils.LoaderResult;
+
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.util.List;
+
 
 @SuppressWarnings("deprecation")
-public class HkrCandidatesFragment extends SherlockListFragment implements
+public class HkrCandidatesFragment extends ListFragment implements
         LoaderManager.LoaderCallbacks<LoaderResult<KanjiEntry>>,
         OnItemLongClickListener {
 
@@ -177,8 +177,7 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
         index = position;
         Bundle args = new Bundle();
         args.putString("kanji", searchKey);
-        getSherlockActivity()
-                .setSupportProgressBarIndeterminateVisibility(true);
+        getActivity().setProgressBarIndeterminateVisibility(true);
         getLoaderManager().restartLoader(0, args, this);
     }
 
@@ -214,7 +213,7 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
     @Override
     public void onLoadFinished(Loader<LoaderResult<KanjiEntry>> loader,
             LoaderResult<KanjiEntry> result) {
-        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(
+        getActivity().setProgressBarIndeterminateVisibility(
                 false);
 
         if (result.isFailed()) {
@@ -273,7 +272,7 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
             return false;
         }
 
-        currentActionMode = getSherlockActivity().startActionMode(
+        currentActionMode = getActivity().startActionMode(
                 new ContextCallback(position));
         getListView().setItemChecked(position, true);
 
@@ -290,8 +289,8 @@ public class HkrCandidatesFragment extends SherlockListFragment implements
         }
 
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            MenuInflater inflater = getSherlockActivity()
-                    .getSupportMenuInflater();
+            MenuInflater inflater = getActivity()
+                    .getMenuInflater();
             inflater.inflate(R.menu.hkr_list_context, menu);
             return true;
         }

@@ -21,7 +21,7 @@ public class DictionaryEntryDetail extends DetailActivity {
         if (savedInstanceState == null) {
             DictionaryEntryDetailFragment details = new DictionaryEntryDetailFragment();
             details.setArguments(getIntent().getExtras());
-            getSupportFragmentManager().beginTransaction()
+            getFragmentManager().beginTransaction()
                     .add(R.id.entry_details, details).commit();
         }
     }

@@ -31,8 +31,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.model.WwwjdicEntry;
 import org.nick.wwwjdic.utils.DictUtils;
@@ -45,8 +43,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import android.app.Fragment;
+
 @SuppressWarnings("deprecation")
-public abstract class DetailFragment extends SherlockFragment implements
+public abstract class DetailFragment extends Fragment implements
         OnCheckedChangeListener, OnLongClickListener,
         TextToSpeech.OnInitListener {
 

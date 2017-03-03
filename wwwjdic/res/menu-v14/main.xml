@@ -10,7 +10,7 @@
         android:icon="@drawable/ic_menu_camera"
         android:title="@string/ocr"
         android:orderInCategory="1"
-        android:showAsAction="ifRoom" /> 
+        android:showAsAction="never" />
    <item android:id="@+id/menu_multi_radical"
         android:icon="@drawable/ic_menu_search"
         android:title="@string/multi_radical_search"

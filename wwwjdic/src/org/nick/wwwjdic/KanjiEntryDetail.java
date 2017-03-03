@@ -23,7 +23,7 @@ public class KanjiEntryDetail extends DetailActivity {
         if (savedInstanceState == null) {
             KanjiEntryDetailFragment details = new KanjiEntryDetailFragment();
             details.setArguments(getIntent().getExtras());
-            getSupportFragmentManager().beginTransaction()
+            getFragmentManager().beginTransaction()
                     .add(R.id.entry_details, details).commit();
         }
     }

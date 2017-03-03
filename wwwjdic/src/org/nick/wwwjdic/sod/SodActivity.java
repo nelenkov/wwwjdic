@@ -2,8 +2,8 @@ package org.nick.wwwjdic.sod;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -232,7 +232,7 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
         args.putBoolean("animate", false);
         args.putString("unicodeNumber", unicodeNumber);
 
-        Loader<LoaderResult<Pair<String, Boolean>>> loader = getSupportLoaderManager()
+        Loader<LoaderResult<Pair<String, Boolean>>> loader = getLoaderManager()
                 .initLoader(0, args, this);
         if (loader.isStarted()) {
             showProgress();

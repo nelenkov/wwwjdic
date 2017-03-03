@@ -1,37 +1,36 @@
 package org.nick.wwwjdic.history;
 
+import android.app.ActionBar;
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.View;
+
+import org.nick.wwwjdic.R;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.nick.wwwjdic.R;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.View;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter implements
         ViewPager.OnPageChangeListener, ActionBar.TabListener {
 
     private static final String TAG = TabsPagerAdapter.class.getSimpleName();
 
-    private FragmentActivity activity;
+    private Activity activity;
     private final ActionBar actionBar;
     private final ViewPager viewPager;
     private final List<HistoryFragmentBase> tabs = new ArrayList<HistoryFragmentBase>();
 
-    public TabsPagerAdapter(FragmentActivity activity, ActionBar actionBar,
-            ViewPager pager) {
-        super(activity.getSupportFragmentManager());
+    public TabsPagerAdapter(Activity activity, ActionBar actionBar,
+                            ViewPager pager) {
+        super(activity.getFragmentManager());
         this.activity = activity;
         this.actionBar = actionBar;
         this.viewPager = pager;
@@ -84,7 +83,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
     }
 
     @Override
-    public void onTabSelected(Tab tab, FragmentTransaction ft) {
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
         // fixes ABS #351
         // https://github.com/JakeWharton/ActionBarSherlock/issues/351
         int position = tab.getPosition();
@@ -97,11 +96,11 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
     }
 
     @Override
-    public void onTabReselected(Tab tab, FragmentTransaction ft) {
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
     }
 
     @Override
-    public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
     }
 
     private void setTitle(int tabIdx) {
@@ -126,7 +125,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
      */
     private void selectInSpinnerIfPresent(int position, boolean animate) {
         try {
-            View actionBarView = activity.findViewById(R.id.abs__action_bar);
+            View actionBarView = null;//activity.findViewById(android.R.id.action_bar);
             if (actionBarView == null) {
                 int id = activity.getResources().getIdentifier("action_bar",
                         "id",

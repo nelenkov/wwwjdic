@@ -1,16 +1,14 @@
 package org.nick.wwwjdic;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
-public abstract class WebServiceBackedActivity extends SherlockFragmentActivity {
+public abstract class WebServiceBackedActivity extends Activity {
 
     public static abstract class WsResultHandler extends Handler {
 

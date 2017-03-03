@@ -1,17 +1,16 @@
 package org.nick.wwwjdic.hkr;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.app.FragmentTransaction;
+import android.view.View;
+import android.view.Window;
+
 import org.nick.wwwjdic.ActionBarActivity;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.KanjiEntryDetailFragment;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.model.KanjiEntry;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-
-import com.actionbarsherlock.view.Window;
 
 public class HkrCandidates extends ActionBarActivity implements
         HkrCandidatesFragment.HkrCandidateSelectedListener {
@@ -32,12 +31,12 @@ public class HkrCandidates extends ActionBarActivity implements
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         setContentView(R.layout.hkr_candidates);
-        setSupportProgressBarIndeterminateVisibility(false);
+        setProgressBarIndeterminateVisibility(false);
 
         View detailsFrame = findViewById(R.id.details);
         dualPane = detailsFrame != null
                 && detailsFrame.getVisibility() == View.VISIBLE;
-        candidatesFragment = (HkrCandidatesFragment) getSupportFragmentManager()
+        candidatesFragment = (HkrCandidatesFragment) getFragmentManager()
                 .findFragmentById(R.id.results_list);
     }
 
@@ -63,13 +62,13 @@ public class HkrCandidates extends ActionBarActivity implements
 
     private void showKanjiDetails(KanjiEntry entry, int position) {
         if (dualPane) {
-            KanjiEntryDetailFragment details = (KanjiEntryDetailFragment) getSupportFragmentManager()
+            KanjiEntryDetailFragment details = (KanjiEntryDetailFragment) getFragmentManager()
                     .findFragmentById(R.id.details);
             if (details == null
                     || !details.getEntry().getKanji().equals(entry.getKanji())) {
                 details = KanjiEntryDetailFragment.newInstance(position, entry);
 
-                FragmentTransaction ft = getSupportFragmentManager()
+                FragmentTransaction ft = getFragmentManager()
                         .beginTransaction();
 
                 ft.replace(R.id.details, details);

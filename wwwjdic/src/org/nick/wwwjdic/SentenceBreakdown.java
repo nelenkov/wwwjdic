@@ -3,8 +3,7 @@ package org.nick.wwwjdic;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
-
-import com.actionbarsherlock.view.MenuItem;
+import android.view.MenuItem;
 
 public class SentenceBreakdown extends ResultListBase {
 
@@ -31,7 +30,7 @@ public class SentenceBreakdown extends ResultListBase {
             SentenceBreakdownFragment breakDown = SentenceBreakdownFragment
                     .newInstance(0, sentence, translation);
             breakDown.setArguments(getIntent().getExtras());
-            getSupportFragmentManager().beginTransaction()
+            getFragmentManager().beginTransaction()
                     .add(R.id.sentence_breakdown, breakDown).commit();
         }
     }
@@ -40,7 +39,7 @@ public class SentenceBreakdown extends ResultListBase {
     protected void onStart() {
         super.onStart();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

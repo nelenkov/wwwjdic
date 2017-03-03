@@ -1,20 +1,16 @@
 package org.nick.wwwjdic;
 
-import java.util.List;
-
-import org.nick.wwwjdic.history.HistoryUtils;
-import org.nick.wwwjdic.model.DictionaryEntry;
-import org.nick.wwwjdic.model.SearchCriteria;
-import org.nick.wwwjdic.utils.DictUtils;
-import org.nick.wwwjdic.utils.StringUtils;
-
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
-import android.support.v4.app.FragmentTransaction;
+import android.app.FragmentTransaction;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,10 +19,13 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import org.nick.wwwjdic.history.HistoryUtils;
+import org.nick.wwwjdic.model.DictionaryEntry;
+import org.nick.wwwjdic.model.SearchCriteria;
+import org.nick.wwwjdic.utils.DictUtils;
+import org.nick.wwwjdic.utils.StringUtils;
+
+import java.util.List;
 
 public class DictionaryResultListFragment extends
         ResultListFragmentBase<DictionaryEntry> implements
@@ -197,7 +196,7 @@ public class DictionaryResultListFragment extends
             return false;
         }
 
-        currentActionMode = getSherlockActivity().startActionMode(
+        currentActionMode = getActivity().startActionMode(
                 new ContextCallback(position));
         getListView().setItemChecked(position, true);
 
@@ -214,8 +213,8 @@ public class DictionaryResultListFragment extends
         }
 
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            MenuInflater inflater = getSherlockActivity()
-                    .getSupportMenuInflater();
+            MenuInflater inflater = getActivity()
+                    .getMenuInflater();
             inflater.inflate(R.menu.dict_list_context, menu);
             return true;
         }

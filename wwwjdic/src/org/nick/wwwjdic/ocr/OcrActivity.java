@@ -1,26 +1,5 @@
 package org.nick.wwwjdic.ocr;
 
-import static org.nick.wwwjdic.WwwjdicPreferences.ACRA_DEBUG;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.List;
-
-import org.acra.ACRA;
-import org.nick.wwwjdic.Activities;
-import org.nick.wwwjdic.DictionaryResultList;
-import org.nick.wwwjdic.ExamplesResultList;
-import org.nick.wwwjdic.KanjiResultList;
-import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.WebServiceBackedActivity;
-import org.nick.wwwjdic.Wwwjdic;
-import org.nick.wwwjdic.WwwjdicPreferences;
-import org.nick.wwwjdic.model.SearchCriteria;
-import org.nick.wwwjdic.ocr.crop.CropImage;
-import org.nick.wwwjdic.utils.Dialogs;
-import org.nick.wwwjdic.utils.UIUtils;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,6 +22,7 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -58,7 +38,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.actionbarsherlock.view.MenuItem;
+import org.acra.ACRA;
+import org.nick.wwwjdic.Activities;
+import org.nick.wwwjdic.DictionaryResultList;
+import org.nick.wwwjdic.ExamplesResultList;
+import org.nick.wwwjdic.KanjiResultList;
+import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.WebServiceBackedActivity;
+import org.nick.wwwjdic.Wwwjdic;
+import org.nick.wwwjdic.WwwjdicPreferences;
+import org.nick.wwwjdic.model.SearchCriteria;
+import org.nick.wwwjdic.ocr.crop.CropImage;
+import org.nick.wwwjdic.utils.Dialogs;
+import org.nick.wwwjdic.utils.UIUtils;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+
+import static org.nick.wwwjdic.WwwjdicPreferences.ACRA_DEBUG;
 
 public class OcrActivity extends WebServiceBackedActivity implements
         SurfaceHolder.Callback, OnClickListener, OnTouchListener,
@@ -107,9 +106,9 @@ public class OcrActivity extends WebServiceBackedActivity implements
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         if (!UIUtils.isHoneycombTablet(this)) {
-            requestWindowFeature(com.actionbarsherlock.view.Window.FEATURE_NO_TITLE);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
         } else {
-            requestWindowFeature(com.actionbarsherlock.view.Window.FEATURE_ACTION_BAR_OVERLAY);
+            requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         }
         window.setFormat(PixelFormat.TRANSLUCENT);
 
@@ -176,8 +175,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
     protected void onStart() {
         super.onStart();
 
-        if (getSupportActionBar() != null && UIUtils.isHoneycombTablet(this)) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getActionBar() != null && UIUtils.isHoneycombTablet(this)) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 

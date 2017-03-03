@@ -1,17 +1,5 @@
 package org.nick.wwwjdic;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import org.nick.wwwjdic.actionprovider.ShareActionProvider;
-import org.nick.wwwjdic.model.SearchCriteria;
-import org.nick.wwwjdic.model.SentenceBreakdownEntry;
-import org.nick.wwwjdic.model.WwwjdicQuery;
-import org.nick.wwwjdic.utils.CheckableLinearLayout;
-import org.nick.wwwjdic.utils.StringUtils;
-import org.nick.wwwjdic.utils.UIUtils;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -22,6 +10,9 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -29,9 +20,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import org.nick.wwwjdic.actionprovider.ShareActionProvider;
+import org.nick.wwwjdic.model.SearchCriteria;
+import org.nick.wwwjdic.model.SentenceBreakdownEntry;
+import org.nick.wwwjdic.model.WwwjdicQuery;
+import org.nick.wwwjdic.utils.CheckableLinearLayout;
+import org.nick.wwwjdic.utils.StringUtils;
+import org.nick.wwwjdic.utils.UIUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 @SuppressWarnings("deprecation")
 @SuppressLint("NewApi")
@@ -443,13 +442,13 @@ public class SentenceBreakdownFragment extends
     @Override
     public void showTtsButtons() {
         showSpeakMenu = true;
-        getSherlockActivity().invalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override
     public void hideTtsButtons() {
         showSpeakMenu = false;
-        getSherlockActivity().invalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override

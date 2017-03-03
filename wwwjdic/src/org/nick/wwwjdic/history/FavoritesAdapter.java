@@ -3,14 +3,14 @@
  */
 package org.nick.wwwjdic.history;
 
-import org.nick.wwwjdic.history.FavoritesItem.FavoriteStatusChangedListener;
-import org.nick.wwwjdic.model.WwwjdicEntry;
-
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
+
+import org.nick.wwwjdic.history.FavoritesItem.FavoriteStatusChangedListener;
+import org.nick.wwwjdic.model.WwwjdicEntry;
 
 class FavoritesAdapter extends CursorAdapter {
 

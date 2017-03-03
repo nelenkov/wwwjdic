@@ -24,10 +24,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockListFragment;
+import android.app.ListFragment;
 
 @SuppressWarnings("deprecation")
-public abstract class ResultListFragmentBase<T> extends SherlockListFragment
+public abstract class ResultListFragmentBase<T> extends ListFragment
         implements ResultList<T>, DialogInterface.OnCancelListener {
 
     private static final String TAG = ResultListFragmentBase.class

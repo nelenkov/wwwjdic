@@ -1,10 +1,28 @@
 package org.nick.wwwjdic;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
 
 import org.nick.wwwjdic.history.FavoritesAndHistory;
 import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
@@ -13,34 +31,13 @@ import org.nick.wwwjdic.history.HistoryFragmentBase;
 import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
 import org.nick.wwwjdic.krad.KradChart;
 import org.nick.wwwjdic.model.SearchCriteria;
-import org.nick.wwwjdic.ocr.OcrActivity;
 import org.nick.wwwjdic.utils.UIUtils;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Wwwjdic extends ActionBarActivity {
 
@@ -63,7 +60,7 @@ public class Wwwjdic extends ActionBarActivity {
     class WwwjdicTabsPagerAdapter extends PagerAdapter implements
             ViewPager.OnPageChangeListener, ActionBar.TabListener {
 
-        private FragmentActivity activity;
+        private Activity activity;
         private FragmentManager fragmentManager;
         private FragmentTransaction currentTransaction = null;
 
@@ -72,10 +69,10 @@ public class Wwwjdic extends ActionBarActivity {
 
         private final List<Integer> tabLayouts = new ArrayList<Integer>();
 
-        public WwwjdicTabsPagerAdapter(FragmentActivity activity,
+        public WwwjdicTabsPagerAdapter(Activity activity,
                 ActionBar actionBar, ViewPager pager) {
             this.activity = activity;
-            this.fragmentManager = activity.getSupportFragmentManager();
+            this.fragmentManager = activity.getFragmentManager();
             this.actionBar = actionBar;
             this.viewPager = pager;
             this.viewPager.setAdapter(this);
@@ -89,11 +86,11 @@ public class Wwwjdic extends ActionBarActivity {
         }
 
         @Override
-        public void onTabReselected(Tab tab, FragmentTransaction ft) {
+        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
         }
 
         @Override
-        public void onTabSelected(Tab tab, FragmentTransaction ft) {
+        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
             // fixes ABS #351
             // https://github.com/JakeWharton/ActionBarSherlock/issues/351
             int position = tab.getPosition();
@@ -105,7 +102,7 @@ public class Wwwjdic extends ActionBarActivity {
         }
 
         @Override
-        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
         }
 
         @Override
@@ -238,7 +235,7 @@ public class Wwwjdic extends ActionBarActivity {
          */
         private void selectInSpinnerIfPresent(int position, boolean animate) {
             try {
-                View actionBarView = findViewById(R.id.abs__action_bar);
+                View actionBarView = null;//findViewById(R.id.abs__action_bar);
                 if (actionBarView == null) {
                     int id = getResources().getIdentifier("action_bar", "id",
                             "android");
@@ -309,8 +306,8 @@ public class Wwwjdic extends ActionBarActivity {
         setContentView(R.layout.main);
 
         // collapse action bar
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getActionBar().setDisplayShowHomeEnabled(false);
+        getActionBar().setDisplayShowTitleEnabled(false);
 
         setupTabs();
 
@@ -319,7 +316,7 @@ public class Wwwjdic extends ActionBarActivity {
         hasCamera = getPackageManager().hasSystemFeature(
                 PackageManager.FEATURE_CAMERA);
 
-        supportInvalidateOptionsMenu();
+        invalidateOptionsMenu();
 
         if (!isDonateVersion()
                 || WwwjdicPreferences.isDonationThanksShown(this)) {
@@ -331,7 +328,7 @@ public class Wwwjdic extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getSupportMenuInflater();
+        MenuInflater inflater = getMenuInflater();
 
         inflater.inflate(R.menu.main, menu);
 
@@ -340,7 +337,8 @@ public class Wwwjdic extends ActionBarActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.menu_ocr).setEnabled(hasCamera);
+        //menu.findItem(R.id.menu_ocr).setEnabled(hasCamera);
+        menu.findItem(R.id.menu_ocr).setEnabled(false);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -352,8 +350,8 @@ public class Wwwjdic extends ActionBarActivity {
             startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.menu_ocr) {
-            Intent intent = new Intent(this, OcrActivity.class);
-            startActivity(intent);
+            //Intent intent = new Intent(this, OcrActivity.class);
+            //startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.menu_settings) {
             Intent intent = new Intent(this,
@@ -418,7 +416,7 @@ public class Wwwjdic extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
 
-        int position = getSupportActionBar().getSelectedNavigationIndex();
+        int position = getActionBar().getSelectedNavigationIndex();
         filterHistoryFragments(position);
         updateHistorySummary(position);
     }
@@ -488,38 +486,38 @@ public class Wwwjdic extends ActionBarActivity {
     }
 
     private void setupTabs() {
-        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         Bundle extras = getIntent().getExtras();
 
-        ActionBar.Tab dictionaryTab = getSupportActionBar().newTab();
+        ActionBar.Tab dictionaryTab = getActionBar().newTab();
         dictionaryTab.setIcon(R.drawable.ic_tab_dict);
         if (UIUtils.isHoneycombTablet(this)) {
             dictionaryTab.setText(R.string.dictionary);
         }
         viewPager = (ViewPager) findViewById(R.id.content);
-        tabsAdapter = new WwwjdicTabsPagerAdapter(this, getSupportActionBar(),
+        tabsAdapter = new WwwjdicTabsPagerAdapter(this, getActionBar(),
                 viewPager);
         tabsAdapter.addTab(dictionaryTab, R.layout.dict_lookup_tab);
 
-        ActionBar.Tab kanjiTab = getSupportActionBar().newTab();
+        ActionBar.Tab kanjiTab = getActionBar().newTab();
         kanjiTab.setIcon(R.drawable.ic_tab_kanji);
         if (UIUtils.isHoneycombTablet(this)) {
             kanjiTab.setText(R.string.kanji_lookup);
         }
         tabsAdapter.addTab(kanjiTab, R.layout.kanji_lookup_tab);
 
-        ActionBar.Tab examplesTab = getSupportActionBar().newTab();
+        ActionBar.Tab examplesTab = getActionBar().newTab();
         examplesTab.setIcon(R.drawable.ic_tab_example);
         if (UIUtils.isHoneycombTablet(this)) {
             examplesTab.setText(R.string.example_search);
         }
         tabsAdapter.addTab(examplesTab, R.layout.example_search_tab);
 
-        getSupportActionBar().setSelectedNavigationItem(DICTIONARY_TAB_IDX);
+        getActionBar().setSelectedNavigationItem(DICTIONARY_TAB_IDX);
         if (extras != null) {
             int selectedTab = extras.getInt(EXTRA_SELECTED_TAB_IDX, -1);
             if (selectedTab != -1) {
-                getSupportActionBar().setSelectedNavigationItem(selectedTab);
+                getActionBar().setSelectedNavigationItem(selectedTab);
             }
 
             String searchKey = extras.getString(EXTRA_SEARCH_TEXT);
@@ -527,15 +525,15 @@ public class Wwwjdic extends ActionBarActivity {
             if (searchKey != null) {
                 switch (searchType) {
                 case SearchCriteria.CRITERIA_TYPE_DICT:
-                    getSupportActionBar().setSelectedNavigationItem(
+                    getActionBar().setSelectedNavigationItem(
                             DICTIONARY_TAB_IDX);
                     break;
                 case SearchCriteria.CRITERIA_TYPE_KANJI:
-                    getSupportActionBar().setSelectedNavigationItem(
+                    getActionBar().setSelectedNavigationItem(
                             KANJI_TAB_IDX);
                     break;
                 case SearchCriteria.CRITERIA_TYPE_EXAMPLES:
-                    getSupportActionBar().setSelectedNavigationItem(
+                    getActionBar().setSelectedNavigationItem(
                             EXAMPLE_SEARRCH_TAB_IDX);
                     break;
                 default:
@@ -752,7 +750,7 @@ public class Wwwjdic extends ActionBarActivity {
     }
 
     private void filterFavoritesHistoryFragment(int fragmentId, int filterType) {
-        HistoryFragmentBase fragment = (HistoryFragmentBase) getSupportFragmentManager()
+        HistoryFragmentBase fragment = (HistoryFragmentBase) getFragmentManager()
                 .findFragmentById(fragmentId);
         if (fragment != null && !fragment.isDetached()
                 && fragment.getActivity() != null) {

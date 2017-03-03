@@ -1,9 +1,9 @@
 package org.nick.wwwjdic;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
+import android.app.Activity;
+import android.view.MenuItem;
 
-public abstract class ActionBarActivity extends SherlockFragmentActivity {
+public abstract class ActionBarActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -22,7 +22,7 @@ public abstract class ActionBarActivity extends SherlockFragmentActivity {
     protected void onStart() {
         super.onStart();
 
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
     }
 
 }

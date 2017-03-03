@@ -15,10 +15,14 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.acra.ACRA;
-import org.acra.ACRAConfiguration;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
+import org.acra.config.ACRAConfiguration;
+import org.acra.config.ACRAConfigurationException;
+import org.acra.config.ConfigurationBuilder;
 import org.acra.sender.HttpSender;
+import org.acra.sender.ReportSender;
+import org.acra.sender.ReportSenderFactory;
 import org.nick.wwwjdic.model.Radicals;
 
 import java.io.File;
@@ -28,7 +32,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@ReportsCrashes(formKey = "dummy", mode = ReportingInteractionMode.TOAST)
+@ReportsCrashes(mode = ReportingInteractionMode.TOAST)
 public class WwwjdicApplication extends Application {
 
     private static final String TAG = WwwjdicApplication.class.getSimpleName();
@@ -64,9 +68,7 @@ public class WwwjdicApplication extends Application {
 
         version = getVersionName();
 
-        initAcra();
-
-        createWwwjdicDirIfNecessary();
+       createWwwjdicDirIfNecessary();
 
         updateJapanMirror();
 
@@ -93,25 +95,32 @@ public class WwwjdicApplication extends Application {
         WwwjdicPreferences.setUseKanjiRecognizer(true, this);
     }
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+
+        initAcra();
+    }
+
     private void initAcra() {
         if (isDebug()) {
             return;
         }
 
         try {
-            ACRAConfiguration config = ACRA.getNewDefaultConfig(this);
-            config.setResToastText(R.string.crash_toast_text);
-            // config.setSendReportsInDevMode(true);
-            ACRA.setConfig(config);
-            ACRA.init(this);
+            Class<? extends ReportSenderFactory>[] factoryClasses = (Class<? extends ReportSenderFactory>[])new Class[1];
+            factoryClasses[0] = BugSenseReportSenderFactory.class;
 
-            String bugsenseUrl = getResources()
-                    .getString(R.string.bugsense_url);
-            HttpSender bugSenseSender = new HttpSender(HttpSender.Method.POST,
-                    HttpSender.Type.FORM, bugsenseUrl, null);
-            ACRA.getErrorReporter().setReportSender(bugSenseSender);
+            ACRAConfiguration config = new ConfigurationBuilder(this)
+                    .setReportingInteractionMode(ReportingInteractionMode.TOAST)
+                    .setResToastText(R.string.crash_toast_text)
+                    .setReportSenderFactoryClasses(factoryClasses).build();
+            ACRA.init(this, config);
         } catch (IllegalStateException e) {
             Log.w(TAG, "ACRA.init() called more than once?: " + e.getMessage(),
+                    e);
+        } catch(ACRAConfigurationException e) {
+            Log.w(TAG, "Failed to init ACRA: " + e.getMessage(),
                     e);
         }
     }
@@ -351,6 +360,15 @@ public class WwwjdicApplication extends Application {
     public synchronized void setCurrentDictionaryName(
             String currentDictionaryName) {
         this.currentDictionaryName = currentDictionaryName;
+    }
+
+    private static class BugSenseReportSenderFactory  implements ReportSenderFactory {
+        public ReportSender create(Context context, ACRAConfiguration config) {
+            String bugsenseUrl = context.getResources()
+                    .getString(R.string.bugsense_url);
+            return new HttpSender(config, HttpSender.Method.POST,
+                    HttpSender.Type.FORM, bugsenseUrl, null);
+        }
     }
 
 }

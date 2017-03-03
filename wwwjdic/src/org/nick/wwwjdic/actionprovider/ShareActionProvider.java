@@ -3,11 +3,9 @@ package org.nick.wwwjdic.actionprovider;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.view.SubMenu;
 import android.view.View;
-
-import com.actionbarsherlock.internal.view.menu.MenuWrapper;
-import com.actionbarsherlock.view.ActionProvider;
-import com.actionbarsherlock.view.SubMenu;
+import android.view.ActionProvider;
 
 @SuppressLint("NewApi")
 public class ShareActionProvider extends ActionProvider {
@@ -32,8 +30,7 @@ public class ShareActionProvider extends ActionProvider {
     @Override
     public void onPrepareSubMenu(final SubMenu subMenu) {
         icsActionProvider
-                .onPrepareSubMenu((android.view.SubMenu) ((MenuWrapper) subMenu)
-                        .unwrap());
+                .onPrepareSubMenu(subMenu);
     }
 
     public void setShareIntent(Intent shareIntent) {

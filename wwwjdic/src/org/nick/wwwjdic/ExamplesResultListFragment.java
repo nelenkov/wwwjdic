@@ -1,23 +1,20 @@
 package org.nick.wwwjdic;
 
-import java.util.List;
-
-import org.nick.wwwjdic.model.ExampleSentence;
-import org.nick.wwwjdic.model.SearchCriteria;
-import org.nick.wwwjdic.utils.CheckableLinearLayout;
-import org.nick.wwwjdic.utils.UIUtils;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
+import android.app.FragmentTransaction;
 import android.text.ClipboardManager;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,10 +25,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import org.nick.wwwjdic.model.ExampleSentence;
+import org.nick.wwwjdic.model.SearchCriteria;
+import org.nick.wwwjdic.utils.CheckableLinearLayout;
+import org.nick.wwwjdic.utils.UIUtils;
+
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class ExamplesResultListFragment extends
@@ -319,7 +318,7 @@ public class ExamplesResultListFragment extends
             return false;
         }
 
-        currentActionMode = getSherlockActivity().startActionMode(
+        currentActionMode = getActivity().startActionMode(
                 new ContextCallback(position));
         getListView().setItemChecked(position, true);
 
@@ -336,8 +335,8 @@ public class ExamplesResultListFragment extends
         }
 
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            MenuInflater inflater = getSherlockActivity()
-                    .getSupportMenuInflater();
+            MenuInflater inflater = getActivity()
+                    .getMenuInflater();
             inflater.inflate(R.menu.example_list_context, menu);
             return true;
         }

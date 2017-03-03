@@ -266,7 +266,7 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
     protected void onStart() {
         super.onStart();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

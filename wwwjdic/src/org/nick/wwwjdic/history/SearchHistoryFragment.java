@@ -23,8 +23,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.SearchRecentSuggestions;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
+import android.content.Loader;
+import android.widget.CursorAdapter;
 import android.util.Log;
 import android.widget.Toast;
 import au.com.bytecode.opencsv.CSVReader;
@@ -45,8 +45,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                 cursor);
         setListAdapter(adapter);
 
-        getSherlockActivity()
-                .setSupportProgressBarIndeterminateVisibility(true);
+        getActivity().setProgressBarIndeterminateVisibility(true);
         getLoaderManager().initLoader(1, null, this);
     }
 
@@ -56,8 +55,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
             @Override
             protected void onPreExecute() {
-                getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(true);
+                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -95,8 +93,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                 }
 
                 refresh();
-                getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(false);
+                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -173,8 +170,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
             @Override
             protected void onPreExecute() {
-                getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(true);
+                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -227,8 +223,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                     return;
                 }
 
-                getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(false);
+                getActivity().setProgressBarIndeterminateVisibility(false);
 
                 if (result) {
                     String message = String
@@ -263,8 +258,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                     return;
                 }
 
-                getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(true);
+                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -323,8 +317,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                     return;
                 }
 
-                getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(false);
+                getActivity().setProgressBarIndeterminateVisibility(false);
 
                 if (result == null) {
                     return;
@@ -377,8 +370,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     @Override
     public void onLoadFinished(Loader<LoaderResult<Cursor>> loader,
             LoaderResult<Cursor> data) {
-        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(
-                false);
+        getActivity().setProgressBarIndeterminateVisibility(false);
 
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(data.getData());
@@ -393,8 +385,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
     @Override
     public void onLoaderReset(Loader<LoaderResult<Cursor>> loader) {
-        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(
-                false);
+        getActivity().setProgressBarIndeterminateVisibility(false);
 
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(null);

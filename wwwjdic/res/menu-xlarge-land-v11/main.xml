@@ -5,7 +5,7 @@
         android:icon="@android:drawable/ic_menu_edit"
         android:title="@string/write_kanji"
         android:orderInCategory="0"
-        android:showAsAction="ifRoom|withText"/>
+        android:showAsAction="never"/>
    <item android:id="@+id/menu_ocr"
         android:icon="@android:drawable/ic_menu_camera"
         android:title="@string/ocr"

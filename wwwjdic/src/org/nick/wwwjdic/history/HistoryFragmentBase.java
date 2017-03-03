@@ -17,28 +17,24 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.OpenableColumns;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.LoaderManager;
+import android.app.DialogFragment;
+import android.app.LoaderManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.BigTextStyle;
 import android.support.v4.app.NotificationCompat.Builder;
-import android.support.v4.widget.CursorAdapter;
+import android.widget.CursorAdapter;
 import android.text.ClipboardManager;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import au.com.bytecode.opencsv.CSVReader;
-
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicApplication;
@@ -52,9 +48,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import au.com.bytecode.opencsv.CSVReader;
+
+import org.nick.wwwjdic.WwwjdicApplication;
+
+import android.app.ListFragment;
+
 @SuppressWarnings("deprecation")
 @SuppressLint("NewApi")
-public abstract class HistoryFragmentBase extends SherlockListFragment
+public abstract class HistoryFragmentBase extends ListFragment
         implements LoaderManager.LoaderCallbacks<LoaderResult<Cursor>>,
         OnItemLongClickListener {
 
@@ -237,7 +239,7 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
                             public void onClick(DialogInterface dialog, int item) {
                                 selectedFilter = item - 1;
                                 filter();
-                                getSherlockActivity().invalidateOptionsMenu();
+                                getActivity().invalidateOptionsMenu();
                                 dialog.dismiss();
                             }
                         });
@@ -419,7 +421,7 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
                                 public void onClick(DialogInterface dialog,
                                         int id) {
                                     historyFragment.deleteAll();
-                                    historyFragment.getSherlockActivity()
+                                    historyFragment.getActivity()
                                             .invalidateOptionsMenu();
                                 }
                             })
@@ -497,7 +499,7 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
             return false;
         }
 
-        currentActionMode = getSherlockActivity().startActionMode(
+        currentActionMode = getActivity().startActionMode(
                 new ContextCallback(position));
         getListView().setItemChecked(position, true);
 
@@ -514,8 +516,8 @@ public abstract class HistoryFragmentBase extends SherlockListFragment
         }
 
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            MenuInflater inflater = getSherlockActivity()
-                    .getSupportMenuInflater();
+            MenuInflater inflater = getActivity()
+                    .getMenuInflater();
             inflater.inflate(R.menu.history_favorites_context, menu);
             return true;
         }

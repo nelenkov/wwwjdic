@@ -22,14 +22,12 @@ import android.os.IBinder;
 import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
-
-import com.actionbarsherlock.view.MenuItem;
-
 import org.nick.kanjirecognizer.hkr.CharacterRecognizer;
 import org.nick.wwwjdic.Activities;
 import org.nick.wwwjdic.R;
@@ -149,12 +147,13 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
             setTitle(R.string.online_hkr);
         }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     void bindToKanjiRecognizer() {
-        boolean success = bindService(new Intent(
-                "org.nick.kanjirecognizer.hkr.RECOGNIZE_KANJI"), connection,
+        Intent intent = new Intent("org.nick.kanjirecognizer.hkr.RECOGNIZE_KANJI");
+        intent.setPackage("org.nick.kanjirecognizer");
+        boolean success = bindService(intent, connection,
                 Context.BIND_AUTO_CREATE);
         if (success) {
             Log.d(TAG, "successfully bound to KR service");

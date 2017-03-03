@@ -12,3 +12,5 @@ local.properties
 *.apk
 *~
 token.txt
+google-services.json
+

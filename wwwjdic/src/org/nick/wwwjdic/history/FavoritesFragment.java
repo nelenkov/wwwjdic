@@ -29,8 +29,8 @@ import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
+import android.content.Loader;
+import android.widget.CursorAdapter;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -74,8 +74,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                 this);
         setListAdapter(adapter);
 
-        getSherlockActivity()
-                .setSupportProgressBarIndeterminateVisibility(true);
+        getActivity().setProgressBarIndeterminateVisibility(true);
         // LoaderManager.enableDebugLogging(true);
         getLoaderManager().initLoader(0, null, this);
     }
@@ -85,8 +84,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {
-                getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(true);
+                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -114,8 +112,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                 }
 
                 refresh();
-                getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(false);
+                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -287,8 +284,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
             @Override
             protected void onPreExecute() {
-                getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(true);
+                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -324,8 +320,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                     return;
                 }
 
-                getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(false);
+                getActivity().setProgressBarIndeterminateVisibility(false);
 
                 if (result) {
                     String message = getResources().getString(
@@ -439,8 +434,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
             @Override
             protected void onPreExecute() {
-                getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(true);
+                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -495,8 +489,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                     return;
                 }
 
-                getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(false);
+                getActivity().setProgressBarIndeterminateVisibility(false);
 
                 if (result) {
                     String message = String.format(
@@ -532,8 +525,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                     return;
                 }
 
-                getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(true);
+                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -592,8 +584,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                     return;
                 }
 
-                getSherlockActivity()
-                        .setSupportProgressBarIndeterminateVisibility(false);
+                getActivity().setProgressBarIndeterminateVisibility(false);
 
                 if (result) {
                     String message = getResources().getString(
@@ -643,7 +634,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     @Override
     public void onLoadFinished(Loader<LoaderResult<Cursor>> loader,
             LoaderResult<Cursor> data) {
-        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(
+        getActivity().setProgressBarIndeterminateVisibility(
                 false);
 
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
@@ -659,7 +650,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
     @Override
     public void onLoaderReset(Loader<LoaderResult<Cursor>> loader) {
-        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(
+        getActivity().setProgressBarIndeterminateVisibility(
                 false);
 
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
