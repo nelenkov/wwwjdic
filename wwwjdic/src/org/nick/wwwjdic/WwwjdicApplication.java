@@ -45,6 +45,7 @@ public class WwwjdicApplication extends Application {
 
     private static final String OLD_MYGENGO_MIRROR = "http://wwwjdic.mygengo.com/cgi-data/wwwjdic";
     private static final String OLD_MYGENGO_MIRROR2 = "http://mygengo.com/wwwjdic/cgi-data/wwwjdic";
+    private static final String OLD_MYGENGO_MIRROR_3 = "http://gengo.com/wwwjdic/cgi-data/wwwjdic";
 
     private static final String NEW_JAPAN_MIRROR = WwwjdicPreferences.DEFAULT_WWWJDIC_URL;
 
@@ -135,7 +136,7 @@ public class WwwjdicApplication extends Application {
             WwwjdicPreferences.setWwwjdicUrl(NEW_JAPAN_MIRROR, this);
         }
         if (OLD_MYGENGO_MIRROR.equals(mirrorUlr)
-                || OLD_MYGENGO_MIRROR2.equals(mirrorUlr)) {
+                || OLD_MYGENGO_MIRROR2.equals(mirrorUlr) || OLD_MYGENGO_MIRROR_3.equals(mirrorUlr)) {
             WwwjdicPreferences.setWwwjdicUrl(NEW_JAPAN_MIRROR, this);
         }
     }
