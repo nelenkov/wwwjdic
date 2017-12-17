@@ -74,12 +74,12 @@ android {
   }
 }
 
-if (project.hasProperty('storePassword')
-        && project.hasProperty('keyAlias')
-        && project.hasProperty('keyPassword')
-        && project.hasProperty('storeFile')) {
-    android.signingConfigs.release.storeFile = file storeFile
-    android.signingConfigs.release.storePassword = storePassword
-    android.signingConfigs.release.keyAlias = keyAlias
-    android.signingConfigs.release.keyPassword = keyPassword
+if (project.hasProperty('org_nick_storePassword')
+        && project.hasProperty('org_nick_keyAlias')
+        && project.hasProperty('org_nick_keyPassword')
+        && project.hasProperty('org_nick_storeFile')) {
+    android.signingConfigs.release.storeFile = file org_nick_storeFile
+    android.signingConfigs.release.storePassword = org_nick_storePassword
+    android.signingConfigs.release.keyAlias = org_nick_keyAlias
+    android.signingConfigs.release.keyPassword = org_nick_keyPassword
 }
