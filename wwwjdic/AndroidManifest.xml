@@ -17,7 +17,7 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     
-    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="15" />
+    <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="22" />
     
     <application android:name="WwwjdicApplication">
         <activity android:name=".Wwwjdic" android:label="@string/app_name"
