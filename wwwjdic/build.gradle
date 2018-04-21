@@ -3,7 +3,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.3.3'
+    classpath 'com.android.tools.build:gradle:3.1.1'
   }
 }
 
@@ -28,8 +28,7 @@ dependencies {
 
 android {  
   compileSdkVersion 19
-  buildToolsVersion '25.0.0'
-  enforceUniquePackageName = false
+  buildToolsVersion '27.0.3'
   packageBuildConfig = false
 
   dexOptions {
