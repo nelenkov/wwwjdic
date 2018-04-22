@@ -17,10 +17,17 @@ dependencies {
   implementation 'ch.acra:acra:4.9.2'
 }
 
-android {  
-  compileSdkVersion 19
-  buildToolsVersion '27.0.3'
+android {
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
   packageBuildConfig = false
+
+  defaultConfig {
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
+    versionCode rootProject.ext.versionCode
+    versionName rootProject.ext.versionName
+  }
 
   dexOptions {
     preDexLibraries = false
