@@ -27,7 +27,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file ("nick.keystore")
+            storeFile file("nick.keystore")
         }
     }
 
@@ -36,7 +36,6 @@ android {
             signingConfig signingConfigs.release
         }
     }
-
 
     sourceSets {
         debug.setRoot('build-types/debug')
@@ -52,6 +51,7 @@ android {
             assets.srcDirs = ['assets']
         }
     }
+
     android.applicationVariants.all { variant ->
         variant.outputs.all {
             outputFileName = "${archivesBaseName}-${variant.name}-${variant.versionName}.apk"
@@ -62,7 +62,6 @@ android {
         checkReleaseBuilds true
         abortOnError false
     }
-
 }
 
 if (project.hasProperty('org_nick_storePassword')
@@ -74,5 +73,3 @@ if (project.hasProperty('org_nick_storePassword')
     android.signingConfigs.release.keyAlias = org_nick_keyAlias
     android.signingConfigs.release.keyPassword = org_nick_keyPassword
 }
-
-//apply plugin: 'com.google.gms.google-services'
