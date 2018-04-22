@@ -6,8 +6,8 @@ repositories {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
-    compile project(':wwwjdic')
+    implementation fileTree(dir: 'libs', include: '*.jar')
+    implementation project(':wwwjdic')
 }
 
 android {
