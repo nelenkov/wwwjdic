@@ -3,6 +3,8 @@ apply plugin: 'com.android.library'
 repositories {
     mavenCentral()
     mavenLocal()
+    google()
+    jcenter()
 }
 
 dependencies {

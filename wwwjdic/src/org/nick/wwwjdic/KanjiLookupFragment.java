@@ -29,7 +29,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-public class KanjiLookupFragment extends WwwjdicFragmentBase implements
+public class  KanjiLookupFragment extends WwwjdicFragmentBase implements
         OnClickListener, OnItemSelectedListener {
 
     private static final String TAG = KanjiLookupFragment.class.getSimpleName();

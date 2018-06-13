@@ -19,6 +19,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.nick.wwwjdic.BuildConfig;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.client.HttpClientFactory;
 import org.nick.wwwjdic.model.KanjiEntry;
@@ -50,6 +51,9 @@ public class GetKanjiService extends Service {
             .compile("^</pre>.*$");
 
     private static final String PRE_END_TAG = "</pre>";
+
+    private static final String FONT_TAG = "<font";
+    private static final String BR_TAG = "<br";
 
     private static final int NUM_RETRIES = 5;
 
@@ -254,6 +258,9 @@ public class GetKanjiService extends Service {
             HttpGet get = new HttpGet(lookupUrl);
 
             String responseStr = httpclient.execute(get, responseHandler);
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "WWWJDIC response: " + responseStr);
+            }
 
             return responseStr;
         } catch (ClientProtocolException cpe) {
@@ -272,6 +279,14 @@ public class GetKanjiService extends Service {
         String[] lines = html.split("\n");
         for (String line : lines) {
             if (StringUtils.isEmpty(line)) {
+                continue;
+            }
+
+            if (line.toLowerCase().startsWith(FONT_TAG)) {
+                continue;
+            }
+
+            if (line.toLowerCase().startsWith(BR_TAG)) {
                 continue;
             }
 

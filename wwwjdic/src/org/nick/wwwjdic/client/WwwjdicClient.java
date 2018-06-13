@@ -31,6 +31,7 @@ public class WwwjdicClient {
             .compile("^</pre>.*$");
     private static final String PRE_END_TAG = "</pre>";
     private static final String FONT_TAG = "<font";
+    private static final String BR_TAG = "<br";
 
     private String url;
     private int timeoutMillis;
@@ -84,7 +85,11 @@ public class WwwjdicClient {
                 continue;
             }
 
-            if (line.startsWith(FONT_TAG)) {
+            if (line.toLowerCase().startsWith(FONT_TAG)) {
+                continue;
+            }
+
+            if (line.toLowerCase().startsWith(BR_TAG)) {
                 continue;
             }
 

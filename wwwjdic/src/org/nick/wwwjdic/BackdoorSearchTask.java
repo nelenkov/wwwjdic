@@ -31,6 +31,8 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
 
     protected static final String FONT_TAG = "<font";
 
+    protected static final String BR_TAG = "<br";
+
     protected static final String MAINTENANCE_MESSAGE = "WWWJDIC is undergoing file maintenance";
 
     public BackdoorSearchTask(String url, int timeoutSeconds,
@@ -53,7 +55,11 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
                 throw new WwwjdicMaintenanceException(line);
             }
 
-            if (line.startsWith(FONT_TAG)) {
+            if (line.toLowerCase().startsWith(FONT_TAG)) {
+                continue;
+            }
+
+            if (line.toLowerCase().startsWith(BR_TAG)) {
                 continue;
             }
 
@@ -108,6 +114,9 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
             HttpGet get = new HttpGet(lookupUrl);
             String responseStr = httpclient.execute(get, responseHandler,
                     localContext);
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "WWWJDIC response: " + responseStr);
+            }
 
             return responseStr;
         } catch (ClientProtocolException cpe) {
