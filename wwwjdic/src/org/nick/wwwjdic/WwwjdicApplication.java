@@ -1,11 +1,13 @@
 
 package org.nick.wwwjdic;
 
+import android.Manifest;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
 import android.location.LocationManager;
@@ -75,7 +77,7 @@ public class WwwjdicApplication extends Application {
 
         initRadicals();
 
-        if (isAutoSelectMirror()) {
+        if (isAutoSelectMirror() && hasLocationPermsion(this)) {
             try {
                 setMirrorBasedOnLocation();
             } catch (Exception e) {
@@ -86,6 +88,8 @@ public class WwwjdicApplication extends Application {
                         "Failed to set mirror based on location, setting default");
                 setDefaultMirror();
             }
+        } else {
+            setDefaultMirror();
         }
 
         updateKanjiRecognizerUrl();
@@ -370,6 +374,14 @@ public class WwwjdicApplication extends Application {
             return new HttpSender(config, HttpSender.Method.POST,
                     HttpSender.Type.FORM, bugsenseUrl, null);
         }
+    }
+
+    public static boolean hasLocationPermsion(Context ctx) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return ctx.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        }
+
+        return true;
     }
 
 }

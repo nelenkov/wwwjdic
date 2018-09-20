@@ -1,6 +1,8 @@
 package org.nick.wwwjdic;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,10 +14,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,6 +27,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import org.nick.wwwjdic.history.FavoritesAndHistory;
 import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
@@ -56,6 +61,13 @@ public class Wwwjdic extends ActionBarActivity {
     private static final int DONATION_THANKS_DIALOG_ID = 2;
 
     private static final String DONATE_VERSION_PACKAGE = "org.nick.wwwjdic.donate";
+
+    private static final int REQUEST_CODE_PERMISSIONS = 1;
+
+    private final static String[] PERMISSIONS = new String[]{
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+    };
 
     class WwwjdicTabsPagerAdapter extends PagerAdapter implements
             ViewPager.OnPageChangeListener, ActionBar.TabListener {
@@ -324,6 +336,27 @@ public class Wwwjdic extends ActionBarActivity {
         }
 
         showDonationThanks();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions();
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void requestPermissions() {
+        requestPermissions(PERMISSIONS, REQUEST_CODE_PERMISSIONS);
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permission, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permission, grantResults);
+
+        if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, R.string.ext_storage_perm_message, Toast.LENGTH_LONG).show();
+            finish();
+        }
+
     }
 
     @Override

@@ -176,7 +176,7 @@ class HighlightView {
         if (mCircle) {
             float distX = x - r.centerX();
             float distY = y - r.centerY();
-            int distanceFromCenter = (int) FloatMath.sqrt(distX * distX + distY
+            int distanceFromCenter = (int) Math.sqrt(distX * distX + distY
                     * distY);
             int radius = mDrawRect.width() / 2;
             int delta = distanceFromCenter - radius;

@@ -579,4 +579,6 @@ You can enable offline recognition using the Kanji Recognizer application. Would
     
     <string name="invalid_backup_file">Invalid backup file.</string>
 
+    <string name="ext_storage_perm_message">"You need to grant external storage permissions to use this app. External storage is used for storing backups and exported files."</string>
+
 </resources>

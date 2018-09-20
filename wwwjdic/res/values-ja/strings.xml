@@ -425,4 +425,6 @@ Kanji Recognizerアプリケーションをインストールすると、オフ�
     <string name="open">開く</string>
     <string name="import_into_anki">Anki単語帳へインポート</string>
     <string name="invalid_backup_file">不正なバックアップファイル。</string>
+
+    <string name="ext_storage_perm_message">"アプリを使うには、外部ストレージパーミションを付与してください。エックスポートされたファイルやバックアップ保存に使います。</string>
 </resources>

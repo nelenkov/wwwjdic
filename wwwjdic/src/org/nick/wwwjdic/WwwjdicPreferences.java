@@ -1,5 +1,6 @@
 package org.nick.wwwjdic;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
@@ -191,7 +192,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
         if (PREF_AUTO_SELECT_MIRROR_KEY.equals(preference.getKey())) {
             boolean autoSelect = (Boolean) newValue;
-            if (autoSelect) {
+            if (autoSelect && WwwjdicApplication.hasLocationPermsion(getApplicationContext())) {
                 WwwjdicApplication.getInstance().setMirrorBasedOnLocation();
                 mirrorPreference.setSummary(getMirrorName(getWwwjdicUrl(this)));
             }

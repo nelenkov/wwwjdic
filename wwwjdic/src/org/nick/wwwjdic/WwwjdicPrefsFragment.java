@@ -4,7 +4,12 @@ import static org.nick.wwwjdic.WwwjdicPreferences.PREF_AUTO_SELECT_MIRROR_KEY;
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_DEFAULT_DICT_PREF_KEY;
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_JP_TTS_ENGINE;
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_WWWJDIC_MIRROR_URL_KEY;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -48,7 +53,7 @@ public class WwwjdicPrefsFragment extends PreferenceFragment implements
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (PREF_AUTO_SELECT_MIRROR_KEY.equals(preference.getKey())) {
             boolean autoSelect = (Boolean) newValue;
-            if (autoSelect) {
+            if (autoSelect && WwwjdicApplication.hasLocationPermsion(getContext())) {
                 WwwjdicApplication.getInstance().setMirrorBasedOnLocation();
                 mirrorPreference.setSummary(WwwjdicPreferences.getMirrorName(
                         getActivity(),
@@ -74,6 +79,6 @@ public class WwwjdicPrefsFragment extends PreferenceFragment implements
         }
 
         return true;
-
     }
+
 }
