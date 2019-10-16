@@ -9,6 +9,7 @@ import android.text.ClipboardManager;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,6 +38,8 @@ import java.util.Locale;
 public class SentenceBreakdownFragment extends
         ResultListFragmentBase<SentenceBreakdownEntry> implements
         TtsManager.TtsEnabled {
+
+    private static final String TAG = SentenceBreakdownFragment.class.getSimpleName();
 
     static class SentenceBreakdownAdapter extends BaseAdapter {
 
@@ -96,12 +99,14 @@ public class SentenceBreakdownFragment extends
 
             void populate(SentenceBreakdownEntry entry) {
                 if (!StringUtils.isEmpty(entry.getExplanation())) {
+                    readingText.setVisibility(VISIBLE);
                     explanationText.setText(entry.getExplanation());
                 } else {
                     explanationText.setVisibility(GONE);
                 }
                 wordText.setText(entry.getWord());
                 if (!StringUtils.isEmpty(entry.getReading())) {
+                    readingText.setVisibility(VISIBLE);
                     readingText.setText(entry.getReading());
                 } else {
                     readingText.setVisibility(GONE);
@@ -195,6 +200,7 @@ public class SentenceBreakdownFragment extends
 
         sentenceView.setText(markedSentence);
         if (!StringUtils.isEmpty(sentenceTranslation)) {
+            englishSentenceText.setVisibility(View.VISIBLE);
             englishSentenceText.setText(sentenceTranslation);
         } else {
             englishSentenceText.setVisibility(View.GONE);
@@ -425,6 +431,7 @@ public class SentenceBreakdownFragment extends
 
     private void updateEntries(final List<SentenceBreakdownEntry> result) {
         entries = (List<SentenceBreakdownEntry>) result;
+        Log.d(TAG, "entries: " + entries);
         SentenceBreakdownAdapter adapter = new SentenceBreakdownAdapter(
                 getActivity(), entries);
         setListAdapter(adapter);

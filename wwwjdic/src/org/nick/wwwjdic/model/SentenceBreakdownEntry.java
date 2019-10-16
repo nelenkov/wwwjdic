@@ -63,4 +63,14 @@ public class SentenceBreakdownEntry implements Serializable {
         return explanation;
     }
 
+    @Override
+    public String toString() {
+        return "SentenceBreakdownEntry{" +
+                "inflectedForm='" + inflectedForm + '\'' +
+                ", word='" + word + '\'' +
+                ", reading='" + reading + '\'' +
+                ", translation='" + translation + '\'' +
+                ", explanation='" + explanation + '\'' +
+                '}';
+    }
 }
