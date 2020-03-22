@@ -29,7 +29,6 @@ import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.content.Loader;
 import android.widget.CursorAdapter;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -37,6 +36,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
+
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
@@ -76,7 +78,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
         getActivity().setProgressBarIndeterminateVisibility(true);
         // LoaderManager.enableDebugLogging(true);
-        getLoaderManager().initLoader(0, null, this);
+        LoaderManager.getInstance(this).initLoader(0, null, this);
     }
 
     @Override

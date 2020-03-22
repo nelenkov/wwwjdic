@@ -1,9 +1,10 @@
 package org.nick.wwwjdic;
 
-import android.app.Activity;
 import android.view.MenuItem;
 
-public abstract class ActionBarActivity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public abstract class ActionBarActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -22,7 +23,7 @@ public abstract class ActionBarActivity extends Activity {
     protected void onStart() {
         super.onStart();
 
-        getActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
 }

@@ -175,8 +175,8 @@ public class OcrActivity extends WebServiceBackedActivity implements
     protected void onStart() {
         super.onStart();
 
-        if (getActionBar() != null && UIUtils.isHoneycombTablet(this)) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null && UIUtils.isHoneycombTablet(this)) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 

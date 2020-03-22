@@ -3,13 +3,7 @@ package org.nick.wwwjdic;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,9 +11,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,6 +34,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 public class Wwwjdic extends ActionBarActivity {
 
@@ -72,7 +72,7 @@ public class Wwwjdic extends ActionBarActivity {
     class WwwjdicTabsPagerAdapter extends PagerAdapter implements
             ViewPager.OnPageChangeListener, ActionBar.TabListener {
 
-        private Activity activity;
+        private AppCompatActivity activity;
         private FragmentManager fragmentManager;
         private FragmentTransaction currentTransaction = null;
 
@@ -81,10 +81,10 @@ public class Wwwjdic extends ActionBarActivity {
 
         private final List<Integer> tabLayouts = new ArrayList<Integer>();
 
-        public WwwjdicTabsPagerAdapter(Activity activity,
+        public WwwjdicTabsPagerAdapter(AppCompatActivity activity,
                 ActionBar actionBar, ViewPager pager) {
             this.activity = activity;
-            this.fragmentManager = activity.getFragmentManager();
+            this.fragmentManager = activity.getSupportFragmentManager();
             this.actionBar = actionBar;
             this.viewPager = pager;
             this.viewPager.setAdapter(this);
@@ -318,15 +318,17 @@ public class Wwwjdic extends ActionBarActivity {
         setContentView(R.layout.main);
 
         // collapse action bar
-        getActionBar().setDisplayShowHomeEnabled(false);
-        getActionBar().setDisplayShowTitleEnabled(false);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(false);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         setupTabs();
 
         dbHelper = HistoryDbHelper.getInstance(this);
 
         hasCamera = getPackageManager().hasSystemFeature(
-                PackageManager.FEATURE_CAMERA);
+                PackageManager.FEATURE_CAMERA_ANY);
 
         invalidateOptionsMenu();
 
@@ -449,7 +451,7 @@ public class Wwwjdic extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
 
-        int position = getActionBar().getSelectedNavigationIndex();
+        int position = getSupportActionBar().getSelectedNavigationIndex();
         filterHistoryFragments(position);
         updateHistorySummary(position);
     }
@@ -519,38 +521,38 @@ public class Wwwjdic extends ActionBarActivity {
     }
 
     private void setupTabs() {
-        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         Bundle extras = getIntent().getExtras();
 
-        ActionBar.Tab dictionaryTab = getActionBar().newTab();
+        androidx.appcompat.app.ActionBar.Tab dictionaryTab = getSupportActionBar().newTab();
         dictionaryTab.setIcon(R.drawable.ic_tab_dict);
         if (UIUtils.isHoneycombTablet(this)) {
             dictionaryTab.setText(R.string.dictionary);
         }
         viewPager = (ViewPager) findViewById(R.id.content);
-        tabsAdapter = new WwwjdicTabsPagerAdapter(this, getActionBar(),
+        tabsAdapter = new WwwjdicTabsPagerAdapter(this, getSupportActionBar(),
                 viewPager);
         tabsAdapter.addTab(dictionaryTab, R.layout.dict_lookup_tab);
 
-        ActionBar.Tab kanjiTab = getActionBar().newTab();
+        androidx.appcompat.app.ActionBar.Tab kanjiTab = getSupportActionBar().newTab();
         kanjiTab.setIcon(R.drawable.ic_tab_kanji);
         if (UIUtils.isHoneycombTablet(this)) {
             kanjiTab.setText(R.string.kanji_lookup);
         }
         tabsAdapter.addTab(kanjiTab, R.layout.kanji_lookup_tab);
 
-        ActionBar.Tab examplesTab = getActionBar().newTab();
+        androidx.appcompat.app.ActionBar.Tab examplesTab = getSupportActionBar().newTab();
         examplesTab.setIcon(R.drawable.ic_tab_example);
         if (UIUtils.isHoneycombTablet(this)) {
             examplesTab.setText(R.string.example_search);
         }
         tabsAdapter.addTab(examplesTab, R.layout.example_search_tab);
 
-        getActionBar().setSelectedNavigationItem(DICTIONARY_TAB_IDX);
+        getSupportActionBar().setSelectedNavigationItem(DICTIONARY_TAB_IDX);
         if (extras != null) {
             int selectedTab = extras.getInt(EXTRA_SELECTED_TAB_IDX, -1);
             if (selectedTab != -1) {
-                getActionBar().setSelectedNavigationItem(selectedTab);
+                getSupportActionBar().setSelectedNavigationItem(selectedTab);
             }
 
             String searchKey = extras.getString(EXTRA_SEARCH_TEXT);
@@ -558,15 +560,15 @@ public class Wwwjdic extends ActionBarActivity {
             if (searchKey != null) {
                 switch (searchType) {
                 case SearchCriteria.CRITERIA_TYPE_DICT:
-                    getActionBar().setSelectedNavigationItem(
+                    getSupportActionBar().setSelectedNavigationItem(
                             DICTIONARY_TAB_IDX);
                     break;
                 case SearchCriteria.CRITERIA_TYPE_KANJI:
-                    getActionBar().setSelectedNavigationItem(
+                    getSupportActionBar().setSelectedNavigationItem(
                             KANJI_TAB_IDX);
                     break;
                 case SearchCriteria.CRITERIA_TYPE_EXAMPLES:
-                    getActionBar().setSelectedNavigationItem(
+                    getSupportActionBar().setSelectedNavigationItem(
                             EXAMPLE_SEARRCH_TAB_IDX);
                     break;
                 default:
@@ -783,7 +785,7 @@ public class Wwwjdic extends ActionBarActivity {
     }
 
     private void filterFavoritesHistoryFragment(int fragmentId, int filterType) {
-        HistoryFragmentBase fragment = (HistoryFragmentBase) getFragmentManager()
+        HistoryFragmentBase fragment = (HistoryFragmentBase) getSupportFragmentManager()
                 .findFragmentById(fragmentId);
         if (fragment != null && !fragment.isDetached()
                 && fragment.getActivity() != null) {

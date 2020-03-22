@@ -175,7 +175,6 @@
 
     <string-array name="wwwjdic_mirror_names">
         <item>Australia</item>
-        <item>Canada</item>
         <item>Germany</item>
         <item>Sweden</item>
         <item>USA</item>
@@ -183,8 +182,6 @@
     <string-array name="wwwjdic_mirror_coords">
         <!-- Sydney -->
         <item>033:51:35/151:12:40</item>
-        <!-- Toronto -->
-        <item>043:42:59/079:20:26</item>
         <!-- Berlin -->
         <item>052:31:00/013:23:00</item>
         <!-- Stockholm -->
@@ -194,10 +191,9 @@
     </string-array>
     <string-array name="wwwjdic_mirror_urls">
         <item>http://nihongo.monash.edu/cgi-bin/wwwjdic</item>
-        <item>http://www.ottix.net/cgi-bin/wwwjdic/wwwjdic</item>
         <item>http://wwwjdic.biz/cgi-bin/wwwjdic</item>
         <item>http://wwwjdic.se/cgi-bin/wwwjdic.cgi</item>
-        <item>http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic</item>
+        <item>https://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic</item>
     </string-array>
 
     <string name="pref_wwwjdic_timeout">WWWJDIC timeout</string>

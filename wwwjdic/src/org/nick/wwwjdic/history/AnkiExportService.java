@@ -23,9 +23,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.BigTextStyle;
-import android.support.v4.app.NotificationCompat.Builder;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationCompat.BigTextStyle;
+import androidx.core.app.NotificationCompat.Builder;
 import android.util.Log;
 
 @SuppressLint("InlinedApi")

@@ -1,11 +1,5 @@
 package org.nick.wwwjdic.history;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.support.v13.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 
@@ -17,20 +11,26 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter implements
         ViewPager.OnPageChangeListener, ActionBar.TabListener {
 
     private static final String TAG = TabsPagerAdapter.class.getSimpleName();
 
-    private Activity activity;
+    private AppCompatActivity activity;
     private final ActionBar actionBar;
     private final ViewPager viewPager;
     private final List<HistoryFragmentBase> tabs = new ArrayList<HistoryFragmentBase>();
 
-    public TabsPagerAdapter(Activity activity, ActionBar actionBar,
+    public TabsPagerAdapter(AppCompatActivity activity, ActionBar actionBar,
                             ViewPager pager) {
-        super(activity.getFragmentManager());
+        super(activity.getSupportFragmentManager());
         this.activity = activity;
         this.actionBar = actionBar;
         this.viewPager = pager;

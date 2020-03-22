@@ -1,15 +1,8 @@
 package org.nick.wwwjdic;
 
-import java.util.concurrent.RejectedExecutionException;
-
-import org.nick.wwwjdic.history.HistoryDbHelper;
-import org.nick.wwwjdic.model.SearchCriteria;
-import org.nick.wwwjdic.utils.StringUtils;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.util.SparseArrayCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -28,6 +21,14 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import org.nick.wwwjdic.history.HistoryDbHelper;
+import org.nick.wwwjdic.model.SearchCriteria;
+import org.nick.wwwjdic.utils.StringUtils;
+
+import java.util.concurrent.RejectedExecutionException;
+
+import androidx.collection.SparseArrayCompat;
 
 public class DictionaryFragment extends WwwjdicFragmentBase implements
         OnClickListener, OnCheckedChangeListener, OnItemSelectedListener {
@@ -68,11 +69,11 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
             int searchType = extras.getInt(Wwwjdic.EXTRA_SEARCH_TYPE);
             if (searchKey != null) {
                 switch (searchType) {
-                case SearchCriteria.CRITERIA_TYPE_DICT:
-                    inputText.setText(searchKey);
-                    break;
-                default:
-                    // do nothing
+                    case SearchCriteria.CRITERIA_TYPE_DICT:
+                        inputText.setText(searchKey);
+                        break;
+                    default:
+                        // do nothing
                 }
                 inputTextFromBundle = true;
             }
@@ -91,7 +92,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.dict_lookup, container, false);
 
         return v;
@@ -151,7 +152,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
                 .setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId,
-                            KeyEvent event) {
+                                                  KeyEvent event) {
                         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                             search();
 
@@ -281,7 +282,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos,
-            long id) {
+                               long id) {
         String dict = getDictionaryFromSelection(pos);
         String dictName = (String) parent.getSelectedItem();
         getApp().setCurrentDictionary(dict);

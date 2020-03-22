@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Holo"/>
-    <style name="Theme.WwwjdicAb" parent="android:Theme.Holo">
+    <style name="AppTheme" parent="Theme.AppCompat"/>
+    <style name="Theme.WwwjdicAb" parent="Theme.AppCompat">
         <item name="android:actionBarStyle">@style/Widget.WwwjdicAb</item>
         <item name="android:actionModeStyle">@style/Widget.WwwjdicActionMode</item>
         <item name="android:actionBarTabStyle">@style/Widget.WwwjdicAbTabView</item>
@@ -19,7 +19,7 @@
         <item name="android:background">@drawable/action_bar_tab_bg</item>
     </style>
 
-    <style name="Theme.WwwjdicAbMain" parent="android:Theme.Holo">
+    <style name="Theme.WwwjdicAbMain" parent="Theme.AppCompat">
         <item name="android:actionBarStyle">@style/Widget.WwwjdicAbMain</item>
         <item name="android:actionModeStyle">@style/Widget.WwwjdicActionMode</item>
         <item name="android:actionBarTabStyle">@style/Widget.WwwjdicAbTabView</item>

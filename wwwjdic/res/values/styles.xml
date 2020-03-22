@@ -196,7 +196,7 @@
         <item name="android:background">@drawable/action_bar_tab_bg</item>
     </style>
 
-    <style name="Theme.WwwjdicAbMain" parent="android:Theme.Holo">
+    <style name="Theme.WwwjdicAbMain" parent="Theme.AppCompat">
         <item name="android:actionBarStyle">@style/Widget.WwwjdicAbMain</item>
         <item name="android:actionModeStyle">@style/Widget.WwwjdicActionMode</item>
         <item name="android:actionBarTabStyle">@style/Widget.WwwjdicAbTabView</item>

@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 
+import androidx.core.view.MenuItemCompat;
+
 public class KanjiEntryDetailFragment extends DetailFragment {
 
     private static final String TAG = KanjiEntryDetailFragment.class
@@ -284,8 +286,7 @@ public class KanjiEntryDetailFragment extends DetailFragment {
         inflater.inflate(R.menu.kanji_detail, menu);
 
         MenuItem menuItem = menu.findItem(R.id.menu_kanji_detail_share);
-        shareActionProvider = (ShareActionProvider) menuItem
-                .getActionProvider();
+        shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
 
         if (shareActionProvider != null) {
             shareActionProvider.setShareIntent(createShareIntent());

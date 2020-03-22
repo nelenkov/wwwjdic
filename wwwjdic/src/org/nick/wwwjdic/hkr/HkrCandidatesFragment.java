@@ -2,10 +2,7 @@ package org.nick.wwwjdic.hkr;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ListFragment;
-import android.app.LoaderManager;
 import android.content.Context;
-import android.content.Loader;
 import android.os.Bundle;
 import android.text.ClipboardManager;
 import android.view.ActionMode;
@@ -32,6 +29,10 @@ import org.nick.wwwjdic.utils.LoaderResult;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.List;
+
+import androidx.fragment.app.ListFragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 
 @SuppressWarnings("deprecation")
@@ -125,7 +126,7 @@ public class HkrCandidatesFragment extends ListFragment implements
         }
 
         // just init don't try to load
-        getLoaderManager().initLoader(0, null, this);
+        LoaderManager.getInstance(this).initLoader(0, null, this);
     }
 
     @Override
@@ -152,7 +153,7 @@ public class HkrCandidatesFragment extends ListFragment implements
         // The CursorLoader example doesn't do this, but if we get an update
         // while the UI is
         // destroyed, it will crash. Why is this necessary?
-        getLoaderManager().destroyLoader(0);
+        LoaderManager.getInstance(this).destroyLoader(0);
     }
 
     @Override
@@ -178,7 +179,7 @@ public class HkrCandidatesFragment extends ListFragment implements
         Bundle args = new Bundle();
         args.putString("kanji", searchKey);
         getActivity().setProgressBarIndeterminateVisibility(true);
-        getLoaderManager().restartLoader(0, args, this);
+        LoaderManager.getInstance(this).restartLoader(0, args, this);
     }
 
     private void copy(String kanji) {

@@ -1,9 +1,16 @@
 
 package org.nick.wwwjdic.history;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.SearchRecentSuggestions;
+import android.util.Log;
+import android.widget.CursorAdapter;
+import android.widget.Toast;
 
 import org.nick.wwwjdic.DictionaryResultList;
 import org.nick.wwwjdic.ExamplesResultList;
@@ -16,17 +23,12 @@ import org.nick.wwwjdic.utils.LoaderResult;
 import org.nick.wwwjdic.utils.MediaScannerWrapper;
 import org.nick.wwwjdic.utils.UIUtils;
 
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.SearchRecentSuggestions;
-import android.content.Loader;
-import android.widget.CursorAdapter;
-import android.util.Log;
-import android.widget.Toast;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
@@ -46,7 +48,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
         setListAdapter(adapter);
 
         getActivity().setProgressBarIndeterminateVisibility(true);
-        getLoaderManager().initLoader(1, null, this);
+        LoaderManager.getInstance(this).initLoader(1, null, this);
     }
 
     @Override
@@ -369,7 +371,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
     @Override
     public void onLoadFinished(Loader<LoaderResult<Cursor>> loader,
-            LoaderResult<Cursor> data) {
+                               LoaderResult<Cursor> data) {
         getActivity().setProgressBarIndeterminateVisibility(false);
 
         CursorAdapter adapter = (CursorAdapter) getListAdapter();

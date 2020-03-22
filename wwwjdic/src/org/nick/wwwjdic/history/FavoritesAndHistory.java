@@ -5,8 +5,6 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.app.DialogFragment;
-import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,7 +19,8 @@ import org.nick.wwwjdic.utils.Dialogs;
 
 import java.io.File;
 
-import org.nick.wwwjdic.ActionBarActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.viewpager.widget.ViewPager;
 
 public class FavoritesAndHistory extends ActionBarActivity {
 
@@ -50,8 +49,8 @@ public class FavoritesAndHistory extends ActionBarActivity {
         // setTitle(R.string.favorites_hist);
 
         // collapse action bar
-        getActionBar().setDisplayShowHomeEnabled(false);
-        getActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Intent intent = getIntent();
         int filterType = intent.getIntExtra(EXTRA_FILTER_TYPE, FILTER_ALL);
@@ -69,26 +68,26 @@ public class FavoritesAndHistory extends ActionBarActivity {
             historyArgs.putInt(EXTRA_FILTER_TYPE, filterType);
         }
 
-        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         viewPager = (ViewPager) findViewById(R.id.content);
-        tabsAdapter = new TabsPagerAdapter(this, getActionBar(),
+        tabsAdapter = new TabsPagerAdapter(this, getSupportActionBar(),
                 viewPager);
-        ActionBar.Tab favoritesTab = getActionBar().newTab();
+        androidx.appcompat.app.ActionBar.Tab favoritesTab = getSupportActionBar().newTab();
         FavoritesFragment favoritesFragment = new FavoritesFragment();
         favoritesFragment.setArguments(favoritesArgs);
         favoritesTab.setText(R.string.favorites).setIcon(
                 R.drawable.ic_tab_favorites);
         tabsAdapter.addTab(favoritesTab, favoritesFragment);
 
-        ActionBar.Tab historyTab = getActionBar().newTab();
+        androidx.appcompat.app.ActionBar.Tab historyTab = getSupportActionBar().newTab();
         SearchHistoryFragment historyFragment = new SearchHistoryFragment();
         historyFragment.setArguments(historyArgs);
         historyTab.setIcon(R.drawable.ic_tab_history).setText(
                 R.string.history);
         tabsAdapter.addTab(historyTab, historyFragment);
 
-        getActionBar().setSelectedNavigationItem(tabIdx);
+        getSupportActionBar().setSelectedNavigationItem(tabIdx);
 
         Dialogs.showTipOnce(this, FAVORITES_EXPORT_TIP_DIALOG,
                 R.string.tips_favorites_export);
@@ -97,7 +96,7 @@ public class FavoritesAndHistory extends ActionBarActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(EXTRA_SELECTED_TAB_IDX, getActionBar()
+        outState.putInt(EXTRA_SELECTED_TAB_IDX, getSupportActionBar()
                 .getSelectedNavigationIndex());
     }
 
@@ -125,7 +124,7 @@ public class FavoritesAndHistory extends ActionBarActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        int currentTabIdx = getActionBar().getSelectedNavigationIndex();
+        int currentTabIdx = getSupportActionBar().getSelectedNavigationIndex();
         HistoryFragmentBase currentTab = (HistoryFragmentBase) tabsAdapter
                 .getItem(currentTabIdx);
         ListAdapter adapter = currentTab.getListAdapter();
@@ -146,7 +145,7 @@ public class FavoritesAndHistory extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int currentTabIdx = getActionBar().getSelectedNavigationIndex();
+        int currentTabIdx = getSupportActionBar().getSelectedNavigationIndex();
         HistoryFragmentBase currentTab = (HistoryFragmentBase) tabsAdapter
                 .getItem(currentTabIdx);
 
@@ -165,7 +164,7 @@ public class FavoritesAndHistory extends ActionBarActivity {
         } else if (item.getItemId() == R.id.menu_delete) {
             DialogFragment confirmDeleteDialog = ConfirmDeleteDialog
                     .newInstance(currentTab);
-            confirmDeleteDialog.show(getFragmentManager(),
+            confirmDeleteDialog.show(getSupportFragmentManager(),
                     "confirmDeleteDialog");
             return true;
         }

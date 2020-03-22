@@ -17,11 +17,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.OpenableColumns;
-import android.app.DialogFragment;
-import android.app.LoaderManager;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.BigTextStyle;
-import android.support.v4.app.NotificationCompat.Builder;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationCompat.BigTextStyle;
+import androidx.core.app.NotificationCompat.Builder;
 import android.widget.CursorAdapter;
 import android.text.ClipboardManager;
 import android.view.ActionMode;
@@ -48,11 +46,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.ListFragment;
+import androidx.loader.app.LoaderManager;
 import au.com.bytecode.opencsv.CSVReader;
 
-import org.nick.wwwjdic.WwwjdicApplication;
-
-import android.app.ListFragment;
 
 @SuppressWarnings("deprecation")
 @SuppressLint("NewApi")
@@ -94,6 +92,7 @@ public abstract class HistoryFragmentBase extends ListFragment
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         super.onCreate(savedInstanceState);
 
         db = HistoryDbHelper.getInstance(getActivity());
@@ -362,7 +361,7 @@ public abstract class HistoryFragmentBase extends ListFragment
             return;
         }
 
-        getLoaderManager().restartLoader(0, null, this);
+       LoaderManager.getInstance(this).restartLoader(0, null, this);
     }
 
     protected abstract Cursor filterCursor();
@@ -440,7 +439,7 @@ public abstract class HistoryFragmentBase extends ListFragment
 
     public void refresh() {
         if (!isDetached() && getActivity() != null) {
-            getLoaderManager().restartLoader(0, null, this);
+            LoaderManager.getInstance(this).restartLoader(0, null,this);
         }
     }
 

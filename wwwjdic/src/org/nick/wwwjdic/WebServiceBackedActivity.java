@@ -8,7 +8,9 @@ import android.os.Handler;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-public abstract class WebServiceBackedActivity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public abstract class WebServiceBackedActivity extends AppCompatActivity {
 
     public static abstract class WsResultHandler extends Handler {
 

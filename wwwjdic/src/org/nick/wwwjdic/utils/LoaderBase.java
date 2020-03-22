@@ -1,8 +1,9 @@
 package org.nick.wwwjdic.utils;
 
 import android.content.Context;
-import android.content.AsyncTaskLoader;
 import android.util.Log;
+
+import androidx.loader.content.AsyncTaskLoader;
 
 public abstract class LoaderBase<T> extends AsyncTaskLoader<LoaderResult<T>> {
 

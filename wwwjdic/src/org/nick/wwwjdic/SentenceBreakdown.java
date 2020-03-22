@@ -39,7 +39,7 @@ public class SentenceBreakdown extends ResultListBase {
     protected void onStart() {
         super.onStart();
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

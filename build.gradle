@@ -6,15 +6,22 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.android.tools.build:gradle:3.6.1'
+        classpath 'com.google.gms:google-services:4.3.3'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
     }
 }
 
 ext {
-    versionName = '2.4.2'
+    versionName = '2.5.0'
     versionCode = 24200
     minSdkVersion = 16
-    compileSdkVersion = 26
-    targetSdkVersion = 26
-    buildToolsVersion = '28.0.2'
+    compileSdkVersion = 28
+    targetSdkVersion = 28
+    buildToolsVersion = '28.0.3'
 }

@@ -36,7 +36,7 @@ public class HkrCandidates extends ActionBarActivity implements
         View detailsFrame = findViewById(R.id.details);
         dualPane = detailsFrame != null
                 && detailsFrame.getVisibility() == View.VISIBLE;
-        candidatesFragment = (HkrCandidatesFragment) getFragmentManager()
+        candidatesFragment = (HkrCandidatesFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.results_list);
     }
 

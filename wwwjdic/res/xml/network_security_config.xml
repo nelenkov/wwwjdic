@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">nihongo.monash.edu</domain>
+        <domain includeSubdomains="true">nlp.cis.unimelb.edu.au</domain>
+        <domain includeSubdomains="true">wwwjdic.biz</domain>
+        <domain includeSubdomains="true">wwwjdic.se</domain>
+        <domain includeSubdomains="true">www.edrdg.org</domain>
+    </domain-config>
+</network-security-config>

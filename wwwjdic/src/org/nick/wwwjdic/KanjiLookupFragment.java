@@ -1,16 +1,8 @@
 package org.nick.wwwjdic;
 
-import java.util.concurrent.RejectedExecutionException;
-
-import org.nick.wwwjdic.history.HistoryDbHelper;
-import org.nick.wwwjdic.model.Radical;
-import org.nick.wwwjdic.model.SearchCriteria;
-import org.nick.wwwjdic.utils.StringUtils;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.util.SparseArrayCompat;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,6 +20,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+
+import org.nick.wwwjdic.history.HistoryDbHelper;
+import org.nick.wwwjdic.model.Radical;
+import org.nick.wwwjdic.model.SearchCriteria;
+import org.nick.wwwjdic.utils.StringUtils;
+
+import java.util.concurrent.RejectedExecutionException;
+
+import androidx.collection.SparseArrayCompat;
 
 public class  KanjiLookupFragment extends WwwjdicFragmentBase implements
         OnClickListener, OnItemSelectedListener {

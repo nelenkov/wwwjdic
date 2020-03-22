@@ -2,8 +2,6 @@ package org.nick.wwwjdic.sod;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.app.LoaderManager;
-import android.content.Loader;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +30,9 @@ import org.nick.wwwjdic.utils.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 public class SodActivity extends ActionBarActivity implements OnClickListener,
         LoaderManager.LoaderCallbacks<LoaderResult<Pair<String, Boolean>>> {
@@ -232,7 +233,7 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
         args.putBoolean("animate", false);
         args.putString("unicodeNumber", unicodeNumber);
 
-        Loader<LoaderResult<Pair<String, Boolean>>> loader = getLoaderManager()
+        Loader<LoaderResult<Pair<String, Boolean>>> loader = LoaderManager.getInstance(this)
                 .initLoader(0, args, this);
         if (loader.isStarted()) {
             showProgress();
@@ -308,7 +309,7 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
 
     @Override
     public Loader<LoaderResult<Pair<String, Boolean>>> onCreateLoader(int id,
-            Bundle args) {
+                                                                      Bundle args) {
         String unicodeNumber = args.getString("unicodeNumber");
         boolean animate = args.getBoolean("animate");
 

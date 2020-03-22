@@ -5,7 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.SubMenu;
 import android.view.View;
-import android.view.ActionProvider;
+
+import androidx.core.view.ActionProvider;
 
 @SuppressLint("NewApi")
 public class ShareActionProvider extends ActionProvider {

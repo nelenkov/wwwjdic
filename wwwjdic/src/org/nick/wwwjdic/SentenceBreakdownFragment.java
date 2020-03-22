@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.core.view.MenuItemCompat;
+
 @SuppressWarnings("deprecation")
 @SuppressLint("NewApi")
 public class SentenceBreakdownFragment extends
@@ -268,8 +270,7 @@ public class SentenceBreakdownFragment extends
         inflater.inflate(R.menu.example_breakdown, menu);
 
         MenuItem menuItem = menu.findItem(R.id.menu_example_share);
-        shareActionProvider = (ShareActionProvider) menuItem
-                .getActionProvider();
+        shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
 
         if (shareActionProvider != null) {
             shareActionProvider.setShareIntent(createShareIntent());

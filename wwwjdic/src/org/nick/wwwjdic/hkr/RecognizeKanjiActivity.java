@@ -147,7 +147,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
             setTitle(R.string.online_hkr);
         }
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     void bindToKanjiRecognizer() {
