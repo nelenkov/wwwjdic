@@ -178,55 +178,74 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="AppTheme" parent="android:Theme.Holo"/>
-    <style name="Theme.WwwjdicAb" parent="android:Theme.Holo">
-        <item name="android:actionBarStyle">@style/Widget.WwwjdicAb</item>
-        <item name="android:actionModeStyle">@style/Widget.WwwjdicActionMode</item>
-        <item name="android:actionBarTabStyle">@style/Widget.WwwjdicAbTabView</item>
+    <style name="AppTheme" parent="Theme.AppCompat"/>
+    <style name="Theme.WwwjdicAb" parent="Theme.AppCompat">
+        <item name="actionBarStyle">@style/Widget.WwwjdicAb</item>
+        <item name="actionModeStyle">@style/Widget.WwwjdicActionMode</item>
+        <item name="actionBarTabStyle">@style/Widget.WwwjdicAbTabView</item>
     </style>
 
-    <style name="Widget.WwwjdicAb" parent="android:style/Widget.Holo.ActionBar">
-        <item name="android:background">@drawable/action_bar_bg</item>
-        <item name="android:backgroundSplit">@drawable/action_bar_bg</item>
-        <item name="android:icon">@drawable/ic_action_home</item>
-        <item name="android:titleTextStyle">@style/action_bar_title</item>
+    <style name="Widget.WwwjdicAb" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="background">@drawable/action_bar_bg</item>
+        <item name="backgroundSplit">@drawable/action_bar_bg</item>
+        <item name="icon">@drawable/ic_action_home</item>
+        <item name="titleTextStyle">@style/action_bar_title</item>
     </style>
 
-    <style name="Widget.WwwjdicAbTabView" parent="android:style/Widget.Holo.ActionBar.TabView">
+    <style name="Widget.WwwjdicAbTabView" parent="@style/Widget.AppCompat.ActionBar.TabView">
         <item name="android:background">@drawable/action_bar_tab_bg</item>
     </style>
 
     <style name="Theme.WwwjdicAbMain" parent="Theme.AppCompat">
-        <item name="android:actionBarStyle">@style/Widget.WwwjdicAbMain</item>
-        <item name="android:actionModeStyle">@style/Widget.WwwjdicActionMode</item>
-        <item name="android:actionBarTabStyle">@style/Widget.WwwjdicAbTabView</item>
-        <item name="android:actionBarTabTextStyle">@style/Widget.WwwjdicTabText</item>
-        <item name="android:actionMenuTextAppearance">@style/Widget.WwwjdicMenu</item>
+        <item name="actionBarStyle">@style/Widget.WwwjdicAbMain</item>
+        <item name="actionModeStyle">@style/Widget.WwwjdicActionMode</item>
+        <item name="actionBarTabStyle">@style/Widget.WwwjdicAbTabView</item>
+        <item name="actionBarTabTextStyle">@style/Widget.WwwjdicTabText</item>
+        <item name="actionMenuTextAppearance">@style/Widget.WwwjdicMenu</item>
+    </style>
+
+    <style name="Theme.WwwjdicAbTabbed" parent="Theme.AppCompat.NoActionBar">
+        <item name="actionBarStyle">@style/Widget.WwwjdicAbTabbed</item>
+        <item name="actionModeStyle">@style/Widget.WwwjdicActionMode</item>
+        <item name="actionBarTabStyle">@style/Widget.WwwjdicAbTabView</item>
+        <item name="actionBarTabTextStyle">@style/Widget.WwwjdicTabText</item>
+        <item name="actionMenuTextAppearance">@style/Widget.WwwjdicMenu</item>
+        <item name="colorPrimary">@color/ab_blue</item>
+        <item name="colorPrimaryDark">@color/ab_blue_dark</item>
+    </style>
+
+    <style name="Widget.WwwjdicAbTabbed" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="displayOptions"></item>
+        <item name="background">@null</item>
+        <item name="backgroundSplit">@drawable/action_bar_bg</item>
+        <item name="icon">@drawable/ic_action_home</item>
+        <item name="titleTextStyle">@style/action_bar_title</item>
+        <item name="colorPrimary">@color/ab_blue</item>
+        <item name="colorPrimaryDark">@color/ab_blue_dark</item>
     </style>
     
-    <style name="Widget.WwwjdicTabText" parent="android:style/Widget.Holo.ActionBar.TabText">
+    <style name="Widget.WwwjdicTabText" parent="@style/Widget.AppCompat.ActionBar.TabText">
         <item name="android:textSize">@dimen/ab_tab_menu_text_size</item>
     </style>
 
     <!--style name="Widget.WwwjdicMenu" parent="android:style/TextAppearance.Widget.ActionBar.Menu"-->
-    <style name="Widget.WwwjdicMenu" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+    <style name="Widget.WwwjdicMenu" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Menu">
         <item name="android:textSize">@dimen/ab_tab_menu_text_size</item>
     </style>
 
-    <style name="Widget.WwwjdicAbMain" parent="android:style/Widget.Holo.ActionBar">
-        <item name="android:displayOptions"></item>
-        <item name="android:background">@null</item>
-        <item name="android:backgroundSplit">@drawable/action_bar_bg</item>
-        <item name="android:icon">@null</item>
-        <item name="android:titleTextStyle">@style/action_bar_title</item>
+    <style name="Widget.WwwjdicAbMain" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="background">@drawable/action_bar_bg</item>
+        <item name="backgroundSplit">@drawable/action_bar_bg</item>
+        <item name="icon">@null</item>
+        <item name="titleTextStyle">@style/action_bar_title</item>
     </style>
 
-    <style name="Widget.WwwjdicActionMode" parent="android:style/Widget.Holo.ActionMode">
-        <item name="android:background">@drawable/action_bar_bg</item>
-        <item name="android:backgroundSplit">@drawable/action_bar_bg</item>
+    <style name="Widget.WwwjdicActionMode" parent="@style/TextAppearance.AppCompat.Widget.ActionMode.Title">
+        <item name="background">@drawable/action_bar_bg</item>
+        <item name="backgroundSplit">@drawable/action_bar_bg</item>
     </style>
 
-    <style name="WwwjdicAbTrans" parent="android:Theme.Holo.NoActionBar" />
+    <style name="WwwjdicAbTrans" parent="Theme.AppCompat.NoActionBar" />
 
     <style name="search_input">
         <item name="android:layout_height">wrap_content</item>

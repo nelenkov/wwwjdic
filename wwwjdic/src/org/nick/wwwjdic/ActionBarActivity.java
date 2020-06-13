@@ -23,7 +23,9 @@ public abstract class ActionBarActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        getSupportActionBar().setHomeButtonEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
     }
 
 }

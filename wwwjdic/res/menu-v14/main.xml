@@ -1,34 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_draw"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_draw"
         android:icon="@drawable/ic_menu_edit"
-        android:title="@string/write_kanji"
         android:orderInCategory="0"
-        android:showAsAction="ifRoom"/>
-   <item android:id="@+id/menu_ocr"
-        android:icon="@drawable/ic_menu_camera"
-        android:title="@string/ocr"
-        android:orderInCategory="1"
-        android:showAsAction="never" />
-   <item android:id="@+id/menu_multi_radical"
+        android:title="@string/write_kanji"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_multi_radical"
         android:icon="@drawable/ic_menu_search"
+        android:orderInCategory="1"
         android:title="@string/multi_radical_search"
-        android:orderInCategory="2"
-        android:showAsAction="ifRoom" />          
-   <item android:id="@+id/menu_favorites_history"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_favorites_history"
         android:icon="@drawable/ic_menu_recent_history"
+        android:orderInCategory="2"
         android:title="@string/favorites_hist"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_ocr"
+        android:icon="@drawable/ic_menu_camera"
         android:orderInCategory="3"
-        android:showAsAction="ifRoom" />
-   <item android:id="@+id/menu_settings"
+        android:title="@string/ocr"
+        android:enabled="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_settings"
         android:icon="@android:drawable/ic_menu_preferences"
-        android:title="@string/settings"
         android:orderInCategory="4"
-        android:showAsAction="never" />
-   <item android:id="@+id/menu_about"
+        android:title="@string/settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_about"
         android:icon="@android:drawable/ic_menu_info_details"
-        android:title="@string/about"
         android:orderInCategory="5"
-        android:showAsAction="never" />                    
+        android:title="@string/about"
+        app:showAsAction="never" />
 </menu>

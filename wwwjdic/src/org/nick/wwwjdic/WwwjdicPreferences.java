@@ -161,7 +161,9 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         super.onStart();
 
         // TODO: migrate to PreferenceFragment?
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getActionBar() != null) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @SuppressWarnings("deprecation")

@@ -3,6 +3,8 @@ package org.nick.wwwjdic.history;
 import android.util.Log;
 import android.view.View;
 
+import com.google.android.material.tabs.TabLayout;
+
 import org.nick.wwwjdic.R;
 
 import java.lang.reflect.Field;
@@ -19,7 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter implements
-        ViewPager.OnPageChangeListener, ActionBar.TabListener {
+        ViewPager.OnPageChangeListener, TabLayout.OnTabSelectedListener {
 
     private static final String TAG = TabsPagerAdapter.class.getSimpleName();
 
@@ -41,7 +43,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
     public void addTab(ActionBar.Tab tab, HistoryFragmentBase tabFragment) {
         tabFragment.setHasOptionsMenu(true);
         tabs.add(tabFragment);
-        actionBar.addTab(tab.setTabListener(this));
+        //actionBar.addTab(tab.setTabListener(this));
         notifyDataSetChanged();
     }
 
@@ -62,14 +64,14 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
 
     @Override
     public void onPageSelected(int position) {
-        actionBar.setSelectedNavigationItem(position);
+        //actionBar.setSelectedNavigationItem(position);
         // TODO -- refreshing kills action bar?
         // refresh(position);
-        setTitle(position);
+        //setTitle(position);
 
         // for ABS#240
         // https://github.com/JakeWharton/ActionBarSherlock/issues/240
-        selectInSpinnerIfPresent(position, true);
+        //selectInSpinnerIfPresent(position, true);
     }
 
     @SuppressWarnings("unused")
@@ -82,26 +84,26 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
     public void onPageScrollStateChanged(int state) {
     }
 
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-        // fixes ABS #351
-        // https://github.com/JakeWharton/ActionBarSherlock/issues/351
-        int position = tab.getPosition();
-        if (viewPager.getCurrentItem() != position) {
-            viewPager.setCurrentItem(position);
-            // TODO -- refreshing kills action bar?
-            // refresh(position);
-            setTitle(position);
-        }
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-    }
+//    @Override
+//    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+//        // fixes ABS #351
+//        // https://github.com/JakeWharton/ActionBarSherlock/issues/351
+//        int position = tab.getPosition();
+//        if (viewPager.getCurrentItem() != position) {
+//            viewPager.setCurrentItem(position);
+//            // TODO -- refreshing kills action bar?
+//            // refresh(position);
+//            setTitle(position);
+//        }
+//    }
+//
+//    @Override
+//    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+//    }
+//
+//    @Override
+//    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+//    }
 
     private void setTitle(int tabIdx) {
         if (tabIdx == 0) {
@@ -172,4 +174,18 @@ public class TabsPagerAdapter extends FragmentPagerAdapter implements
         }
     }
 
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
 }

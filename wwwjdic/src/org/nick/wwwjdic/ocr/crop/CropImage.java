@@ -82,7 +82,7 @@ public class CropImage extends MonitoredActivity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.cropimage);
 

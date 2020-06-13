@@ -68,6 +68,11 @@ android {
         checkReleaseBuilds true
         abortOnError false
     }
+
+    afterEvaluate {
+        generateReleaseBuildConfig.enabled = false
+        generateDebugBuildConfig.enabled = false
+    }
 }
 
 if (project.hasProperty('org_nick_storePassword')

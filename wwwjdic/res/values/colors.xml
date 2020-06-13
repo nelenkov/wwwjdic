@@ -10,5 +10,6 @@
     <color name="honeycombish_blue">#FF58BAED</color>
     <color name="background">#FFEFEFEF</color>
     <color name="ab_blue">#ff6595f9</color>
+    <color name="ab_blue_dark">#ff303f9f</color>
     <color name="ab_blue_transparent">#806595f9</color>
 </resources>

@@ -25,7 +25,9 @@ public class WwwjdicPreferencesHC extends PreferenceActivity {
     protected void onStart() {
         super.onStart();
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getActionBar() != null) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override

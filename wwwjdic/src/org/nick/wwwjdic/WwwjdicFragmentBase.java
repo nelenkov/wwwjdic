@@ -1,7 +1,8 @@
 package org.nick.wwwjdic;
 
 import android.os.Bundle;
-import android.app.Fragment;
+
+import androidx.fragment.app.Fragment;
 
 public class WwwjdicFragmentBase extends Fragment {
 
@@ -11,7 +12,8 @@ public class WwwjdicFragmentBase extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onActivityCreated(savedInstanceState);
+        //super.onCreate(savedInstanceState);
     }
 
     protected WwwjdicApplication getApp() {

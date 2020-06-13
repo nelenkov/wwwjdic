@@ -1,7 +1,6 @@
 
 package org.nick.wwwjdic.history;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,7 +41,7 @@ public class FavoritesAndHistory extends ActionBarActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setProgressBarIndeterminateVisibility(Boolean.FALSE);
 
         setContentView(R.layout.favorites_history);
@@ -68,7 +67,7 @@ public class FavoritesAndHistory extends ActionBarActivity {
             historyArgs.putInt(EXTRA_FILTER_TYPE, filterType);
         }
 
-        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        //getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         viewPager = (ViewPager) findViewById(R.id.content);
         tabsAdapter = new TabsPagerAdapter(this, getSupportActionBar(),
@@ -87,7 +86,7 @@ public class FavoritesAndHistory extends ActionBarActivity {
                 R.string.history);
         tabsAdapter.addTab(historyTab, historyFragment);
 
-        getSupportActionBar().setSelectedNavigationItem(tabIdx);
+        //getSupportActionBar().setSelectedNavigationItem(tabIdx);
 
         Dialogs.showTipOnce(this, FAVORITES_EXPORT_TIP_DIALOG,
                 R.string.tips_favorites_export);
@@ -124,7 +123,8 @@ public class FavoritesAndHistory extends ActionBarActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        int currentTabIdx = getSupportActionBar().getSelectedNavigationIndex();
+        // FIXME
+        int currentTabIdx = 0;//getSupportActionBar().getSelectedNavigationIndex();
         HistoryFragmentBase currentTab = (HistoryFragmentBase) tabsAdapter
                 .getItem(currentTabIdx);
         ListAdapter adapter = currentTab.getListAdapter();

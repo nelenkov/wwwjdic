@@ -16,12 +16,13 @@
 
 package org.nick.wwwjdic.ocr.crop;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import java.util.ArrayList;
 
-public class MonitoredActivity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MonitoredActivity extends AppCompatActivity {
 
     private final ArrayList<LifeCycleListener> mListeners =
             new ArrayList<LifeCycleListener>();
