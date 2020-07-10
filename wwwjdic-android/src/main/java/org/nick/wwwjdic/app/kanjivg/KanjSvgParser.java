@@ -14,13 +14,11 @@ public class KanjSvgParser {
 
     private static final String NS_KVG = "http://kanjivg.tagaini.net";
 
-    private InputStream in;
     private XMLStreamReader reader;
     private int eventType;
 
     public KanjSvgParser(InputStream in) {
         try {
-            this.in = in;
             XMLInputFactory factory = XMLInputFactory.newInstance();
             reader = factory.createXMLStreamReader(in);
         } catch (XMLStreamException e) {
@@ -48,11 +46,10 @@ public class KanjSvgParser {
             String name = null;
             int strokeNumber = -1;
             eventType = reader.getEventType();
-            boolean done = false;
             boolean inKanji = false;
             boolean inStrokes = false;
 
-            while (eventType != XMLStreamConstants.END_DOCUMENT && !done) {
+            while (eventType != XMLStreamConstants.END_DOCUMENT) {
                 switch (eventType) {
                 case XMLStreamConstants.START_DOCUMENT:
                     break;

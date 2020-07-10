@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
-<!--
+  <!--
   <cron>
-    <url>/import</url>
-    <description>import kanjivg</description>
-    <schedule>every 2 minutes</schedule>
+    <url>/update</url>
+    <description>update kanjivg</description>
+    <schedule>every 1 mins</schedule>
   </cron>
--->
+  -->
 </cronentries>

@@ -25,9 +25,6 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 @Singleton
 public class KanjiStrokesServlet extends HttpServlet {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1176775953028953526L;
 
     @Inject

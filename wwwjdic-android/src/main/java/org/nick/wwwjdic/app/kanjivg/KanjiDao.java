@@ -16,7 +16,7 @@ public class KanjiDao {
     private Logger log;
 
     public Kanji findKanji(String unicodeNumber) {
-        log.info("findKnajk: " + unicodeNumber);
+        log.info("findKanj: " + unicodeNumber);
 
         Objectify ofy = ofy();
 
@@ -34,6 +34,7 @@ public class KanjiDao {
     }
 
     public void saveKanji(Kanji kanji) {
+        log.info("saveKanji: " + kanji);
         Key<Kanji> key = ofy().save().entity(kanji).now();
         for (Stroke s: kanji.getStrokes()) {
             s.setKanji(key);

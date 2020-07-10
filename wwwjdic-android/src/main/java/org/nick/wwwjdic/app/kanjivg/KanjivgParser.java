@@ -12,13 +12,11 @@ public class KanjivgParser {
 
     private Logger logger = Logger.getLogger("KanjivgParser");
 
-    private InputStream in;
     private XMLStreamReader reader;
     private int eventType;
 
     public KanjivgParser(InputStream in) {
         try {
-            this.in = in;
             XMLInputFactory factory = XMLInputFactory.newInstance();
             reader = factory.createXMLStreamReader(in);
         } catch (XMLStreamException e) {
@@ -49,13 +47,12 @@ public class KanjivgParser {
         logger.info("fastForward: " + idx);
 
         eventType = reader.getEventType();
-        boolean done = false;
 
         int currentIdx = 0;
         String name;
 
         try {
-            while (eventType != XMLStreamConstants.END_DOCUMENT && !done) {
+            while (eventType != XMLStreamConstants.END_DOCUMENT) {
                 switch (eventType) {
                 case XMLStreamConstants.START_DOCUMENT:
                     break;

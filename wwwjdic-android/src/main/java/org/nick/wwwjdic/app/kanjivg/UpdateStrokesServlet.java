@@ -3,7 +3,6 @@ package org.nick.wwwjdic.app.kanjivg;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.nick.wwwjdic.app.server.CacheController;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -11,10 +10,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
+
+import static com.googlecode.objectify.ObjectifyService.ofy;
 
 @Singleton
 public class UpdateStrokesServlet extends HttpServlet {
@@ -23,9 +26,6 @@ public class UpdateStrokesServlet extends HttpServlet {
 
     @Inject
     private Logger log;
-
-    @Inject
-    private KanjiDao dao;
 
     public void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
@@ -44,41 +44,26 @@ public class UpdateStrokesServlet extends HttpServlet {
                     log.info("Got an uploaded file: " + item.getFieldName()
                             + ", name = " + item.getName());
 
-                    KanjSvgParser parser = new KanjSvgParser(stream);
-                    Kanji kanji = parser.parse();
-                    if (kanji == null) {
-                        log.warning("Could not parse SVG");
-                        continue;
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    byte[] buff = new byte[2048];
+                    int read = -1;
+                    while((read = stream.read(buff, 0, buff.length)) != -1) {
+                        baos.write(buff, 0, read);
+                    }
+                    byte[] data = baos.toByteArray();
+                    log.info(String.format("read %d bytes from %s", data.length, item.getName()));
+                    if (data.length == 0) {
+                        return;
                     }
 
-                    Kanji existing = dao.findKanji(kanji.getUnicodeNumber());
-                    if (existing == null) {
-                        log.warning(String.format(
-                                "Kanji %s not found. Nothing to update",
-                                kanji.getUnicodeNumber()));
-                        continue;
-                    }
+                    KanjivgParser parser = new KanjivgParser(new GZIPInputStream(new ByteArrayInputStream(data)));
+                    int numKanji = parser.countKanji();
+                    log.info("numKanji: " + numKanji);
 
-                    List<Stroke> newStrokes = kanji.getStrokes();
-                    List<Stroke> existingStrokes = existing.getStrokes();
-                    for (int i = 0; i < existingStrokes.size(); i++) {
-                        Stroke s = newStrokes.get(i);
-                        Stroke old = existingStrokes.get(i);
-                        log.info("old stroke: " + old);
-                        log.info("new stroke: " + s);
+                    GzipBlob blob = new GzipBlob(item.getName(), data);
+                    blob.setTotalKanjis(numKanji);
 
-                        old.setPath(s.getPath());
-                        old.setNumber(s.getNumber());
-                    }
-
-                    dao.saveKanji(kanji);
-                    log.info(String.format("Updated strokes for %s(%s)",
-                            existing.getMidashi(),
-                            existing.getUnicodeNumber()));
-
-                    log.info(String.format("Removing %s from cache",
-                            existing.getUnicodeNumber()));
-                    CacheController.remove(existing.getUnicodeNumber());
+                    ofy().save().entity(blob).now();
                 }
 
                 res.sendRedirect("/update-strokes.xhtml");

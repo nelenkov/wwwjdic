@@ -1,20 +1,21 @@
 package org.nick.wwwjdic.app.kanjivg;
 
+import com.google.appengine.api.blobstore.BlobInfo;
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+
+import javax.inject.Singleton;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.google.appengine.api.blobstore.*;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
@@ -46,7 +47,6 @@ public class UploadServlet extends HttpServlet {
         int numKanji = parser.countKanji();
         log.info("numKanji: " + numKanji);
 
-        String name = req.getParameter("name");
         GzipBlob blob = new GzipBlob(blobInfo.getFilename(), data);
         blob.setTotalKanjis(numKanji);
 

@@ -22,7 +22,7 @@ public class Kanji implements Serializable {
     private String unicodeNumber;
 
     @Ignore
-    private List<Stroke> strokes = new ArrayList<Stroke>();
+    private List<Stroke> strokes = new ArrayList<>();
 
     public Kanji(String midashi, String unicodeNumber) {
         this.midashi = midashi;
@@ -58,6 +58,11 @@ public class Kanji implements Serializable {
 
     public void setStrokes(List<Stroke> strokes) {
         this.strokes = strokes;
+    }
+
+    @Override
+    public String toString() {
+        return unicodeNumber + ": " + midashi;
     }
 
 }

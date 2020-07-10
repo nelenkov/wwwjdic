@@ -1,5 +1,7 @@
 package org.nick.wwwjdic.app.kanjivg;
 
+import org.nick.wwwjdic.app.server.CacheController;
+
 import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -112,6 +114,8 @@ public class KanjiVgImporter {
              old.setNumber(s.getNumber());
              ofy().save().entity(old).now();
          }
+
+         CacheController.remove(unicodeNumber);
      }
 
 }
