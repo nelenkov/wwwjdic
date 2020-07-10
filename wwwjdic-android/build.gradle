@@ -1,0 +1,86 @@
+buildscript {      // Configuration for building
+  repositories {
+    jcenter()      // Bintray's repository - a fast Maven Central mirror & more
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.2.0'
+    classpath 'org.akhikhl.gretty:gretty:+'
+    //classpath 'org.wisepersist:gwt-gradle-plugin:1.0.10'
+  }
+}
+
+repositories {   // repositories for Jar's you access in your code
+  jcenter()
+  mavenCentral()
+}
+
+apply plugin: 'java'
+compileJava.options.encoding = 'UTF-8'
+
+apply plugin: 'war'
+//apply plugin: 'gwt'
+apply plugin: 'org.akhikhl.gretty'
+apply plugin: 'com.google.cloud.tools.appengine'
+
+//gwt {
+//  gwtVersion = '2.9.0'
+//  modules 'org.nick.wwwjdic.app.Wwwjdic_android'
+//  minHeapSize = "2048M"
+//  maxHeapSize = "4096M"
+//  compiler {
+//    disableClassMetadata = true; // activates -XdisableClassMetadata
+//    disableCastChecking = true; // activates -XdisableCastChecking
+//  }
+//}
+
+dependencies {
+  providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+  providedCompile 'com.google.appengine:appengine:+'
+  //providedCompile 'com.google.inject:guice:4.2.3'
+
+  compile 'com.google.appengine:appengine-api-1.0-sdk:1.9.80'
+  compile 'com.google.appengine:appengine-jsr107cache:1.9.80'
+  compile 'net.sf.jsr107cache:jsr107cache:1.1'
+
+  compile 'org.json:json:20200518'
+  compile 'commons-fileupload:commons-fileupload:1.4'
+
+  compile 'javax.inject:javax.inject:1'
+  compile 'com.google.inject.extensions:guice-servlet:4.2.3'
+
+  compile 'com.googlecode.objectify:objectify:5.1.24'
+
+  //compile 'org.ow2.asm:asm:4.0'
+
+  //compile 'com.google.gwt:gwt-user:2.9.0'
+  //compile 'com.google.gwt:gwt-servlet:2.9.0'
+  //compile 'com.google.gwt:gwt-dev:2.9.0'
+
+  //compile 'javax.servlet:jstl:1.2'
+  compile 'jstl:jstl:1.2'
+
+  testCompile('junit:junit:4.13')
+  testRuntime('junit:junit:4.13')
+
+}
+
+gretty {
+    servletContainer = 'jetty9'  // What App Engine Flexible uses
+}
+
+  appengine {
+    deploy {   // deploy configuration
+      version = "GCLOUD_CONFIG"    // APPENGINE_CONFIG | GCLOUD_CONFIG
+      projectId = "GCLOUD_CONFIG" // or APPENGINE_CONFIG | GCLOUD_CONFIG
+      stopPreviousVersion = true  // default - stop the current version
+      promote = true              // default - & make this the current version
+    }
+  }
+
+group = 'com.example.appengine'   // Generated output GroupId
+version = '1.0-SNAPSHOT'          // Version in generated output
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
