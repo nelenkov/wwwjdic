@@ -57,8 +57,8 @@ dependencies {
   //compile 'com.google.gwt:gwt-servlet:2.9.0'
   //compile 'com.google.gwt:gwt-dev:2.9.0'
 
-  //compile 'javax.servlet:jstl:1.2'
-  compile 'jstl:jstl:1.2'
+  compile 'org.apache.taglibs:taglibs-standard-spec:1.2.5'
+  compile 'org.apache.taglibs:taglibs-standard-impl:1.2.5'
 
   testCompile('junit:junit:4.13')
   testRuntime('junit:junit:4.13')
