@@ -5,6 +5,7 @@ import com.googlecode.objectify.Objectify;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
@@ -29,6 +30,20 @@ public class KanjiDao {
             String result = kanji.getMidashi() + " " + kanji.getUnicodeNumber() + "\n";
             log.info("returning " + result);
         }
+
+        return kanji;
+    }
+
+    public Kanji loadWithStrokes(String unicodeNumber) {
+        Kanji kanji = findKanji(unicodeNumber);
+        if (kanji == null) {
+            return null;
+        }
+
+        List<Stroke> strokes =  ofy().load().type(Stroke.class)
+                .ancestor(Key.create(Kanji.class, kanji.getId()))
+                .order("number").list();
+        kanji.setStrokes(strokes);
 
         return kanji;
     }

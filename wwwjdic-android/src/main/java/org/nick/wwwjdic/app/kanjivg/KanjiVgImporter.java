@@ -1,5 +1,6 @@
 package org.nick.wwwjdic.app.kanjivg;
 
+import com.googlecode.objectify.Key;
 import org.nick.wwwjdic.app.server.CacheController;
 
 import javax.inject.Inject;
@@ -94,7 +95,7 @@ public class KanjiVgImporter {
     }
 
      private void updateKanji(String unicodeNumber, Kanji newKanji) {
-         Kanji existing = dao.findKanji(unicodeNumber);
+         Kanji existing = dao.loadWithStrokes(unicodeNumber);
          if (existing == null) {
              log.warning(String.format(
                      "Kanji %s not found, adding", unicodeNumber));
@@ -103,16 +104,31 @@ public class KanjiVgImporter {
          }
 
          List<Stroke> newStrokes = newKanji.getStrokes();
+         log.info("new strokes: " + newStrokes.size());
          List<Stroke> existingStrokes = existing.getStrokes();
-         for (int i = 0; i < existingStrokes.size(); i++) {
-             Stroke s = newStrokes.get(i);
-             Stroke old = existingStrokes.get(i);
-             log.info("old stroke: " + old);
-             log.info("new stroke: " + s);
+         log.info("existing strokes: " + existingStrokes.size());
 
-             old.setPath(s.getPath());
-             old.setNumber(s.getNumber());
-             ofy().save().entity(old).now();
+         if (existingStrokes.size() == newStrokes.size()) {
+             for (int i = 0; i < existingStrokes.size(); i++) {
+                 Stroke oldStroke = existingStrokes.get(i);
+                 Stroke newStroke = newStrokes.get(i);
+                 log.info(String.format("old stroke %d: [%s]", i, oldStroke));
+                 log.info(String.format("new stroke %d: [%s]", i, newStroke));
+
+                 oldStroke.setPath(newStroke.getPath());
+                 oldStroke.setNumber(newStroke.getNumber());
+                 oldStroke.setType(newStroke.getType());
+                 ofy().save().entity(oldStroke).now();
+             }
+         } else {
+             for (Stroke oldStroke : existingStrokes) {
+                 ofy().delete().entity(oldStroke).now();
+             }
+
+             for (Stroke stroke : newStrokes) {
+                stroke.setKanji(Key.create(Kanji.class, existing.getId()));
+                ofy().save().entity(stroke).now();
+             }
          }
 
          CacheController.remove(unicodeNumber);

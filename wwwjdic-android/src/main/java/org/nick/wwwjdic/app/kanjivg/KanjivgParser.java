@@ -95,9 +95,6 @@ public class KanjivgParser {
             eventType = reader.getEventType();
             boolean done = false;
 
-            boolean inKanji = false;
-            boolean inStrokes = false;
-
             while (eventType != XMLStreamConstants.END_DOCUMENT && !done) {
                 switch (eventType) {
                 case XMLStreamConstants.START_DOCUMENT:
@@ -115,37 +112,10 @@ public class KanjivgParser {
                         result = new Kanji(s, unicodeNumber);
                         strokeNumber = 1;
                     }
-                    if (name.equalsIgnoreCase("g")) {
-                        String id = reader.getAttributeValue(null, "id");
-                        logger.info("id: " + id);
-                        if (id.contains("kanji_")) {
-                            inKanji = true;
-                            inStrokes = false;
-                            String kanji = reader.getAttributeValue(null, "element");
-                            char c = kanji.charAt(0);
-                            String unicodeNumber = Integer.toHexString(c | 0x10000)
-                                    .substring(1);
-                            result = new Kanji(kanji, unicodeNumber);
-                            strokeNumber = 1;
-                            inKanji = false;
-                        } else {
-                            inKanji = false;
-                            inStrokes = true;
-                        }
-                        String k = reader.getAttributeValue("kvg", "element");
-                    }
 
-                    if (name.equals("path") && inStrokes) {
+                    if (name.equals("path")) {
                         String path = reader.getAttributeValue(null, "d");
                         logger.info("path: " + path);
-                        String type = null;
-                        Stroke stroke = new Stroke(strokeNumber, type, path);
-                        result.getStrokes().add(stroke);
-                        strokeNumber++;
-                    }
-
-                    if (name.equalsIgnoreCase("stroke")) {
-                        String path = reader.getAttributeValue(null, "path");
                         String type = reader.getAttributeValue(null, "type");
                         Stroke stroke = new Stroke(strokeNumber, type, path);
                         result.getStrokes().add(stroke);

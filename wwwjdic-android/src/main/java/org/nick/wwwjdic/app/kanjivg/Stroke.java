@@ -59,6 +59,10 @@ public class Stroke implements Serializable {
         return type;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String getPath() {
         return path;
     }
