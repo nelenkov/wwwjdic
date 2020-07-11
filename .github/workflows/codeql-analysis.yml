@@ -44,7 +44,7 @@ jobs:
     #    uses a compiled language
 
     - run: |
-       ./gradlew assembleDebug
+       cd ./wwwjdic-android && ./gradlew build
     #   make release
 
     - name: Perform CodeQL Analysis
