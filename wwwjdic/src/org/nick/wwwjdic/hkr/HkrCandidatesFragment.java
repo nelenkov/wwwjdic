@@ -231,6 +231,9 @@ public class HkrCandidatesFragment extends ListFragment implements
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         getListView().setItemChecked(index, true);
 
+        // do this to prevent reloading when going back to list
+        LoaderManager.getInstance(this).destroyLoader(0);
+
         candidateSelectedListener.onHkrCandidateSelected(result.getData(),
                 index);
     }
