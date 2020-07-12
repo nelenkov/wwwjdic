@@ -30,8 +30,8 @@
 
     <style name="small_button" />
 
-    <style name="AppTheme" parent="android:Theme.Holo"/>
-    <style name="WwwjdicAbTrans" parent="android:Theme.Holo">
+    <style name="AppTheme" parent="Theme.AppCompat"/>
+    <style name="WwwjdicAbTrans" parent="Theme.AppCompat">
         <!--item name="actionBarStyle">@style/Widget.WwwjdicAbTrans</item-->
         <item name="android:actionBarStyle">@style/Widget.WwwjdicAbTrans</item>
     </style>

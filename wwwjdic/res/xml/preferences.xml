@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:singleLineTitle="true"
+        app:title="@string/pref_wwwjdic">
+        <Preference app:fragment="org.nick.wwwjdic.WwwjdicPrefsFragment" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/pref_ocr">
+        <Preference
+            app:fragment="org.nick.wwwjdic.OcrPrefsFragment"
+            app:title="" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/pref_kr">
+        <Preference app:fragment="org.nick.wwwjdic.KrPrefsFragment" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/pref_widget">
+        <Preference app:fragment="org.nick.wwwjdic.WidgetPrefsFragment" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:summary="@string/pref_other_summary"
+        app:title="@string/pref_other">
+        <Preference app:fragment="org.nick.wwwjdic.GenericPrefsFragment" />
+    </PreferenceCategory>
+</PreferenceScreen>

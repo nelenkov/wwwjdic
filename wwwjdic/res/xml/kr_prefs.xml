@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android">
-   <PreferenceCategory android:title="@string/pref_kr">
-        <CheckBoxPreference android:key="pref_kr_annotate"
-            android:title="@string/pref_kr_annotate"
-            android:defaultValue="true" android:disableDependentsState="false" />
-        <CheckBoxPreference android:key="pref_kr_annotate_midway"
-            android:title="@string/pref_kr_annotate_midway"
-            android:summary="@string/pref_kr_annotate_midway_summary"
-            android:defaultValue="false" android:dependency="pref_kr_annotate" />
-    </PreferenceCategory>  
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:iconSpaceReserved="false">
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/pref_kr">
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:disableDependentsState="false"
+            app:key="pref_kr_annotate"
+            app:title="@string/pref_kr_annotate"
+            app:iconSpaceReserved="false"/>
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:dependency="pref_kr_annotate"
+            app:key="pref_kr_annotate_midway"
+            app:summary="@string/pref_kr_annotate_midway_summary"
+            app:title="@string/pref_kr_annotate_midway"
+            app:iconSpaceReserved="false"/>
+    </PreferenceCategory>
 </PreferenceScreen>

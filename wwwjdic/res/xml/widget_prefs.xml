@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android">
-   <PreferenceCategory android:title="@string/pref_widget">
-        <PreferenceScreen android:key="pref_kod" 
-            android:title="@string/pref_kod"
-            android:summary="@string/pref_kod_summary"/>
-   </PreferenceCategory>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        app:title="@string/pref_widget"
+        app:iconSpaceReserved="false">
+        <PreferenceScreen
+            app:key="pref_kod"
+            app:summary="@string/pref_kod_summary"
+            app:title="@string/pref_kod"
+            app:iconSpaceReserved="false"/>
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -1,38 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android">
-  <PreferenceCategory android:title="@string/pref_wwwjdic">
-        <CheckBoxPreference android:key="pref_auto_select_mirror"
-            android:title="@string/pref_auto_select_mirror"
-            android:summary="@string/pref_auto_select_mirror_summary"
-            android:defaultValue="true" android:disableDependentsState="true" />
-        <ListPreference android:title="@string/pref_wwwjdic_mirror"
-            android:key="pref_wwwjdic_mirror_url"
-            android:defaultValue="https://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic"
-            android:entries="@array/wwwjdic_mirror_names"
-            android:entryValues="@array/wwwjdic_mirror_urls"
-            android:dependency="pref_auto_select_mirror" />
-        <EditTextPreference android:key="pref_wwwjdic_timeout"
-            android:title="@string/pref_wwwjdic_timeout"
-            android:summary="@string/pref_timeout_summary"
-            android:singleLine="true" android:inputType="numberDecimal"
-            android:defaultValue="15" android:maxLength="4" />
-        <ListPreference android:title="@string/pref_default_dict"
-            android:key="pref_default_dict" android:defaultValue="0"
-            android:entries="@array/dictionaries_array"
-            android:entryValues="@array/dictionary_idxs_array" />
-        <CheckBoxPreference android:key="pref_random_examples"
-            android:title="@string/pref_random_examples"
-            android:summary="@string/pref_random_examples_summary"
-            android:defaultValue="false" />
-        <ListPreference android:title="@string/pref_jp_tts_engine"
-            android:key="pref_jp_tts_engine" 
-            android:defaultValue="com.google.android.tts"
-            android:entries="@array/jp_tts_engine_names"
-            android:entryValues="@array/jp_tts_engine_packages" />
-        <CheckBoxPreference android:key="pref_popup_keyboard"
-            android:title="@string/pref_popup_keyboard"
-            android:summary="@string/pref_popup_keyboard_summary"
-            android:defaultValue="true" />
-    </PreferenceCategory>   
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/pref_wwwjdic">
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:disableDependentsState="true"
+            app:key="pref_auto_select_mirror"
+            app:summary="@string/pref_auto_select_mirror_summary"
+            app:title="@string/pref_auto_select_mirror"
+            app:iconSpaceReserved="false"/>
+        <ListPreference
+            app:defaultValue="https://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic"
+            app:dependency="pref_auto_select_mirror"
+            app:entries="@array/wwwjdic_mirror_names"
+            app:entryValues="@array/wwwjdic_mirror_urls"
+            app:key="pref_wwwjdic_mirror_url"
+            app:title="@string/pref_wwwjdic_mirror"
+            app:iconSpaceReserved="false"/>
+        <EditTextPreference
+            app:defaultValue="15"
+            android:inputType="numberDecimal"
+            app:key="pref_wwwjdic_timeout"
+            android:maxLength="4"
+            app:singleLine="true"
+            app:summary="@string/pref_timeout_summary"
+            app:title="@string/pref_wwwjdic_timeout"
+            app:iconSpaceReserved="false"/>
+        <ListPreference
+            app:defaultValue="0"
+            app:entries="@array/dictionaries_array"
+            app:entryValues="@array/dictionary_idxs_array"
+            app:key="pref_default_dict"
+            app:title="@string/pref_default_dict"
+            app:iconSpaceReserved="false"/>
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:key="pref_random_examples"
+            app:summary="@string/pref_random_examples_summary"
+            app:title="@string/pref_random_examples"
+            app:iconSpaceReserved="false"/>
+        <ListPreference
+            app:defaultValue="com.google.android.tts"
+            app:entries="@array/jp_tts_engine_names"
+            app:entryValues="@array/jp_tts_engine_packages"
+            app:key="pref_jp_tts_engine"
+            app:title="@string/pref_jp_tts_engine"
+            app:iconSpaceReserved="false"/>
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="pref_popup_keyboard"
+            app:summary="@string/pref_popup_keyboard_summary"
+            app:title="@string/pref_popup_keyboard"
+            app:iconSpaceReserved="false"/>
+    </PreferenceCategory>
 </PreferenceScreen>

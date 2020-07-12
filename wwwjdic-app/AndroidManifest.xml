@@ -28,9 +28,9 @@
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/Theme.AppCompat"
-        android:uiOptions="splitActionBarWhenNarrow"
-        android:networkSecurityConfig="@xml/network_security_config">
+        android:uiOptions="splitActionBarWhenNarrow">
 
         <meta-data
             android:name="android.app.default_searchable"
@@ -115,7 +115,7 @@
             android:name="org.nick.wwwjdic.hkr.RecognizeKanjiActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"
             android:exported="false"
-            android:theme="@style/Theme.WwwjdicAb" >
+            android:theme="@style/Theme.WwwjdicAb">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -137,7 +137,7 @@
         <activity
             android:name="org.nick.wwwjdic.widgets.KodWidgetConfigure"
             android:label="@string/kod_widget_configuration"
-            android:theme="@style/Theme.WwwjdicAb" >
+            android:theme="@style/Theme.WwwjdicAb">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -145,7 +145,7 @@
 
         <receiver
             android:name="org.nick.wwwjdic.widgets.KodWidgetProvider"
-            android:label="@string/kanji_of_the_day" >
+            android:label="@string/kanji_of_the_day">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -156,7 +156,7 @@
         </receiver>
         <receiver
             android:name="org.nick.wwwjdic.widgets.ConnectivityMonitor"
-            android:enabled="false" >
+            android:enabled="false">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
@@ -167,8 +167,8 @@
 
         <provider
             android:name="org.nick.wwwjdic.SearchSuggestionProvider"
-            android:exported="true"
-            android:authorities="org.nick.wwwjdic.SearchSuggestionProvider" />
+            android:authorities="org.nick.wwwjdic.SearchSuggestionProvider"
+            android:exported="true" />
     </application>
 
 </manifest>

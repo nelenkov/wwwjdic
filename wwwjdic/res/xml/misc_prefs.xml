@@ -1,31 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android">
-   <PreferenceCategory android:title="@string/pref_sod">
-        <EditTextPreference android:key="pref_sod_server_timeout"
-            android:title="@string/pref_sod_server_timeout"
-            android:summary="@string/pref_timeout_summary"
-            android:singleLine="true" android:inputType="numberDecimal"
-            android:defaultValue="30" android:maxLength="4" />
-        <EditTextPreference android:key="pref_sod_animation_delay"
-            android:title="@string/pref_sod_animation_delay"
-            android:summary="@string/pref_sod_animation_delay_summary"
-            android:singleLine="true" android:inputType="numberDecimal"
-            android:defaultValue="700" android:maxLength="4" />
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/pref_sod">
+        <EditTextPreference
+            app:defaultValue="30"
+            android:inputType="numberDecimal"
+            app:key="pref_sod_server_timeout"
+            android:maxLength="4"
+            app:singleLine="true"
+            app:summary="@string/pref_timeout_summary"
+            app:title="@string/pref_sod_server_timeout"
+            app:iconSpaceReserved="false"/>
+        <EditTextPreference
+            app:defaultValue="700"
+            android:inputType="numberDecimal"
+            app:key="pref_sod_animation_delay"
+            android:maxLength="4"
+            app:singleLine="true"
+            app:summary="@string/pref_sod_animation_delay_summary"
+            app:title="@string/pref_sod_animation_delay"
+            app:iconSpaceReserved="false"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_export">
-        <ListPreference android:title="@string/pref_export_meanings_separator_char"
-            android:key="pref_export_meanings_separator_char"
-            android:summary="@string/pref_export_meanings_separator_char_summary"
-            android:defaultValue="\n"
-            android:entries="@array/export_meanings_separator_char_names"
-            android:entryValues="@array/export_meanings_separator_chars" />
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/pref_export">
+        <ListPreference
+            app:defaultValue="\n"
+            app:entries="@array/export_meanings_separator_char_names"
+            app:entryValues="@array/export_meanings_separator_chars"
+            app:key="pref_export_meanings_separator_char"
+            app:summary="@string/pref_export_meanings_separator_char_summary"
+            app:title="@string/pref_export_meanings_separator_char"
+            app:iconSpaceReserved="false"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_maintenance">
-        <CheckBoxPreference android:key="acra.enable"
-            android:title="@string/pref_disable_acra"
-            android:summaryOn="@string/pref_acra_enabled"
-            android:summaryOff="@string/pref_acra_disabled"
-            android:defaultValue="true"/>
-    </PreferenceCategory>  
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/pref_maintenance">
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="acra.enable"
+            app:summaryOff="@string/pref_acra_disabled"
+            app:summaryOn="@string/pref_acra_enabled"
+            app:title="@string/pref_disable_acra"
+            app:iconSpaceReserved="false"/>
+    </PreferenceCategory>
 </PreferenceScreen>

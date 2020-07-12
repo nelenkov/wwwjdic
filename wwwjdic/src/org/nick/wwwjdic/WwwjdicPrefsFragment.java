@@ -1,27 +1,21 @@
 package org.nick.wwwjdic;
 
+import android.os.Bundle;
+
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
+
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_AUTO_SELECT_MIRROR_KEY;
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_DEFAULT_DICT_PREF_KEY;
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_JP_TTS_ENGINE;
 import static org.nick.wwwjdic.WwwjdicPreferences.PREF_WWWJDIC_MIRROR_URL_KEY;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.PreferenceFragment;
+public class WwwjdicPrefsFragment extends PreferenceFragmentCompat implements
+        Preference.OnPreferenceChangeListener {
 
-@SuppressLint("NewApi")
-public class WwwjdicPrefsFragment extends PreferenceFragment implements
-        OnPreferenceChangeListener {
-
-    private CheckBoxPreference autoSelectMirrorPreference;
+    private SwitchPreferenceCompat autoSelectMirrorPreference;
     private ListPreference mirrorPreference;
     private ListPreference defaultDictPreference;
     private ListPreference jpTtsEnginePreference;
@@ -29,10 +23,13 @@ public class WwwjdicPrefsFragment extends PreferenceFragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
-        addPreferencesFromResource(R.xml.wwwjdic_prefs);
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        setPreferencesFromResource(R.xml.wwwjdic_prefs, rootKey);
 
-        autoSelectMirrorPreference = (CheckBoxPreference) findPreference(PREF_AUTO_SELECT_MIRROR_KEY);
+        autoSelectMirrorPreference = (SwitchPreferenceCompat) findPreference(PREF_AUTO_SELECT_MIRROR_KEY);
         autoSelectMirrorPreference.setOnPreferenceChangeListener(this);
 
         mirrorPreference = (ListPreference) findPreference(PREF_WWWJDIC_MIRROR_URL_KEY);
