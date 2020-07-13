@@ -9,7 +9,8 @@
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:title="@string/pref_ocr">
+        app:title="@string/pref_ocr"
+        app:enabled="false">
         <Preference
             app:fragment="org.nick.wwwjdic.OcrPrefsFragment"
             app:title="" />

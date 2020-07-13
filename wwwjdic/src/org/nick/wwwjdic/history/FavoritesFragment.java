@@ -76,7 +76,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                 this);
         setListAdapter(adapter);
 
-        getActivity().setProgressBarIndeterminateVisibility(true);
         // LoaderManager.enableDebugLogging(true);
         LoaderManager.getInstance(this).initLoader(0, null, this);
     }
@@ -86,7 +85,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {
-                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -114,7 +112,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                 }
 
                 refresh();
-                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -286,7 +283,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
             @Override
             protected void onPreExecute() {
-                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -321,8 +317,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                 if (isDetached() || getActivity() == null) {
                     return;
                 }
-
-                getActivity().setProgressBarIndeterminateVisibility(false);
 
                 if (result) {
                     String message = getResources().getString(
@@ -436,7 +430,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
             @Override
             protected void onPreExecute() {
-                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -491,8 +484,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                     return;
                 }
 
-                getActivity().setProgressBarIndeterminateVisibility(false);
-
                 if (result) {
                     String message = String.format(
                             getResources().getString(
@@ -526,8 +517,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                 if (isDetached() || getActivity() == null) {
                     return;
                 }
-
-                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -586,8 +575,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                     return;
                 }
 
-                getActivity().setProgressBarIndeterminateVisibility(false);
-
                 if (result) {
                     String message = getResources().getString(
                             R.string.favorites_imported);
@@ -636,8 +623,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     @Override
     public void onLoadFinished(Loader<LoaderResult<Cursor>> loader,
             LoaderResult<Cursor> data) {
-        getActivity().setProgressBarIndeterminateVisibility(
-                false);
 
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(data.getData());
@@ -652,9 +637,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
     @Override
     public void onLoaderReset(Loader<LoaderResult<Cursor>> loader) {
-        getActivity().setProgressBarIndeterminateVisibility(
-                false);
-
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(null);
     }

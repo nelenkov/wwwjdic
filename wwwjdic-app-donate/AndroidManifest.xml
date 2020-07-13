@@ -167,6 +167,17 @@
             android:name="org.nick.wwwjdic.SearchSuggestionProvider"
             android:authorities="org.nick.wwwjdic.donate.SearchSuggestionProvider"
             android:exported="true" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="org.nick.wwwjdic.donate.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths">
+            </meta-data>
+        </provider>
     </application>
 
 </manifest>

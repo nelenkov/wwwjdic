@@ -47,7 +47,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                 cursor);
         setListAdapter(adapter);
 
-        getActivity().setProgressBarIndeterminateVisibility(true);
         LoaderManager.getInstance(this).initLoader(1, null, this);
     }
 
@@ -57,7 +56,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
             @Override
             protected void onPreExecute() {
-                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -95,7 +93,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                 }
 
                 refresh();
-                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         }.execute();
     }
@@ -172,7 +169,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
             @Override
             protected void onPreExecute() {
-                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -225,8 +221,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                     return;
                 }
 
-                getActivity().setProgressBarIndeterminateVisibility(false);
-
                 if (result) {
                     String message = String
                             .format(getResources().getString(
@@ -259,8 +253,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                 if (isDetached() || getActivity() == null) {
                     return;
                 }
-
-                getActivity().setProgressBarIndeterminateVisibility(true);
             }
 
             @Override
@@ -319,8 +311,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                     return;
                 }
 
-                getActivity().setProgressBarIndeterminateVisibility(false);
-
                 if (result == null) {
                     return;
                 }
@@ -372,8 +362,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     @Override
     public void onLoadFinished(Loader<LoaderResult<Cursor>> loader,
                                LoaderResult<Cursor> data) {
-        getActivity().setProgressBarIndeterminateVisibility(false);
-
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(data.getData());
 
@@ -387,8 +375,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
     @Override
     public void onLoaderReset(Loader<LoaderResult<Cursor>> loader) {
-        getActivity().setProgressBarIndeterminateVisibility(false);
-
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(null);
     }

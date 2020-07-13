@@ -17,11 +17,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.OpenableColumns;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationCompat.BigTextStyle;
-import androidx.core.app.NotificationCompat.Builder;
-import android.widget.CursorAdapter;
 import android.text.ClipboardManager;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -46,17 +44,21 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationCompat.BigTextStyle;
+import androidx.core.app.NotificationCompat.Builder;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.ListFragment;
 import androidx.loader.app.LoaderManager;
 import au.com.bytecode.opencsv.CSVReader;
 
-
-@SuppressWarnings("deprecation")
-@SuppressLint("NewApi")
 public abstract class HistoryFragmentBase extends ListFragment
         implements LoaderManager.LoaderCallbacks<LoaderResult<Cursor>>,
         OnItemLongClickListener {
+
+    private static final String TAG = HistoryFragmentBase.class.getSimpleName();
 
     protected static final int CONFIRM_DELETE_DIALOG_ID = 0;
 
@@ -163,52 +165,45 @@ public abstract class HistoryFragmentBase extends ListFragment
 
     protected abstract void lookup(int position);
 
-    // moved menu handling to enclosing activity as a workaround for
-    // https://github.com/JakeWharton/ActionBarSherlock/issues/476
-    // @Override
-    // public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    // super.onCreateOptionsMenu(menu, inflater);
-    //
-    // inflater.inflate(R.menu.history_favorites, menu);
-    // }
-    //
-    // @Override
-    // public void onPrepareOptionsMenu(Menu menu) {
-    // super.onPrepareOptionsMenu(menu);
-    // ListAdapter adapter = getListAdapter();
-    // final boolean hasItems = adapter == null ? false
-    // : adapter.getCount() > 0;
-    // File backupFile = new File(getImportExportFilename());
-    //
-    // menu.findItem(R.id.menu_import).setEnabled(backupFile.exists());
-    // menu.findItem(R.id.menu_export).setEnabled(hasItems);
-    // menu.findItem(R.id.menu_delete).setEnabled(hasItems);
-    // }
-    //
-    // @Override
-    // public boolean onOptionsItemSelected(MenuItem item) {
-    // if (item.getItemId() == android.R.id.home) {
-    // Intent intent = new Intent(getActivity(), Wwwjdic.class);
-    // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-    // startActivity(intent);
-    // } else if (item.getItemId() == R.id.menu_import) {
-    // importItems();
-    // getSherlockActivity().invalidateOptionsMenu();
-    // } else if (item.getItemId() == R.id.menu_export) {
-    // exportItems();
-    // getSherlockActivity().invalidateOptionsMenu();
-    // } else if (item.getItemId() == R.id.menu_filter) {
-    // showFilterDialog();
-    // } else if (item.getItemId() == R.id.menu_delete) {
-    // DialogFragment confirmDeleteDialog = ConfirmDeleteDialog
-    // .newInstance(this);
-    // confirmDeleteDialog.show(getFragmentManager(),
-    // "confirmDeleteDialog");
-    // return true;
-    // }
-    //
-    // return super.onOptionsItemSelected(item);
-    // }
+    public static class FilterDialogFragment extends DialogFragment {
+
+        private HistoryFragmentBase historyFragment;
+
+        public FilterDialogFragment() {
+        }
+
+        public void setHistoryFragment(HistoryFragmentBase historyFragment) {
+            this.historyFragment = historyFragment;
+        }
+
+        @Override
+        public Dialog onCreateDialog(@NonNull Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(
+                    getActivity());
+            builder.setTitle(R.string.select_filter_type);
+            builder.setNegativeButton(R.string.cancel,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog,
+                                            int which) {
+                            dialog.dismiss();
+
+                        }
+                    });
+            builder.setSingleChoiceItems(historyFragment.getFilterTypes(),
+                    historyFragment.selectedFilter + 1,
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
+                            historyFragment.selectedFilter = item - 1;
+                            historyFragment.filter();
+                            getActivity().invalidateOptionsMenu();
+                            dialog.dismiss();
+                        }
+                    });
+
+            return builder.create();
+        }
+    }
 
     void showFilterDialog() {
         // XXX workaround for support library bug(?)
@@ -216,36 +211,9 @@ public abstract class HistoryFragmentBase extends ListFragment
             return;
         }
 
-        new DialogFragment() {
-
-            @Override
-            public Dialog onCreateDialog(Bundle savedInstanceState) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(
-                        getActivity());
-                builder.setTitle(R.string.select_filter_type);
-                builder.setNegativeButton(R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                    int which) {
-                                dialog.dismiss();
-
-                            }
-                        });
-                builder.setSingleChoiceItems(getFilterTypes(),
-                        selectedFilter + 1,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int item) {
-                                selectedFilter = item - 1;
-                                filter();
-                                getActivity().invalidateOptionsMenu();
-                                dialog.dismiss();
-                            }
-                        });
-
-                return builder.create();
-            }
-        }.show(getFragmentManager(), "filterDialog");
+        FilterDialogFragment fd = new FilterDialogFragment();
+        fd.setHistoryFragment(this);
+        fd.show(getFragmentManager(), "filterDialog");
     }
 
     protected abstract String[] getFilterTypes();
@@ -318,6 +286,45 @@ public abstract class HistoryFragmentBase extends ListFragment
 
     protected abstract String getImportExportFilename();
 
+    public static class  ConfirmOverriteDialog extends DialogFragment {
+
+        private HistoryFragmentBase historyFragment;
+        private String filename;
+
+        public void setHistoryFragment(HistoryFragmentBase historyFragment) {
+            this.historyFragment = historyFragment;
+        }
+
+        public void setFilename(String filename) {
+            this.filename = filename;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(
+                    getActivity());
+            String message = getResources().getString(
+                    R.string.overwrite_file);
+            builder.setMessage(String.format(message, filename))
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.yes,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int id) {
+                                    historyFragment.doExport(filename);
+                                }
+                            })
+                    .setNegativeButton(R.string.no,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            return builder.create();
+        }
+    }
+
     protected void confirmOverwriteAndExport(final String filename) {
         File file = new File(filename);
         if (!file.exists()) {
@@ -325,33 +332,11 @@ public abstract class HistoryFragmentBase extends ListFragment
             return;
         }
 
-        new DialogFragment() {
+        ConfirmOverriteDialog cod = new ConfirmOverriteDialog();
+        cod.setHistoryFragment(this);
+        cod.setFilename(filename);
 
-            @Override
-            public Dialog onCreateDialog(Bundle savedInstanceState) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(
-                        getActivity());
-                String message = getResources().getString(
-                        R.string.overwrite_file);
-                builder.setMessage(String.format(message, filename))
-                        .setCancelable(false)
-                        .setPositiveButton(R.string.yes,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                            int id) {
-                                        doExport(filename);
-                                    }
-                                })
-                        .setNegativeButton(R.string.no,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                            int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                return builder.create();
-            }
-        }.show(getFragmentManager(), "overwriteExportDialog");
+        cod.show(getFragmentManager(), "overwriteExportDialog");
     }
 
     protected abstract void doExport(String filename);
@@ -407,7 +392,7 @@ public abstract class HistoryFragmentBase extends ListFragment
         }
 
         @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
+        public Dialog onCreateDialog(@NonNull Bundle savedInstanceState) {
             return createConfirmDeleteDialog();
         }
 
@@ -468,8 +453,7 @@ public abstract class HistoryFragmentBase extends ListFragment
         return new CSVReader(new FileReader(importFile));
     }
 
-    protected void writeBom(File exportFile) throws FileNotFoundException,
-            IOException {
+    protected void writeBom(File exportFile) throws IOException {
         OutputStream out = new FileOutputStream(exportFile);
         out.write(UTF8_BOM);
         out.flush();
@@ -547,7 +531,7 @@ public abstract class HistoryFragmentBase extends ListFragment
             getListView().setItemChecked(position, false);
             currentActionMode = null;
         }
-    };
+    }
 
     protected void notifyExportFinished(int notificationId, String message,
             String filename) {
@@ -600,7 +584,7 @@ public abstract class HistoryFragmentBase extends ListFragment
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
                 | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setDataAndType(Uri.fromFile(new File(filename)), mimeType);
+        intent.setDataAndType( getUriForfile(filename), mimeType);
 
         return Intent.createChooser(intent, getString(R.string.open));
     }
@@ -609,10 +593,24 @@ public abstract class HistoryFragmentBase extends ListFragment
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType(mimeType);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        intent.putExtra(Intent.EXTRA_STREAM,
-                android.net.Uri.fromFile(new File(filename)));
+
+        Uri uri = getUriForfile(filename);
+        Log.d(TAG, "share URI: " + uri);
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
 
         return Intent.createChooser(intent, (getString(R.string.share)));
+    }
+
+    private Uri getUriForfile(String filename) {
+        File file = new File(filename);
+        Uri uri;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            uri = Uri.fromFile(file);
+        } else {
+            String authority = getActivity().getApplicationContext().getPackageName() + ".fileprovider";
+            uri = FileProvider.getUriForFile(getActivity(), authority, file);
+        }
+        return uri;
     }
 
     @Override

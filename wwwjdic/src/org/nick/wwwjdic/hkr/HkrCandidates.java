@@ -1,10 +1,9 @@
 package org.nick.wwwjdic.hkr;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.FragmentTransaction;
 import android.view.View;
-import android.view.Window;
 
 import org.nick.wwwjdic.ActionBarActivity;
 import org.nick.wwwjdic.KanjiEntryDetail;
@@ -28,10 +27,7 @@ public class HkrCandidates extends ActionBarActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
         setContentView(R.layout.hkr_candidates);
-        setProgressBarIndeterminateVisibility(false);
 
         View detailsFrame = findViewById(R.id.details);
         dualPane = detailsFrame != null

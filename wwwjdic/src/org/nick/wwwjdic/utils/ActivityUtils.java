@@ -8,6 +8,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+
+import androidx.core.content.FileProvider;
 
 public class ActivityUtils {
 
@@ -20,8 +23,15 @@ public class ActivityUtils {
         intent.setType(mimeType);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         File file = new File(filename);
-        intent.putExtra(Intent.EXTRA_STREAM,
-                android.net.Uri.parse(file.getAbsolutePath()));
+
+        Uri uri;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            uri = Uri.fromFile(file);
+        } else {
+            String authority = ctx.getApplicationContext().getPackageName() + ".fileprovider";
+            uri = FileProvider.getUriForFile(ctx.getApplicationContext(), authority, file);
+        }
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
 
         return Intent.createChooser(intent, (ctx.getString(R.string.share)));
     }

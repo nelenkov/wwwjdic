@@ -19,17 +19,22 @@ public class AboutActivity extends ActionBarActivity implements OnClickListener 
 
         setContentView(R.layout.about_dialog);
 
-        TextView versionText = (TextView) findViewById(R.id.versionText);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        TextView versionText = findViewById(R.id.versionText);
         versionText.setText("version " + WwwjdicApplication.getVersion());
 
-        TextView faqText = (TextView) findViewById(R.id.faqText);
+        TextView faqText = findViewById(R.id.faqText);
         faqText.setMovementMethod(LinkMovementMethod.getInstance());
 
-        TextView kradfileAttributionText = (TextView) findViewById(R.id.kradfile_attribution_text);
+        TextView kradfileAttributionText = findViewById(R.id.kradfile_attribution_text);
         kradfileAttributionText.setMovementMethod(LinkMovementMethod
                 .getInstance());
 
-        Button buyDonateButton = (Button) findViewById(R.id.buy_donate);
+        Button buyDonateButton = findViewById(R.id.buy_donate);
         if (!isDonateVersion()) {
             buyDonateButton.setOnClickListener(this);
         } else {
@@ -40,7 +45,7 @@ public class AboutActivity extends ActionBarActivity implements OnClickListener 
     @Override
     public void onClick(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("market://details?id=" + DONATE_VERSION_PACKAGE));
+                Uri.parse("https://play.google.com/store/apps/details?id=" + DONATE_VERSION_PACKAGE));
         startActivity(intent);
     }
 

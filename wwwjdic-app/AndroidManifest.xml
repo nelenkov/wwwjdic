@@ -55,10 +55,12 @@
         </activity>
         <activity
             android:name="org.nick.wwwjdic.AboutActivity"
+            android:parentActivityName=".Wwwjdic"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.DictionaryResultList"
             android:label="@string/dict_search"
+            android:parentActivityName=".Wwwjdic"
             android:taskAffinity=""
             android:theme="@style/Theme.WwwjdicAb"
             tools:replace="android:label">
@@ -74,47 +76,58 @@
         </activity>
         <activity
             android:name="org.nick.wwwjdic.DictionaryEntryDetail"
+            android:parentActivityName=".DictionaryResultList"
             android:theme="@style/Theme.WwwjdicAb"
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name="org.nick.wwwjdic.KanjiResultList"
             android:label="@string/searching"
+            android:parentActivityName=".Wwwjdic"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.ExamplesResultList"
             android:label="@string/searching"
+            android:parentActivityName=".Wwwjdic"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.SentenceBreakdown"
             android:theme="@style/Theme.WwwjdicAb"
+            android:parentActivityName=".Wwwjdic"
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name="org.nick.wwwjdic.KanjiEntryDetail"
+            android:parentActivityName=".Wwwjdic"
             android:taskAffinity=""
             android:theme="@style/Theme.WwwjdicAb"
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name="org.nick.wwwjdic.RadicalChart"
+            android:parentActivityName=".Wwwjdic"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.WwwjdicPreferences"
+            android:parentActivityName=".Wwwjdic"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.WwwjdicPreferencesHC"
+            android:parentActivityName=".Wwwjdic"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.ocr.OcrActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"
             android:hardwareAccelerated="false"
+            android:parentActivityName=".Wwwjdic"
             android:theme="@style/WwwjdicAbTrans" />
         <activity
             android:name="org.nick.wwwjdic.ocr.crop.CropImage"
             android:configChanges="orientation|keyboardHidden|keyboard"
-            android:hardwareAccelerated="false" />
+            android:hardwareAccelerated="false"
+            android:parentActivityName=".ocr.OcrActivity"/>
         <activity
             android:name="org.nick.wwwjdic.hkr.RecognizeKanjiActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"
             android:exported="false"
+            android:parentActivityName=".Wwwjdic"
             android:theme="@style/Theme.WwwjdicAb">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -122,10 +135,12 @@
         </activity>
         <activity
             android:name="org.nick.wwwjdic.hkr.HkrCandidates"
+            android:parentActivityName=".hkr.RecognizeKanjiActivity"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.history.FavoritesAndHistory"
-            android:theme="@style/Theme.WwwjdicAbMain"
+            android:parentActivityName=".Wwwjdic"
+            android:theme="@style/Theme.WwwjdicAbTabbed"
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name="org.nick.wwwjdic.sod.SodActivity"
@@ -133,6 +148,7 @@
         <activity
             android:name="org.nick.wwwjdic.krad.KradChart"
             android:hardwareAccelerated="false"
+            android:parentActivityName=".Wwwjdic"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.widgets.KodWidgetConfigure"
@@ -169,6 +185,17 @@
             android:name="org.nick.wwwjdic.SearchSuggestionProvider"
             android:authorities="org.nick.wwwjdic.SearchSuggestionProvider"
             android:exported="true" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="org.nick.wwwjdic.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths">
+            </meta-data>
+        </provider>
     </application>
 
 </manifest>

@@ -19,17 +19,16 @@ public class WwwjdicPreferencesHC extends AppCompatActivity implements
 
         setContentView(R.layout.preferences);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.pref_root, new PrefsFragment())
                 .commit();
     }
-
-//    @Override
-//    public void onBuildHeaders(List<Header> target) {
-//        loadHeadersFromResource(R.xml.pref_headers, target);
-//    }
-
 
     @Override
     protected void onStart() {
@@ -69,17 +68,5 @@ public class WwwjdicPreferencesHC extends AppCompatActivity implements
                 .commit();
         return true;
     }
-
-//    @Override
-//    public boolean isValidFragment(String fragment) {
-//        if (fragment.equals(WwwjdicPrefsFragment.class.getName()) ||
-//            fragment.equals(WidgetPrefsFragment.class.getName()) ||
-//            fragment.equals(KrPrefsFragment.class.getName()) ||
-//            fragment.equals(GenericPrefsFragment.class.getName())) {
-//            return true;
-//        }
-//
-//        return false;
-//    }
 
 }

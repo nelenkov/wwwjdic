@@ -1,18 +1,5 @@
 package org.nick.wwwjdic.history;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONException;
-import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.WwwjdicApplication;
-import org.nick.wwwjdic.model.WwwjdicEntry;
-import org.nick.wwwjdic.utils.ActivityUtils;
-import org.nick.wwwjdic.utils.MediaScannerWrapper;
-import org.nick.wwwjdic.utils.UIUtils;
-
 import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.app.Notification;
@@ -23,10 +10,26 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
+import android.util.Log;
+
+import org.json.JSONException;
+import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.WwwjdicApplication;
+import org.nick.wwwjdic.model.WwwjdicEntry;
+import org.nick.wwwjdic.utils.ActivityUtils;
+import org.nick.wwwjdic.utils.MediaScannerWrapper;
+import org.nick.wwwjdic.utils.UIUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationCompat.BigTextStyle;
 import androidx.core.app.NotificationCompat.Builder;
-import android.util.Log;
+import androidx.core.content.FileProvider;
 
 @SuppressLint("InlinedApi")
 public class AnkiExportService extends IntentService {
@@ -106,17 +109,11 @@ public class AnkiExportService extends IntentService {
         Log.d(TAG,
                 "exporting favorites to Anki: " + exportFile.getAbsolutePath());
 
-        List<WwwjdicEntry> entries = new ArrayList<WwwjdicEntry>();
-        Cursor c = null;
-        try {
-            c = filterCursor();
+        List<WwwjdicEntry> entries = new ArrayList<>();
+        try (Cursor c = filterCursor()) {
             while (c.moveToNext()) {
                 WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
                 entries.add(entry);
-            }
-        } finally {
-            if (c != null) {
-                c.close();
             }
         }
 
@@ -179,7 +176,15 @@ public class AnkiExportService extends IntentService {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
                 | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setDataAndType(Uri.fromFile(new File(filename)), mimeType);
+        Uri uri;
+        File file = new File(filename);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            uri = Uri.fromFile(file);
+        } else {
+            String authority = getApplication().getPackageName() + ".fileprovider";
+            uri = FileProvider.getUriForFile(getApplicationContext(), authority, file);
+        }
+        intent.setDataAndType(uri, mimeType);
 
         return Intent.createChooser(intent, getString(R.string.open));
     }
