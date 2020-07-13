@@ -27,6 +27,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.widget.CursorAdapter;
@@ -232,7 +233,11 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                     .getString(R.string.exporting_to_anki);
             Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
 
-            getActivity().startService(intent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                getActivity().startForegroundService(intent);
+            } else {
+                getActivity().startService(intent);
+            }
         }
     }
 

@@ -9,8 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -26,20 +24,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationCompat.BigTextStyle;
-import androidx.core.app.NotificationCompat.Builder;
-import androidx.core.content.FileProvider;
 
 @SuppressLint("InlinedApi")
 public class AnkiExportService extends IntentService {
 
     private static final String TAG = AnkiExportService.class.getSimpleName();
 
-    public static final int NOTIFICATION_ID = 1;
+    public static final int EXPORT_STARTED_NOTIFICATION_ID = 1;
+    public static final int EXPORT_DONE_NOTIFICATION_ID = 2;
 
     public static final String EXTRA_FILTER_TYPE = "filterType";
     public static final String EXTRA_FILENAME = "filename";
+
+    private static final String ANKI_MIME_TYPE = "application/vnd.anki";
 
     private int selectedFilter;
     private String exportFilename;
@@ -77,14 +76,13 @@ public class AnkiExportService extends IntentService {
                 : r.getString(R.string.anki_export_failure);
         String message = success ? String.format(template, exportFilename)
                 : String.format(template, error.getMessage());
-        notifyExportFinished(NOTIFICATION_ID, message, exportFilename,
-                "application/vnd.anki");
+        notifyExportFinished(message, exportFilename);
     }
 
     private boolean exportEntries() {
         String message = getApplicationContext().getString(
                 R.string.exporting_to_anki);
-        showNotification(message, NOTIFICATION_ID);
+        showForegroundNotification(message);
 
         try {
             exportFilename = exportToAnkiDeck();
@@ -136,76 +134,39 @@ public class AnkiExportService extends IntentService {
         return db.getFavoritesByType(selectedFilter);
     }
 
-    private void notifyExportFinished(int notificationId, String message,
-            String filename, String mimeType) {
+    private void notifyExportFinished(String message, String filename) {
         // clear progress notification
-        notificationManager.cancel(notificationId);
+        notificationManager.cancel(EXPORT_STARTED_NOTIFICATION_ID);
 
         Context appCtx = WwwjdicApplication.getInstance();
-
-        Intent intent = createOpenIntent(filename, mimeType);
+        Intent intent = ActivityUtils.createOpenIntent(getApplicationContext(), filename, ANKI_MIME_TYPE);
         PendingIntent pendingIntent = PendingIntent.getActivity(appCtx, 0,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
         String title = appCtx.getString(R.string.export_finished);
-
-        Builder builder = new NotificationCompat.Builder(appCtx);
-        builder.setSmallIcon(R.drawable.ic_stat_export);
-        builder.setContentTitle(title);
-        builder.setContentText(message);
-        BigTextStyle style = new BigTextStyle(builder);
-        style.bigText(message);
-        style.setBigContentTitle(title);
-        builder.setStyle(style);
-        builder.setContentIntent(pendingIntent);
-        builder.setWhen(System.currentTimeMillis());
-        builder.setDefaults(Notification.DEFAULT_LIGHTS);
-        builder.setAutoCancel(true);
+        NotificationCompat.Builder builder = ActivityUtils.createNotification(appCtx, pendingIntent,
+                title, message, R.drawable.ic_stat_export);
         builder.setOngoing(false);
         builder.addAction(android.R.drawable.ic_menu_view,
                 appCtx.getString(R.string.import_into_anki), pendingIntent);
         Intent shareIntent = ActivityUtils.createShareFileIntent(appCtx,
-                filename, mimeType);
+                filename, ANKI_MIME_TYPE);
         PendingIntent sharePendingIntent = PendingIntent.getActivity(appCtx, 1,
                 shareIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.addAction(android.R.drawable.ic_menu_share,
                 appCtx.getString(R.string.share), sharePendingIntent);
-        notificationManager.notify(notificationId, builder.build());
+
+        notificationManager.notify(EXPORT_DONE_NOTIFICATION_ID, builder.build());
     }
 
-    private Intent createOpenIntent(String filename, String mimeType) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-                | Intent.FLAG_ACTIVITY_NEW_TASK);
-        Uri uri;
-        File file = new File(filename);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            uri = Uri.fromFile(file);
-        } else {
-            String authority = getApplication().getPackageName() + ".fileprovider";
-            uri = FileProvider.getUriForFile(getApplicationContext(), authority, file);
-        }
-        intent.setDataAndType(uri, mimeType);
-
-        return Intent.createChooser(intent, getString(R.string.open));
-    }
-
-    private void showNotification(String message, int notificationId) {
-        Intent startActivityIntent = new Intent();
+    private void showForegroundNotification(@NonNull String message) {
         PendingIntent pendingIntent = PendingIntent.getActivity(
-                getApplicationContext(), 0, startActivityIntent, 0);
+                getApplicationContext(), 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Builder builder = new NotificationCompat.Builder(
-                getApplicationContext());
-        builder.setSmallIcon(R.drawable.ic_stat_export);
-        builder.setContentTitle(getResources().getString(
-                R.string.exporting_to_anki));
-        builder.setContentText(message);
-        builder.setContentIntent(pendingIntent);
-        builder.setDefaults(0);
-        builder.setAutoCancel(true);
-        builder.setOngoing(true);
+        Context appCtx = getApplicationContext();
+        Notification notification = ActivityUtils.createNotification(appCtx, pendingIntent, getResources().getString(
+                R.string.exporting_to_anki), message, R.drawable.ic_stat_export).build();
 
-        notificationManager.notify(notificationId, builder.build());
+        startForeground(EXPORT_STARTED_NOTIFICATION_ID, notification);
     }
 
 }

@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android">
-     <item android:id="@+id/menu_context_history_lookup"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_context_history_lookup"
         android:icon="@drawable/ic_menu_search"
-        android:title="@string/look_up"
-        android:orderInCategory="0" 
-        android:showAsAction="ifRoom|withText"/>
-     <item android:id="@+id/menu_context_history_copy"
+        android:orderInCategory="0"
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/look_up" />
+    <item
+        android:id="@+id/menu_context_history_copy"
         android:icon="@drawable/ic_menu_copy"
-        android:title="@string/copy"
-        android:orderInCategory="1" 
-        android:showAsAction="ifRoom|withText"/>
-     <item android:id="@+id/menu_context_history_delete"
+        android:orderInCategory="1"
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/copy" />
+    <item
+        android:id="@+id/menu_context_history_delete"
         android:icon="@drawable/ic_menu_delete"
-        android:title="@string/delete"
-        android:orderInCategory="2" 
-        android:showAsAction="ifRoom|withText"/>
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/delete" />
 </menu>

@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/menu_dict_detail_lookup_kanji"
         android:icon="@android:drawable/ic_menu_search"
         android:orderInCategory="0"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/lookup_kanji"/>
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/lookup_kanji" />
     <item
         android:id="@+id/menu_dict_detail_copy"
         android:icon="@drawable/ic_menu_copy"
         android:orderInCategory="1"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/copy"/>
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/copy" />
     <item
         android:id="@+id/menu_dict_detail_share"
         android:icon="@android:drawable/ic_menu_share"
         android:orderInCategory="2"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/share"/>
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/share" />
     <item
         android:id="@+id/menu_dict_detail_examples"
         android:icon="@drawable/ic_menu_example"
         android:orderInCategory="3"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/examples"/>
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/examples" />
     <item
         android:id="@+id/menu_dict_detail_create_flashcard"
         android:icon="@drawable/ic_action_flashcard"
         android:orderInCategory="4"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/create_flashcard"/>
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/create_flashcard" />
 
 </menu>

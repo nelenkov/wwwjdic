@@ -5,9 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,7 +16,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.OpenableColumns;
 import android.text.ClipboardManager;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,6 +31,7 @@ import android.widget.Toast;
 
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicApplication;
+import org.nick.wwwjdic.utils.ActivityUtils;
 import org.nick.wwwjdic.utils.FileUtils;
 import org.nick.wwwjdic.utils.LoaderResult;
 
@@ -45,10 +43,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationCompat.BigTextStyle;
-import androidx.core.app.NotificationCompat.Builder;
-import androidx.core.content.FileProvider;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.ListFragment;
 import androidx.loader.app.LoaderManager;
@@ -142,7 +137,7 @@ public abstract class HistoryFragmentBase extends ListFragment
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putInt(FavoritesAndHistory.EXTRA_FILTER_TYPE, selectedFilter);
@@ -177,7 +172,7 @@ public abstract class HistoryFragmentBase extends ListFragment
         }
 
         @Override
-        public Dialog onCreateDialog(@NonNull Bundle savedInstanceState) {
+        public @NonNull Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(
                     getActivity());
             builder.setTitle(R.string.select_filter_type);
@@ -546,71 +541,12 @@ public abstract class HistoryFragmentBase extends ListFragment
 
         Context appCtx = WwwjdicApplication.getInstance();
 
-        Intent intent = open ? createOpenIntent(filename, mimeType)
-                : createShareFileIntent(filename, mimeType);
-        // if (mimeType.contains("anki")) {
-        // intent.addCategory("com.ankidroid.category.DECK");
-        // }
-        PendingIntent pendingIntent = PendingIntent.getActivity(appCtx, 0,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = open ? ActivityUtils.createOpenIntent(appCtx, filename, mimeType)
+                : ActivityUtils.createShareFileIntent(appCtx, filename, mimeType);
         String title = getResources().getString(R.string.app_name) + ": "
                 + appCtx.getString(R.string.export_finished);
-
-        Builder builder = new NotificationCompat.Builder(appCtx);
-        builder.setSmallIcon(R.drawable.ic_stat_export);
-        builder.setContentTitle(title);
-        builder.setContentText(message);
-        BigTextStyle style = new BigTextStyle(builder);
-        style.bigText(message);
-        style.setBigContentTitle(title);
-        builder.setStyle(style);
-        builder.setContentIntent(pendingIntent);
-        builder.setWhen(System.currentTimeMillis());
-        builder.setDefaults(Notification.DEFAULT_LIGHTS);
-        builder.setAutoCancel(true);
-        builder.setOngoing(false);
-        if (open) {
-            builder.addAction(android.R.drawable.ic_menu_view,
-                    appCtx.getString(R.string.open), pendingIntent);
-        } else {
-            builder.addAction(android.R.drawable.ic_menu_share,
-                    appCtx.getString(R.string.share), pendingIntent);
-        }
-
-        notificationManager.notify(notificationId, builder.build());
-    }
-
-    private Intent createOpenIntent(String filename, String mimeType) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-                | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setDataAndType( getUriForfile(filename), mimeType);
-
-        return Intent.createChooser(intent, getString(R.string.open));
-    }
-
-    private Intent createShareFileIntent(String filename, String mimeType) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType(mimeType);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-
-        Uri uri = getUriForfile(filename);
-        Log.d(TAG, "share URI: " + uri);
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
-
-        return Intent.createChooser(intent, (getString(R.string.share)));
-    }
-
-    private Uri getUriForfile(String filename) {
-        File file = new File(filename);
-        Uri uri;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            uri = Uri.fromFile(file);
-        } else {
-            String authority = getActivity().getApplicationContext().getPackageName() + ".fileprovider";
-            uri = FileProvider.getUriForFile(getActivity(), authority, file);
-        }
-        return uri;
+        ActivityUtils.showOpenShareNotification(appCtx, notificationId, intent, title, message,
+                R.drawable.ic_stat_export, open);
     }
 
     @Override
