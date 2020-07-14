@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 repositories {
     mavenCentral()
@@ -11,9 +12,9 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
     implementation project(':wwwjdic')
-    implementation 'com.google.firebase:firebase-analytics:17.2.2'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'androidx.preference:preference:1.1.0'
+    implementation 'com.google.firebase:firebase-analytics:17.4.4'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.preference:preference:1.1.1'
     implementation 'com.google.android.material:material:1.1.0'
 }
 

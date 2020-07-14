@@ -29,7 +29,8 @@
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:networkSecurityConfig="@xml/network_security_config">
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:theme="@style/Theme.AppCompat">
 
         <meta-data
             android:name="android.app.default_searchable"
@@ -42,7 +43,8 @@
         <activity
             android:name="org.nick.wwwjdic.Wwwjdic"
             android:label="@string/app_name_short"
-            android:theme="@style/Theme.WwwjdicAbMain"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.WwwjdicAbTabbed"
             android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="stateAlwaysHidden" 
             tools:replace="android:label,android:windowSoftInputMode">
@@ -54,10 +56,13 @@
         </activity>
         <activity
             android:name="org.nick.wwwjdic.AboutActivity"
+            android:parentActivityName="org.nick.wwwjdic.Wwwjdic"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.DictionaryResultList"
             android:label="@string/dict_search"
+            android:launchMode="singleTop"
+            android:parentActivityName="org.nick.wwwjdic.Wwwjdic"
             android:taskAffinity=""
             android:theme="@style/Theme.WwwjdicAb" 
             tools:replace="android:label">
@@ -73,43 +78,56 @@
         </activity>
         <activity
             android:name="org.nick.wwwjdic.DictionaryEntryDetail"
+            android:launchMode="singleTop"
+            android:parentActivityName="org.nick.wwwjdic.DictionaryResultList"
             android:theme="@style/Theme.WwwjdicAb"
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name="org.nick.wwwjdic.KanjiResultList"
             android:label="@string/searching"
+            android:launchMode="singleTop"
+            android:parentActivityName="org.nick.wwwjdic.Wwwjdic"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.ExamplesResultList"
             android:label="@string/searching"
+            android:launchMode="singleTop"
+            android:parentActivityName="org.nick.wwwjdic.Wwwjdic"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.SentenceBreakdown"
             android:theme="@style/Theme.WwwjdicAb"
+            android:parentActivityName="org.nick.wwwjdic.Wwwjdic"
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name="org.nick.wwwjdic.KanjiEntryDetail"
+            android:parentActivityName="org.nick.wwwjdic.Wwwjdic"
             android:taskAffinity=""
             android:theme="@style/Theme.WwwjdicAb"
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name="org.nick.wwwjdic.RadicalChart"
+            android:parentActivityName="org.nick.wwwjdic.Wwwjdic"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.WwwjdicPreferences"
+            android:parentActivityName="org.nick.wwwjdic.Wwwjdic"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.WwwjdicPreferencesHC"
+            android:parentActivityName="org.nick.wwwjdic.Wwwjdic"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.ocr.OcrActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"
             android:hardwareAccelerated="false"
+            android:parentActivityName="org.nick.wwwjdic.Wwwjdic"
             android:theme="@style/WwwjdicAbTrans" />
         <activity
             android:name="org.nick.wwwjdic.ocr.crop.CropImage"
             android:configChanges="orientation|keyboardHidden|keyboard"
-            android:hardwareAccelerated="false" />
+            android:hardwareAccelerated="false"
+            android:parentActivityName="org.nick.wwwjdic.ocr.OcrActivity"/>
         <activity
             android:name="org.nick.wwwjdic.hkr.RecognizeKanjiActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"
@@ -121,16 +139,20 @@
         </activity>
         <activity
             android:name="org.nick.wwwjdic.hkr.HkrCandidates"
+            android:launchMode="singleTop"
+            android:parentActivityName="org.nick.wwwjdic.hkr.RecognizeKanjiActivity"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.history.FavoritesAndHistory"
-            android:theme="@style/Theme.WwwjdicAbMain"
+            android:theme="@style/Theme.WwwjdicAbTabbed"
+            android:parentActivityName="org.nick.wwwjdic.Wwwjdic"
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name="org.nick.wwwjdic.sod.SodActivity"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity
             android:name="org.nick.wwwjdic.krad.KradChart"
+            android:parentActivityName="org.nick.wwwjdic.Wwwjdic"
             android:hardwareAccelerated="false"
             android:theme="@style/Theme.WwwjdicAb" />
         <activity

@@ -110,6 +110,8 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry>
         } else {
             Intent intent = new Intent(getActivity(), KanjiEntryDetail.class);
             intent.putExtra(KanjiEntryDetail.EXTRA_KANJI_ENTRY, entry);
+            intent.putExtra(DetailActivity.EXTRA_DETAILS_PARENT,
+                    DetailActivity.Parent.EXAMPLE_CANDIDATES.ordinal());
             setFavoriteId(intent, entry);
 
             startActivity(intent);

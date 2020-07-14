@@ -38,7 +38,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import org.acra.ACRA;
 import org.nick.wwwjdic.Activities;
 import org.nick.wwwjdic.DictionaryResultList;
 import org.nick.wwwjdic.ExamplesResultList;
@@ -225,7 +224,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
             deleteTempFile();
 
             if (ACRA_DEBUG) {
-                ACRA.getErrorReporter().handleSilentException(e);
+                //ACRA.getErrorReporter().handleSilentException(e);
             }
 
             Toast.makeText(OcrActivity.this, R.string.image_capture_failed,
@@ -587,7 +586,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
         } catch (Exception e) {
             Log.e(TAG, "error initializing camera: " + e.getMessage(), e);
             if (ACRA_DEBUG) {
-                ACRA.getErrorReporter().handleSilentException(e);
+                //ACRA.getErrorReporter().handleSilentException(e);
             }
             Dialogs.createErrorDialog(this, R.string.ocr_error).show();
         }
@@ -662,7 +661,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
         } catch (Exception e) {
             Log.e(TAG, "error initializing camera: " + e.getMessage(), e);
             if (ACRA_DEBUG) {
-                ACRA.getErrorReporter().handleSilentException(e);
+                //ACRA.getErrorReporter().handleSilentException(e);
             }
             Dialogs.createErrorDialog(this, R.string.ocr_error).show();
         }

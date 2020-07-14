@@ -1,11 +1,11 @@
 package org.nick.wwwjdic;
 
 import android.annotation.SuppressLint;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.app.FragmentTransaction;
 import android.text.ClipboardManager;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -21,7 +21,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,9 +90,9 @@ public class ExamplesResultListFragment extends
                 LayoutInflater inflater = LayoutInflater.from(context);
                 inflater.inflate(R.layout.example_sentence_item, this);
 
-                japaneseSentenceText = (TextView) findViewById(R.id.japaneseSentenceText);
+                japaneseSentenceText = findViewById(R.id.japaneseSentenceText);
                 UIUtils.setJpTextLocale(japaneseSentenceText);
-                englishSentenceText = (TextView) findViewById(R.id.englishSentenceText);
+                englishSentenceText = findViewById(R.id.englishSentenceText);
             }
 
             void populate(ExampleSentence sentence, String queryString) {
@@ -207,8 +206,8 @@ public class ExamplesResultListFragment extends
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.search_results_fragment, container,
                 false);
-        progressSpinner = (ProgressBar) v.findViewById(R.id.progress_spinner);
-        emptyText = (TextView) v.findViewById(android.R.id.empty);
+        progressSpinner = v.findViewById(R.id.progress_spinner);
+        emptyText = v.findViewById(android.R.id.empty);
 
         return v;
     }
@@ -244,6 +243,8 @@ public class ExamplesResultListFragment extends
                     sentence.getJapanese());
             intent.putExtra(SentenceBreakdown.EXTRA_SENTENCE_TRANSLATION,
                     sentence.getEnglish());
+            intent.putExtra(DetailActivity.EXTRA_DETAILS_PARENT,
+                    DetailActivity.Parent.EXAMPLE_CANDIDATES.ordinal());
             startActivity(intent);
         }
     }
@@ -284,7 +285,7 @@ public class ExamplesResultListFragment extends
                     return;
                 }
 
-                sentences = (List<ExampleSentence>) result;
+                sentences = result;
                 ExampleSentenceAdapter adapter = new ExampleSentenceAdapter(
                         getActivity(), sentences, criteria.getQueryString());
                 setListAdapter(adapter);
@@ -369,6 +370,6 @@ public class ExamplesResultListFragment extends
             getListView().setItemChecked(position, false);
             currentActionMode = null;
         }
-    };
+    }
 
 }

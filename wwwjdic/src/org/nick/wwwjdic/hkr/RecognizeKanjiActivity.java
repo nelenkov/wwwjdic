@@ -26,8 +26,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.Toast;
+
 import org.nick.kanjirecognizer.hkr.CharacterRecognizer;
 import org.nick.wwwjdic.Activities;
 import org.nick.wwwjdic.R;
@@ -71,7 +71,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
             "\\p{InCJKUnifiedIdeographs}", Pattern.COMMENTS);
 
     private static String[] filterOutNonKanji(String[] results) {
-        List<String> kanjiCandidates = new ArrayList<String>();
+        List<String> kanjiCandidates = new ArrayList<>();
         for (String s : results) {
             Matcher m = KANJI_PATTERN.matcher(s);
             if (m != null && m.matches()) {
@@ -87,7 +87,6 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     private Button ocrButton;
     private Button removeStrokeButton;
     private Button clearButton;
-    private CheckBox lookAheadCb;
 
     private KanjiDrawView drawView;
 
@@ -157,7 +156,6 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                 Context.BIND_AUTO_CREATE);
         if (success) {
             Log.d(TAG, "successfully bound to KR service");
-            lookAheadCb.setEnabled(false);
         } else {
             Log.d(TAG, "could not bind to KR service");
         }
@@ -183,13 +181,11 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     }
 
     private void findViews() {
-        recognizeButton = (Button) findViewById(R.id.recognize_button);
-        ocrButton = (Button) findViewById(R.id.ocr_button);
-        removeStrokeButton = (Button) findViewById(R.id.remove_stroke_button);
-        clearButton = (Button) findViewById(R.id.clear_canvas_button);
-        lookAheadCb = (CheckBox) findViewById(R.id.lookAheadCb);
-
-        drawView = (KanjiDrawView) findViewById(R.id.kanji_draw_view);
+        recognizeButton = findViewById(R.id.recognize_button);
+        ocrButton = findViewById(R.id.ocr_button);
+        removeStrokeButton = findViewById(R.id.remove_stroke_button);
+        clearButton = findViewById(R.id.clear_canvas_button);
+        drawView = findViewById(R.id.kanji_draw_view);
     }
 
     public static class RecognizeKanjiHandler extends WsResultHandler {
@@ -322,7 +318,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
                         WwwjdicPreferences
                                 .getKrTimeout(RecognizeKanjiActivity.this));
                 String[] results = krClient
-                        .recognize(strokes, isUseLookahead());
+                        .recognize(strokes, false);
                 Log.i(TAG, "go KR result " + Arrays.asList(results));
 
                 Message msg = handler.obtainMessage(HKR_RESULT, 1,
@@ -337,10 +333,6 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
             }
         }
 
-    }
-
-    private boolean isUseLookahead() {
-        return lookAheadCb.isChecked();
     }
 
     @Override

@@ -16,6 +16,7 @@ import org.nick.wwwjdic.DictionaryResultList;
 import org.nick.wwwjdic.ExamplesResultList;
 import org.nick.wwwjdic.KanjiResultList;
 import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.ResultListBase;
 import org.nick.wwwjdic.SearchSuggestionProvider;
 import org.nick.wwwjdic.Wwwjdic;
 import org.nick.wwwjdic.model.SearchCriteria;
@@ -27,6 +28,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import androidx.annotation.NonNull;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 import au.com.bytecode.opencsv.CSVReader;
@@ -119,6 +121,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
         }
 
         intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
+        intent.putExtra(ResultListBase.EXTRA_RESULT_LIST_PARENT, ResultListBase.Parent.HISTORY.ordinal());
 
         startActivity(intent);
     }
@@ -142,7 +145,6 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
         refresh();
     }
 
-    @SuppressWarnings("deprecation")
     private void copy(SearchCriteria criteria) {
         clipboardManager.setText(criteria.getQueryString());
 
@@ -352,7 +354,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     }
 
     @Override
-    public Loader<LoaderResult<Cursor>> onCreateLoader(int id, Bundle args) {
+    public @NonNull Loader<LoaderResult<Cursor>> onCreateLoader(int id, Bundle args) {
         SearchHistoryLoader loader = new SearchHistoryLoader(getActivity(), db);
         loader.setSelectedFilter(selectedFilter);
 
@@ -374,7 +376,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     }
 
     @Override
-    public void onLoaderReset(Loader<LoaderResult<Cursor>> loader) {
+    public void onLoaderReset(@NonNull Loader<LoaderResult<Cursor>> loader) {
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(null);
     }

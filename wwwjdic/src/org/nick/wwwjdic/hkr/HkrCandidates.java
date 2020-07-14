@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import org.nick.wwwjdic.ActionBarActivity;
+import org.nick.wwwjdic.DetailActivity;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.KanjiEntryDetailFragment;
 import org.nick.wwwjdic.R;
@@ -76,6 +77,8 @@ public class HkrCandidates extends ActionBarActivity implements
 
             Bundle extras = new Bundle();
             extras.putSerializable(KanjiEntryDetail.EXTRA_KANJI_ENTRY, entry);
+            extras.putInt(DetailActivity.EXTRA_DETAILS_PARENT,
+                    DetailActivity.Parent.HKR_CANDIDATES.ordinal());
 
             Intent intent = new Intent(this, KanjiEntryDetail.class);
             intent.putExtras(extras);

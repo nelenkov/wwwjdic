@@ -8,8 +8,11 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import static org.nick.wwwjdic.WwwjdicPreferences.PREF_USE_KR_KEY;
+import static org.nick.wwwjdic.WwwjdicPreferences.PREF_WWWJDIC_MIRROR_URL_KEY;
+
 public class WwwjdicPreferencesHC extends AppCompatActivity implements
-        PreferenceFragmentCompat.OnPreferenceStartFragmentCallback  {
+        PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

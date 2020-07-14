@@ -132,6 +132,8 @@ public class DictionaryResultListFragment extends
             Intent intent = new Intent(getActivity(),
                     DictionaryEntryDetail.class);
             intent.putExtra(DictionaryEntryDetail.EXTRA_DICTIONARY_ENTRY, entry);
+            intent.putExtra(DetailActivity.EXTRA_DETAILS_PARENT,
+                    DetailActivity.Parent.DICT_CANDIDATES.ordinal());
             setFavoriteId(intent, entry);
 
             startActivity(intent);

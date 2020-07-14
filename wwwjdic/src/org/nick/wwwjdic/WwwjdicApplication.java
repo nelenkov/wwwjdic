@@ -16,15 +16,6 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import org.acra.ACRA;
-import org.acra.ReportingInteractionMode;
-import org.acra.annotation.ReportsCrashes;
-import org.acra.config.ACRAConfiguration;
-import org.acra.config.ACRAConfigurationException;
-import org.acra.config.ConfigurationBuilder;
-import org.acra.sender.HttpSender;
-import org.acra.sender.ReportSender;
-import org.acra.sender.ReportSenderFactory;
 import org.nick.wwwjdic.model.Radicals;
 
 import java.io.File;
@@ -34,7 +25,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@ReportsCrashes(mode = ReportingInteractionMode.TOAST)
 public class WwwjdicApplication extends Application {
 
     private static final String TAG = WwwjdicApplication.class.getSimpleName();
@@ -103,31 +93,6 @@ public class WwwjdicApplication extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-
-        initAcra();
-    }
-
-    private void initAcra() {
-        if (isDebug()) {
-            return;
-        }
-
-        try {
-            Class<? extends ReportSenderFactory>[] factoryClasses = (Class<? extends ReportSenderFactory>[])new Class[1];
-            factoryClasses[0] = BugSenseReportSenderFactory.class;
-
-            ACRAConfiguration config = new ConfigurationBuilder(this)
-                    .setReportingInteractionMode(ReportingInteractionMode.TOAST)
-                    .setResToastText(R.string.crash_toast_text)
-                    .setReportSenderFactoryClasses(factoryClasses).build();
-            ACRA.init(this, config);
-        } catch (IllegalStateException e) {
-            Log.w(TAG, "ACRA.init() called more than once?: " + e.getMessage(),
-                    e);
-        } catch(ACRAConfigurationException e) {
-            Log.w(TAG, "Failed to init ACRA: " + e.getMessage(),
-                    e);
-        }
     }
 
     public boolean isDebug() {
@@ -365,15 +330,6 @@ public class WwwjdicApplication extends Application {
     public synchronized void setCurrentDictionaryName(
             String currentDictionaryName) {
         this.currentDictionaryName = currentDictionaryName;
-    }
-
-    private static class BugSenseReportSenderFactory  implements ReportSenderFactory {
-        public ReportSender create(Context context, ACRAConfiguration config) {
-            String bugsenseUrl = context.getResources()
-                    .getString(R.string.bugsense_url);
-            return new HttpSender(config, HttpSender.Method.POST,
-                    HttpSender.Type.FORM, bugsenseUrl, null);
-        }
     }
 
     public static boolean hasLocationPermsion(Context ctx) {

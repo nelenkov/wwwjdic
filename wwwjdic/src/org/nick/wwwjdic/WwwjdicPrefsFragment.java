@@ -29,18 +29,18 @@ public class WwwjdicPrefsFragment extends PreferenceFragmentCompat implements
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.wwwjdic_prefs, rootKey);
 
-        autoSelectMirrorPreference = (SwitchPreferenceCompat) findPreference(PREF_AUTO_SELECT_MIRROR_KEY);
+        autoSelectMirrorPreference = findPreference(PREF_AUTO_SELECT_MIRROR_KEY);
         autoSelectMirrorPreference.setOnPreferenceChangeListener(this);
 
-        mirrorPreference = (ListPreference) findPreference(PREF_WWWJDIC_MIRROR_URL_KEY);
+        mirrorPreference = findPreference(PREF_WWWJDIC_MIRROR_URL_KEY);
         mirrorPreference.setSummary(mirrorPreference.getEntry());
         mirrorPreference.setOnPreferenceChangeListener(this);
 
-        defaultDictPreference = (ListPreference) findPreference(PREF_DEFAULT_DICT_PREF_KEY);
+        defaultDictPreference = findPreference(PREF_DEFAULT_DICT_PREF_KEY);
         defaultDictPreference.setSummary(defaultDictPreference.getEntry());
         defaultDictPreference.setOnPreferenceChangeListener(this);
 
-        jpTtsEnginePreference = (ListPreference) findPreference(PREF_JP_TTS_ENGINE);
+        jpTtsEnginePreference = findPreference(PREF_JP_TTS_ENGINE);
         jpTtsEnginePreference.setSummary(WwwjdicPreferences.getTtsEngineName(
                 getActivity(), jpTtsEnginePreference.getValue()));
         jpTtsEnginePreference.setOnPreferenceChangeListener(this);

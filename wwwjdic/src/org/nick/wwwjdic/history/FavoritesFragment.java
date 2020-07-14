@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Date;
 
+import org.nick.wwwjdic.DetailActivity;
 import org.nick.wwwjdic.DictionaryEntryDetail;
+import org.nick.wwwjdic.DictionaryResultList;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicApplication;
@@ -156,10 +158,12 @@ public class FavoritesFragment extends HistoryFragmentBase implements
             intent = new Intent(getActivity(), KanjiEntryDetail.class);
             intent.putExtra(KanjiEntryDetail.EXTRA_KANJI_ENTRY, entry);
             intent.putExtra(KanjiEntryDetail.EXTRA_IS_FAVORITE, true);
+            intent.putExtra(DetailActivity.EXTRA_DETAILS_PARENT, DetailActivity.Parent.FAVORITES.ordinal());
         } else {
             intent = new Intent(getActivity(), DictionaryEntryDetail.class);
             intent.putExtra(DictionaryEntryDetail.EXTRA_DICTIONARY_ENTRY, entry);
             intent.putExtra(DictionaryEntryDetail.EXTRA_IS_FAVORITE, true);
+            intent.putExtra(DetailActivity.EXTRA_DETAILS_PARENT, DetailActivity.Parent.FAVORITES.ordinal());
         }
 
         startActivity(intent);

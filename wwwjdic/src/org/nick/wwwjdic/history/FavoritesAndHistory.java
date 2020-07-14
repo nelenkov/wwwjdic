@@ -35,6 +35,8 @@ public class FavoritesAndHistory extends ActionBarActivity {
     public static final String EXTRA_FILTER_TYPE = "org.nick.wwwjdic.filterType";
 
     public static final String EXTRA_SELECTED_TAB_IDX = "org.nick.wwwjdic.favoritesAndHistorySelectedTabIdx";
+    public static final int FAVORITES_TAB_IDX = 0;
+    public static final int HISTORY_TAB_IDX = 1;
 
     public static final int FILTER_ALL = -1;
     public static final int FILTER_DICT = 0;

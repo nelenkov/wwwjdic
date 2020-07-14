@@ -1,8 +1,8 @@
 package org.nick.wwwjdic;
 
-import org.nick.wwwjdic.model.DictionaryEntry;
-
 import android.os.Bundle;
+
+import org.nick.wwwjdic.model.DictionaryEntry;
 
 public class DictionaryEntryDetail extends DetailActivity {
 
