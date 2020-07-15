@@ -25,22 +25,26 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import androidx.core.content.ContextCompat;
+
 public class KodWidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = KodWidgetProvider.class.getSimpleName();
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-            int[] appWidgetIds) {
+                         int[] appWidgetIds) {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "KOD widget udpate");
         }
-        context.startService(new Intent(context, GetKanjiService.class));
+
+        ContextCompat.startForegroundService(context, new Intent(context, GetKanjiService.class));
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d(TAG, "onReceive: " + intent);
         // v1.5 fix that doesn't call onDelete Action
         final String action = intent.getAction();
         if (BuildConfig.DEBUG) {
@@ -51,7 +55,7 @@ public class KodWidgetProvider extends AppWidgetProvider {
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
             if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-                this.onDeleted(context, new int[] { appWidgetId });
+                this.onDeleted(context, new int[]{appWidgetId});
             }
         } else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action)) {
             Bundle extras = intent.getExtras();
@@ -67,9 +71,8 @@ public class KodWidgetProvider extends AppWidgetProvider {
                 return;
             }
 
-            NetworkInfo ni = (NetworkInfo) extras
-                    .getParcelable(ConnectivityManager.EXTRA_NETWORK_INFO);
-            if (ni.isConnected()) {
+            NetworkInfo ni = extras.getParcelable(ConnectivityManager.EXTRA_NETWORK_INFO);
+            if (ni !=null && ni.isConnected()) {
                 if (BuildConfig.DEBUG) {
                     Log.d(TAG, ni.getTypeName() + " is connecting");
                 }
@@ -78,8 +81,8 @@ public class KodWidgetProvider extends AppWidgetProvider {
                         Log.d(TAG,
                                 "KOD widget is in error state, trying to update...");
                     }
-                    context.startService(new Intent(context,
-                            GetKanjiService.class));
+                    ContextCompat.startForegroundService(context,
+                            new Intent(context, GetKanjiService.class));
                 }
             }
         } else {
@@ -127,8 +130,8 @@ public class KodWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onAppWidgetOptionsChanged(Context context,
-            AppWidgetManager appWidgetManager, int appWidgetId,
-            Bundle newOptions) {
+                                          AppWidgetManager appWidgetManager, int appWidgetId,
+                                          Bundle newOptions) {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "onAppWidgetOptionsChanged " + appWidgetId);
             Log.d(TAG, "newOptions: " + newOptions);
@@ -151,14 +154,13 @@ public class KodWidgetProvider extends AppWidgetProvider {
             Log.d(TAG, "details text size: " + detailsTextSize + "sp");
         }
 
-        setTextSizes(context, views, textSize, detailsTextSize,
-                showReadingAndMeaning);
+        setTextSizes(views, textSize, detailsTextSize, showReadingAndMeaning);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
     static RemoteViews currentRemoveViews(Context context,
-            boolean showReadingAndMeaning) {
+                                          boolean showReadingAndMeaning) {
         boolean transparent = WwwjdicPreferences.isKodTransparentBg(context);
 
         if (showReadingAndMeaning) {
@@ -173,7 +175,7 @@ public class KodWidgetProvider extends AppWidgetProvider {
     }
 
     static float getKodTextSize(Context ctx, Bundle options, int id,
-            boolean showMeaning) {
+                                boolean showMeaning) {
         float ratio = showMeaning ? getDetailedKodTextSizeRatio(ctx)
                 : getKodTextSizeRatio(ctx);
 
@@ -227,8 +229,9 @@ public class KodWidgetProvider extends AppWidgetProvider {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    static void setTextSizes(Context context, RemoteViews views,
-            float textSize, float detailsTextSize, boolean showReadingAndMeaning) {
+    static void setTextSizes(RemoteViews views,
+                             float textSize, float detailsTextSize,
+                             boolean showReadingAndMeaning) {
         if (textSize == 0 || detailsTextSize == 0) {
             return;
         }
@@ -246,19 +249,17 @@ public class KodWidgetProvider extends AppWidgetProvider {
     }
 
     protected static void setKodWidgetTextSizes(Context context,
-            RemoteViews views, int widgetId, boolean showReadingAndMeaning) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            float textSize = getKodTextSize(context, null, widgetId,
-                    showReadingAndMeaning);
-            float detailsTextSize = getDetailsTextSize(context, null, widgetId);
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, "text size: " + textSize + "sp");
-                Log.d(TAG, "details text size: " + detailsTextSize + "sp");
-            }
-            if (textSize > 0 && detailsTextSize > 0) {
-                setTextSizes(context, views, textSize, detailsTextSize,
-                        showReadingAndMeaning);
-            }
+                                                RemoteViews views, int widgetId,
+                                                boolean showReadingAndMeaning) {
+        float textSize = getKodTextSize(context, null, widgetId,
+                showReadingAndMeaning);
+        float detailsTextSize = getDetailsTextSize(context, null, widgetId);
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "text size: " + textSize + "sp");
+            Log.d(TAG, "details text size: " + detailsTextSize + "sp");
+        }
+        if (textSize > 0 && detailsTextSize > 0) {
+            setTextSizes(views, textSize, detailsTextSize, showReadingAndMeaning);
         }
     }
 
@@ -281,14 +282,14 @@ public class KodWidgetProvider extends AppWidgetProvider {
         views.setViewVisibility(R.id.widget, View.GONE);
     }
 
-    public static void clearLoading(Context context, RemoteViews views) {
+    public static void clearLoading(RemoteViews views) {
         views.setViewVisibility(R.id.kod_message_text, View.GONE);
         views.setViewVisibility(R.id.widget, View.VISIBLE);
     }
 
     public static void showKanji(Context context, RemoteViews views,
-            boolean showReadingAndMeaning, List<KanjiEntry> entries,
-            int widgetId) {
+                                 boolean showReadingAndMeaning, List<KanjiEntry> entries,
+                                 int widgetId) {
         KanjiEntry entry = entries.get(0);
         String kod = entry.getHeadword();
         if (BuildConfig.DEBUG) {
@@ -310,6 +311,6 @@ public class KodWidgetProvider extends AppWidgetProvider {
         setKodWidgetTextSizes(context, views, widgetId, showReadingAndMeaning);
 
         views.setOnClickPendingIntent(R.id.widget, pendingIntent);
-        KodWidgetProvider.clearLoading(context, views);
+        KodWidgetProvider.clearLoading(views);
     }
 }

@@ -1,32 +1,8 @@
-/**
- * 
- */
 package org.nick.wwwjdic.widgets;
-
-import static org.nick.wwwjdic.WwwjdicPreferences.WWWJDIC_DEBUG;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.nick.wwwjdic.BuildConfig;
-import org.nick.wwwjdic.WwwjdicPreferences;
-import org.nick.wwwjdic.client.HttpClientFactory;
-import org.nick.wwwjdic.model.KanjiEntry;
-import org.nick.wwwjdic.utils.StringUtils;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
@@ -38,6 +14,30 @@ import android.text.format.DateUtils;
 import android.text.format.Time;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.nick.wwwjdic.BuildConfig;
+import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.WwwjdicPreferences;
+import org.nick.wwwjdic.client.HttpClientFactory;
+import org.nick.wwwjdic.model.KanjiEntry;
+import org.nick.wwwjdic.utils.ActivityUtils;
+import org.nick.wwwjdic.utils.StringUtils;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.nick.wwwjdic.WwwjdicPreferences.WWWJDIC_DEBUG;
 
 @SuppressLint("Registered")
 public class GetKanjiService extends Service {
@@ -65,13 +65,28 @@ public class GetKanjiService extends Service {
     private ResponseHandler<String> responseHandler;
 
     @Override
-    public void onStart(Intent intent, int startId) {
+    public void onCreate() {
+        super.onCreate();
+
+        Context appCtx = getApplicationContext();
+        PendingIntent pendingIntent = PendingIntent.getActivity(appCtx, 0,
+                new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
+        Notification notification = ActivityUtils.createNotification(appCtx, pendingIntent, getResources().getString(
+                R.string.widget_loading), getResources().getString(
+                R.string.widget_loading), R.drawable.ic_stat_update).build();
+        startForeground(1, notification);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
         httpclient = HttpClientFactory
                 .createWwwjdicHttpClient(WwwjdicPreferences
                         .getWwwjdicTimeoutSeconds(this) * 1000);
         responseHandler = HttpClientFactory.createWwwjdicResponseHandler();
 
         executor.execute(new GetKanjiTask());
+
+        return START_STICKY;
     }
 
     @Override
@@ -143,7 +158,7 @@ public class GetKanjiService extends Service {
     }
 
     private RemoteViews buildUpdate(Context context, String wwwjdicResponse,
-            int id) {
+                                    int id) {
         try {
             boolean showReadingAndMeaning = WwwjdicPreferences
                     .isKodShowReading(this);
@@ -220,7 +235,7 @@ public class GetKanjiService extends Service {
                 } catch (Exception e) {
                     if (i < NUM_RETRIES - 1) {
                         Log.w(TAG, String.format("Couldn't contact "
-                                + "WWWJDIC, will retry after %d ms.",
+                                        + "WWWJDIC, will retry after %d ms.",
                                 RETRY_INTERVAL), e);
                         Thread.sleep(RETRY_INTERVAL * (i + 1));
                     } else {
@@ -273,7 +288,7 @@ public class GetKanjiService extends Service {
     }
 
     protected List<KanjiEntry> parseResult(String html) {
-        List<KanjiEntry> result = new ArrayList<KanjiEntry>();
+        List<KanjiEntry> result = new ArrayList<>();
 
         boolean isInPre = false;
         String[] lines = html.split("\n");
@@ -324,7 +339,7 @@ public class GetKanjiService extends Service {
     }
 
     private String generateBackdoorCode(String jisCode) {
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
         // always "1" for kanji?
         buff.append("1");
         // raw

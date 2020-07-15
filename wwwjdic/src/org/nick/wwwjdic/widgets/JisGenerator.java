@@ -73,9 +73,8 @@ public class JisGenerator implements KanjiGenerator {
         }
 
         if (currentKanji == null) {
-            int line = KANJI_START_LINE;
             int column = 1;
-            String result = toRawJis(line, column);
+            String result = toRawJis(KANJI_START_LINE, column);
             currentKanji = rawJisToKanji(result);
 
             return result;
@@ -145,7 +144,7 @@ public class JisGenerator implements KanjiGenerator {
 
     private static String rawJisToUnicodeCp(String rawJis) {
         String kanji = rawJisToKanji(rawJis);
-        int unicodeCp = (int) kanji.toCharArray()[0];
+        int unicodeCp = kanji.toCharArray()[0];
 
         return Integer.toString(unicodeCp, 16);
     }

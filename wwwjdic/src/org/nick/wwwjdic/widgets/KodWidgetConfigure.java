@@ -101,17 +101,17 @@ public class KodWidgetConfigure extends ActionBarActivity implements
     }
 
     private void findViews() {
-        levelOneCb = (CheckBox) findViewById(R.id.kod_level1_only_cb);
+        levelOneCb = findViewById(R.id.kod_level1_only_cb);
         levelOneCb.setOnCheckedChangeListener(this);
-        useJlptCb = (CheckBox) findViewById(R.id.kod_use_jlpt_cb);
+        useJlptCb = findViewById(R.id.kod_use_jlpt_cb);
         useJlptCb.setOnCheckedChangeListener(this);
-        jlptLevelLabel = (TextView) findViewById(R.id.jlpt_level_label);
-        jlptLevelSpinner = (Spinner) findViewById(R.id.kod_jlpt_level_spinner);
-        showReadingCb = (CheckBox) findViewById(R.id.kod_show_reading_cb);
-        transparentBackgroundCb = (CheckBox) findViewById(R.id.kod_transparent_bg_cb);
-        updateIntervalSpinner = (Spinner) findViewById(R.id.kod_update_interval_spinner);
-        kodRandomRb = (RadioButton) findViewById(R.id.kod_random);
-        kodSequentialRb = (RadioButton) findViewById(R.id.kod_sequential);
+        jlptLevelLabel = findViewById(R.id.jlpt_level_label);
+        jlptLevelSpinner = findViewById(R.id.kod_jlpt_level_spinner);
+        showReadingCb = findViewById(R.id.kod_show_reading_cb);
+        transparentBackgroundCb = findViewById(R.id.kod_transparent_bg_cb);
+        updateIntervalSpinner = findViewById(R.id.kod_update_interval_spinner);
+        kodRandomRb = findViewById(R.id.kod_random);
+        kodSequentialRb = findViewById(R.id.kod_sequential);
     }
 
     @Override

@@ -33,9 +33,8 @@ public class ConnectivityMonitor extends BroadcastReceiver {
                 return;
             }
 
-            NetworkInfo ni = (NetworkInfo) extras
-                    .getParcelable(ConnectivityManager.EXTRA_NETWORK_INFO);
-            if (ni.isConnected()) {
+            NetworkInfo ni = extras.getParcelable(ConnectivityManager.EXTRA_NETWORK_INFO);
+            if (ni != null && ni.isConnected()) {
                 Log.d(TAG, ni.getTypeName() + " is connecting");
                 if (WwwjdicPreferences.getLastKodUpdateError(context) != 0) {
                     Log.d(TAG,
