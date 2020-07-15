@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -32,21 +31,16 @@ import org.nick.wwwjdic.krad.KradChart;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.UIUtils;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
@@ -113,26 +107,6 @@ public class Wwwjdic extends ActionBarActivity {
             notifyDataSetChanged();
         }
 
-//        @Override
-//        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-//        }
-//
-//        @Override
-//        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-//            // fixes ABS #351
-//            // https://github.com/JakeWharton/ActionBarSherlock/issues/351
-//            int position = tab.getPosition();
-//            if (viewPager.getCurrentItem() != position) {
-//                viewPager.setCurrentItem(position);
-//                filterHistoryFragments(position);
-//                updateHistorySummary(position);
-//            }
-//        }
-//
-//        @Override
-//        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-//        }
-
         @Override
         public void onPageScrolled(int position, float positionOffset,
                 int positionOffsetPixels) {
@@ -179,85 +153,6 @@ public class Wwwjdic extends ActionBarActivity {
 
         public int getSelectedTabIcon(int idx) {
             return selectedTabIcons.get(idx);
-        }
-
-//        @Override
-//        public boolean isViewFromObject(View view, Object object) {
-//            return view == object;
-//        }
-
-//        @Override
-//        public Parcelable saveState() {
-//            return null;
-//        }
-//
-//        @Override
-//        public void restoreState(Parcelable state, ClassLoader loader) {
-//        }
-
-        /**
-         * Hack that takes advantage of interface parity between
-         * ActionBarSherlock and the native interface to reach inside the
-         * classes to manually select the appropriate tab spinner position if
-         * the overflow tab spinner is showing.
-         * 
-         * Related issues:
-         * https://github.com/JakeWharton/ActionBarSherlock/issues/240 and
-         * https://android-review.googlesource.com/#/c/32492/
-         * 
-         * @author toulouse@crunchyroll.com
-         */
-        private void selectInSpinnerIfPresent(int position, boolean animate) {
-            try {
-                View actionBarView = null;//findViewById(R.id.abs__action_bar);
-                if (actionBarView == null) {
-                    int id = getResources().getIdentifier("action_bar", "id",
-                            "android");
-                    actionBarView = findViewById(id);
-                }
-
-                Class<?> actionBarViewClass = actionBarView.getClass();
-                Field mTabScrollViewField = actionBarViewClass
-                        .getDeclaredField("mTabScrollView");
-                mTabScrollViewField.setAccessible(true);
-
-                Object mTabScrollView = mTabScrollViewField.get(actionBarView);
-                if (mTabScrollView == null) {
-                    return;
-                }
-
-                Field mTabSpinnerField = mTabScrollView.getClass()
-                        .getDeclaredField("mTabSpinner");
-                mTabSpinnerField.setAccessible(true);
-
-                Object mTabSpinner = mTabSpinnerField.get(mTabScrollView);
-                if (mTabSpinner == null) {
-                    return;
-                }
-
-                Method setSelectionMethod = mTabSpinner
-                        .getClass()
-                        .getSuperclass()
-                        .getDeclaredMethod("setSelection", Integer.TYPE,
-                                Boolean.TYPE);
-                setSelectionMethod.invoke(mTabSpinner, position, animate);
-
-            } catch (IllegalArgumentException e) {
-                Log.w(TAG,
-                        "WwwjdicTabsPagerAdapter.selectInSpinnerIfPresent()", e);
-            } catch (IllegalAccessException e) {
-                Log.w(TAG,
-                        "WwwjdicTabsPagerAdapter.selectInSpinnerIfPresent()", e);
-            } catch (NoSuchFieldException e) {
-                Log.w(TAG,
-                        "WwwjdicTabsPagerAdapter.selectInSpinnerIfPresent()", e);
-            } catch (NoSuchMethodException e) {
-                Log.w(TAG,
-                        "WwwjdicTabsPagerAdapter.selectInSpinnerIfPresent()", e);
-            } catch (InvocationTargetException e) {
-                Log.w(TAG,
-                        "WwwjdicTabsPagerAdapter.selectInSpinnerIfPresent()", e);
-            }
         }
 
         @Override
@@ -728,8 +623,7 @@ public class Wwwjdic extends ActionBarActivity {
     }
 
     private void updateDictSummary(View view) {
-        final FavoritesAndHistorySummaryView dictHistorySummary = (FavoritesAndHistorySummaryView) view
-                .findViewById(R.id.dict_history_summary);
+        final FavoritesAndHistorySummaryView dictHistorySummary = view.findViewById(R.id.dict_history_summary);
         if (dictHistorySummary == null) {
             return;
         }

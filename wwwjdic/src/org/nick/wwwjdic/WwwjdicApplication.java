@@ -57,11 +57,13 @@ public class WwwjdicApplication extends Application {
 
     @Override
     public void onCreate() {
+        super.onCreate();
+
         instance = this;
 
         version = getVersionName();
 
-       createWwwjdicDirIfNecessary();
+        createWwwjdicDirIfNecessary();
 
         updateJapanMirror();
 
