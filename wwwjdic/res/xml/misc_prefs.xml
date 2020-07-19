@@ -5,23 +5,23 @@
         app:iconSpaceReserved="false"
         app:title="@string/pref_sod">
         <EditTextPreference
-            app:defaultValue="30"
             android:inputType="numberDecimal"
-            app:key="pref_sod_server_timeout"
             android:maxLength="4"
+            app:defaultValue="30"
+            app:iconSpaceReserved="false"
+            app:key="pref_sod_server_timeout"
             app:singleLine="true"
             app:summary="@string/pref_timeout_summary"
-            app:title="@string/pref_sod_server_timeout"
-            app:iconSpaceReserved="false"/>
+            app:title="@string/pref_sod_server_timeout" />
         <EditTextPreference
-            app:defaultValue="700"
             android:inputType="numberDecimal"
-            app:key="pref_sod_animation_delay"
             android:maxLength="4"
+            app:defaultValue="50"
+            app:iconSpaceReserved="false"
+            app:key="pref_sod_animation_delay"
             app:singleLine="true"
             app:summary="@string/pref_sod_animation_delay_summary"
-            app:title="@string/pref_sod_animation_delay"
-            app:iconSpaceReserved="false"/>
+            app:title="@string/pref_sod_animation_delay" />
     </PreferenceCategory>
     <PreferenceCategory
         app:iconSpaceReserved="false"
@@ -30,20 +30,20 @@
             app:defaultValue="\n"
             app:entries="@array/export_meanings_separator_char_names"
             app:entryValues="@array/export_meanings_separator_chars"
+            app:iconSpaceReserved="false"
             app:key="pref_export_meanings_separator_char"
             app:summary="@string/pref_export_meanings_separator_char_summary"
-            app:title="@string/pref_export_meanings_separator_char"
-            app:iconSpaceReserved="false"/>
+            app:title="@string/pref_export_meanings_separator_char" />
     </PreferenceCategory>
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:title="@string/pref_maintenance">
         <SwitchPreferenceCompat
             app:defaultValue="true"
+            app:iconSpaceReserved="false"
             app:key="acra.enable"
             app:summaryOff="@string/pref_acra_disabled"
             app:summaryOn="@string/pref_acra_enabled"
-            app:title="@string/pref_disable_acra"
-            app:iconSpaceReserved="false"/>
+            app:title="@string/pref_disable_acra" />
     </PreferenceCategory>
 </PreferenceScreen>
