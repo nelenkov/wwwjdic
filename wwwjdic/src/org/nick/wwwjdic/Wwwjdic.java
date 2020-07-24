@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 import org.nick.wwwjdic.history.FavoritesAndHistory;
@@ -83,10 +82,10 @@ public class Wwwjdic extends ActionBarActivity {
 
         private final ViewPager viewPager;
 
-        private final List<Fragment> tabs = new ArrayList<Fragment>();
-        private final List<String> tabTitles = new ArrayList<String>();
-        private final List<Integer> tabIcons = new ArrayList<Integer>();
-        private final List<Integer> selectedTabIcons = new ArrayList<Integer>();
+        private final List<Fragment> tabs = new ArrayList<>();
+        private final List<String> tabTitles = new ArrayList<>();
+        private final List<Integer> tabIcons = new ArrayList<>();
+        private final List<Integer> selectedTabIcons = new ArrayList<>();
 
         public WwwjdicTabsPagerAdapter(AppCompatActivity activity, ViewPager pager) {
             super(activity.getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -114,13 +113,6 @@ public class Wwwjdic extends ActionBarActivity {
 
         @Override
         public void onPageSelected(int position) {
-//            actionBar.setSelectedNavigationItem(position);
-//            filterHistoryFragments(position);
-//            updateHistorySummary(position);
-//
-//            // for ABS#240
-//            // https://github.com/JakeWharton/ActionBarSherlock/issues/240
-//            selectInSpinnerIfPresent(position, true);
         }
 
         @Override
@@ -135,9 +127,6 @@ public class Wwwjdic extends ActionBarActivity {
         @NonNull
         @Override
         public Fragment getItem(int position) {
-//            if (position == 0) {
-//                return getSupportFragmentManager().getFragmentFactory().instantiate(getClassLoader(), DictionaryLookpFragment.class.getName());
-//            }
             return tabs.get(position);
         }
 
@@ -176,9 +165,6 @@ public class Wwwjdic extends ActionBarActivity {
     private ViewPager viewPager;
     private WwwjdicTabsPagerAdapter tabsAdapter;
     private TabLayout tabLayout;
-    private TabItem dictTab;
-    private TabItem kanjiTab;
-    private TabItem examplesTab;
 
     private Toolbar toolbar;
 
@@ -225,7 +211,7 @@ public class Wwwjdic extends ActionBarActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(EXTRA_SELECTED_TAB_IDX, tabLayout.getSelectedTabPosition());
 
@@ -244,10 +230,10 @@ public class Wwwjdic extends ActionBarActivity {
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permission, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permission, grantResults);
 
-        if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+        if (grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, R.string.ext_storage_perm_message, Toast.LENGTH_LONG).show();
             finish();
         }
@@ -722,8 +708,7 @@ public class Wwwjdic extends ActionBarActivity {
     }
 
     private void updateExamplesSummary(View view) {
-        final FavoritesAndHistorySummaryView examplesHistorySummary = (FavoritesAndHistorySummaryView) view
-                .findViewById(R.id.examples_history_summary);
+        final FavoritesAndHistorySummaryView examplesHistorySummary = view.findViewById(R.id.examples_history_summary);
         if (examplesHistorySummary == null) {
             return;
         }
