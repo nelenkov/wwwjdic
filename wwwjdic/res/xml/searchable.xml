@@ -3,6 +3,6 @@
     android:label="@string/app_name_short" android:hint="@string/search_hint" 
     android:searchSettingsDescription="@string/dict_search_description"
     android:includeInGlobalSearch="true" 
-    android:searchSuggestAuthority="org.nick.wwwjdic.SearchSuggestionProvider"
+    android:searchSuggestAuthority="@string/search_suggest_authority"
     android:searchSuggestSelection=" ?" >
 </searchable>

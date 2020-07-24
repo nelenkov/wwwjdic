@@ -190,12 +190,12 @@
 
         <provider
             android:name="org.nick.wwwjdic.SearchSuggestionProvider"
-            android:authorities="org.nick.wwwjdic.SearchSuggestionProvider"
+            android:authorities="${searchAuthority}"
             android:exported="true" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="org.nick.wwwjdic.fileprovider"
+            android:authorities="${filesAuthority}"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

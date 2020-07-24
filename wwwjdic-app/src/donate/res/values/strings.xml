@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WWWJDIC for Android Donate</string>
+    <string name="about_text">WWWJDIC for Android (donate version)
+    </string>
+    <string name="donate_thanks">Thank you for supporting this project and buying
+        the donate version.</string>
+    <string name="donation_thanks_title">Thank you</string>
+    <string name="donation_thanks">Thank you for supporting this project and buying
+        the donate version.</string>
+
+    <string name="search_suggest_authority">org.nick.wwwjdic.donate.SearchSuggestionProvider</string>
+</resources>

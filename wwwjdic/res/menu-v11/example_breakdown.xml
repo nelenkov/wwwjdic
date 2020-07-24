@@ -6,19 +6,19 @@
         android:id="@+id/menu_ex_breakdown_speak"
         android:icon="@drawable/ic_action_tts"
         android:orderInCategory="0"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="always|withText"
         android:title="@string/read_out" />
     <item
         android:id="@+id/menu_example_lookup_kanji"
         android:icon="@android:drawable/ic_menu_search"
         android:orderInCategory="1"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="always|withText"
         android:title="@string/look_up_all_kanji" />
     <item
         android:id="@+id/menu_example_copy"
         android:icon="@drawable/ic_menu_copy"
         android:orderInCategory="2"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="always|withText"
         android:title="@string/copy">
         <menu>
             <item
@@ -39,6 +39,6 @@
         android:id="@+id/menu_example_share"
         android:icon="@android:drawable/ic_menu_share"
         android:orderInCategory="3"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="always|withText"
         android:title="@string/share" />
 </menu>

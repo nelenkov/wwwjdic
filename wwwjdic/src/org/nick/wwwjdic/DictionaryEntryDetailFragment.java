@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,6 +31,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 
 public class DictionaryEntryDetailFragment extends DetailFragment {
@@ -42,6 +45,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
     private LinearLayout translationsLayout;
     private TextView entryView;
     private CheckBox starCb;
+    private Toolbar toolbar;
 
     private DictionaryEntry entry;
     private String exampleSearchKey;
@@ -90,20 +94,18 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
             return;
         }
 
-        entryView = (TextView) v.findViewById(R.id.details_word_text);
+        entryView = v.findViewById(R.id.details_word_text);
         UIUtils.setJpTextLocale(entryView);
         entryView.setText(entry.getWord());
         entryView.setOnLongClickListener(this);
 
         if (entry.getReading() != null) {
-            TextView readingView = (TextView) v
-                    .findViewById(R.id.details_word_reading_text);
+            TextView readingView = v.findViewById(R.id.details_word_reading_text);
             UIUtils.setJpTextLocale(readingView);
             readingView.setText(entry.getReading());
         }
 
-        translationsLayout = (LinearLayout) v
-                .findViewById(R.id.translations_layout);
+        translationsLayout = v.findViewById(R.id.translations_layout);
 
         if (entry.getMeanings().isEmpty()) {
             Pair<LinearLayout, TextView> translationViews = createMeaningTextView(
@@ -126,12 +128,38 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
             }
         }
 
-        starCb = (CheckBox) v.findViewById(R.id.star_word);
+        starCb = v.findViewById(R.id.star_word);
         starCb.setOnCheckedChangeListener(null);
         starCb.setChecked(isFavorite);
         starCb.setOnCheckedChangeListener(this);
 
         exampleSearchKey = DictUtils.extractSearchKey(wwwjdicEntry);
+
+        toolbar = getActivity().findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.inflateMenu(R.menu.dict_detail);
+            for (int i = 0; i < toolbar.getChildCount(); i++) {
+                View child = toolbar.getChildAt(i);
+                if (child instanceof ActionMenuView) {
+                    child.getLayoutParams().width = ActionMenuView.LayoutParams.MATCH_PARENT;
+                }
+            }
+
+            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    return onOptionsItemSelected(item);
+                }
+            });
+            toolbar.setOnCreateContextMenuListener(new Toolbar.OnCreateContextMenuListener() {
+
+                @Override
+                public void onCreateContextMenu(ContextMenu contextMenu, View view,
+                                                ContextMenu.ContextMenuInfo contextMenuInfo) {
+
+                }
+            });
+        }
     }
 
     @Override
@@ -150,12 +178,16 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.menu_dict_detail_create_flashcard);
-        item.setEnabled(canCreateFlashcards());
+        if (item != null) {
+            item.setEnabled(canCreateFlashcards());
+        }
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.dict_detail, menu);
+        if (toolbar == null) {
+            inflater.inflate(R.menu.dict_detail, menu);
+        }
 
         MenuItem menuItem = menu.findItem(R.id.menu_dict_detail_share);
         shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
@@ -310,7 +342,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
         if (v == null) {
             return;
         }
-        Button speakButton = (Button) v.findViewById(R.id.jp_speak_button);
+        Button speakButton = v.findViewById(R.id.jp_speak_button);
         speakButton.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
 
         if (show) {

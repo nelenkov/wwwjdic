@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about_text">WWWJDIC for Android (寄付版)
+    </string>
+    <string name="donate_thanks">寄付版をご購入いただき、ありがとうございます。</string>
+    <string name="donation_thanks_title">ありがとうございます</string>
+    <string name="donation_thanks">寄付版をご購入いただき、ありがとうございます!\n
+        お気に入りと検索履歴とをインポートするには、無料版のCSVエックスポート機能(お気に入り・検索履歴画面でメニューボタンを押下)でファイルにエックスポートし、寄付版からインポートしてください。
+        \n無料版と寄付版は共存できるが、インポートした後無料版のアンインストールを推奨します。
+    </string>
+</resources>

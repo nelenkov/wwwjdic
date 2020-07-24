@@ -6,25 +6,25 @@
         android:id="@+id/menu_kanji_detail_stroke_order"
         android:icon="@drawable/ic_menu_edit"
         android:orderInCategory="0"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="always|withText"
         android:title="@string/stroke_order" />
     <item
         android:id="@+id/menu_kanji_detail_copy"
         android:icon="@drawable/ic_menu_copy"
         android:orderInCategory="1"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="always|withText"
         android:title="@string/copy" />
     <item
         android:id="@+id/menu_kanji_detail_share"
         android:icon="@android:drawable/ic_menu_share"
         android:orderInCategory="2"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="always|withText"
         android:title="@string/share" />
     <item
         android:id="@+id/menu_kanji_detail_create_flashcard"
         android:icon="@drawable/ic_action_flashcard"
         android:orderInCategory="3"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="always|withText"
         android:title="@string/create_flashcard" />
 
 </menu>

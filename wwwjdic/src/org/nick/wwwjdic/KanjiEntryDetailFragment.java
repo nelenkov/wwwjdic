@@ -7,6 +7,7 @@ import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,6 +42,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 
 public class KanjiEntryDetailFragment extends DetailFragment {
@@ -48,15 +51,12 @@ public class KanjiEntryDetailFragment extends DetailFragment {
     private static final String TAG = KanjiEntryDetailFragment.class
             .getSimpleName();
 
-    private static final List<String> ELEMENTARY_GRADES = Arrays
-            .asList(new String[] { "1", "2", "3", "4", "5", "6" });
-    private static final List<String> SECONDARY_GRADES = Arrays
-            .asList(new String[] { "8" });
-    private static final List<String> JINMEIYOU_GRADES = Arrays
-            .asList(new String[] { "9", "10" });
+    private static final List<String> ELEMENTARY_GRADES = Arrays.asList("1", "2", "3", "4", "5", "6" );
+    private static final List<String> SECONDARY_GRADES = Arrays.asList("8");
+    private static final List<String> JINMEIYOU_GRADES = Arrays.asList("9", "10");
 
     private LinearLayout translationsLayout;
-    private LinearLayout codesLayout;
+    private Toolbar toolbar;
 
     private KanjiEntry entry;
 
@@ -114,13 +114,12 @@ public class KanjiEntryDetailFragment extends DetailFragment {
             return;
         }
 
-        TextView entryView = (TextView) v.findViewById(R.id.kanjiText);
+        TextView entryView = v.findViewById(R.id.kanjiText);
         UIUtils.setJpTextLocale(entryView);
         entryView.setText(entry.getKanji());
         entryView.setOnLongClickListener(this);
 
-        TextView radicalGlyphText = (TextView) v
-                .findViewById(R.id.radicalGlyphText);
+        TextView radicalGlyphText = v.findViewById(R.id.radicalGlyphText);
         UIUtils.setJpTextLocale(radicalGlyphText);
         // radicalGlyphText.setTextSize(30f);
         Radicals radicals = Radicals.getInstance();
@@ -129,51 +128,42 @@ public class KanjiEntryDetailFragment extends DetailFragment {
             radicalGlyphText.setText(radical.getGlyph().substring(0, 1));
         }
 
-        TextView radicalNumberView = (TextView) v
-                .findViewById(R.id.radicalNumberText);
+        TextView radicalNumberView = v.findViewById(R.id.radicalNumberText);
         radicalNumberView.setText(Integer.toString(entry.getRadicalNumber()));
 
-        TextView strokeCountView = (TextView) v
-                .findViewById(R.id.strokeCountText);
+        TextView strokeCountView = v.findViewById(R.id.strokeCountText);
         strokeCountView.setText(Integer.toString(entry.getStrokeCount()));
 
-        TextView compoundsLinkStarting = (TextView) v
-                .findViewById(R.id.compound_link_starting);
+        TextView compoundsLinkStarting = v.findViewById(R.id.compound_link_starting);
         compoundsLinkStarting.setNextFocusDownId(R.id.compound_link_any);
         Intent intent = createCompoundSearchIntent(
                 SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_STARTING, false);
         makeClickable(compoundsLinkStarting, intent);
 
-        TextView compoundsLinkAny = (TextView) v
-                .findViewById(R.id.compound_link_any);
+        TextView compoundsLinkAny = v.findViewById(R.id.compound_link_any);
         compoundsLinkAny.setNextFocusDownId(R.id.compound_link_common);
         compoundsLinkAny.setNextFocusUpId(R.id.compound_link_starting);
         intent = createCompoundSearchIntent(
                 SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_ANY, false);
         makeClickable(compoundsLinkAny, intent);
 
-        TextView compoundsLinkCommon = (TextView) v
-                .findViewById(R.id.compound_link_common);
+        TextView compoundsLinkCommon = v.findViewById(R.id.compound_link_common);
         compoundsLinkCommon.setNextFocusUpId(R.id.compound_link_any);
         intent = createCompoundSearchIntent(
                 SearchCriteria.KANJI_COMPOUND_SEARCH_TYPE_NONE, true);
         makeClickable(compoundsLinkCommon, intent);
 
-        ScrollView meaningsScroll = (ScrollView) v
-                .findViewById(R.id.meaningsScroll);
+        ScrollView meaningsScroll = v.findViewById(R.id.meaningsScroll);
         meaningsScroll.setNextFocusUpId(R.id.compound_link_common);
 
-        LinearLayout readingLayout = (LinearLayout) v
-                .findViewById(R.id.readingLayout);
+        LinearLayout readingLayout = v.findViewById(R.id.readingLayout);
 
         if (entry.getReading() != null) {
-            TextView onyomiView = (TextView) v
-                    .findViewById(R.id.details_onyomi_text);
+            TextView onyomiView = v.findViewById(R.id.details_onyomi_text);
             UIUtils.setJpTextLocale(onyomiView);
             onyomiView.setText(entry.getOnyomi());
 
-            TextView kunyomiView = (TextView) v
-                    .findViewById(R.id.details_kunyomi_text);
+            TextView kunyomiView = v.findViewById(R.id.details_kunyomi_text);
             UIUtils.setJpTextLocale(kunyomiView);
             kunyomiView.setText(entry.getKunyomi());
         }
@@ -228,9 +218,8 @@ public class KanjiEntryDetailFragment extends DetailFragment {
             readingLayout.addView(layout);
         }
 
-        translationsLayout = (LinearLayout) v
-                .findViewById(R.id.translations_layout);
-        codesLayout = (LinearLayout) v.findViewById(R.id.codes_layout);
+        translationsLayout = v.findViewById(R.id.translations_layout);
+        LinearLayout codesLayout = v.findViewById(R.id.codes_layout);
 
         if (entry.getMeanings().isEmpty()) {
             Pair<LinearLayout, TextView> translationViews = createMeaningTextView(
@@ -256,10 +245,36 @@ public class KanjiEntryDetailFragment extends DetailFragment {
         List<Pair<String, String>> codesData = createCodesData(entry);
         addCodesTable(codesLayout, codesData);
 
-        CheckBox starCb = (CheckBox) v.findViewById(R.id.star_kanji);
+        CheckBox starCb = v.findViewById(R.id.star_kanji);
         starCb.setOnCheckedChangeListener(null);
         starCb.setChecked(isFavorite);
         starCb.setOnCheckedChangeListener(this);
+
+        toolbar = getActivity().findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.inflateMenu(R.menu.kanji_detail);
+            for (int i = 0; i < toolbar.getChildCount(); i++) {
+                View child = toolbar.getChildAt(i);
+                if (child instanceof ActionMenuView) {
+                    child.getLayoutParams().width = ActionMenuView.LayoutParams.MATCH_PARENT;
+                }
+            }
+
+            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    return onOptionsItemSelected(item);
+                }
+            });
+            toolbar.setOnCreateContextMenuListener(new Toolbar.OnCreateContextMenuListener() {
+
+                @Override
+                public void onCreateContextMenu(ContextMenu contextMenu, View view,
+                                                ContextMenu.ContextMenuInfo contextMenuInfo) {
+
+                }
+            });
+        }
     }
 
     @Override
@@ -269,21 +284,23 @@ public class KanjiEntryDetailFragment extends DetailFragment {
             return null;
         }
 
-        View v = inflater.inflate(R.layout.kanji_entry_details_fragment,
+       return inflater.inflate(R.layout.kanji_entry_details_fragment,
                 container, false);
-
-        return v;
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.menu_kanji_detail_create_flashcard);
-        item.setEnabled(canCreateFlashcards());
+        if (item != null) {
+            item.setEnabled(canCreateFlashcards());
+        }
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.kanji_detail, menu);
+        if (toolbar == null) {
+            inflater.inflate(R.menu.kanji_detail, menu);
+        }
 
         MenuItem menuItem = menu.findItem(R.id.menu_kanji_detail_share);
         shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
@@ -336,13 +353,13 @@ public class KanjiEntryDetailFragment extends DetailFragment {
             TextView labelView = new TextView(getActivity());
             labelView.setText(codesEntry.getFirst());
             labelView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
-            labelView.setGravity(Gravity.LEFT);
+            labelView.setGravity(Gravity.START);
             row.addView(labelView);
 
             TextView textView = new TextView(getActivity());
             textView.setText(codesEntry.getSecond());
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
-            textView.setGravity(Gravity.LEFT);
+            textView.setGravity(Gravity.START);
             textView.setPadding(10, 0, 0, 0);
             row.addView(textView);
 
@@ -380,15 +397,15 @@ public class KanjiEntryDetailFragment extends DetailFragment {
 
     @SuppressLint("DefaultLocale")
     private List<Pair<String, String>> createCodesData(KanjiEntry entry) {
-        ArrayList<Pair<String, String>> data = new ArrayList<Pair<String, String>>();
+        ArrayList<Pair<String, String>> data = new ArrayList<>();
 
         if (entry.getUnicodeNumber() != null) {
-            data.add(new Pair<String, String>(getStr(R.string.unicode_number),
+            data.add(new Pair<>(getStr(R.string.unicode_number),
                     entry.getUnicodeNumber().toUpperCase()));
         }
 
         if (entry.getJisCode() != null) {
-            data.add(new Pair<String, String>(getStr(R.string.jis_code), entry
+            data.add(new Pair<>(getStr(R.string.jis_code), entry
                     .getJisCode().toUpperCase()));
         }
 
@@ -397,12 +414,12 @@ public class KanjiEntryDetailFragment extends DetailFragment {
             byte[] sjis = kanji.getBytes("SJIS");
             if (sjis.length < 2) {
                 Log.w(TAG, "Unable to encode " + kanji + " as SJIS");
-                data.add(new Pair<String, String>(getStr(R.string.sjis_code),
+                data.add(new Pair<>(getStr(R.string.sjis_code),
                         "N/A"));
             } else {
                 String sjisCode = String.format("%02x%02x", sjis[0], sjis[1])
                         .toUpperCase();
-                data.add(new Pair<String, String>(getStr(R.string.sjis_code),
+                data.add(new Pair<>(getStr(R.string.sjis_code),
                         sjisCode));
             }
         } catch (UnsupportedEncodingException e) {
@@ -410,13 +427,13 @@ public class KanjiEntryDetailFragment extends DetailFragment {
         }
 
         if (entry.getClassicalRadicalNumber() != null) {
-            data.add(new Pair<String, String>(
+            data.add(new Pair<>(
                     getStr(R.string.classical_radical), entry
                             .getClassicalRadicalNumber().toString()));
         }
 
         if (entry.getFrequncyeRank() != null) {
-            data.add(new Pair<String, String>(getStr(R.string.freq_rank), entry
+            data.add(new Pair<>(getStr(R.string.freq_rank), entry
                     .getFrequncyeRank().toString()));
         }
 
@@ -431,7 +448,7 @@ public class KanjiEntryDetailFragment extends DetailFragment {
             } else if (JINMEIYOU_GRADES.contains(rawGrade)) {
                 gradeStr = getResources().getString(R.string.grade_jinmeiyou);
             }
-            data.add(new Pair<String, String>(getStr(R.string.grade), gradeStr));
+            data.add(new Pair<>(getStr(R.string.grade), gradeStr));
         }
 
         if (entry.getJlptLevel() != null) {
@@ -441,22 +458,22 @@ public class KanjiEntryDetailFragment extends DetailFragment {
             if (newLevel != null) {
                 levelStr += " (" + newLevel + ")";
             }
-            data.add(new Pair<String, String>(getStr(R.string.jlpt_level),
+            data.add(new Pair<>(getStr(R.string.jlpt_level),
                     levelStr));
         }
 
         if (entry.getSkipCode() != null) {
-            data.add(new Pair<String, String>(getStr(R.string.skip_code), entry
+            data.add(new Pair<>(getStr(R.string.skip_code), entry
                     .getSkipCode()));
         }
 
         if (entry.getKoreanReading() != null) {
-            data.add(new Pair<String, String>(getStr(R.string.korean_reading),
+            data.add(new Pair<>(getStr(R.string.korean_reading),
                     entry.getKoreanReading()));
         }
 
         if (entry.getPinyin() != null) {
-            data.add(new Pair<String, String>(getStr(R.string.pinyn), entry
+            data.add(new Pair<>(getStr(R.string.pinyn), entry
                     .getPinyin()));
         }
 
@@ -519,7 +536,7 @@ public class KanjiEntryDetailFragment extends DetailFragment {
         if (v == null) {
             return;
         }
-        Button speakButton = (Button) v.findViewById(R.id.jp_speak_button);
+        Button speakButton = v.findViewById(R.id.jp_speak_button);
         speakButton.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
 
         if (show) {

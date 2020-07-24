@@ -10,6 +10,7 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 
 @SuppressWarnings("deprecation")
@@ -42,6 +44,8 @@ public class SentenceBreakdownFragment extends
         TtsManager.TtsEnabled {
 
     private static final String TAG = SentenceBreakdownFragment.class.getSimpleName();
+
+    private Toolbar toolbar;
 
     static class SentenceBreakdownAdapter extends BaseAdapter {
 
@@ -91,12 +95,12 @@ public class SentenceBreakdownFragment extends
                 LayoutInflater inflater = LayoutInflater.from(context);
                 inflater.inflate(R.layout.breakdown_item, this);
 
-                explanationText = (TextView) findViewById(R.id.explanationText);
-                wordText = (TextView) findViewById(R.id.wordText);
+                explanationText = findViewById(R.id.explanationText);
+                wordText = findViewById(R.id.wordText);
                 UIUtils.setJpTextLocale(wordText);
-                readingText = (TextView) findViewById(R.id.readingText);
+                readingText = findViewById(R.id.readingText);
                 UIUtils.setJpTextLocale(readingText);
-                translationText = (TextView) findViewById(R.id.translationText);
+                translationText = findViewById(R.id.translationText);
             }
 
             void populate(SentenceBreakdownEntry entry) {
@@ -200,6 +204,32 @@ public class SentenceBreakdownFragment extends
 
         ttsManager = new TtsManager(getActivity(), this, jpTtsEnginePackageName);
 
+        toolbar = getActivity().findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.inflateMenu(R.menu.example_breakdown);
+            for (int i = 0; i < toolbar.getChildCount(); i++) {
+                View child = toolbar.getChildAt(i);
+                if (child instanceof ActionMenuView) {
+                    child.getLayoutParams().width = ActionMenuView.LayoutParams.MATCH_PARENT;
+                }
+            }
+
+            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    return onOptionsItemSelected(item);
+                }
+            });
+            toolbar.setOnCreateContextMenuListener(new Toolbar.OnCreateContextMenuListener() {
+
+                @Override
+                public void onCreateContextMenu(ContextMenu contextMenu, View view,
+                                                ContextMenu.ContextMenuInfo contextMenuInfo) {
+
+                }
+            });
+        }
+
         sentenceView.setText(markedSentence);
         if (!StringUtils.isEmpty(sentenceTranslation)) {
             englishSentenceText.setVisibility(View.VISIBLE);
@@ -255,19 +285,21 @@ public class SentenceBreakdownFragment extends
 
         View v = inflater.inflate(R.layout.sentence_breakdown_fragment,
                 container, false);
-        progressSpinner = (ProgressBar) v.findViewById(R.id.progress_spinner);
-        emptyText = (TextView) v.findViewById(android.R.id.empty);
+        progressSpinner = v.findViewById(R.id.progress_spinner);
+        emptyText = v.findViewById(android.R.id.empty);
 
-        sentenceView = (TextView) v.findViewById(R.id.sentence);
+        sentenceView = v.findViewById(R.id.sentence);
         UIUtils.setJpTextLocale(sentenceView);
-        englishSentenceText = (TextView) v.findViewById(R.id.englishSentence);
+        englishSentenceText = v.findViewById(R.id.englishSentence);
 
         return v;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.example_breakdown, menu);
+        if (toolbar == null) {
+            inflater.inflate(R.menu.example_breakdown, menu);
+        }
 
         MenuItem menuItem = menu.findItem(R.id.menu_example_share);
         shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
@@ -431,7 +463,7 @@ public class SentenceBreakdownFragment extends
     }
 
     private void updateEntries(final List<SentenceBreakdownEntry> result) {
-        entries = (List<SentenceBreakdownEntry>) result;
+        entries = result;
         Log.d(TAG, "entries: " + entries);
         SentenceBreakdownAdapter adapter = new SentenceBreakdownAdapter(
                 getActivity(), entries);

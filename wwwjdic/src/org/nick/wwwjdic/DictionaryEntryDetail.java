@@ -12,9 +12,8 @@ public class DictionaryEntryDetail extends DetailActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DictionaryEntry entry = (DictionaryEntry) getIntent()
+        wwwjdicEntry = (DictionaryEntry) getIntent()
                 .getSerializableExtra(EXTRA_DICTIONARY_ENTRY);
-        wwwjdicEntry = entry;
 
         setContentView(R.layout.dict_entry_details);
 

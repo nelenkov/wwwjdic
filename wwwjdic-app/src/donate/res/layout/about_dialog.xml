@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:id="@+id/layout_root"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp" >
+
+        <TextView
+            android:id="@+id/aboutText"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/about_text"
+            android:textColor="#FFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/versionText"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#FFF" />
+
+        <TextView
+            android:id="@+id/aboutByText"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="4dp"
+            android:gravity="center_horizontal"
+            android:text="@string/about_by"
+            android:textColor="#FFF" />
+
+        <TextView
+            android:id="@+id/faqText"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="4dp"
+            android:gravity="center_horizontal"
+            android:text="@string/faq_link"
+            android:textColor="#FFF" />
+
+         <TextView
+            android:id="@+id/donate_thanks"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="4dip"
+            android:gravity="center_horizontal"
+            android:text="@string/donate_thanks"
+            android:textColor="#FFF" >
+        </TextView>
+
+        <Button
+            android:id="@+id/buy_donate"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:drawable/btn_default_small"
+            android:gravity="center_horizontal"
+            android:text="@string/donate_version"
+            android:visibility="gone" >
+        </Button>
+
+        <TextView
+            android:id="@+id/bugtrackingText"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="@string/about_bugtracking"
+            android:textColor="#FFF" />
+
+        <TextView
+            android:id="@+id/bugtrackerUrlText"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="4dp"
+            android:autoLink="web"
+            android:text="@string/bugtracker_url" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="4dp"
+            android:gravity="center"
+            android:text="@string/credits"
+            android:textColor="#FFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/usesWwwjdic"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/uses_wwwjdic" />
+
+        <TextView
+            android:id="@+id/usesWeocr"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/uses_weocr" />
+
+        <TextView
+            android:id="@+id/uses_kanjivg"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/uses_kanjivg" />
+
+        <TextView
+            android:id="@+id/kradfile_attribution_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/kradfile_attribution" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/opencsv_attribution" />
+    </LinearLayout>
+
+</ScrollView>

@@ -27,6 +27,17 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
+
+        def filesAuthorityValue = applicationId + ".fileprovider"
+        buildConfigField("String",
+                "FILES_AUTHORITY",
+                "\"${filesAuthorityValue}\"")
+
+        def searchAuthorityValue = applicationId + ".SearchSuggestionProvider"
+        manifestPlaceholders = [searchAuthority: searchAuthorityValue, filesAuthority: filesAuthorityValue]
+        buildConfigField("String",
+                "SEARCH_AUTHORITY",
+                "\"${searchAuthorityValue}\"")
     }
 
     dexOptions {
@@ -45,6 +56,19 @@ android {
         }
     }
 
+    flavorDimensions "version"
+    productFlavors {
+        free {
+            dimension "version"
+            applicationId = "org.nick.wwwjdic"
+        }
+        donate {
+            dimension "version"
+            applicationId = "org.nick.wwwjdic.donate"
+            //applicationIdSuffix ".donate"
+        }
+    }
+
     sourceSets {
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
@@ -57,6 +81,16 @@ android {
             renderscript.srcDirs = ['src']
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
+        }
+        donate {
+            manifest.srcFile 'src/donate/AndroidManifest.xml'
+            java.srcDirs = ['src/donate/java']
+            resources.srcDirs = ['src/donate']
+            aidl.srcDirs = ['src/donate/aidl']
+            renderscript.srcDirs = ['src/donate/rs']
+            res.srcDirs = ['src/donate/res']
+            assets.srcDirs = ['src/donate/assets']
+
         }
     }
 
@@ -72,8 +106,10 @@ android {
     }
 
     afterEvaluate {
-        generateReleaseBuildConfig.enabled = false
-        generateDebugBuildConfig.enabled = false
+        generateFreeReleaseBuildConfig.enabled = false
+        generateFreeDebugBuildConfig.enabled = false
+        generateDonateReleaseBuildConfig.enabled = false
+        generateDonateDebugBuildConfig.enabled = false
     }
 }
 

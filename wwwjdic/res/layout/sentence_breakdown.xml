@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/sentence_breakdown_root" 
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sentence_breakdown_root"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <FrameLayout android:id="@+id/sentence_breakdown"
-            android:layout_width="match_parent" 
-            android:layout_height="match_parent"/>
+
+    <FrameLayout
+        android:id="@+id/sentence_breakdown"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/ab_blue"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:titleTextColor="@android:color/white" />
 </RelativeLayout>

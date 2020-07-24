@@ -577,4 +577,5 @@ You can enable offline recognition using the Kanji Recognizer application. Would
 
     <string name="ext_storage_perm_message">"You need to grant external storage permissions to use this app. External storage is used for storing backups and exported files."</string>
 
+    <string name="search_suggest_authority">org.nick.wwwjdic.SearchSuggestionProvider</string>
 </resources>
