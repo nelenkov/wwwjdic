@@ -1,16 +1,10 @@
 package org.nick.wwwjdic;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-
-import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;

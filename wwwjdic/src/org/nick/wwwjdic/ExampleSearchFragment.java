@@ -22,9 +22,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 public class ExampleSearchFragment extends WwwjdicFragmentBase implements
         OnClickListener, OnItemSelectedListener {
 
+    private TextInputLayout inputLayout;
     private EditText exampleSearchInputText;
     private EditText maxNumExamplesText;
     private CheckBox exampleExactMatchCb;
@@ -69,9 +72,7 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.example_search, container, false);
-
-        return v;
+        return inflater.inflate(R.layout.example_search, container, false);
     }
 
     @Override
@@ -157,8 +158,9 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
     }
 
     private void findViews() {
-        exampleSearchInputText = (EditText) getView().findViewById(
-                R.id.exampleInputText);
+        inputLayout = getView().findViewById(R.id.inputTextLayout);
+        inputLayout.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
+        exampleSearchInputText = getView().findViewById(R.id.exampleInputText);
         exampleSearchInputText
                 .setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
@@ -172,14 +174,10 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
                         return false;
                     }
                 });
-        maxNumExamplesText = (EditText) getView().findViewById(
-                R.id.maxExamplesInput);
-        exampleExactMatchCb = (CheckBox) getView().findViewById(
-                R.id.exampleExactMatchCb);
-        sentenceModeSpinner = (Spinner) getView()
-                .findViewById(R.id.modeSpinner);
-        exampleSearchButton = (Button) getView().findViewById(
-                R.id.exampleSearchButton);
+        maxNumExamplesText = getView().findViewById(R.id.maxExamplesInput);
+        exampleExactMatchCb = getView().findViewById(R.id.exampleExactMatchCb);
+        sentenceModeSpinner = getView().findViewById(R.id.modeSpinner);
+        exampleSearchButton = getView().findViewById(R.id.exampleSearchButton);
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int position,
@@ -218,12 +216,12 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
 
         if (!isEnabled) {
             if (clear) {
-                exampleSearchInputText.setHint(R.string.enter_japanese_text);
+                inputLayout.setHint(getResources().getString(R.string.enter_japanese_text));
             }
             exampleSearchButton.setText(R.string.translate);
         } else {
             if (clear) {
-                exampleSearchInputText.setHint(R.string.enter_eng_or_jap);
+                inputLayout.setHint(getResources().getString(R.string.enter_eng_or_jap));
             }
             exampleSearchButton.setText(R.string.search);
         }

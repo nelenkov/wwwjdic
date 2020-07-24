@@ -1,91 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" 
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <LinearLayout android:id="@+id/kanjiLookupTab"
-        android:orientation="vertical" 
+
+    <LinearLayout
+        android:id="@+id/kanjiLookupTab"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:padding="15dip"
-        android:layout_gravity="top" 
-        android:minHeight="200dp">
-        <EditText  android:id="@+id/kanjiInputText" 
-            style="@style/search_input"
-            android:hint="@string/enter_kanji_search_key"
-            android:inputType="text"
-            android:imeOptions="actionSearch" />
-        <LinearLayout android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:orientation="horizontal"
-            android:id="@+id/searchTypeSelectionLayout" 
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:minHeight="200dp"
+        android:orientation="vertical"
+        android:padding="15dip">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputTextLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_kanji_search_key">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/kanjiInputText"
+                style="@style/search_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionSearch" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/searchTypeSelectionLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginBottom="20dp"
             android:gravity="center_vertical|center_horizontal"
-            android:layout_gravity="center_vertical|center_horizontal" 
-            android:layout_marginBottom="20dp">
-            <TextView  android:id="@+id/searchTypeLabel" 
-                style="@style/search_option"
-                android:text="@string/search_type"/>
-            <Spinner android:id="@+id/kanjiSearchTypeSpinner" 
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="5dp" 
-                android:minWidth="320dp"
-                android:prompt="@string/select_search_type"/>
-            <TextView android:id="@+id/radicalLabel" 
-                style="@style/search_option"
-                android:layout_marginLeft="20dp"
-                android:text="@string/radical"/>
-            <EditText android:id="@+id/radicalInputText"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content" 
-                android:lines="1" 
-                android:text="  " 
-                android:minWidth="40dp"
-                android:cursorVisible="false" 
-                android:focusable="false"
-                android:textSize="18sp" 
-                android:inputType="none"/>
-            <Button android:id="@+id/selectRadicalButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" 
-                android:textSize="@dimen/search_option_text_size"
-                android:text="@string/select" />
-            <TextView android:id="@+id/strokeCountLabel" 
-                style="@style/search_option"
-                android:layout_marginLeft="10dp"
-                android:text="@string/strokes"/>
-            <EditText android:id="@+id/strokeCountMinInput" 
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content" 
-                android:lines="1" 
-                android:inputType="numberDecimal"
-                android:textSize="@dimen/search_option_text_size" 
-                android:maxLength="2" 
-                android:imeOptions="actionNext" 
-                android:hint="@string/min"/>
-            <EditText android:id="@+id/strokeCountMaxInput" 
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content" 
-                android:lines="1" 
-                android:inputType="numberDecimal"
-                android:textSize="@dimen/search_option_text_size" 
-                android:maxLength="2" 
-                android:hint="@string/max"/>    
-        </LinearLayout>
-        <LinearLayout  
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" 
             android:orientation="horizontal">
-            <View android:layout_width="0px"
-                android:layout_weight="1"
-                android:layout_height="fill_parent" />
-            <Button android:id="@+id/kanjiSearchButton"
-                android:layout_width="0px"
-                android:layout_weight="4"
+
+            <TextView
+                android:id="@+id/searchTypeLabel"
+                style="@style/search_option"
+                android:text="@string/search_type" />
+
+            <Spinner
+                android:id="@+id/kanjiSearchTypeSpinner"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/search"/>
-            <View android:layout_width="0px"
-                android:layout_weight="1"
-                android:layout_height="fill_parent" />
-        </LinearLayout>   
+                android:layout_marginStart="5dp"
+                android:minWidth="320dp"
+                android:prompt="@string/select_search_type" />
+
+            <TextView
+                android:id="@+id/radicalLabel"
+                style="@style/search_option"
+                android:layout_marginStart="20dp"
+                android:text="@string/radical" />
+
+            <EditText
+                android:id="@+id/radicalInputText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:inputType="none"
+                android:lines="1"
+                android:minWidth="40dp"
+                android:text="  "
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/selectRadicalButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/select"
+                android:textSize="@dimen/search_option_text_size" />
+
+            <TextView
+                android:id="@+id/strokeCountLabel"
+                style="@style/search_option"
+                android:layout_marginStart="10dp"
+                android:text="@string/strokes" />
+
+            <EditText
+                android:id="@+id/strokeCountMinInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/min"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:lines="1"
+                android:maxLength="2"
+                android:textSize="@dimen/search_option_text_size" />
+
+            <EditText
+                android:id="@+id/strokeCountMaxInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/max"
+                android:inputType="numberDecimal"
+                android:lines="1"
+                android:maxLength="2"
+                android:textSize="@dimen/search_option_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0px"
+                android:layout_height="fill_parent"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/kanjiSearchButton"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="@string/search" />
+
+            <View
+                android:layout_width="0px"
+                android:layout_height="fill_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

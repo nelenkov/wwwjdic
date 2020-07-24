@@ -22,12 +22,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.StringUtils;
 
 import java.util.concurrent.RejectedExecutionException;
 
+import androidx.annotation.NonNull;
 import androidx.collection.SparseArrayCompat;
 
 public class DictionaryFragment extends WwwjdicFragmentBase implements
@@ -37,8 +40,9 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
 
     private static final String SELECTED_DICTIONARY_IDX = "org.nick.wwwjdic.selectedDict";
 
-    private static final SparseArrayCompat<String> IDX_TO_DICT_CODE = new SparseArrayCompat<String>();
+    private static final SparseArrayCompat<String> IDX_TO_DICT_CODE = new SparseArrayCompat<>();
 
+    private TextInputLayout inputTextLayout;
     private EditText inputText;
     private CheckBox exactMatchCb;
     private CheckBox commonWordsCb;
@@ -93,9 +97,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.dict_lookup, container, false);
-
-        return v;
+        return inflater.inflate(R.layout.dict_lookup, container, false);
     }
 
     private void populateIdxToDictCode() {
@@ -139,7 +141,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putInt(SELECTED_DICTIONARY_IDX,
@@ -147,7 +149,9 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
     }
 
     private void findViews() {
-        inputText = (EditText) getView().findViewById(R.id.inputText);
+        inputTextLayout = getView().findViewById(R.id.inputTextLayout);
+        inputTextLayout.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
+        inputText = getView().findViewById(R.id.inputText);
         inputText
                 .setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
@@ -161,11 +165,10 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
                         return false;
                     }
                 });
-        exactMatchCb = (CheckBox) getView().findViewById(R.id.exactMatchCb);
-        commonWordsCb = (CheckBox) getView().findViewById(R.id.commonWordsCb);
-        romanizedJapaneseCb = (CheckBox) getView().findViewById(
-                R.id.romanizedCb);
-        dictSpinner = (Spinner) getView().findViewById(R.id.dictionarySpinner);
+        exactMatchCb = getView().findViewById(R.id.exactMatchCb);
+        commonWordsCb = getView().findViewById(R.id.commonWordsCb);
+        romanizedJapaneseCb = getView().findViewById(R.id.romanizedCb);
+        dictSpinner = getView().findViewById(R.id.dictionarySpinner);
     }
 
     private void setupListeners() {

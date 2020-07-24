@@ -1,49 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/dictLookupTab"
-    android:orientation="vertical" 
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" 
-    android:padding="15dp"
-    android:layout_gravity="top" 
-    android:minHeight="200dp">
-    <EditText android:id="@+id/inputText" 
-        style="@style/search_input"
-        android:hint="@string/enter_eng_or_jap" 
-        android:inputType="text"
-        android:imeOptions="actionSearch"/>
-    <LinearLayout android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:orientation="horizontal"
-        android:id="@+id/dictSelectionLayout" 
+    android:layout_height="fill_parent"
+    android:layout_gravity="top"
+    android:minHeight="200dp"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputTextLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_eng_or_jap">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionSearch"
+            style="@style/search_input"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/dictSelectionLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_gravity="center_vertical|center_horizontal">
-        <TextView android:id="@+id/dictLabel"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dictLabel"
             style="@style/search_option"
-            android:text="@string/dictionary_label"/>
-        <Spinner android:layout_height="wrap_content"
+            android:text="@string/dictionary_label" />
+
+        <Spinner
             android:id="@+id/dictionarySpinner"
             android:layout_width="wrap_content"
-            android:layout_marginLeft="5dp" 
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:minWidth="320dp"
-            android:prompt="@string/select_dictionary"/>
+            android:prompt="@string/select_dictionary" />
     </LinearLayout>
-    <LinearLayout android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:orientation="horizontal"
-        android:id="@+id/optionsLayout" 
-        android:layout_gravity="center_horizontal">
-        <CheckBox  android:id="@+id/commonWordsCb" 
+
+    <LinearLayout
+        android:id="@+id/optionsLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/commonWordsCb"
             style="@style/search_option"
-            android:text="@string/common_words"/>
-        <CheckBox android:id="@+id/exactMatchCb" 
+            android:text="@string/common_words" />
+
+        <CheckBox
+            android:id="@+id/exactMatchCb"
             style="@style/search_option"
-            android:text="@string/exact_match_nl"/>
-        <CheckBox android:id="@+id/romanizedCb" 
+            android:text="@string/exact_match_nl" />
+
+        <CheckBox
+            android:id="@+id/romanizedCb"
             style="@style/search_option"
             android:text="@string/romanized_jap" />
     </LinearLayout>
-    <Button android:id="@+id/translateButton" 
+
+    <Button
+        android:id="@+id/translateButton"
         style="@style/search_button"
-        android:text="@string/search"/>
+        android:text="@string/search" />
 </LinearLayout>

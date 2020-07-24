@@ -21,6 +21,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.model.Radical;
 import org.nick.wwwjdic.model.SearchCriteria;
@@ -39,8 +41,9 @@ public class  KanjiLookupFragment extends WwwjdicFragmentBase implements
 
     private static final int RADICAL_RETURN_RESULT = 0;
 
-    private static final SparseArrayCompat<String> IDX_TO_CODE = new SparseArrayCompat<String>();
+    private static final SparseArrayCompat<String> IDX_TO_CODE = new SparseArrayCompat<>();
 
+    private TextInputLayout inputLayout;
     private EditText kanjiInputText;
     private Spinner kanjiSearchTypeSpinner;
 
@@ -239,7 +242,9 @@ public class  KanjiLookupFragment extends WwwjdicFragmentBase implements
     }
 
     private void findViews() {
-        kanjiInputText = (EditText) getView().findViewById(R.id.kanjiInputText);
+        inputLayout = getView().findViewById(R.id.inputTextLayout);
+        inputLayout.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
+        kanjiInputText = getView().findViewById(R.id.kanjiInputText);
         kanjiInputText
                 .setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
@@ -253,16 +258,14 @@ public class  KanjiLookupFragment extends WwwjdicFragmentBase implements
                         return false;
                     }
                 });
-        kanjiSearchTypeSpinner = (Spinner) getView().findViewById(
+        kanjiSearchTypeSpinner = getView().findViewById(
                 R.id.kanjiSearchTypeSpinner);
 
-        radicalEditText = (EditText) getView().findViewById(
-                R.id.radicalInputText);
-        strokeCountMinInput = (EditText) getView().findViewById(
-                R.id.strokeCountMinInput);
-        strokeCountMaxInput = (EditText) getView().findViewById(
+        radicalEditText = getView().findViewById(R.id.radicalInputText);
+        strokeCountMinInput = getView().findViewById(R.id.strokeCountMinInput);
+        strokeCountMaxInput = getView().findViewById(
                 R.id.strokeCountMaxInput);
-        selectRadicalButton = (Button) getView().findViewById(
+        selectRadicalButton = getView().findViewById(
                 R.id.selectRadicalButton);
     }
 

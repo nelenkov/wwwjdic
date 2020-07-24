@@ -4,5 +4,6 @@
     android:searchSettingsDescription="@string/dict_search_description"
     android:includeInGlobalSearch="true" 
     android:searchSuggestAuthority="@string/search_suggest_authority"
-    android:searchSuggestSelection=" ?" >
+    android:searchSuggestSelection=" ?"
+    android:voiceSearchMode="showVoiceSearchButton|launchRecognizer">
 </searchable>

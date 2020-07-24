@@ -1,11 +1,12 @@
 package org.nick.wwwjdic;
 
 import android.annotation.SuppressLint;
+import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
-import android.app.FragmentTransaction;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,8 +17,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import org.nick.wwwjdic.history.HistoryUtils;
 import org.nick.wwwjdic.model.DictionaryEntry;
@@ -26,6 +25,8 @@ import org.nick.wwwjdic.utils.DictUtils;
 import org.nick.wwwjdic.utils.StringUtils;
 
 import java.util.List;
+
+import androidx.annotation.RequiresApi;
 
 public class DictionaryResultListFragment extends
         ResultListFragmentBase<DictionaryEntry> implements
@@ -40,6 +41,7 @@ public class DictionaryResultListFragment extends
     public DictionaryResultListFragment() {
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -72,6 +74,16 @@ public class DictionaryResultListFragment extends
             suggestions.saveRecentQuery(query, null);
             criteria = SearchCriteria.createForDictionary(query, false, false,
                     false, dictionary);
+        } else if (Intent.ACTION_PROCESS_TEXT.equals(intent.getAction())) {
+            CharSequence text = intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT);
+            if (text != null) {
+                String dictionary = WwwjdicPreferences
+                        .getDefaultDictionary(getActivity());
+                criteria = SearchCriteria.createForDictionary(text.toString(), false,
+                        false,false, dictionary);
+            } else {
+                getActivity().finish();
+            }
         } else {
             extractSearchCriteria();
         }
@@ -92,8 +104,8 @@ public class DictionaryResultListFragment extends
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.search_results_fragment, container,
                 false);
-        progressSpinner = (ProgressBar) v.findViewById(R.id.progress_spinner);
-        emptyText = (TextView) v.findViewById(android.R.id.empty);
+        progressSpinner = v.findViewById(R.id.progress_spinner);
+        emptyText = v.findViewById(android.R.id.empty);
 
         return v;
     }
@@ -161,7 +173,7 @@ public class DictionaryResultListFragment extends
                     return;
                 }
 
-                entries = (List<DictionaryEntry>) result;
+                entries = result;
                 DictionaryEntryAdapter adapter = new DictionaryEntryAdapter(
                         getActivity(), entries);
                 setListAdapter(adapter);
@@ -254,6 +266,6 @@ public class DictionaryResultListFragment extends
             getListView().setItemChecked(position, false);
             currentActionMode = null;
         }
-    };
+    }
 
 }

@@ -1,65 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" 
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <LinearLayout android:id="@+id/exampleSearchTab"
-        android:orientation="vertical" 
+
+    <LinearLayout
+        android:id="@+id/exampleSearchTab"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:padding="15dp"
-        android:layout_gravity="top" 
-        android:minHeight="200dp">
-        <EditText android:id="@+id/exampleInputText"
-            style="@style/search_input"
-            android:hint="@string/enter_eng_or_jap" 
-            android:maxLength="256"
-            android:inputType="text"
-            android:imeOptions="actionSearch" />
-        <LinearLayout android:id="@+id/modeLayout"  
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:minHeight="200dp"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputTextLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_eng_or_jap">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/exampleInputText"
+                style="@style/search_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionSearch"
+                android:maxLength="256" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/modeLayout"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" 
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
             android:gravity="center_vertical|center_horizontal"
-            android:layout_gravity="center_vertical|center_horizontal">
-            <TextView android:id="@+id/modeLabel" 
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/modeLabel"
                 style="@style/search_option"
                 android:text="@string/mode" />
-            <Spinner android:id="@+id/modeSpinner" 
-                android:layout_height="wrap_content"
+
+            <Spinner
+                android:id="@+id/modeSpinner"
                 android:layout_width="wrap_content"
-                android:layout_marginLeft="5dp" 
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:minWidth="320dp"
-                android:prompt="@string/select_mode"/>
+                android:prompt="@string/select_mode" />
         </LinearLayout>
-        <LinearLayout android:id="@+id/examplesOptionsLayout"  
+
+        <LinearLayout
+            android:id="@+id/examplesOptionsLayout"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" 
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
             android:gravity="center_vertical|center_horizontal"
-            android:layout_gravity="center_vertical|center_horizontal">
-            <TextView android:id="@+id/max_examples_label"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/max_examples_label"
                 style="@style/search_option"
-                android:text="@string/max_num_examples"/>
-            <EditText android:id="@+id/maxExamplesInput"
-                android:layout_width="wrap_content"  
-                android:layout_height="wrap_content"
-                android:lines="1" 
-                android:inputType="numberDecimal"
-                android:textSize="@dimen/search_option_text_size" 
-                android:hint="@string/max"
-                android:maxLength="3" 
-                android:text="20"
-                android:layout_gravity="center_vertical"/>
-            <CheckBox android:id="@+id/exampleExactMatchCb"  
+                android:text="@string/max_num_examples" />
+
+            <EditText
+                android:id="@+id/maxExamplesInput"
                 android:layout_width="wrap_content"
-                android:text="@string/exact_match"
-                android:textSize="@dimen/search_option_text_size" 
-                android:layout_marginLeft="4dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_height="wrap_content"/>
+                android:hint="@string/max"
+                android:inputType="numberDecimal"
+                android:lines="1"
+                android:maxLength="3"
+                android:text="20"
+                android:textSize="@dimen/search_option_text_size" />
+
+            <CheckBox
+                android:id="@+id/exampleExactMatchCb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="4dp"
+                android:text="@string/exact_match"
+                android:textSize="@dimen/search_option_text_size" />
         </LinearLayout>
-        <Button android:id="@+id/exampleSearchButton"
+
+        <Button
+            android:id="@+id/exampleSearchButton"
             style="@style/search_button"
-            android:text="@string/search"/>
+            android:text="@string/search" />
     </LinearLayout>
 </ScrollView>
