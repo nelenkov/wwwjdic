@@ -1,7 +1,8 @@
 on:
   pull_request: {}
   push:
-    branches: []
+    branches: 
+    - 2.0
 name: Semgrep
 jobs:
   semgrep:
