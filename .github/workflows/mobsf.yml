@@ -27,6 +27,12 @@ jobs:
           SCAN_TYPE: apk
           OUTPUT_FILE_NAME: mobsf-report
 
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: wwjdic-app-2.5.0.apk
+          path: wwwjdic-app/build/**/wwwjdic-app-*apk
+
       - name: Upload MobSF Analysis PDF Result
         uses: actions/upload-artifact@v2
         with:
