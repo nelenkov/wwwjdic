@@ -23,7 +23,7 @@ jobs:
       - name: Run MobSF Analysis
         uses: inm-certi/mobsf-action@v1.5
         env:
-          INPUT_FILE_NAME: wwwjdic-app/build/outputs/apk/free/debug/wwwjdic-app-freeDebug-2.5.0.apk
+          INPUT_FILE_NAME: wwwjdic-app/build/outputs/apk/ci/debug/wwwjdic-app-ciDebug-2.5.0.apk
           SCAN_TYPE: apk
           OUTPUT_FILE_NAME: mobsf-report
 

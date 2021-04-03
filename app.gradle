@@ -67,6 +67,11 @@ android {
             applicationId = "org.nick.wwwjdic.donate"
             //applicationIdSuffix ".donate"
         }
+        ci {
+            dimension "version"
+            applicationId = "org.nick.wwwjdic"
+            //applicationIdSuffix ".donate"
+        }
     }
 
     sourceSets {
