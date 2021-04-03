@@ -18,7 +18,7 @@ jobs:
           java-version: '11.x'
 
       - name: Run Compile
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleCiDebug
 
       - name: Run MobSF Analysis
         uses: inm-certi/mobsf-action@v1.5
