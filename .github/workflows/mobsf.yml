@@ -1,0 +1,40 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - 2.0
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@2.0
+
+      - name: Set-up Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11.x'
+
+      - name: Run Compile
+        run: ./gradlew assembleDebug
+
+      - name: Run MobSF Analysis
+        uses: inm-certi/mobsf-action@v1.5
+        env:
+          INPUT_FILE_NAME: wwwjdic-app/build/outputs/apk/free/debug/wwwjdic-app-freeDebug-2.5.0.apk
+          SCAN_TYPE: apk
+          OUTPUT_FILE_NAME: mobsf-report
+
+      - name: Upload MobSF Analysis PDF Result
+        uses: actions/upload-artifact@v2
+        with:
+          name: mobsf-report.pdf
+          path: mobsf-report.pdf
+
+      - name: Upload MobSF Analysis JSON Result
+        uses: actions/upload-artifact@v2
+        with:
+          name: mobsf-report.json
+          path: mobsf-report.json
