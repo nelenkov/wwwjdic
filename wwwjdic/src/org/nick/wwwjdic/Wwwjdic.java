@@ -132,8 +132,8 @@ public class Wwwjdic extends ActionBarActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            //return tabTitles.get(position);
-            return null;
+            return tabTitles.get(position);
+            //return null;
         }
 
         public int getTabIcon(int idx) {
@@ -423,8 +423,9 @@ public class Wwwjdic extends ActionBarActivity {
         });
 
         tabLayout = findViewById(R.id.tablayout);
-        tabLayout.setBackgroundColor(getResources().getColor(R.color.ab_blue));
-        tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.ab_blue_dark));
+        // XXX this should be in theme
+        //tabLayout.setBackgroundColor(getResources().getColor(R.color.ab_blue));
+        //tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.ab_blue_dark));
 
         //dictTab = findViewById(R.id.dict_tab);
         //kanjiTab = findViewById(R.id.kanji_tab);
@@ -484,7 +485,7 @@ public class Wwwjdic extends ActionBarActivity {
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_dict_tab_selected);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_kanji_tab_unselected);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_dict_tab_unselected);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_example_tab_unselected);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

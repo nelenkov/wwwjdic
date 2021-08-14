@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="list_item_base">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:textColor">@color/white</item>
+        <!--item name="android:textColor">@color/white</item-->
     </style>
 
     <style name="dict_list_heading" parent="list_item_base">
@@ -45,7 +45,7 @@
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textSize">42sp</item>
-        <item name="android:textColor">@color/white</item>
+        <!--item name="android:textColor">@color/white</item-->
     </style>
 
     <style name="kanji_list_reading">
@@ -58,7 +58,7 @@
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/white</item>
+        <!--item name="android:textColor">@color/white</item-->
     </style>
 
     <style name="kanji_list_translation">
@@ -71,17 +71,17 @@
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/white</item>
+        <!--item name="android:textColor">@color/white</item-->
     </style>
 
     <style name="dict_detail_heading">
         <item name="android:textSize">@dimen/details_heading_size</item>
-        <item name="android:textColor">@color/white</item>
+        <!--item name="android:textColor">@color/white</item-->
     </style>
 
     <style name="dict_detail_reading">
         <item name="android:textSize">@dimen/details_reading_size</item>
-        <item name="android:textColor">@color/white</item>
+        <!--item name="android:textColor">@color/white</item-->
     </style>
 
     <style name="dict_detail_meaning">
@@ -90,29 +90,29 @@
 
     <style name="kanji_detail_heading">
         <item name="android:textSize">@dimen/kanji_detail_heading_size</item>
-        <item name="android:textColor">@color/white</item>
+        <!--item name="android:textColor">@color/white</item-->
     </style>
 
     <style name="kanji_detail_reading">
         <item name="android:textSize">@dimen/details_reading_size</item>
-        <item name="android:textColor">@color/white</item>
+        <!--item name="android:textColor">@color/white</item-->
     </style>
 
     <style name="radical_glyph">
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:textSize">@dimen/radical_glyph_size</item>
-        <item name="android:textColor">@color/white</item>
+        <!--item name="android:textColor">@color/white</item-->
     </style>
 
     <style name="kod_loading">
         <item name="android:textSize">10sp</item>
-        <item name="android:textColor">@color/semi_white</item>
+        <!--item name="android:textColor">@color/semi_white</item-->
     </style>
     
      <style name="kod_loading_transparent">
         <item name="android:textSize">10sp</item>
-        <item name="android:textColor">@color/semi_black</item>
+        <!--item name="android:textColor">@color/semi_black</item-->
     </style>
 
     <style name="listViewActivatedStyle" />
@@ -121,7 +121,7 @@
         <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_width">0px</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:background">@android:drawable/btn_default_small</item>
+        <!--item name="android:background">@android:drawable/btn_default_small</item-->
         <item name="android:textSize">@dimen/hkr_toolbar_text_size</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
@@ -149,8 +149,8 @@
     <style name="details_separator">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:background">@color/grey</item>
+        <!--item name="android:textColor">@color/white</item-->
+        <item name="android:background">@color/primaryColor</item>
         <item name="android:textSize">@dimen/details_separator_size</item>
         <item name="android:paddingLeft">3dp</item>
     </style>
@@ -158,7 +158,7 @@
     <style name="compounds_link">
         <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:textColorLink">@color/white</item>
+        <!--item name="android:textColorLink">@color/white</item-->
         <item name="android:layout_marginRight">10dp</item>
         <item name="android:singleLine">true</item>
         <item name="android:textSize">@dimen/kanji_compound_link_size</item>
@@ -174,15 +174,17 @@
     </style>
 
     <style name="action_bar_title">
-        <item name="android:textColor">@color/white</item>
+        <!--item name="android:textColor">@color/white</item-->
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="AppTheme" parent="Theme.AppCompat"/>
-    <style name="Theme.WwwjdicAb" parent="Theme.AppCompat">
+    <style name="AppTheme" parent="Theme.MaterialComponents"/>
+    <style name="Theme.WwwjdicAb" parent="Theme.MaterialComponents.DayNight">
         <item name="actionBarStyle">@style/Widget.WwwjdicAb</item>
         <item name="actionModeStyle">@style/Widget.WwwjdicActionMode</item>
         <item name="actionBarTabStyle">@style/Widget.WwwjdicAbTabView</item>
+        <item name="colorPrimary">@color/ab_blue</item>
+        <item name="colorPrimaryDark">@color/ab_blue_dark</item>
     </style>
 
     <style name="Widget.WwwjdicAb" parent="@style/Widget.AppCompat.ActionBar.Solid">
@@ -196,56 +198,91 @@
         <item name="android:background">@drawable/action_bar_tab_bg</item>
     </style>
 
-    <style name="Theme.WwwjdicAbMain" parent="Theme.AppCompat">
+    <style name="Theme.WwwjdicAbMain" parent="Theme.MaterialComponents">
         <item name="actionBarStyle">@style/Widget.WwwjdicAbMain</item>
         <item name="actionModeStyle">@style/Widget.WwwjdicActionMode</item>
         <item name="actionBarTabStyle">@style/Widget.WwwjdicAbTabView</item>
         <item name="actionBarTabTextStyle">@style/Widget.WwwjdicTabText</item>
         <item name="actionMenuTextAppearance">@style/Widget.WwwjdicMenu</item>
+        <item name="colorPrimary">@color/ab_blue</item>
+        <item name="colorPrimaryDark">@color/ab_blue_dark</item>
     </style>
 
-    <style name="Theme.WwwjdicAbTabbed" parent="Theme.AppCompat.NoActionBar">
+    <style name="Theme.WwwjdicAbTabbed" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!--
         <item name="actionBarStyle">@style/Widget.WwwjdicAbTabbed</item>
         <item name="actionModeStyle">@style/Widget.WwwjdicActionMode</item>
         <item name="actionBarTabStyle">@style/Widget.WwwjdicAbTabView</item>
         <item name="actionBarTabTextStyle">@style/Widget.WwwjdicTabText</item>
         <item name="actionMenuTextAppearance">@style/Widget.WwwjdicMenu</item>
-        <item name="colorPrimary">@color/ab_blue</item>
-        <item name="colorPrimaryDark">@color/ab_blue_dark</item>
+        -->
+
+       <!--item name="android:colorBackground">@color/black</item-->
+       <item name="colorOnBackground">@color/black</item>
+       <item name="colorPrimary">@color/primaryColor</item>
+       <item name="colorOnPrimary">@color/white</item>
+       <item name="colorSecondary">@color/ab_blue_dark</item>
+        <!--
+       <item name="colorSurface">@color/black</item>
+        <item name="colorOnSurface">@color/white</item>
+
+       <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+       -->
+       <!--item name="colorPrimarySurface">@color/primaryLightColor</item-->
+
+        <item name="android:statusBarColor" tools:ignore="NewApi">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
+        <item name="android:navigationBarColor" tools:ignore="NewApi">?android:attr/colorBackground</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
+        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">?attr/colorControlHighlight</item>
+
+        <!--
+<item name="colorOnPrimary">@color/black</item>
+<item name="colorSurface">@color/grey</item>
+<item name="colorPrimaryDark">@color/ab_blue_dark</item>
+
+<item name="colorOnSecondary">@color/black</item>
+<item name="colorOnBackground">@color/black</item>
+<item name="colorOnSurface">@color/black</item>
+<item name="colorOnError">@color/white</item>
+-->
     </style>
 
-    <style name="Widget.WwwjdicAbTabbed" parent="@style/Widget.AppCompat.ActionBar.Solid">
+    <style name="Widget.WwwjdicAbTabbed" parent="Theme.MaterialComponents">
         <item name="displayOptions"></item>
         <item name="background">@null</item>
         <item name="backgroundSplit">@drawable/action_bar_bg</item>
         <item name="icon">@drawable/ic_action_home</item>
         <item name="titleTextStyle">@style/action_bar_title</item>
-        <item name="colorPrimary">@color/ab_blue</item>
+        <item name="colorPrimary">@color/ab_blue_transparent</item>
+        <item name="colorOnPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/ab_blue_dark</item>
-    </style>
+        <item name="colorOnSurface">@color/ab_blue_transparent</item>
+        <item name="colorSurface">@color/grey</item>
+     </style>
     
-    <style name="Widget.WwwjdicTabText" parent="@style/Widget.AppCompat.ActionBar.TabText">
+    <style name="Widget.WwwjdicTabText" parent="Widget.MaterialComponents.TabLayout">
         <item name="android:textSize">@dimen/ab_tab_menu_text_size</item>
     </style>
 
     <!--style name="Widget.WwwjdicMenu" parent="android:style/TextAppearance.Widget.ActionBar.Menu"-->
-    <style name="Widget.WwwjdicMenu" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Menu">
+    <style name="Widget.WwwjdicMenu" parent="TextAppearance.AppCompat.Widget.ActionBar.Menu">
         <item name="android:textSize">@dimen/ab_tab_menu_text_size</item>
     </style>
 
-    <style name="Widget.WwwjdicAbMain" parent="@style/Widget.AppCompat.ActionBar.Solid">
+    <style name="Widget.WwwjdicAbMain" parent="Widget.MaterialComponents.ActionBar.Solid">
         <item name="background">@drawable/action_bar_bg</item>
         <item name="backgroundSplit">@drawable/action_bar_bg</item>
         <item name="icon">@null</item>
         <item name="titleTextStyle">@style/action_bar_title</item>
     </style>
 
-    <style name="Widget.WwwjdicActionMode" parent="@style/TextAppearance.AppCompat.Widget.ActionMode.Title">
+    <style name="Widget.WwwjdicActionMode" parent="TextAppearance.AppCompat.Widget.ActionMode.Title">
         <item name="background">@drawable/action_bar_bg</item>
         <item name="backgroundSplit">@drawable/action_bar_bg</item>
     </style>
 
-    <style name="WwwjdicAbTrans" parent="Theme.AppCompat.NoActionBar" />
+    <style name="WwwjdicAbTrans" parent="Theme.MaterialComponents.NoActionBar" />
 
     <style name="search_input">
         <item name="android:layout_height">wrap_content</item>
@@ -257,7 +294,7 @@
     <style name="search_option">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/white</item>
+        <!--item name="android:textColor">?attr/colorOnPrimary</item-->
         <item name="android:textSize">@dimen/search_option_text_size</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>

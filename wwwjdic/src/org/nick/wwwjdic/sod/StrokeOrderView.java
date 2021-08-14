@@ -10,6 +10,8 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
+import org.nick.wwwjdic.utils.UIUtils;
+
 import java.util.List;
 
 public class StrokeOrderView extends View {
@@ -106,6 +108,7 @@ public class StrokeOrderView extends View {
                 if (annotationTextSize != -1) {
                     sp.setAnnotationTextSize(annotationTextSize);
                 }
+                sp.setStrokePaintColor(UIUtils.fetchOnBackgroundColor(getContext()));
                 sp.draw(canvas, scale, dx, dy, strokeNum, annotate);
                 strokeNum++;
             }

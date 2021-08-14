@@ -30,13 +30,13 @@
 
     <style name="small_button" />
 
-    <style name="AppTheme" parent="Theme.AppCompat"/>
-    <style name="WwwjdicAbTrans" parent="Theme.AppCompat">
+    <style name="AppTheme" parent="Theme.MaterialComponents"/>
+    <style name="WwwjdicAbTrans" parent="Theme.MaterialComponents">
         <!--item name="actionBarStyle">@style/Widget.WwwjdicAbTrans</item-->
         <item name="android:actionBarStyle">@style/Widget.WwwjdicAbTrans</item>
     </style>
 
-    <style name="Widget.WwwjdicAbTrans" parent="android:style/Widget.Holo.ActionBar">
+    <style name="Widget.WwwjdicAbTrans" parent="Theme.MaterialComponents.NoActionBar">
         <!--item name="background">@drawable/action_bar_bg_trans</item-->
         <item name="android:background">@drawable/action_bar_bg_trans</item>
         <!--item name="icon">@drawable/ic_action_home</item-->

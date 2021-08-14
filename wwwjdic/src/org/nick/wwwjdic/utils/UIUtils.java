@@ -10,6 +10,7 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.TypedValue;
 import android.widget.TextView;
 
 public class UIUtils {
@@ -69,5 +70,16 @@ public class UIUtils {
 
     public static void setJpTextLocale(TextView tv) {
         setTextLocale(tv, Locale.JAPAN);
+    }
+
+    public static int fetchOnBackgroundColor(Context ctx) {
+        TypedValue typedValue = new TypedValue();
+
+        TypedArray a = ctx.obtainStyledAttributes(typedValue.data, new int[] { R.attr.colorOnBackground });
+        int color = a.getColor(0, 0);
+
+        a.recycle();
+
+        return color;
     }
 }

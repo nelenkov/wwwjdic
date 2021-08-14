@@ -12,4 +12,9 @@
     <color name="ab_blue">#ff6595f9</color>
     <color name="ab_blue_dark">#ff303f9f</color>
     <color name="ab_blue_transparent">#806595f9</color>
+
+    <color name="primaryColor">#6595f9</color>
+    <color name="primaryLightColor">#9cc5ff</color>
+    <color name="primaryDarkColor">#2368c5</color>
+    <color name="primaryTextColor">#000000</color>
 </resources>

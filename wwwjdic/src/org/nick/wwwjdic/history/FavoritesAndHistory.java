@@ -94,8 +94,9 @@ public class FavoritesAndHistory extends ActionBarActivity {
         });
 
         tabLayout = findViewById(R.id.tablayout);
-        tabLayout.setBackgroundColor(getResources().getColor(R.color.ab_blue));
-        tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.ab_blue_dark));
+        // XXX should be in themes
+        //tabLayout.setBackgroundColor(getResources().getColor(R.color.ab_blue));
+        //tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.ab_blue_dark));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

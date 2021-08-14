@@ -24,6 +24,7 @@ import org.nick.wwwjdic.utils.UIUtils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -314,7 +315,7 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
             TextView result = (TextView) super.getView(position, convertView,
                     viewGroup);
             UIUtils.setJpTextLocale(result);
-            result.setTextColor(Color.WHITE);
+            result.setTextColor(UIUtils.fetchOnBackgroundColor(getApplicationContext()));
             result.setBackgroundColor(Color.TRANSPARENT);
             float textSize = getResources().getDimension(
                     R.dimen.krad_chart_text_size);
@@ -476,4 +477,6 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
         intent.putExtra(HkrCandidates.EXTRA_HKR_CANDIDATES, matchingChars);
         return intent;
     }
+
+
 }

@@ -221,9 +221,10 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
             SearchCriteria criteria = SearchCriteria.createForExampleSearch(
                     exampleSearchKey, false, DEFAULT_MAX_NUM_EXAMPLES);
             intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
+            // XXX backdoor API seems broken ATM
             intent.putExtra(
                     ExamplesResultListFragment.EXTRA_EXAMPLES_BACKDOOR_SEARCH,
-                    true);
+                    false);
             startActivity(intent);
 
             return true;

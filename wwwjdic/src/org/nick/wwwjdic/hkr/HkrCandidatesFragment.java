@@ -30,6 +30,7 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.ListFragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
@@ -130,7 +131,7 @@ public class HkrCandidatesFragment extends ListFragment implements
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(INDEX_KEY, index);
     }
@@ -140,8 +141,8 @@ public class HkrCandidatesFragment extends ListFragment implements
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.search_results_fragment, container,
                 false);
-        progressSpinner = (ProgressBar) v.findViewById(R.id.progress_spinner);
-        emptyText = (TextView) v.findViewById(android.R.id.empty);
+        progressSpinner = v.findViewById(R.id.progress_spinner);
+        emptyText = v.findViewById(android.R.id.empty);
 
         return v;
     }
@@ -157,7 +158,7 @@ public class HkrCandidatesFragment extends ListFragment implements
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         try {
             candidateSelectedListener = (HkrCandidateSelectedListener) activity;
@@ -168,7 +169,7 @@ public class HkrCandidatesFragment extends ListFragment implements
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         getListView().setItemChecked(position, true);
         loadDetails(candidates[position], position);
@@ -201,7 +202,7 @@ public class HkrCandidatesFragment extends ListFragment implements
     }
 
     @Override
-    public Loader<LoaderResult<KanjiEntry>> onCreateLoader(int id, Bundle args) {
+    public @NonNull Loader<LoaderResult<KanjiEntry>> onCreateLoader(int id, Bundle args) {
         String kanji = null;
         if (args != null) {
             kanji = args.getString("kanji");
@@ -211,7 +212,7 @@ public class HkrCandidatesFragment extends ListFragment implements
     }
 
     @Override
-    public void onLoadFinished(Loader<LoaderResult<KanjiEntry>> loader,
+    public void onLoadFinished(@NonNull Loader<LoaderResult<KanjiEntry>> loader,
             LoaderResult<KanjiEntry> result) {
         if (result.isFailed()) {
             String message = selectErrorMessage(result.getError());
@@ -250,7 +251,7 @@ public class HkrCandidatesFragment extends ListFragment implements
     }
 
     @Override
-    public void onLoaderReset(Loader<LoaderResult<KanjiEntry>> loader) {
+    public void onLoaderReset(@NonNull Loader<LoaderResult<KanjiEntry>> loader) {
     }
 
     public void loadCurrentKanji() {
@@ -320,6 +321,6 @@ public class HkrCandidatesFragment extends ListFragment implements
             getListView().setItemChecked(position, false);
             currentActionMode = null;
         }
-    };
+    }
 
 }
