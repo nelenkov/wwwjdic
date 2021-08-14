@@ -12,10 +12,10 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
     implementation project(':wwwjdic')
-    implementation 'com.google.firebase:firebase-analytics:17.4.4'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.firebase:firebase-analytics:19.0.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'androidx.preference:preference:1.1.1'
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.google.android.material:material:1.4.0'
 }
 
 android {
@@ -38,6 +38,11 @@ android {
         buildConfigField("String",
                 "SEARCH_AUTHORITY",
                 "\"${searchAuthorityValue}\"")
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
     }
 
     dexOptions {
@@ -64,13 +69,13 @@ android {
         }
         donate {
             dimension "version"
-            applicationId = "org.nick.wwwjdic.donate"
-            //applicationIdSuffix ".donate"
+            //applicationId = "org.nick.wwwjdic.donate"
+            applicationIdSuffix ".donate"
         }
         ci {
             dimension "version"
-            applicationId = "org.nick.wwwjdic"
-            //applicationIdSuffix ".donate"
+            //applicationId = "org.nick.wwwjdic"
+            applicationIdSuffix ""
         }
     }
 
@@ -95,7 +100,6 @@ android {
             renderscript.srcDirs = ['src/donate/rs']
             res.srcDirs = ['src/donate/res']
             assets.srcDirs = ['src/donate/assets']
-
         }
     }
 
