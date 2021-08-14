@@ -484,7 +484,7 @@ public class Wwwjdic extends ActionBarActivity {
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_dict_tab_selected);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_kanji_tab_unselected);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_dict_tab_unselected);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_example_tab_unselected);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
