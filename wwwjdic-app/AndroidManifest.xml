@@ -23,6 +23,15 @@
         android:name="android.hardware.touchscreen"
         android:required="false" />
 
+    <queries>
+        <intent>
+            <action android:name="org.openintents.action.CREATE_FLASHCARD" />
+        </intent>
+        <intent>
+            <action android:name="android.speech.tts.engine.CHECK_TTS_DATA" />
+        </intent>
+    </queries>
+
     <application
         android:name="org.nick.wwwjdic.WwwjdicApplication"
         android:allowBackup="true"

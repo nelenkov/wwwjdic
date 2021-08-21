@@ -80,8 +80,8 @@ android {
     }
 
     sourceSets {
-        debug.setRoot('build-types/debug')
-        release.setRoot('build-types/release')
+        //debug.setRoot('build-types/debug')
+        //release.setRoot('build-types/release')
 
         main {
             manifest.srcFile 'AndroidManifest.xml'
