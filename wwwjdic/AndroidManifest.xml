@@ -58,7 +58,8 @@
         <activity android:name=".history.FavoritesAndHistory"></activity>
         <activity android:name=".sod.SodActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
-        <activity android:name=".widget.KodWidgetConfigure">
+        <activity android:name=".widget.KodWidgetConfigure" 
+                  android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>

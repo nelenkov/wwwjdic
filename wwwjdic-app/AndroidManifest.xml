@@ -24,6 +24,7 @@
         android:required="false" />
 
     <queries>
+        <package android:name="org.nick.kanjirecognizer" />
         <intent>
             <action android:name="org.openintents.action.CREATE_FLASHCARD" />
         </intent>
@@ -57,7 +58,8 @@
             android:theme="@style/Theme.WwwjdicAbTabbed"
             android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="stateAlwaysHidden"
-            tools:replace="android:label,android:windowSoftInputMode">
+            tools:replace="android:label,android:windowSoftInputMode" 
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -75,7 +77,8 @@
             android:parentActivityName=".Wwwjdic"
             android:taskAffinity=""
             android:theme="@style/Theme.WwwjdicAb"
-            tools:replace="android:label">
+            tools:replace="android:label" 
+            android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 
@@ -175,7 +178,8 @@
         <activity
             android:name="org.nick.wwwjdic.widgets.KodWidgetConfigure"
             android:label="@string/kod_widget_configuration"
-            android:theme="@style/Theme.WwwjdicAb">
+            android:theme="@style/Theme.WwwjdicAb" 
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -183,7 +187,8 @@
 
         <receiver
             android:name="org.nick.wwwjdic.widgets.KodWidgetProvider"
-            android:label="@string/kanji_of_the_day">
+            android:label="@string/kanji_of_the_day" 
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -194,7 +199,8 @@
         </receiver>
         <receiver
             android:name="org.nick.wwwjdic.widgets.ConnectivityMonitor"
-            android:enabled="false">
+            android:enabled="false" 
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
