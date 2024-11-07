@@ -60,8 +60,8 @@ dependencies {
   compile 'org.apache.taglibs:taglibs-standard-spec:1.2.5'
   compile 'org.apache.taglibs:taglibs-standard-impl:1.2.5'
 
-  testCompile('junit:junit:4.13')
-  testRuntime('junit:junit:4.13')
+  testCompile('junit:junit:4.13.2')
+  testRuntime('junit:junit:4.13.2')
 
 }
 
