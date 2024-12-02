@@ -47,7 +47,7 @@ dependencies {
   compile 'javax.inject:javax.inject:1'
   compile 'com.google.inject.extensions:guice-servlet:4.2.3'
 
-  compile 'com.googlecode.objectify:objectify:5.1.24'
+  compile 'com.googlecode.objectify:objectify:5.1.25'
 
   //compile 'org.ow2.asm:asm:4.0'
 
