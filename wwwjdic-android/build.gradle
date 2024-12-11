@@ -3,7 +3,7 @@ buildscript {      // Configuration for building
     mavenCentral()
   }
   dependencies {
-    classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.2.0'
+    classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.8.3'
     classpath 'org.akhikhl.gretty:gretty:+'
     //classpath 'org.wisepersist:gwt-gradle-plugin:1.0.10'
   }
