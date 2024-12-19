@@ -6,7 +6,7 @@ on:
 env:
   WWWJDIC_VER: 2.6.0
   FLAVOR: ci
-  BUILD_TYPE: debug
+  BUILD_TYPE: Debug
 
 jobs:
   build-release:
