@@ -39,7 +39,7 @@ jobs:
       if: success()
       id: prepareApk
       run: |
-         mv wwwjdic-app/build/outputs/apk/ci/debug/wwwjdic-app-ciDebug-2.5.0.apk wwwjdic-android-${{ env.SHA_SHORT }}.apk
+         mv wwwjdic-app/build/outputs/apk/ci/debug/wwwjdic-app-ciDebug-2.6.0.apk wwwjdic-android-${{ env.SHA_SHORT }}.apk
 
     - name: Release
       uses: "marvinpinto/action-automatic-releases@latest"
