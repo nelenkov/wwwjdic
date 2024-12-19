@@ -277,7 +277,7 @@ public class KradChart extends ActionBarActivity implements OnClickListener,
 
     private void displayTotalMatches() {
         String totalMatchesTemplate = getResources().getString(
-                R.string.total_matches);
+                R.string.total_matches_templ);
         totalMatchesText.setText(String.format(totalMatchesTemplate,
                 state.matchingKanjis.size()));
     }

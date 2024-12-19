@@ -171,7 +171,7 @@ public class Wwwjdic extends ActionBarActivity {
     private HistoryDbHelper dbHelper;
 
     private DictionaryLookpFragment dictLookupFragment;
-    private KanjiLookpFragment kanjiLookupFragment;
+    private KanjiLookupFragment kanjiLookupFragment;
     private ExampleLookupFragment exampleLookupFragment;
 
     private boolean hasCamera;
@@ -357,7 +357,7 @@ public class Wwwjdic extends ActionBarActivity {
     private void filterHistoryFragments(int position) {
         switch (position) {
         case 0:
-            filterFavoritesHistoryFragment(R.id.favorites_fragment,
+            filterFavoritesHistoryFragment(R.id.dict_favorites_fragment,
                     FavoritesAndHistory.FILTER_DICT);
             filterFavoritesHistoryFragment(R.id.history_fragment,
                     FavoritesAndHistory.FILTER_DICT);
@@ -463,7 +463,7 @@ public class Wwwjdic extends ActionBarActivity {
 
         // TODO: fix classname
 //        if (savedInstanceState == null) {
-            kanjiLookupFragment = new KanjiLookpFragment();
+            kanjiLookupFragment = new KanjiLookupFragment();
 //        } else {
 //            kanjiLookupFragment = (KanjiLookpFragment) getSupportFragmentManager()
 //                    .getFragment(savedInstanceState, KANJI_LOOKUP_FRAGMENT_KEY);

@@ -40,7 +40,7 @@
                 android:textSize="16sp" />
 
             <fragment
-                android:id="@+id/favorites_fragment"
+                android:id="@+id/dict_favorites_fragment"
                 class="org.nick.wwwjdic.history.FavoritesFragment"
                 android:layout_width="fill_parent"
                 android:layout_height="0px"

@@ -1,26 +1,6 @@
 
 package org.nick.wwwjdic.history;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Date;
-
-import org.nick.wwwjdic.DetailActivity;
-import org.nick.wwwjdic.DictionaryEntryDetail;
-import org.nick.wwwjdic.DictionaryResultList;
-import org.nick.wwwjdic.KanjiEntryDetail;
-import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.WwwjdicApplication;
-import org.nick.wwwjdic.WwwjdicPreferences;
-import org.nick.wwwjdic.history.FavoritesItem.FavoriteStatusChangedListener;
-import org.nick.wwwjdic.model.WwwjdicEntry;
-import org.nick.wwwjdic.utils.LoaderResult;
-import org.nick.wwwjdic.utils.MediaScannerWrapper;
-import org.nick.wwwjdic.utils.UIUtils;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,19 +11,34 @@ import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.widget.CursorAdapter;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
 import android.widget.Toast;
-
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Date;
+import org.nick.wwwjdic.DetailActivity;
+import org.nick.wwwjdic.DictionaryEntryDetail;
+import org.nick.wwwjdic.KanjiEntryDetail;
+import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.WwwjdicApplication;
+import org.nick.wwwjdic.WwwjdicPreferences;
+import org.nick.wwwjdic.history.FavoritesItem.FavoriteStatusChangedListener;
+import org.nick.wwwjdic.model.WwwjdicEntry;
+import org.nick.wwwjdic.utils.LoaderResult;
+import org.nick.wwwjdic.utils.MediaScannerWrapper;
+import org.nick.wwwjdic.utils.UIUtils;
 
 public class FavoritesFragment extends HistoryFragmentBase implements
         FavoriteStatusChangedListener {
@@ -189,6 +184,10 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
     @Override
     protected String getImportExportFilename() {
+        if (getContext() == null) {
+            return "";
+        }
+
         File extStorage = getContext().getExternalFilesDir(null);
 
         return extStorage.getAbsolutePath() + "/" + EXPORT_FILENAME;

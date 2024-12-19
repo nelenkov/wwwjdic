@@ -332,7 +332,7 @@
     <string name="dict_search_description">既定辞書を検索します</string>
     <string name="home">ホーム</string>
     <string name="show_all">全て表示</string>
-    <string name="total_matches">%d件</string>
+    <string name="total_matches_templ">%d件</string>
     <string name="no_matches">マッチする漢字はありません</string>
     <string name="kanji_multi_radical_search">構成要素漢字検索</string>
     <string name="kanji_extra_search">他の漢字検索方法</string>

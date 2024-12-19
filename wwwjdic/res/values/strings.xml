@@ -458,7 +458,7 @@
     <string name="dict_search_description">Search default dictionary</string>
     <string name="home">Home</string>
     <string name="show_all">Show all</string>
-    <string name="total_matches">%d matche(s)</string>
+    <string name="total_matches_templ">%d matche(s)</string>
     <string name="no_matches">No matches</string>
     <string name="kanji_multi_radical_search">Kanji multi-radical search</string>
     <string name="kanji_extra_search">Additional search methods</string>

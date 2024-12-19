@@ -6,12 +6,18 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.SearchRecentSuggestions;
 import android.util.Log;
 import android.widget.CursorAdapter;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import org.nick.wwwjdic.DictionaryResultList;
 import org.nick.wwwjdic.ExamplesResultList;
 import org.nick.wwwjdic.KanjiResultList;
@@ -23,16 +29,6 @@ import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.LoaderResult;
 import org.nick.wwwjdic.utils.MediaScannerWrapper;
 import org.nick.wwwjdic.utils.UIUtils;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
-import androidx.annotation.NonNull;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-import au.com.bytecode.opencsv.CSVReader;
-import au.com.bytecode.opencsv.CSVWriter;
 
 public class SearchHistoryFragment extends HistoryFragmentBase {
 
@@ -158,6 +154,9 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
     @Override
     protected String getImportExportFilename() {
+        if (getContext() == null) {
+            return "";
+        }
         File extStorage = getContext().getExternalFilesDir(null);
 
         return extStorage.getAbsolutePath() + "/" + EXPORT_FILENAME;

@@ -23,7 +23,7 @@ public class KanjiLookpFragment extends Fragment {
         }
 
         try {
-            return inflater.inflate(R.layout.kanji_lookup_tab, container, false);
+            return inflater.inflate(R.layout.kanji_lookup, container, false);
         } catch (InflateException ignored) {
             /* map is already there, just return view as it is */
         }

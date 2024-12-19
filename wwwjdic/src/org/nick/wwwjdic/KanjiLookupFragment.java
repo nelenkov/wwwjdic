@@ -20,20 +20,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-
+import androidx.collection.SparseArrayCompat;
 import com.google.android.material.textfield.TextInputLayout;
-
+import java.util.concurrent.RejectedExecutionException;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.model.Radical;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.StringUtils;
 
-import java.util.concurrent.RejectedExecutionException;
-
-import androidx.collection.SparseArrayCompat;
-
 public class  KanjiLookupFragment extends WwwjdicFragmentBase implements
-        OnClickListener, OnItemSelectedListener {
+    OnClickListener, OnItemSelectedListener {
 
     private static final String TAG = KanjiLookupFragment.class.getSimpleName();
 
