@@ -104,10 +104,6 @@ android {
         }
     }
 
-    lintOptions {
-        checkReleaseBuilds true
-        abortOnError false
-    }
 
     afterEvaluate {
         generateFreeReleaseBuildConfig.enabled = false

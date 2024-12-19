@@ -6,4 +6,8 @@ android {
         aidl true
     }
     namespace 'org.nick.wwwjdic'
+    lint {
+        abortOnError false
+        checkReleaseBuilds true
+    }
 }
