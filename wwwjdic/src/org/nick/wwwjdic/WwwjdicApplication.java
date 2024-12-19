@@ -221,7 +221,7 @@ public class WwwjdicApplication extends Application {
     }
 
     public static File getWwwjdicDir() {
-        return new File(Environment.getExternalStorageDirectory(), WWWJDIC_DIR);
+        return new File(getInstance().getExternalFilesDir(null), WWWJDIC_DIR);
     }
 
     private String getVersionName() {

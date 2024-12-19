@@ -424,7 +424,7 @@ public abstract class HistoryFragmentBase extends ListFragment
     }
 
     protected void createWwwjdicDirIfNecessary() {
-        File sdDir = Environment.getExternalStorageDirectory();
+        File sdDir = getContext().getExternalFilesDir(null);
         File wwwjdicDir = new File(sdDir.getAbsolutePath() + "/wwwjdic");
         if (!wwwjdicDir.exists()) {
             wwwjdicDir.mkdir();

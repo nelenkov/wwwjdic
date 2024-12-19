@@ -158,7 +158,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
     @Override
     protected String getImportExportFilename() {
-        File extStorage = Environment.getExternalStorageDirectory();
+        File extStorage = getContext().getExternalFilesDir(null);
 
         return extStorage.getAbsolutePath() + "/" + EXPORT_FILENAME;
     }

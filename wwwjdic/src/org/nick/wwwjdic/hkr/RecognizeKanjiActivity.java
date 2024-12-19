@@ -464,7 +464,7 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements
     @SuppressWarnings("unused")
     private void dumpBitmap(Bitmap bitmap, String filename) {
         try {
-            File f = new File(Environment.getExternalStorageDirectory(),
+            File f = new File(getExternalFilesDir(null),
                     "wwwjdic/" + filename);
             FileOutputStream out = new FileOutputStream(f);
             boolean rc = bitmap.compress(CompressFormat.JPEG, 90, out);
