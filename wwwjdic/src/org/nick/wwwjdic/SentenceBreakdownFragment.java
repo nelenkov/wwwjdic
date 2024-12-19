@@ -451,7 +451,7 @@ public class SentenceBreakdownFragment extends
 
     private void setTitleAndMarkSentence() {
         getActivity().setTitle(
-                sentenceTranslation != null ? R.string.sentence_breakdown
+                sentenceTranslation != null ? R.string.sentence_breakdown_title
                         : R.string.sentence_translation);
         sentenceView.setText(markedSentence);
     }

@@ -17,8 +17,13 @@ dependencies {
 }
 
 android {
+    buildFeatures {
+        buildConfig false
+        resValues true
+    }
     compileSdkVersion rootProject.ext.compileSdkVersion
     //packageBuildConfig = false
+    namespace 'org.nick.wwwjdic'
 
     useLibrary 'org.apache.http.legacy'
 
@@ -27,9 +32,9 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
     }
 
-    dexOptions {
-        preDexLibraries = false
-    }
+    //dexOptions {
+    //    preDexLibraries = false
+    //}
 
     sourceSets {
         debug.setRoot('build-types/debug')
@@ -44,5 +49,9 @@ android {
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
         }
+    }
+    buildFeatures {
+        renderScript true
+        aidl true
     }
 }

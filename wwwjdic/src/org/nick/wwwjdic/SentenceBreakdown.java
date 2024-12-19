@@ -31,7 +31,7 @@ public class SentenceBreakdown extends ResultListBase {
                     .newInstance(0, sentence, translation);
             breakDown.setArguments(getIntent().getExtras());
             getFragmentManager().beginTransaction()
-                    .add(R.id.sentence_breakdown, breakDown).commit();
+                    .add(R.id.sentence_breakdown_container, breakDown).commit();
         }
     }
 

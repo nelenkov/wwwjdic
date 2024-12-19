@@ -19,7 +19,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
-import org.nick.wwwjdic.BuildConfig;
+//import org.nick.wwwjdic.BuildConfig;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicPreferences;
 import org.nick.wwwjdic.client.HttpClientFactory;
@@ -273,9 +273,9 @@ public class GetKanjiService extends Service {
             HttpGet get = new HttpGet(lookupUrl);
 
             String responseStr = httpclient.execute(get, responseHandler);
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, "WWWJDIC response: " + responseStr);
-            }
+            // if (BuildConfig.DEBUG) {
+            //     Log.d(TAG, "WWWJDIC response: " + responseStr);
+            // }
 
             return responseStr;
         } catch (ClientProtocolException cpe) {

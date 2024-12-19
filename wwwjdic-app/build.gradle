@@ -1,1 +1,9 @@
 apply from: '../app.gradle'
+
+android {
+    buildFeatures {
+        renderScript true
+        aidl true
+    }
+    namespace 'org.nick.wwwjdic'
+}

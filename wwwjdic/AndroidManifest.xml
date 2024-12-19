@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.nick.wwwjdic">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!--
         package="org.nick.wwwjdic" android:versionCode="13"
         android:versionName="1.1">
@@ -13,7 +12,7 @@
     
     <uses-permission android:name="android.permission.INTERNET"/>
     <!--uses-permission android:name="android.permission.CAMERA" /-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /-->
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     
@@ -58,7 +57,7 @@
         <activity android:name=".history.FavoritesAndHistory"></activity>
         <activity android:name=".sod.SodActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"></activity>
-        <activity android:name=".widget.KodWidgetConfigure">
+        <activity android:name=".widget.KodWidgetConfigure" android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>

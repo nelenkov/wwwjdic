@@ -196,7 +196,7 @@ public class FavoritesAndHistorySummaryView extends ListView implements
                 LayoutInflater inflater = LayoutInflater.from(context);
                 inflater.inflate(R.layout.favorites_history_summary_item, this);
 
-                summary = (TextView) findViewById(R.id.summary);
+                summary = (TextView) findViewById(R.id.summary_text);
                 itemList = (TextView) findViewById(R.id.item_list);
                 UIUtils.setJpTextLocale(itemList);
             }

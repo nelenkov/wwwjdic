@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="org.nick.wwwjdic"
     android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <!--uses-permission android:name="android.permission.CAMERA" /-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" /-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
@@ -48,7 +48,8 @@
             android:theme="@style/Theme.WwwjdicAbTabbed"
             android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="stateAlwaysHidden"
-            tools:replace="android:label,android:windowSoftInputMode">
+            tools:replace="android:label,android:windowSoftInputMode"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -58,7 +59,8 @@
         <activity
             android:name="org.nick.wwwjdic.AboutActivity"
             android:parentActivityName=".Wwwjdic"
-            android:theme="@style/Theme.WwwjdicAb" />
+            android:theme="@style/Theme.WwwjdicAb"
+            android:exported="true"/>
         <activity
             android:name="org.nick.wwwjdic.DictionaryResultList"
             android:label="@string/dict_search"
@@ -66,7 +68,8 @@
             android:parentActivityName=".Wwwjdic"
             android:taskAffinity=""
             android:theme="@style/Theme.WwwjdicAb"
-            tools:replace="android:label">
+            tools:replace="android:label"
+            android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 
@@ -166,7 +169,8 @@
         <activity
             android:name="org.nick.wwwjdic.widgets.KodWidgetConfigure"
             android:label="@string/kod_widget_configuration"
-            android:theme="@style/Theme.WwwjdicAb">
+            android:theme="@style/Theme.WwwjdicAb"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -174,7 +178,8 @@
 
         <receiver
             android:name="org.nick.wwwjdic.widgets.KodWidgetProvider"
-            android:label="@string/kanji_of_the_day">
+            android:label="@string/kanji_of_the_day"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -185,7 +190,8 @@
         </receiver>
         <receiver
             android:name="org.nick.wwwjdic.widgets.ConnectivityMonitor"
-            android:enabled="false">
+            android:enabled="false"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>

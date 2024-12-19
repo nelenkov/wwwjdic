@@ -114,9 +114,9 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
             HttpGet get = new HttpGet(lookupUrl);
             String responseStr = httpclient.execute(get, responseHandler,
                     localContext);
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, "WWWJDIC response: " + responseStr);
-            }
+            // if (BuildConfig.DEBUG) {
+            //     Log.d(TAG, "WWWJDIC response: " + responseStr);
+            // }
 
             return responseStr;
         } catch (ClientProtocolException cpe) {

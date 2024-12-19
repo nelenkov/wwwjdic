@@ -41,7 +41,7 @@
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.viewpager.widget.ViewPager
-            android:id="@+id/content"
+            android:id="@+id/pager_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/favorites_hist_pager_margin"

@@ -264,7 +264,7 @@
     <string name="copied_jp">Copied Japanese sentence.</string>
     <string name="copy_eng">Copy English</string>
     <string name="copied_eng">Copied English translation.</string>
-    <string name="sentence_breakdown">Sentence breakdown</string>
+    <string name="sentence_breakdown_title">Sentence breakdown</string>
     <string name="sentence_translation">Sentence translation</string>
     <string name="sentence_words">Words</string>
     <string name="no_results">No results</string>

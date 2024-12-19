@@ -115,7 +115,7 @@ public class FavoritesAndHistory extends ActionBarActivity {
             }
         });
 
-        viewPager = findViewById(R.id.content);
+        viewPager = findViewById(R.id.favorites_history_content);
         tabsAdapter = new TabsPagerAdapter(this, viewPager);
         viewPager.setAdapter(tabsAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

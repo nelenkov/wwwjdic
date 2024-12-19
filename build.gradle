@@ -5,9 +5,9 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.2'
-        classpath 'com.google.gms:google-services:4.3.3'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:8.3.2'
+        classpath 'com.google.gms:google-services:4.3.15'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.2'
     }
 }
 
@@ -21,6 +21,6 @@ ext {
     versionName = '2.5.0'
     versionCode = 25005
     minSdkVersion = 21
-    compileSdkVersion = 29
-    targetSdkVersion = 29
+    compileSdkVersion = 34
+    targetSdkVersion = 34
 }

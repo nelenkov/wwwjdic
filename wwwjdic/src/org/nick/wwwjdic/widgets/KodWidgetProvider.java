@@ -2,7 +2,7 @@ package org.nick.wwwjdic.widgets;
 
 import java.util.List;
 
-import org.nick.wwwjdic.BuildConfig;
+//import org.nick.wwwjdic.BuildConfig;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicPreferences;
@@ -34,9 +34,9 @@ public class KodWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
                          int[] appWidgetIds) {
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "KOD widget udpate");
-        }
+        // if (BuildConfig.DEBUG) {
+        //     Log.d(TAG, "KOD widget udpate");
+        // }
 
         ContextCompat.startForegroundService(context, new Intent(context, GetKanjiService.class));
     }
@@ -47,9 +47,9 @@ public class KodWidgetProvider extends AppWidgetProvider {
         Log.d(TAG, "onReceive: " + intent);
         // v1.5 fix that doesn't call onDelete Action
         final String action = intent.getAction();
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "KOD widget onReceive: " + action);
-        }
+        // if (BuildConfig.DEBUG) {
+        //     Log.d(TAG, "KOD widget onReceive: " + action);
+        // }
         if (AppWidgetManager.ACTION_APPWIDGET_DELETED.equals(action)) {
             final int appWidgetId = intent.getExtras().getInt(
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
@@ -73,14 +73,14 @@ public class KodWidgetProvider extends AppWidgetProvider {
 
             NetworkInfo ni = extras.getParcelable(ConnectivityManager.EXTRA_NETWORK_INFO);
             if (ni !=null && ni.isConnected()) {
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, ni.getTypeName() + " is connecting");
-                }
+                // if (BuildConfig.DEBUG) {
+                //     Log.d(TAG, ni.getTypeName() + " is connecting");
+                // }
                 if (WwwjdicPreferences.getLastKodUpdateError(context) != 0) {
-                    if (BuildConfig.DEBUG) {
-                        Log.d(TAG,
-                                "KOD widget is in error state, trying to update...");
-                    }
+                    // if (BuildConfig.DEBUG) {
+                    //     Log.d(TAG,
+                    //             "KOD widget is in error state, trying to update...");
+                    // }
                     ContextCompat.startForegroundService(context,
                             new Intent(context, GetKanjiService.class));
                 }
@@ -92,31 +92,31 @@ public class KodWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "onDeleted");
-        }
+        // if (BuildConfig.DEBUG) {
+        //     Log.d(TAG, "onDeleted");
+        // }
 
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
         ComponentName thisWidget = new ComponentName(context,
                 KodWidgetProvider.class);
         int[] thisWidgetIds = manager.getAppWidgetIds(thisWidget);
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "widget IDs: " + thisWidgetIds.length);
-        }
+        // if (BuildConfig.DEBUG) {
+        //     Log.d(TAG, "widget IDs: " + thisWidgetIds.length);
+        // }
 
         if (thisWidgetIds.length == 0) {
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, "we are the last widget, cleaning up");
-
-                Log.d(TAG, "stopping update service...");
-            }
+            // if (BuildConfig.DEBUG) {
+            //     Log.d(TAG, "we are the last widget, cleaning up");
+            //
+            //     Log.d(TAG, "stopping update service...");
+            // }
             boolean stopped = context.stopService(new Intent(context,
                     GetKanjiService.class));
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, "stopped: " + stopped);
-
-                Log.d(TAG, "cancelling update timer...");
-            }
+            // if (BuildConfig.DEBUG) {
+            //     Log.d(TAG, "stopped: " + stopped);
+            //
+            //     Log.d(TAG, "cancelling update timer...");
+            // }
             AlarmManager alarmManager = (AlarmManager) context
                     .getSystemService(Context.ALARM_SERVICE);
             Intent updateIntent = new Intent(context, GetKanjiService.class);
@@ -132,10 +132,10 @@ public class KodWidgetProvider extends AppWidgetProvider {
     public void onAppWidgetOptionsChanged(Context context,
                                           AppWidgetManager appWidgetManager, int appWidgetId,
                                           Bundle newOptions) {
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "onAppWidgetOptionsChanged " + appWidgetId);
-            Log.d(TAG, "newOptions: " + newOptions);
-        }
+        // if (BuildConfig.DEBUG) {
+        //     Log.d(TAG, "onAppWidgetOptionsChanged " + appWidgetId);
+        //     Log.d(TAG, "newOptions: " + newOptions);
+        // }
         for (String key : newOptions.keySet()) {
             Log.d(TAG, key + "=" + newOptions.get(key));
         }
@@ -149,10 +149,10 @@ public class KodWidgetProvider extends AppWidgetProvider {
                 showReadingAndMeaning);
         float detailsTextSize = getDetailsTextSize(context, newOptions,
                 appWidgetId);
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "text size: " + textSize + "sp");
-            Log.d(TAG, "details text size: " + detailsTextSize + "sp");
-        }
+        // if (BuildConfig.DEBUG) {
+        //     Log.d(TAG, "text size: " + textSize + "sp");
+        //     Log.d(TAG, "details text size: " + detailsTextSize + "sp");
+        // }
 
         setTextSizes(views, textSize, detailsTextSize, showReadingAndMeaning);
 
@@ -254,10 +254,10 @@ public class KodWidgetProvider extends AppWidgetProvider {
         float textSize = getKodTextSize(context, null, widgetId,
                 showReadingAndMeaning);
         float detailsTextSize = getDetailsTextSize(context, null, widgetId);
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "text size: " + textSize + "sp");
-            Log.d(TAG, "details text size: " + detailsTextSize + "sp");
-        }
+        // if (BuildConfig.DEBUG) {
+        //     Log.d(TAG, "text size: " + textSize + "sp");
+        //     Log.d(TAG, "details text size: " + detailsTextSize + "sp");
+        // }
         if (textSize > 0 && detailsTextSize > 0) {
             setTextSizes(views, textSize, detailsTextSize, showReadingAndMeaning);
         }
@@ -292,9 +292,9 @@ public class KodWidgetProvider extends AppWidgetProvider {
                                  int widgetId) {
         KanjiEntry entry = entries.get(0);
         String kod = entry.getHeadword();
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "KOD: " + kod);
-        }
+        // if (BuildConfig.DEBUG) {
+        //     Log.d(TAG, "KOD: " + kod);
+        // }
         Intent intent = new Intent(context, KanjiEntryDetail.class);
         intent.putExtra(KanjiEntryDetail.EXTRA_KANJI_ENTRY, entries.get(0));
         intent.putExtra(KanjiEntryDetail.EXTRA_KOD_WIDGET_CLICK, true);

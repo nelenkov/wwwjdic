@@ -15,7 +15,7 @@ import android.graphics.PointF;
 import android.util.Log;
 import android.util.Xml;
 
-import org.nick.wwwjdic.BuildConfig;
+//import org.nick.wwwjdic.BuildConfig;
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.File;
@@ -266,9 +266,9 @@ public class StrokePath {
     }
 
     public static StrokePath parsePath(String path) {
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "parsing " + path);
-        }
+        //if (BuildConfig.DEBUG) {
+        //    Log.d(TAG, "parsing " + path);
+        //}
 
         boolean isInMoveTo = false;
 
@@ -383,9 +383,9 @@ public class StrokePath {
                     name = parser.getName();
                     if (name.equalsIgnoreCase("stroke")) {
                         String path = parser.getAttributeValue(null, "path");
-                        if (BuildConfig.DEBUG) {
-                            Log.d(TAG, "parsing " + path);
-                        }
+                        //if (BuildConfig.DEBUG) {
+                        //    Log.d(TAG, "parsing " + path);
+                        //}
                         if (path != null && !"".equals(path)) {
                             StrokePath strokePath = StrokePath.parsePath(path);
                             strokes.add(strokePath);

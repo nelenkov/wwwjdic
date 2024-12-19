@@ -69,7 +69,7 @@ public class Wwwjdic extends ActionBarActivity {
     private static final String EXAMPLE_LOOKUP_FRAGMENT_KEY = "exampleLookupFragment";
 
     private final static String[] PERMISSIONS = new String[]{
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            //Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
 
@@ -243,7 +243,7 @@ public class Wwwjdic extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
 
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.main_menu, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -400,7 +400,8 @@ public class Wwwjdic extends ActionBarActivity {
 
     private void setupTabs(Bundle savedInstanceState) {
         toolbar = findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.main);
+        toolbar.inflateMenu(R.menu.main_menu);
+
         for (int i = 0; i < toolbar.getChildCount(); i++) {
             View child = toolbar.getChildAt(i);
             if (child instanceof ActionMenuView) {
@@ -430,7 +431,7 @@ public class Wwwjdic extends ActionBarActivity {
         //kanjiTab = findViewById(R.id.kanji_tab);
         //examplesTab = findViewById(R.id.examples_tab);
 
-        viewPager = findViewById(R.id.content);
+        viewPager = findViewById(R.id.pager_content);
         tabsAdapter = new WwwjdicTabsPagerAdapter(this, viewPager);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
