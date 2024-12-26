@@ -22,6 +22,8 @@ android {
     namespace 'org.nick.wwwjdic'
 
     defaultConfig {
+        applicationId 'org.nick.wwwjdic'
+
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
@@ -101,6 +103,17 @@ android {
     android.applicationVariants.all { variant ->
         variant.outputs.all {
             outputFileName = "${archivesBaseName}-${variant.name}-${variant.versionName}.apk"
+        }
+
+        switch (variant.name) {
+            case "free":
+                variant.applicationId = "org.nick.wwwjdic"
+                break
+            case "ci":
+                variant.applicationId = "org.nick.wwwjdic"
+            case "donate":
+                variant.applicationId = "org.nick.wwwjdic.donate"
+                break
         }
     }
 
