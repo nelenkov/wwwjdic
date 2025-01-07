@@ -223,7 +223,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
             intent.putExtra(Wwwjdic.EXTRA_CRITERIA, criteria);
             intent.putExtra(
                     ExamplesResultListFragment.EXTRA_EXAMPLES_BACKDOOR_SEARCH,
-                    true);
+                    false);
             startActivity(intent);
 
             return true;

@@ -20,7 +20,7 @@ public class ExampleSearchTask extends SearchTask<ExampleSentence> {
             .compile("^.*</ul>.*$");
     private static final Pattern LI_PATTERN = Pattern.compile("^.*<li>.*$");
     private static final Pattern INPUT_PATTERN = Pattern
-            .compile("^.*<INPUT.*$");
+            .compile("^.*<INPUT.*<br>$");
 
     private static final int IN_EXAMPLES_BLOCK = 0;
     private static final int EXAMPLE_FOLLOWS = 1;
@@ -74,6 +74,7 @@ public class ExampleSearchTask extends SearchTask<ExampleSentence> {
                     result.add(new ExampleSentence(japaneseSentence,
                             englishSentence));
                 }
+                state = IN_EXAMPLES_BLOCK;
                 break;
             default:
                 continue;
