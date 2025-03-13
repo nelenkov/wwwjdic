@@ -31,6 +31,7 @@ Android frontend for Jim Breen's [WWWJDIC](http://wwwjdic.net)
 ## Download
  * Google Play Store: https://play.google.com/store/apps/details?id=org.nick.wwwjdic
  * Donate version (same functionality as free): https://play.google.com/store/apps/details?id=org.nick.wwwjdic.donate
+ * Latest WIP [development build](https://github.com/nelenkov/wwwjdic/releases/tag/latest)
 
 ## Acknowledgements
 
