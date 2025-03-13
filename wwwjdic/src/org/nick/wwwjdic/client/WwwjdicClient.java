@@ -224,7 +224,9 @@ public class WwwjdicClient {
         // raw
         buff.append("Z");
         // examples
-        buff.append("E");
+        // XXX: entry (E) search broken atm?
+        buff.append("T");
+        //buff.append("E");
         // Unicode
         buff.append("U");
 

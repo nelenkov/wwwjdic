@@ -1,8 +1,11 @@
 package org.nick.wwwjdic;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.nick.wwwjdic.model.ExampleSentence;
 import org.nick.wwwjdic.model.SearchCriteria;
@@ -104,9 +107,24 @@ public class ExampleSearchTask extends SearchTask<ExampleSentence> {
 
             UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs,
                     "UTF-8");
+            formEntity.setContentType("application/x-www-form-url-encoded; charset=utf-8");
+            //formEntity.setContentEncoding("");
+
+            UrlEncodedFormEntity fe = new UrlEncodedFormEntity(pairs,
+                "UTF-8");
+            System.out.println("*** " + fe.getContentEncoding());
+            System.out.println("*** " + fe.getContentType());
+
+            BufferedReader br =  new BufferedReader(new InputStreamReader(fe.getContent()));
+            String line = null;
+            while ((line=br.readLine()) != null) {
+                System.out.println("***: " + line);
+            }
+
             post.setEntity(formEntity);
 
             String responseStr = httpclient.execute(post, responseHandler);
+            System.out.println(responseStr);
 
             return responseStr;
         } catch (IOException e) {
