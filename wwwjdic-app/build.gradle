@@ -5,7 +5,7 @@ android {
         renderScript true
         aidl true
     }
-    namespace 'org.nick.wwwjdic'
+    namespace 'net.fafla.wwwjdic'
     lint {
         abortOnError false
         checkReleaseBuilds true
