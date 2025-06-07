@@ -42,7 +42,7 @@ dependencies {
   compile 'net.sf.jsr107cache:jsr107cache:1.1'
 
   compile 'org.json:json:20200518'
-  compile 'commons-fileupload:commons-fileupload:1.4'
+  compile 'commons-fileupload:commons-fileupload:1.6.0'
 
   compile 'javax.inject:javax.inject:1'
   compile 'com.google.inject.extensions:guice-servlet:4.2.3'
