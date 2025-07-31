@@ -135,8 +135,14 @@ public class RecognizeKanjiActivity extends WebServiceBackedActivity implements 
          }
      }
 
-    private void copyModelFromResource(File targetFile) {
-        try (InputStream in = getResources().openRawResource(R.raw.kr_ja_model)) {
+     @SuppressLint("DiscouragedApi")
+     private void copyModelFromResource(File targetFile) {
+        int resId = getResources().getIdentifier("kr_ja_model", "raw", getPackageName());
+        if (resId == 0) {
+            return;
+        }
+
+        try (InputStream in = getResources().openRawResource(resId)) {
             try (OutputStream out = new FileOutputStream(targetFile)) {
                 byte[] buffer = new byte[1024];
                 int len;
