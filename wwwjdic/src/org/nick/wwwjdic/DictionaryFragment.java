@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,18 +19,13 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.collection.SparseArrayCompat;
 import com.google.android.material.textfield.TextInputLayout;
-
+import java.util.concurrent.RejectedExecutionException;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.StringUtils;
-
-import java.util.concurrent.RejectedExecutionException;
-
-import androidx.annotation.NonNull;
-import androidx.collection.SparseArrayCompat;
 
 public class DictionaryFragment extends WwwjdicFragmentBase implements
         OnClickListener, OnCheckedChangeListener, OnItemSelectedListener {
@@ -42,8 +36,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
 
     private static final SparseArrayCompat<String> IDX_TO_DICT_CODE = new SparseArrayCompat<>();
 
-    private TextInputLayout inputTextLayout;
-    private EditText inputText;
+  private EditText inputText;
     private CheckBox exactMatchCb;
     private CheckBox commonWordsCb;
     private CheckBox romanizedJapaneseCb;
@@ -87,11 +80,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
 
         // delay focus request a bit, otherwise may fail
         // Cf. http://code.google.com/p/android/issues/detail?id=2705
-        inputText.post(new Runnable() {
-            public void run() {
-                inputText.requestFocus();
-            }
-        });
+        inputText.post(() -> inputText.requestFocus());
     }
 
     @Override
@@ -101,7 +90,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
     }
 
     private void populateIdxToDictCode() {
-        if (IDX_TO_DICT_CODE.size() == 0) {
+        if (IDX_TO_DICT_CODE.isEmpty()) {
             String[] dictionaryIdxs = getResources().getStringArray(
                     R.array.dictionary_idxs_array);
             String[] dictionaryCodes = getResources().getStringArray(
@@ -149,21 +138,17 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
     }
 
     private void findViews() {
-        inputTextLayout = getView().findViewById(R.id.inputTextLayout);
+      TextInputLayout inputTextLayout = getView().findViewById(R.id.inputTextLayout);
         inputTextLayout.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
         inputText = getView().findViewById(R.id.inputText);
         inputText
-                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId,
-                                                  KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                            search();
+                .setOnEditorActionListener((v, actionId, event) -> {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        search();
 
-                            return true;
-                        }
-                        return false;
+                        return true;
                     }
+                    return false;
                 });
         exactMatchCb = getView().findViewById(R.id.exactMatchCb);
         commonWordsCb = getView().findViewById(R.id.commonWordsCb);
@@ -233,7 +218,7 @@ public class DictionaryFragment extends WwwjdicFragmentBase implements
 
     private String getDictionaryFromSelection(int dictIdx) {
         String dict = IDX_TO_DICT_CODE.get(dictIdx);
-        Log.i(TAG, "dictionary idx: " + Integer.toString(dictIdx));
+        Log.i(TAG, "dictionary idx: " + dictIdx);
         Log.i(TAG, "dictionary: " + dict);
         if (dict == null) {
             // edict

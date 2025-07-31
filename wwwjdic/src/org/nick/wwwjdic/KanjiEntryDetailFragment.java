@@ -7,14 +7,12 @@ import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,7 +21,15 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
 import org.nick.wwwjdic.actionprovider.ShareActionProvider;
 import org.nick.wwwjdic.model.JlptLevels;
 import org.nick.wwwjdic.model.KanjiEntry;
@@ -35,17 +41,7 @@ import org.nick.wwwjdic.utils.Pair;
 import org.nick.wwwjdic.utils.StringUtils;
 import org.nick.wwwjdic.utils.UIUtils;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.regex.Matcher;
-
-import androidx.appcompat.widget.ActionMenuView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuItemCompat;
-
+@SuppressWarnings("deprecation")
 public class KanjiEntryDetailFragment extends DetailFragment {
 
     private static final String TAG = KanjiEntryDetailFragment.class
@@ -260,19 +256,9 @@ public class KanjiEntryDetailFragment extends DetailFragment {
                 }
             }
 
-            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    return onOptionsItemSelected(item);
-                }
-            });
-            toolbar.setOnCreateContextMenuListener(new Toolbar.OnCreateContextMenuListener() {
+            toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+            toolbar.setOnCreateContextMenuListener((contextMenu, view, contextMenuInfo) -> {
 
-                @Override
-                public void onCreateContextMenu(ContextMenu contextMenu, View view,
-                                                ContextMenu.ContextMenuInfo contextMenuInfo) {
-
-                }
             });
         }
     }
@@ -551,17 +537,14 @@ public class KanjiEntryDetailFragment extends DetailFragment {
                 return;
             }
 
-            speakButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (jpTts == null) {
-                        return;
-                    }
-
-                    pronounce(entry.getOnyomi());
-                    pronounce(entry.getKunyomi());
-                    pronounce(entry.getNanori());
+            speakButton.setOnClickListener(v1 -> {
+                if (jpTts == null) {
+                    return;
                 }
+
+                pronounce(entry.getOnyomi());
+                pronounce(entry.getKunyomi());
+                pronounce(entry.getNanori());
             });
         }
     }

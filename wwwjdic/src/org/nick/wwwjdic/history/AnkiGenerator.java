@@ -1,29 +1,26 @@
 package org.nick.wwwjdic.history;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.security.SecureRandom;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.nick.wwwjdic.model.WwwjdicEntry;
-import org.nick.wwwjdic.utils.MediaScannerWrapper;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.nick.wwwjdic.model.WwwjdicEntry;
+import org.nick.wwwjdic.utils.MediaScannerWrapper;
 
 public class AnkiGenerator {
 
@@ -40,8 +37,8 @@ public class AnkiGenerator {
 
     private static final int GUID_UPPER_LIMIT = (int) (Math.pow(2, 61) - 1);
 
-    private Context context;
-    private static SecureRandom random = new SecureRandom();
+    private final Context context;
+    private static final SecureRandom random = new SecureRandom();
 
 
     private long schemaModTime;
@@ -50,28 +47,26 @@ public class AnkiGenerator {
         this.context = context;
     }
 
-    private void addToZip(String path, String dbPath)
-            throws FileNotFoundException, IOException {
-        FileInputStream sqliteIn = new FileInputStream(dbPath);
-        File zipFile = new File(path);
-        ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(zipFile));
+    private void addToZip(String path, String dbPath) throws IOException {
+      File zipFile;
+      try (FileInputStream sqliteIn = new FileInputStream(dbPath)) {
+        zipFile = new File(path);
 
-        try {
-            zip.putNextEntry(new ZipEntry("collection.anki2"));
-            int read = -1;
-            byte[] buff = new byte[4 * 1024];
-            while ((read = sqliteIn.read(buff)) > 0) {
-                zip.write(buff, 0, read);
-            }
-            zip.flush();
+        try (ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(zipFile))) {
+          zip.putNextEntry(new ZipEntry("collection.anki2"));
+          int read = -1;
+          byte[] buff = new byte[4 * 1024];
+          while ((read = sqliteIn.read(buff)) > 0) {
+            zip.write(buff, 0, read);
+          }
+          zip.flush();
         } catch (IOException e) {
-            Log.d(TAG, "Zip error, deleting incomplete file.");
-            zipFile.delete();
-        } finally {
-            zip.close();
+          Log.d(TAG, "Zip error, deleting incomplete file.");
+          zipFile.delete();
         }
+      }
 
-        MediaScannerWrapper.scanFile(context, zipFile.getAbsolutePath());
+      MediaScannerWrapper.scanFile(context, zipFile.getAbsolutePath());
     }
 
     private void execSqlFromFile(SQLiteDatabase db, String resourceName) {
@@ -92,34 +87,29 @@ public class AnkiGenerator {
 
     public int createAnkiFile(String path, List<WwwjdicEntry> entries)
             throws IOException, JSONException {
-        SQLiteDatabase db = null;
 
-        String dbPath = path.replaceAll("\\.apkg", ".db");
-        try {
-            db = SQLiteDatabase.openDatabase(dbPath, null,
-                    SQLiteDatabase.CREATE_IF_NECESSARY);
-            db.beginTransaction();
+      String dbPath = path.replaceAll("\\.apkg", ".db");
+      try (SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath, null,
+          SQLiteDatabase.CREATE_IF_NECESSARY)) {
+        db.beginTransaction();
 
-            execSqlFromFile(db, "anki-create-tables.sql");
+        execSqlFromFile(db, "anki-create-tables.sql");
 
-            schemaModTime = System.currentTimeMillis();
-            createAnkiCollection(db, schemaModTime);
+        schemaModTime = System.currentTimeMillis();
+        createAnkiCollection(db, schemaModTime);
 
-            addEnries(entries, db);
+        addEnries(entries, db);
 
-            db.setTransactionSuccessful();
-            db.endTransaction();
-            db.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
 
-            addToZip(path, dbPath);
+        addToZip(path, dbPath);
 
-            return entries.size();
-        } finally {
-            deleteDbFiles(dbPath);
-            if (db != null) {
-                db.close();
-            }
-        }
+        return entries.size();
+      } finally {
+        deleteDbFiles(dbPath);
+      }
     }
 
     private void deleteDbFiles(String dbPath) {
@@ -234,7 +224,7 @@ public class AnkiGenerator {
 
     private static String meaningsOnNewLines(WwwjdicEntry entry) {
         List<String> meanings = entry.getMeanings();
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
         for (int i = 0; i < meanings.size(); i++) {
             buff.append(meanings.get(i));
             if (i != meanings.size() - 1) {
@@ -246,11 +236,7 @@ public class AnkiGenerator {
     }
 
     private String createFieldSeparator() {
-        try {
-            return new String(new byte[] { 0x1f }, "ASCII");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+      return new String(new byte[] { 0x1f }, StandardCharsets.US_ASCII);
     }
 
     private long insertCard(SQLiteDatabase db, long noteId) {
@@ -309,34 +295,25 @@ public class AnkiGenerator {
     private String readTextAsset(String name) {
         AssetManager assetManager = context.getAssets();
 
-        InputStream in = null;
-        try {
-            in = assetManager.open(name);
+      try (InputStream in = assetManager.open(name)) {
 
-            return readTextFile(in);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException ignored) {
-                }
-            }
-        }
+        return readTextFile(in);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
 
     }
 
     private String readTextFile(InputStream in) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte buff[] = new byte[1024];
+        byte[] buff = new byte[1024];
 
         int len = -1;
         while ((len = in.read(buff)) != -1) {
             baos.write(buff, 0, len);
         }
 
-        return baos.toString("ASCII");
+        return baos.toString(StandardCharsets.US_ASCII);
     }
 
     private static double now() {
@@ -352,7 +329,7 @@ public class AnkiGenerator {
         int mod = 0;
         while (num != 0) {
             mod = num % len;
-            buff.append(chars.substring(mod, mod + 1));
+            buff.append(chars.charAt(mod));
             num /= len;
         }
 

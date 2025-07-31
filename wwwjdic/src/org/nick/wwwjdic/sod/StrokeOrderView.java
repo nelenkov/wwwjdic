@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import java.util.List;
 
 public class StrokeOrderView extends View {
@@ -51,7 +52,7 @@ public class StrokeOrderView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         drawOutline(canvas);
 
         if (character != null && character.hasStrokes()) {
@@ -95,8 +96,8 @@ public class StrokeOrderView extends View {
                 dy *= -1;
             }
 
-            character.setCanvasWidth(Float.valueOf(width));
-            character.setCanvasHeight(Float.valueOf(height));
+            character.setCanvasWidth((float) width);
+            character.setCanvasHeight((float) height);
             character.setTransformed(true);
         }
 

@@ -16,23 +16,20 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.fragment.app.ListFragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.util.List;
 import org.nick.wwwjdic.CandidatesAdapter;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.client.WwwjdicClient;
 import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.utils.LoaderBase;
 import org.nick.wwwjdic.utils.LoaderResult;
-
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.util.List;
-
-import androidx.fragment.app.ListFragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 
 
 @SuppressWarnings("deprecation")
@@ -46,8 +43,8 @@ public class HkrCandidatesFragment extends ListFragment implements
 
     static class KanjiLoader extends LoaderBase<KanjiEntry> {
 
-        private String kanji;
-        private WwwjdicClient client;
+        private final String kanji;
+        private final WwwjdicClient client;
 
         public KanjiLoader(Context context, String kanji) {
             super(context);
@@ -56,7 +53,7 @@ public class HkrCandidatesFragment extends ListFragment implements
         }
 
         @Override
-        protected KanjiEntry load() throws Exception {
+        protected KanjiEntry load() {
             if (kanji == null) {
                 return null;
             }
@@ -92,9 +89,8 @@ public class HkrCandidatesFragment extends ListFragment implements
     private HkrCandidateSelectedListener candidateSelectedListener;
 
     private ProgressBar progressSpinner;
-    private TextView emptyText;
 
-    private ActionMode currentActionMode;
+  private ActionMode currentActionMode;
 
     public HkrCandidatesFragment() {
     }
@@ -130,7 +126,7 @@ public class HkrCandidatesFragment extends ListFragment implements
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(INDEX_KEY, index);
     }
@@ -140,8 +136,7 @@ public class HkrCandidatesFragment extends ListFragment implements
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.search_results_fragment, container,
                 false);
-        progressSpinner = (ProgressBar) v.findViewById(R.id.progress_spinner);
-        emptyText = (TextView) v.findViewById(android.R.id.empty);
+        progressSpinner = v.findViewById(R.id.progress_spinner);
 
         return v;
     }
@@ -157,18 +152,18 @@ public class HkrCandidatesFragment extends ListFragment implements
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         try {
             candidateSelectedListener = (HkrCandidateSelectedListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(activity
                     + " must implement OnArticleSelectedListener");
         }
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         getListView().setItemChecked(position, true);
         loadDetails(candidates[position], position);
@@ -200,6 +195,7 @@ public class HkrCandidatesFragment extends ListFragment implements
                 Toast.LENGTH_SHORT).show();
     }
 
+    @NonNull
     @Override
     public Loader<LoaderResult<KanjiEntry>> onCreateLoader(int id, Bundle args) {
         String kanji = null;
@@ -211,7 +207,7 @@ public class HkrCandidatesFragment extends ListFragment implements
     }
 
     @Override
-    public void onLoadFinished(Loader<LoaderResult<KanjiEntry>> loader,
+    public void onLoadFinished(@NonNull Loader<LoaderResult<KanjiEntry>> loader,
             LoaderResult<KanjiEntry> result) {
         if (result.isFailed()) {
             String message = selectErrorMessage(result.getError());
@@ -250,7 +246,7 @@ public class HkrCandidatesFragment extends ListFragment implements
     }
 
     @Override
-    public void onLoaderReset(Loader<LoaderResult<KanjiEntry>> loader) {
+    public void onLoaderReset(@NonNull Loader<LoaderResult<KanjiEntry>> loader) {
     }
 
     public void loadCurrentKanji() {
@@ -282,15 +278,14 @@ public class HkrCandidatesFragment extends ListFragment implements
     @SuppressLint("NewApi")
     class ContextCallback implements ActionMode.Callback {
 
-        private int position;
+        private final int position;
 
         ContextCallback(int position) {
             this.position = position;
         }
 
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            MenuInflater inflater = getActivity()
-                    .getMenuInflater();
+            MenuInflater inflater = getActivity().getMenuInflater();
             inflater.inflate(R.menu.hkr_list_context, menu);
             return true;
         }
@@ -320,6 +315,6 @@ public class HkrCandidatesFragment extends ListFragment implements
             getListView().setItemChecked(position, false);
             currentActionMode = null;
         }
-    };
+    }
 
 }

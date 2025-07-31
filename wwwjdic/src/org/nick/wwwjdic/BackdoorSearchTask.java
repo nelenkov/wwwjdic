@@ -17,6 +17,7 @@ import org.nick.wwwjdic.utils.StringUtils;
 
 import android.util.Log;
 
+@SuppressWarnings("deprecation")
 public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
 
     private static final String TAG = BackdoorSearchTask.class.getSimpleName();
@@ -42,7 +43,7 @@ public abstract class BackdoorSearchTask<T> extends SearchTask<T> {
 
     @Override
     protected List<T> parseResult(String html) {
-        List<T> result = new ArrayList<T>();
+        List<T> result = new ArrayList<>();
 
         boolean isInPre = false;
         String[] lines = html.split("\n");

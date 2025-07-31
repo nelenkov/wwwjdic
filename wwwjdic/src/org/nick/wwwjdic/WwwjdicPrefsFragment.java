@@ -1,7 +1,9 @@
 package org.nick.wwwjdic;
 
+import android.Manifest.permission;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresPermission;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -15,10 +17,7 @@ import static org.nick.wwwjdic.WwwjdicPreferences.PREF_WWWJDIC_MIRROR_URL_KEY;
 public class WwwjdicPrefsFragment extends PreferenceFragmentCompat implements
         Preference.OnPreferenceChangeListener {
 
-    private SwitchPreferenceCompat autoSelectMirrorPreference;
     private ListPreference mirrorPreference;
-    private ListPreference defaultDictPreference;
-    private ListPreference jpTtsEnginePreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,28 +28,31 @@ public class WwwjdicPrefsFragment extends PreferenceFragmentCompat implements
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.wwwjdic_prefs, rootKey);
 
-        autoSelectMirrorPreference = findPreference(PREF_AUTO_SELECT_MIRROR_KEY);
+      SwitchPreferenceCompat autoSelectMirrorPreference = findPreference(
+          PREF_AUTO_SELECT_MIRROR_KEY);
         autoSelectMirrorPreference.setOnPreferenceChangeListener(this);
 
         mirrorPreference = findPreference(PREF_WWWJDIC_MIRROR_URL_KEY);
         mirrorPreference.setSummary(mirrorPreference.getEntry());
         mirrorPreference.setOnPreferenceChangeListener(this);
 
-        defaultDictPreference = findPreference(PREF_DEFAULT_DICT_PREF_KEY);
+      ListPreference defaultDictPreference = findPreference(PREF_DEFAULT_DICT_PREF_KEY);
         defaultDictPreference.setSummary(defaultDictPreference.getEntry());
         defaultDictPreference.setOnPreferenceChangeListener(this);
 
-        jpTtsEnginePreference = findPreference(PREF_JP_TTS_ENGINE);
+      ListPreference jpTtsEnginePreference = findPreference(PREF_JP_TTS_ENGINE);
         jpTtsEnginePreference.setSummary(WwwjdicPreferences.getTtsEngineName(
                 getActivity(), jpTtsEnginePreference.getValue()));
         jpTtsEnginePreference.setOnPreferenceChangeListener(this);
     }
 
+    @RequiresPermission(anyOf = {permission.ACCESS_FINE_LOCATION,
+        permission.ACCESS_COARSE_LOCATION})
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (PREF_AUTO_SELECT_MIRROR_KEY.equals(preference.getKey())) {
             boolean autoSelect = (Boolean) newValue;
-            if (autoSelect && WwwjdicApplication.hasLocationPermsion(getContext())) {
+            if (autoSelect && WwwjdicApplication.hasLocationPermission(getContext())) {
                 WwwjdicApplication.getInstance().setMirrorBasedOnLocation();
                 mirrorPreference.setSummary(WwwjdicPreferences.getMirrorName(
                         getActivity(),
@@ -67,7 +69,7 @@ public class WwwjdicPrefsFragment extends PreferenceFragmentCompat implements
 
         if (PREF_DEFAULT_DICT_PREF_KEY.equals(preference.getKey())) {
             preference.setSummary(WwwjdicPreferences.getDictionaryName(
-                    getActivity(), Integer.valueOf((String) newValue)));
+                    getActivity(), Integer.parseInt((String) newValue)));
         }
 
         if (PREF_JP_TTS_ENGINE.equals(preference.getKey())) {

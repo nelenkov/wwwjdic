@@ -1,5 +1,6 @@
 package org.nick.wwwjdic;
 
+import androidx.annotation.NonNull;
 import java.util.List;
 
 import org.nick.wwwjdic.utils.UIUtils;
@@ -40,13 +41,14 @@ public class CandidatesAdapter extends ArrayAdapter<String> {
         super(context, resource);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
         if (view instanceof TextView) {
             UIUtils.setJpTextLocale((TextView) view);
         } else {
-            TextView tv = (TextView) view.findViewById(R.id.item_text);
+            TextView tv = view.findViewById(R.id.item_text);
             UIUtils.setJpTextLocale(tv);
         }
 

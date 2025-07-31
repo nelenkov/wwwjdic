@@ -92,9 +92,7 @@
     <string name="pref_wwwjdic_mirror">WWWJDICミラーサイト</string>
     <string-array name="wwwjdic_mirror_names">
         <item>オーストラリア</item>
-        <item>カナダ</item>
-        <item>EU</item>
-        <item>日本</item>
+        <item>ドイツ</item>
         <item>スウェーデン</item>
         <item>アメリカ</item>
     </string-array>
@@ -241,15 +239,10 @@
     <string name="pref_default_dict">既定辞書</string>
     <string name="buy_donate_version">このアプリが役立っていれば、寄付版のご購入をご検討ください。</string>
     <string name="donate_version">寄付版</string>
-    <string-array name="kr_url_names">
-        <item>デフォールト</item>
-        <item>代替</item>
-    </string-array>
-    <string name="kanji_details">漢字詳細</string>
+      <string name="kanji_details">漢字詳細</string>
     <string name="appended_to_clipboard">\'%s\'をクリップボードに連結しました。</string>
     <string name="append">クリップボードに連結</string>
-    <string name="kr_usage_tip">* \'手書き認識\'ボタンは、一番精度の高い結果を返すが、書き順を守る必要があります。\n* \'OCR\'
-        (光学式文字認識)ボタンは、書いた字を画像として処理します。書き順は無関係が、精度は手書き認識より低いです。</string>
+    <string name="kr_usage_tip">* \'手書き認識\'ボタンは、一番精度の高い結果を返すが、書き順を守る必要があります。</string>
     <string name="kanji_of_the_day">今日の漢字</string>
     <string name="widget_loading">読み込み中...</string>
     <string name="getting_sod_info">書き順情報取得中...</string>

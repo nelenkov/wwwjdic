@@ -21,7 +21,7 @@ public class ExampleSearchTaskBackdoor extends
 
     private ExampleSentence lastSentence;
 
-    private boolean randomExamples;
+    private final boolean randomExamples;
 
     public ExampleSearchTaskBackdoor(String url, int timeoutSeconds,
             ResultList<ExampleSentence> resultView,

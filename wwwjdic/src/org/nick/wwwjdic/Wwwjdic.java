@@ -2,38 +2,22 @@ package org.nick.wwwjdic;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
-
-import com.google.android.material.tabs.TabLayout;
-
-import org.nick.wwwjdic.history.FavoritesAndHistory;
-import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
-import org.nick.wwwjdic.history.HistoryDbHelper;
-import org.nick.wwwjdic.history.HistoryFragmentBase;
-import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
-import org.nick.wwwjdic.krad.KradChart;
-import org.nick.wwwjdic.model.SearchCriteria;
-import org.nick.wwwjdic.utils.UIUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActionMenuView;
@@ -43,7 +27,20 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import java.util.ArrayList;
+import java.util.List;
+import org.nick.wwwjdic.history.FavoritesAndHistory;
+import org.nick.wwwjdic.history.FavoritesAndHistorySummaryView;
+import org.nick.wwwjdic.history.HistoryDbHelper;
+import org.nick.wwwjdic.history.HistoryFragmentBase;
+import org.nick.wwwjdic.hkr.RecognizeKanjiActivity;
+import org.nick.wwwjdic.krad.KradChart;
+import org.nick.wwwjdic.model.SearchCriteria;
 
+@RequiresApi(api = VERSION_CODES.TIRAMISU)
+@SuppressWarnings("deprecation")
 public class Wwwjdic extends ActionBarActivity {
 
     private static final String TAG = Wwwjdic.class.getSimpleName();
@@ -51,7 +48,7 @@ public class Wwwjdic extends ActionBarActivity {
     public static final String EXTRA_SELECTED_TAB_IDX = "org.nick.wwwjdic.selectedTabIdx";
     public static final int DICTIONARY_TAB_IDX = 0;
     public static final int KANJI_TAB_IDX = 1;
-    public static final int EXAMPLE_SEARRCH_TAB_IDX = 2;
+    public static final int EXAMPLE_SEARCH_TAB_IDX = 2;
 
     public static final String EXTRA_CRITERIA = "org.nick.wwwjdic.searchCriteria";
     public static final String EXTRA_SEARCH_TEXT = "org.nick.wwwjdic.searchKey";
@@ -69,18 +66,14 @@ public class Wwwjdic extends ActionBarActivity {
     private static final String EXAMPLE_LOOKUP_FRAGMENT_KEY = "exampleLookupFragment";
 
     private final static String[] PERMISSIONS = new String[]{
-            //Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_COARSE_LOCATION
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.POST_NOTIFICATIONS
     };
 
-    class WwwjdicTabsPagerAdapter extends FragmentStatePagerAdapter implements
+    static class WwwjdicTabsPagerAdapter extends FragmentStatePagerAdapter implements
             ViewPager.OnPageChangeListener, TabLayout.OnTabSelectedListener {
 
-        private AppCompatActivity activity;
-        private FragmentManager fragmentManager;
-        private FragmentTransaction currentTransaction = null;
-
-        private final ViewPager viewPager;
+      private FragmentTransaction currentTransaction = null;
 
         private final List<Fragment> tabs = new ArrayList<>();
         private final List<String> tabTitles = new ArrayList<>();
@@ -89,11 +82,9 @@ public class Wwwjdic extends ActionBarActivity {
 
         public WwwjdicTabsPagerAdapter(AppCompatActivity activity, ViewPager pager) {
             super(activity.getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-            this.activity = activity;
-            this.fragmentManager = activity.getSupportFragmentManager();
-            this.viewPager = pager;
-            this.viewPager.setAdapter(this);
-            this.viewPager.addOnPageChangeListener(this);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            pager.setAdapter(this);
+            pager.addOnPageChangeListener(this);
         }
 
         public void addTab(Fragment tabFragment, String title, int icon, int selectedIcon) {
@@ -158,6 +149,14 @@ public class Wwwjdic extends ActionBarActivity {
         public void onTabReselected(TabLayout.Tab tab) {
 
         }
+
+      public FragmentTransaction getCurrentTransaction() {
+        return currentTransaction;
+      }
+
+      public void setCurrentTransaction(FragmentTransaction currentTransaction) {
+        this.currentTransaction = currentTransaction;
+      }
     }
 
     private static final int NUM_RECENT_HISTORY_ENTRIES = 5;
@@ -170,16 +169,12 @@ public class Wwwjdic extends ActionBarActivity {
 
     private HistoryDbHelper dbHelper;
 
-    private DictionaryLookpFragment dictLookupFragment;
-    private KanjiLookupFragment kanjiLookupFragment;
-    private ExampleLookupFragment exampleLookupFragment;
-
-    private boolean hasCamera;
-
     @Override
     @SuppressLint("NewApi")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
 
         setContentView(R.layout.main);
 
@@ -193,8 +188,7 @@ public class Wwwjdic extends ActionBarActivity {
 
         dbHelper = HistoryDbHelper.getInstance(this);
 
-        hasCamera = getPackageManager().hasSystemFeature(
-                PackageManager.FEATURE_CAMERA_ANY);
+        boolean hasCamera = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
 
         invalidateOptionsMenu();
 
@@ -205,9 +199,7 @@ public class Wwwjdic extends ActionBarActivity {
 
         showDonationThanks();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions();
-        }
+        requestPermissions();
     }
 
     @Override
@@ -223,12 +215,10 @@ public class Wwwjdic extends ActionBarActivity {
 //                EXAMPLE_LOOKUP_FRAGMENT_KEY, exampleLookupFragment);
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     private void requestPermissions() {
         requestPermissions(PERMISSIONS, REQUEST_CODE_PERMISSIONS);
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permission, grantResults);
@@ -253,6 +243,9 @@ public class Wwwjdic extends ActionBarActivity {
         //menu.findItem(R.id.menu_ocr).setEnabled(hasCamera);
         menu.findItem(R.id.menu_ocr).setEnabled(false);
 
+        // disable if model not available
+        menu.findItem(R.id.menu_draw).setEnabled(false);
+
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -267,9 +260,7 @@ public class Wwwjdic extends ActionBarActivity {
             //startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.menu_settings) {
-            Intent intent = new Intent(this,
-                    UIUtils.isHoneycomb() ? WwwjdicPreferencesHC.class
-                            : WwwjdicPreferences.class);
+            Intent intent = new Intent(this, WwwjdicPreferencesHC.class);
             startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.menu_draw) {
@@ -408,19 +399,11 @@ public class Wwwjdic extends ActionBarActivity {
                 child.getLayoutParams().width = ActionMenuView.LayoutParams.MATCH_PARENT;
             }
         }
+        toolbar.getMenu().findItem(R.id.menu_draw).setEnabled(false);
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return onOptionsItemSelected(item);
-            }
-        });
-        toolbar.setOnCreateContextMenuListener(new Toolbar.OnCreateContextMenuListener() {
+        toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+        toolbar.setOnCreateContextMenuListener((contextMenu, view, contextMenuInfo) -> {
 
-            @Override
-            public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-
-            }
         });
 
         tabLayout = findViewById(R.id.tablayout);
@@ -453,7 +436,7 @@ public class Wwwjdic extends ActionBarActivity {
         });
 
         //if (savedInstanceState == null) {
-            dictLookupFragment = new DictionaryLookpFragment();
+        DictionaryLookpTabFragment dictLookupFragment = new DictionaryLookpTabFragment();
         //} else {
 //            dictLookupFragment = (DictionaryLookpFragment) getSupportFragmentManager()
 //                    .getFragment(savedInstanceState, DICT_LOOKUP_FRAGMENT_KEY);
@@ -463,7 +446,7 @@ public class Wwwjdic extends ActionBarActivity {
 
         // TODO: fix classname
 //        if (savedInstanceState == null) {
-            kanjiLookupFragment = new KanjiLookupFragment();
+        KanjiLookupTabFragment kanjiLookupFragment = new KanjiLookupTabFragment();
 //        } else {
 //            kanjiLookupFragment = (KanjiLookpFragment) getSupportFragmentManager()
 //                    .getFragment(savedInstanceState, KANJI_LOOKUP_FRAGMENT_KEY);
@@ -472,7 +455,7 @@ public class Wwwjdic extends ActionBarActivity {
                 R.drawable.ic_kanji_tab_selected);
 
         //if (savedInstanceState == null) {
-            exampleLookupFragment = new ExampleLookupFragment();
+        ExampleLookupTabFragment exampleLookupFragment = new ExampleLookupTabFragment();
         //} else {
 //            exampleLookupFragment = (ExampleLookupFragment) getSupportFragmentManager()
 //                    .getFragment(savedInstanceState, EXAMPLE_LOOKUP_FRAGMENT_KEY);
@@ -533,7 +516,7 @@ public class Wwwjdic extends ActionBarActivity {
                     break;
                 case SearchCriteria.CRITERIA_TYPE_EXAMPLES:
                     getSupportActionBar().setSelectedNavigationItem(
-                            EXAMPLE_SEARRCH_TAB_IDX);
+                            EXAMPLE_SEARCH_TAB_IDX);
                     break;
                 default:
                     // do nothing
@@ -544,43 +527,28 @@ public class Wwwjdic extends ActionBarActivity {
 
     @Override
     protected Dialog onCreateDialog(int id) {
-        Dialog dialog = null;
-
         switch (id) {
         case WHATS_NEW_DIALOG_ID:
-            dialog = createWhatsNewDialog();
-            break;
+            return createWhatsNewDialog();
         case DONATION_THANKS_DIALOG_ID:
-            dialog = createDonationThanksDialog();
-            break;
+            return createDonationThanksDialog();
         default:
-            dialog = null;
+            return null;
         }
-
-        return dialog;
     }
 
     private Dialog createDonationThanksDialog() {
-        DialogInterface.OnClickListener okAction = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                showWhatsNew();
+        DialogInterface.OnClickListener okAction = (dialog, which) -> {
+            dialog.dismiss();
+            showWhatsNew();
 
-            }
         };
         return createInfoDialog(R.string.donation_thanks_title,
                 R.string.donation_thanks, okAction);
     }
 
     private Dialog createWhatsNewDialog() {
-        DialogInterface.OnClickListener okAction = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-
-            }
-        };
+        DialogInterface.OnClickListener okAction = (dialog, which) -> dialog.dismiss();
         return createInfoDialog(R.string.whats_new_title, R.string.whats_new,
                 okAction);
     }
@@ -609,6 +577,7 @@ public class Wwwjdic extends ActionBarActivity {
         List<String> recentFavorites;
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void updateDictSummary(View view) {
         final FavoritesAndHistorySummaryView dictHistorySummary = view.findViewById(R.id.dict_history_summary);
         if (dictHistorySummary == null) {
@@ -661,8 +630,9 @@ public class Wwwjdic extends ActionBarActivity {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void updateKanjiSummary(View view) {
-        final FavoritesAndHistorySummaryView kanjiHistorySummary = (FavoritesAndHistorySummaryView) view
+        final FavoritesAndHistorySummaryView kanjiHistorySummary = view
                 .findViewById(R.id.kanji_history_summary);
         if (kanjiHistorySummary == null) {
             return;
@@ -708,6 +678,7 @@ public class Wwwjdic extends ActionBarActivity {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void updateExamplesSummary(View view) {
         final FavoritesAndHistorySummaryView examplesHistorySummary = view.findViewById(R.id.examples_history_summary);
         if (examplesHistorySummary == null) {

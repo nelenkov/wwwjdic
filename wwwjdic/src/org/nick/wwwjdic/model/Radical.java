@@ -9,9 +9,9 @@ public class Radical implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    private int number;
-    private String glyph;
-    private int numStrokes;
+    private final int number;
+    private final String glyph;
+    private final int numStrokes;
 
     public Radical(int number, String glyph, int numStrokes) {
         this.number = number;

@@ -10,6 +10,7 @@ import org.nick.wwwjdic.model.WwwjdicQuery;
 
 import android.util.Log;
 
+@SuppressWarnings("deprecation")
 public abstract class SearchTask<T> implements Runnable {
 
     private static final String TAG = SearchTask.class.getSimpleName();

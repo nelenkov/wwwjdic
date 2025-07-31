@@ -1,18 +1,15 @@
 package org.nick.wwwjdic.client;
 
+import android.os.Build;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.GZIPInputStream;
-
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
-import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.entity.HttpEntityWrapper;
@@ -20,12 +17,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.nick.wwwjdic.WwwjdicApplication;
 
-import android.os.Build;
-
+@SuppressWarnings("deprecation")
 public class HttpClientFactory {
 
     private static final String HEADER_ACCEPT_ENCODING = "Accept-Encoding";
@@ -40,11 +35,7 @@ public class HttpClientFactory {
 
     public static HttpClient createWwwjdicHttpClient(int timeoutMillis) {
         DefaultHttpClient result = createDefaultClient(timeoutMillis);
-        result.addRequestInterceptor(new HttpRequestInterceptor() {
-            public void process(HttpRequest request, HttpContext context) {
-                addWwwjdicHeaders(request);
-            }
-        });
+        result.addRequestInterceptor((request, context) -> addWwwjdicHeaders(request));
         addGzipInterceptor(result);
 
         return result;
@@ -52,11 +43,9 @@ public class HttpClientFactory {
 
     public static HttpClient createSodHttpClient(int timeoutMillis) {
         DefaultHttpClient result = createDefaultClient(timeoutMillis);
-        result.addRequestInterceptor(new HttpRequestInterceptor() {
-            public void process(HttpRequest request, HttpContext context) {
-                addWwwjdicHeaders(request);
-                addSodHeaders(request);
-            }
+        result.addRequestInterceptor((request, context) -> {
+            addWwwjdicHeaders(request);
+            addSodHeaders(request);
         });
         addGzipInterceptor(result);
 
@@ -85,18 +74,16 @@ public class HttpClientFactory {
     }
 
     private static void addGzipInterceptor(DefaultHttpClient result) {
-        result.addResponseInterceptor(new HttpResponseInterceptor() {
-            public void process(HttpResponse response, HttpContext context) {
-                // Inflate any responses compressed with gzip
-                final HttpEntity entity = response.getEntity();
-                final Header encoding = entity.getContentEncoding();
-                if (encoding != null) {
-                    for (HeaderElement element : encoding.getElements()) {
-                        if (element.getName().equalsIgnoreCase(ENCODING_GZIP)) {
-                            response.setEntity(new InflatingEntity(response
-                                    .getEntity()));
-                            break;
-                        }
+        result.addResponseInterceptor((response, context) -> {
+            // Inflate any responses compressed with gzip
+            final HttpEntity entity = response.getEntity();
+            final Header encoding = entity.getContentEncoding();
+            if (encoding != null) {
+                for (HeaderElement element : encoding.getElements()) {
+                    if (element.getName().equalsIgnoreCase(ENCODING_GZIP)) {
+                        response.setEntity(new InflatingEntity(response
+                                .getEntity()));
+                        break;
                     }
                 }
             }
@@ -137,8 +124,7 @@ public class HttpClientFactory {
 
     static class StringResponseHandler implements ResponseHandler<String> {
 
-        public String handleResponse(HttpResponse response)
-                throws ClientProtocolException, IOException {
+        public String handleResponse(HttpResponse response) throws IOException {
             HttpEntity entity = response.getEntity();
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
                 if (entity != null) {

@@ -17,9 +17,9 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
     private static final int KANJI_IDX = 0;
     private static final int JISCODE_IDX = 1;
 
-    private static final List<String> CODES = Arrays.asList(new String[] { "B",
-            "C", "F", "G", "J", "H", "N", "V", "D", "P", "S", "U", "I", "Q",
-            "M", "E", "K", "L", "O", "W", "Y", "X", "Z" });
+    private static final List<String> CODES = Arrays.asList("B",
+        "C", "F", "G", "J", "H", "N", "V", "D", "P", "S", "U", "I", "Q",
+        "M", "E", "K", "L", "O", "W", "Y", "X", "Z");
 
     private static final char UNICODE_CODE = 'U';
     private static final char RADICAL_CODE = 'B';
@@ -61,7 +61,7 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
     private String koreanReading;
     private String pinyin;
 
-    private List<String> meanings = new ArrayList<String>();
+    private final List<String> meanings = new ArrayList<>();
     private String meaningsAsString;
 
     private KanjiEntry(String dictStr) {
@@ -78,7 +78,7 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
 
         for (int i = JISCODE_IDX + 1; i < fields.length; i++) {
             String field = fields[i].trim();
-            if ("".equals(field)) {
+            if (field.isEmpty()) {
                 continue;
             }
 
@@ -167,10 +167,10 @@ public class KanjiEntry extends WwwjdicEntry implements Serializable {
 
     private void parseReading() {
         String[] readingFields = reading.split(" ");
-        StringBuffer onyomiBuff = new StringBuffer();
-        StringBuffer kunyomiBuff = new StringBuffer();
-        StringBuffer nanoriBuff = new StringBuffer();
-        StringBuffer radicalNameBuff = new StringBuffer();
+        StringBuilder onyomiBuff = new StringBuilder();
+        StringBuilder kunyomiBuff = new StringBuilder();
+        StringBuilder nanoriBuff = new StringBuilder();
+        StringBuilder radicalNameBuff = new StringBuilder();
 
         boolean foundNanori = false;
         boolean foundRadicalName = false;

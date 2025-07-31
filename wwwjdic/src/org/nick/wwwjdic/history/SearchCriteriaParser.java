@@ -88,10 +88,6 @@ public class SearchCriteriaParser {
     }
 
     private static boolean parseTfStr(String str) {
-        if ("1".equals(str)) {
-            return true;
-        }
-
-        return false;
+        return "1".equals(str);
     }
 }

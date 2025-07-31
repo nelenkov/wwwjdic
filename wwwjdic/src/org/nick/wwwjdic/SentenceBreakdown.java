@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+@SuppressWarnings("deprecation")
 public class SentenceBreakdown extends ResultListBase {
 
     public static final String EXTRA_SENTENCE = "org.nick.wwwjdic.SENTENCE";

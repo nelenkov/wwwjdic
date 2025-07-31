@@ -1,21 +1,20 @@
 package org.nick.wwwjdic;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.nick.wwwjdic.model.ExampleSentence;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.model.WwwjdicQuery;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
+@SuppressWarnings("deprecation")
 public class ExampleSearchTask extends SearchTask<ExampleSentence> {
 
     private static final Pattern UL_PATTERN = Pattern.compile("^.*<ul>.*$");
@@ -30,7 +29,7 @@ public class ExampleSearchTask extends SearchTask<ExampleSentence> {
     private static final int TRANSLATION_FOLLOWS = 2;
     private static final int EXAMPLES_FINISHED = 3;
 
-    private int maxNumExamples;
+    private final int maxNumExamples;
 
     public ExampleSearchTask(String url, int timeoutSeconds,
             ResultList<ExampleSentence> resultView,
@@ -41,7 +40,7 @@ public class ExampleSearchTask extends SearchTask<ExampleSentence> {
 
     @Override
     protected List<ExampleSentence> parseResult(String html) {
-        List<ExampleSentence> result = new ArrayList<ExampleSentence>();
+        List<ExampleSentence> result = new ArrayList<>();
 
         String[] lines = html.split("\n");
 
@@ -80,7 +79,6 @@ public class ExampleSearchTask extends SearchTask<ExampleSentence> {
                 state = IN_EXAMPLES_BLOCK;
                 break;
             default:
-                continue;
             }
         }
 
@@ -93,7 +91,7 @@ public class ExampleSearchTask extends SearchTask<ExampleSentence> {
             SearchCriteria criteria = (SearchCriteria) query;
 
             HttpPost post = new HttpPost(url);
-            List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+            List<NameValuePair> pairs = new ArrayList<>();
             String searchString = criteria.getQueryString();
             if (criteria.isExactMatch()) {
                 searchString = "\\<" + searchString + "\\>";

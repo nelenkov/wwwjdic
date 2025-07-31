@@ -4,8 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
-import android.util.FloatMath;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +13,9 @@ public class Stroke {
 
     private static final float TOUCH_TOLERANCE = 4;
 
-    private List<PointF> points = new ArrayList<PointF>();
+    private final List<PointF> points = new ArrayList<>();
 
-    private Path path = new Path();
+    private final Path path = new Path();
     private PointF lastPoint;
 
     public Stroke() {
@@ -144,7 +142,7 @@ public class Stroke {
     }
 
     public String toBase36Points() {
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
 
         for (PointF p : points) {
             String pointStr = "";
@@ -164,7 +162,7 @@ public class Stroke {
     }
 
     public String toPoints() {
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
 
         for (PointF p : points) {
             String pointStr = "";

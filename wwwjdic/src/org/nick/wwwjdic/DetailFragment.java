@@ -3,8 +3,8 @@ package org.nick.wwwjdic;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -22,7 +22,6 @@ import android.text.method.MovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -30,20 +29,17 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.nick.wwwjdic.history.HistoryDbHelper;
-import org.nick.wwwjdic.model.WwwjdicEntry;
-import org.nick.wwwjdic.utils.DictUtils;
-import org.nick.wwwjdic.utils.IntentSpan;
-import org.nick.wwwjdic.utils.Pair;
-
+import androidx.annotation.NonNull;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
-
-import android.app.Fragment;
+import org.nick.wwwjdic.history.HistoryDbHelper;
+import org.nick.wwwjdic.model.WwwjdicEntry;
+import org.nick.wwwjdic.utils.DictUtils;
+import org.nick.wwwjdic.utils.IntentSpan;
+import org.nick.wwwjdic.utils.Pair;
 
 @SuppressWarnings("deprecation")
 public abstract class DetailFragment extends Fragment implements
@@ -59,8 +55,6 @@ public abstract class DetailFragment extends Fragment implements
 
     private static final int TTS_DATA_CHECK_CODE = 0;
 
-    private static final boolean IS_FROYO = Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO;
-
     protected static final String CREATE_FLASHCARD_ACTION = "org.openintents.action.CREATE_FLASHCARD";
     protected static final String EXTRA_SOURCE_TEXT = "SOURCE_TEXT";
     protected static final String EXTRA_TARGET_TEXT = "TARGET_TEXT";
@@ -73,9 +67,8 @@ public abstract class DetailFragment extends Fragment implements
             tts_getDefaultEngine = TextToSpeech.class.getMethod(
                     "getDefaultEngine", (Class[]) null);
             tts_setEngineByPackageName = TextToSpeech.class.getMethod(
-                    "setEngineByPackageName", new Class[] { String.class });
-        } catch (SecurityException e) {
-        } catch (NoSuchMethodException e) {
+                    "setEngineByPackageName", String.class);
+        } catch (SecurityException | NoSuchMethodException e) {
         }
     }
 
@@ -129,7 +122,7 @@ public abstract class DetailFragment extends Fragment implements
     }
 
     @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    public void onCheckedChanged(@NonNull CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
             addToFavorites();
         } else {
@@ -172,7 +165,7 @@ public abstract class DetailFragment extends Fragment implements
             return;
         }
 
-        if (jpTts != null && IS_FROYO) {
+        if (jpTts != null) {
             try {
                 String defaultEngine = (String) tts_getDefaultEngine.invoke(
                         jpTts, (Object[]) null);
@@ -191,10 +184,7 @@ public abstract class DetailFragment extends Fragment implements
                 jpTts.setLanguage(Locale.JAPAN);
 
                 toggleJpTtsButtons(true);
-            } catch (InvocationTargetException e) {
-                Log.e(TAG, "error calling by reflection: " + e.getMessage());
-                toggleJpTtsButtons(false);
-            } catch (IllegalAccessException e) {
+            } catch (InvocationTargetException | IllegalAccessException e) {
                 Log.e(TAG, "error calling by reflection: " + e.getMessage());
                 toggleJpTtsButtons(false);
             }
@@ -235,29 +225,24 @@ public abstract class DetailFragment extends Fragment implements
         LayoutInflater inflater = LayoutInflater.from(ctx);
         LinearLayout translationLayout = (LinearLayout) inflater.inflate(
                 R.layout.translation_item, null);
-        final TextView translationText = (TextView) translationLayout
+        final TextView translationText = translationLayout
                 .findViewById(R.id.translation_text);
         translationText.setText(meaning);
-        Button speakButton = (Button) translationLayout
+        Button speakButton = translationLayout
                 .findViewById(R.id.speak_button);
         if (enableTts) {
-            speakButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String toSpeak = DictUtils.stripWwwjdicTags(ctx,
-                            translationText.getText().toString());
-                    if (tts != null) {
-                        tts.speak(toSpeak, TextToSpeech.QUEUE_ADD, null);
-                    }
+            speakButton.setOnClickListener(v -> {
+                String toSpeak = DictUtils.stripWwwjdicTags(ctx,
+                        translationText.getText().toString());
+                if (tts != null) {
+                    tts.speak(toSpeak, TextToSpeech.QUEUE_ADD, null);
                 }
             });
         } else {
             translationLayout.removeView(speakButton);
         }
 
-        Pair<LinearLayout, TextView> result = new Pair<LinearLayout, TextView>(
-                translationLayout, translationText);
-        return result;
+        return new Pair<>(translationLayout, translationText);
     }
 
     protected abstract Locale getSpeechLocale();
@@ -288,7 +273,7 @@ public abstract class DetailFragment extends Fragment implements
         List<ResolveInfo> list = packageManager.queryIntentActivities(intent,
                 PackageManager.MATCH_DEFAULT_ONLY);
 
-        return list.size() > 0;
+        return !list.isEmpty();
     }
 
     @Override
@@ -315,40 +300,27 @@ public abstract class DetailFragment extends Fragment implements
                 .setTitle(R.string.install_tts_data_title)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(R.string.ok,
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                    int which) {
-                                WwwjdicPreferences.setWantsTts(getActivity(),
-                                        true);
-                                Intent installIntent = new Intent(
-                                        TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-                                dialog.dismiss();
-                                startActivity(installIntent);
-                            }
-                        })
+                    (dialog, which) -> {
+                        WwwjdicPreferences.setWantsTts(getActivity(),
+                                true);
+                        Intent installIntent = new Intent(
+                                TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                        dialog.dismiss();
+                        startActivity(installIntent);
+                    })
                 .setNegativeButton(R.string.not_now,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                    int which) {
-                                hideTtsButtons();
-                                dialog.dismiss();
+                    (dialog, which) -> {
+                        hideTtsButtons();
+                        dialog.dismiss();
 
-                            }
-                        })
+                    })
                 .setNeutralButton(R.string.dont_ask_again,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                    int which) {
-                                hideTtsButtons();
-                                WwwjdicPreferences.setWantsTts(getActivity(),
-                                        false);
-                                dialog.dismiss();
-                            }
-                        });
+                    (dialog, which) -> {
+                        hideTtsButtons();
+                        WwwjdicPreferences.setWantsTts(getActivity(),
+                                false);
+                        dialog.dismiss();
+                    });
 
         return builder.create();
     }

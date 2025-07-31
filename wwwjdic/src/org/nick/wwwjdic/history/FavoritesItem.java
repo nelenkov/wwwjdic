@@ -1,5 +1,6 @@
 package org.nick.wwwjdic.history;
 
+import androidx.annotation.NonNull;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.model.WwwjdicEntry;
 import org.nick.wwwjdic.utils.CheckableLinearLayout;
@@ -16,7 +17,7 @@ import android.widget.TextView;
 public class FavoritesItem extends CheckableLinearLayout implements
         OnCheckedChangeListener {
 
-    static interface FavoriteStatusChangedListener {
+    interface FavoriteStatusChangedListener {
         void onStatusChanged(boolean isFavorite, WwwjdicEntry entry);
     }
 
@@ -50,13 +51,13 @@ public class FavoritesItem extends CheckableLinearLayout implements
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.favorites_item, this);
 
-        isKanjiText = (TextView) findViewById(R.id.is_kanji);
+        isKanjiText = findViewById(R.id.is_kanji);
         UIUtils.setJpTextLocale(isKanjiText);
-        dictHeadingText = (TextView) findViewById(R.id.dict_heading);
+        dictHeadingText = findViewById(R.id.dict_heading);
         UIUtils.setJpTextLocale(dictHeadingText);
-        entryDetailsText = (TextView) findViewById(R.id.entry_details);
+        entryDetailsText = findViewById(R.id.entry_details);
         UIUtils.setJpTextLocale(entryDetailsText);
-        starCb = (CheckBox) findViewById(R.id.star);
+        starCb = findViewById(R.id.star);
         starCb.setOnCheckedChangeListener(this);
     }
 
@@ -68,7 +69,7 @@ public class FavoritesItem extends CheckableLinearLayout implements
         dictHeadingText.setText(entry.getHeadword());
 
         String detailStr = entry.getDetailString();
-        if (detailStr != null && !"".equals(detailStr)) {
+        if (detailStr != null && !detailStr.isEmpty()) {
             entryDetailsText.setText(detailStr);
         }
 
@@ -81,7 +82,7 @@ public class FavoritesItem extends CheckableLinearLayout implements
     }
 
     @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    public void onCheckedChanged(@NonNull CompoundButton buttonView, boolean isChecked) {
         favoriteStatusChangedListener.onStatusChanged(isChecked, entry);
     }
 

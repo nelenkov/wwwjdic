@@ -2,30 +2,24 @@ package org.nick.wwwjdic.history;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListAdapter;
-
-import com.google.android.material.tabs.TabLayout;
-
-import org.nick.wwwjdic.ActionBarActivity;
-import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.history.HistoryFragmentBase.ConfirmDeleteDialog;
-import org.nick.wwwjdic.utils.Dialogs;
-
-import java.io.File;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.tabs.TabLayout;
+import java.io.File;
+import org.nick.wwwjdic.ActionBarActivity;
+import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.history.HistoryFragmentBase.ConfirmDeleteDialog;
+import org.nick.wwwjdic.utils.Dialogs;
 
 public class FavoritesAndHistory extends ActionBarActivity {
 
@@ -79,18 +73,9 @@ public class FavoritesAndHistory extends ActionBarActivity {
             }
         }
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return onOptionsItemSelected(item);
-            }
-        });
-        toolbar.setOnCreateContextMenuListener(new Toolbar.OnCreateContextMenuListener() {
+        toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+        toolbar.setOnCreateContextMenuListener((contextMenu, view, contextMenuInfo) -> {
 
-            @Override
-            public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-
-            }
         });
 
         tabLayout = findViewById(R.id.tablayout);
@@ -246,9 +231,8 @@ public class FavoritesAndHistory extends ActionBarActivity {
         File backupFile = new File(currentTab.getImportExportFilename());
 
         boolean importEnabled = backupFile.exists();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            importEnabled = true;
-        }
+        importEnabled = true;
+
         menu.findItem(R.id.menu_import).setEnabled(importEnabled);
         menu.findItem(R.id.menu_export).setEnabled(hasItems);
         menu.findItem(R.id.menu_delete).setEnabled(hasItems);

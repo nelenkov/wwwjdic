@@ -21,7 +21,7 @@ public class FileUtils {
     public static String readTextFile(InputStream in, String encoding)
             throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte buff[] = new byte[1024];
+        byte[] buff = new byte[1024];
 
         int len = -1;
         while ((len = in.read(buff)) != -1) {

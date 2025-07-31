@@ -3,24 +3,20 @@ package org.nick.wwwjdic.hkr;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-
+import java.nio.charset.StandardCharsets;
 import org.apache.http.entity.AbstractHttpEntity;
 
+@SuppressWarnings("deprecation")
 public class KrEntity extends AbstractHttpEntity {
 
-    private byte[] contentBytes;
+    private final byte[] contentBytes;
 
     public KrEntity(String content) {
-        try {
-            contentBytes = content.getBytes("ASCII");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+      contentBytes = content.getBytes(StandardCharsets.US_ASCII);
     }
 
     @Override
-    public InputStream getContent() throws IOException, IllegalStateException {
+    public InputStream getContent() throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 

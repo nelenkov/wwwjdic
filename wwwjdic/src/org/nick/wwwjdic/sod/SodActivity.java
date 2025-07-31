@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -34,6 +35,7 @@ import java.util.List;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
+@SuppressWarnings("deprecation")
 public class SodActivity extends ActionBarActivity implements OnClickListener,
         LoaderManager.LoaderCallbacks<LoaderResult<Pair<String, Boolean>>> {
 
@@ -47,10 +49,10 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
 
     static class SodLoader extends LoaderBase<Pair<String, Boolean>> {
 
-        private String unicodeNumber;
-        private boolean animate;
+        private final String unicodeNumber;
+        private final boolean animate;
 
-        private HttpClient httpClient;
+        private final HttpClient httpClient;
 
         SodLoader(Context context, String unicodeNumber, boolean animate) {
             super(context);
@@ -107,7 +109,7 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
             }
             Log.d(TAG, "got SOD response: " + responseStr);
 
-            return new Pair<String, Boolean>(responseStr, animate);
+            return new Pair<>(responseStr, animate);
         }
 
         @Override
@@ -197,11 +199,11 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
     }
 
     private void findViews() {
-        drawButton = (Button) findViewById(R.id.draw_sod_button);
-        clearButton = (Button) findViewById(R.id.clear_sod_button);
-        animateButton = (Button) findViewById(R.id.animate_button);
-        progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner);
-        strokeOrderView = (StrokeOrderView) findViewById(R.id.sod_draw_view);
+        drawButton = findViewById(R.id.draw_sod_button);
+        clearButton = findViewById(R.id.clear_sod_button);
+        animateButton = findViewById(R.id.animate_button);
+        progressSpinner = findViewById(R.id.progress_spinner);
+        strokeOrderView = findViewById(R.id.sod_draw_view);
     }
 
     @Override
@@ -249,7 +251,7 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
     }
 
     private static List<StrokePath> parseWsReplyStrokes(String reply) {
-        if (reply == null || "".equals(reply)) {
+        if (reply == null || reply.isEmpty()) {
 
             return null;
         }
@@ -258,10 +260,10 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
             JSONObject jsonObj = new JSONObject(reply);
             JSONArray strokes = jsonObj.getJSONArray("paths");
             int numStrokes = strokes.length();
-            List<StrokePath> result = new ArrayList<StrokePath>();
+            List<StrokePath> result = new ArrayList<>();
             for (int i = 0; i < numStrokes; i++) {
                 String line = strokes.getString(i);
-                if (line != null && !"".equals(line)) {
+                if (line != null && !line.isEmpty()) {
                     StrokePath strokePath = StrokePath.parsePath(line.trim());
                     result.add(strokePath);
                 }
@@ -281,10 +283,7 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
             return null;
         }
 
-        StrokedCharacter result = new StrokedCharacter(strokes, KANJIVG_SIZE,
-                KANJIVG_SIZE);
-
-        return result;
+        return new StrokedCharacter(strokes, KANJIVG_SIZE, KANJIVG_SIZE);
     }
 
     String getKanji() {
@@ -307,9 +306,9 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
         progressSpinner.setVisibility(View.GONE);
     }
 
+    @NonNull
     @Override
-    public Loader<LoaderResult<Pair<String, Boolean>>> onCreateLoader(int id,
-                                                                      Bundle args) {
+    public Loader<LoaderResult<Pair<String, Boolean>>> onCreateLoader(int id, Bundle args) {
         String unicodeNumber = args.getString("unicodeNumber");
         boolean animate = args.getBoolean("animate");
 
@@ -318,7 +317,7 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
 
     @Override
     public void onLoadFinished(
-            Loader<LoaderResult<Pair<String, Boolean>>> loader,
+            @NonNull Loader<LoaderResult<Pair<String, Boolean>>> loader,
             LoaderResult<Pair<String, Boolean>> loaderResult) {
         dismissProgress();
 
@@ -355,7 +354,7 @@ public class SodActivity extends ActionBarActivity implements OnClickListener,
     }
 
     @Override
-    public void onLoaderReset(Loader<LoaderResult<Pair<String, Boolean>>> loader) {
+    public void onLoaderReset(@NonNull Loader<LoaderResult<Pair<String, Boolean>>> loader) {
         clear();
     }
 

@@ -30,16 +30,16 @@ public class SearchCriteria extends WwwjdicQuery implements Serializable {
 
     private final int type;
 
-    private boolean isExactMatch;
-    private boolean isKanjiLookup;
-    private boolean isRomanizedJapanese;
-    private boolean isCommonWordsOnly;
-    private int kanjiCompoundSearchType;
-    private String dictionaryCode;
-    private String kanjiSearchType;
-    private Integer minStrokeCount;
-    private Integer maxStrokeCount;
-    private Integer numMaxResults;
+    private final boolean isExactMatch;
+    private final boolean isKanjiLookup;
+    private final boolean isRomanizedJapanese;
+    private final boolean isCommonWordsOnly;
+    private final int kanjiCompoundSearchType;
+    private final String dictionaryCode;
+    private final String kanjiSearchType;
+    private final Integer minStrokeCount;
+    private final Integer maxStrokeCount;
+    private final Integer numMaxResults;
 
     public static SearchCriteria createForDictionary(String queryString,
             boolean isExactMatch, boolean isRomanized,

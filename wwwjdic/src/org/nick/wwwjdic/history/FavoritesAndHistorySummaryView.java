@@ -108,9 +108,9 @@ public class FavoritesAndHistorySummaryView extends ListView implements
         public HistoryFavoritesSummaryAdapter(Context context) {
             this.context = context;
             this.numAllFavorites = 0;
-            this.recentFavorites = new ArrayList<String>();
+            this.recentFavorites = new ArrayList<>();
             this.numAllHistoryItems = 0;
-            this.recentHistory = new ArrayList<String>();
+            this.recentHistory = new ArrayList<>();
         }
 
         public HistoryFavoritesSummaryAdapter(Context context,
@@ -187,8 +187,8 @@ public class FavoritesAndHistorySummaryView extends ListView implements
 
         static class SummaryView extends LinearLayout {
 
-            private TextView summary;
-            private TextView itemList;
+            private final TextView summary;
+            private final TextView itemList;
 
             SummaryView(Context context) {
                 super(context);
@@ -196,8 +196,8 @@ public class FavoritesAndHistorySummaryView extends ListView implements
                 LayoutInflater inflater = LayoutInflater.from(context);
                 inflater.inflate(R.layout.favorites_history_summary_item, this);
 
-                summary = (TextView) findViewById(R.id.summary_text);
-                itemList = (TextView) findViewById(R.id.item_list);
+                summary = findViewById(R.id.summary_text);
+                itemList = findViewById(R.id.item_list);
                 UIUtils.setJpTextLocale(itemList);
             }
 

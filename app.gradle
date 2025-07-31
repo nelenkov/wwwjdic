@@ -11,8 +11,8 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
     implementation project(path: ':wwwjdic')
-    implementation 'com.google.firebase:firebase-analytics:22.1.2'
-    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.firebase:firebase-analytics:23.0.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'com.google.android.material:material:1.12.0'
 }
@@ -47,8 +47,13 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("nick.keystore")
+            //storeFile file("nick.keystore")
+            storeFile file("wwwjdic-upload-keystore.jks")
         }
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -87,6 +92,7 @@ android {
             renderscript.srcDirs = ['src']
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['jniLibs']
         }
         donate {
             manifest.srcFile 'src/donate/AndroidManifest.xml'
@@ -100,9 +106,10 @@ android {
         }
     }
 
+
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "${archivesBaseName}-${variant.name}-${variant.versionName}.apk"
+            outputFileName = "${base.archivesName.get()}-${variant.name}-${variant.versionName}.apk"
         }
 
         switch (variant.name) {
@@ -111,6 +118,7 @@ android {
                 break
             case "ci":
                 variant.applicationId = "net.fafla.wwwjdic"
+                break
             case "donate":
                 variant.applicationId = "net.fafla.wwwjdic.donate"
                 break
@@ -118,11 +126,12 @@ android {
     }
 
 
+
     afterEvaluate {
-        generateFreeReleaseBuildConfig.enabled = false
-        generateFreeDebugBuildConfig.enabled = false
-        generateDonateReleaseBuildConfig.enabled = false
-        generateDonateDebugBuildConfig.enabled = false
+        //generateFreeReleaseBuildConfig.enabled = false
+        //generateFreeDebugBuildConfig.enabled = false
+        //generateDonateReleaseBuildConfig.enabled = false
+        //generateDonateDebugBuildConfig.enabled = false
     }
 }
 

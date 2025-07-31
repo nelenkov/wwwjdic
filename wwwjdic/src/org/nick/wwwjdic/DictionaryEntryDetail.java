@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import org.nick.wwwjdic.model.DictionaryEntry;
 
+@SuppressWarnings("deprecation")
 public class DictionaryEntryDetail extends DetailActivity {
 
     public static final String EXTRA_DICTIONARY_ENTRY = "org.nick.wwwjdic.DICTIONARY_ENTRY";

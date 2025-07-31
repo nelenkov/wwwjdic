@@ -1,0 +1,6 @@
+*.keystore
+*.apk
+*~
+*jks
+*model
+*so

@@ -92,7 +92,7 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
     private SQLiteStatement favoritesCountStatement;
     private SQLiteStatement historyCountStatement;
 
-    private Context context;
+    private final Context context;
 
     private static HistoryDbHelper instance;
 
@@ -193,9 +193,8 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
     public synchronized long addFavorite(WwwjdicEntry entry,
             long currentTimeInMillis) {
         SQLiteDatabase db = getWritableDatabase();
-        long result = addFavorite(db, entry, currentTimeInMillis);
 
-        return result;
+      return addFavorite(db, entry, currentTimeInMillis);
     }
 
     private long addFavorite(SQLiteDatabase db, WwwjdicEntry entry,
@@ -241,19 +240,17 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
 
     public Cursor getHistory() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor result = db.query(HISTORY_TABLE_NAME, HISTORY_ALL_COLUMNS, null,
-                null, null, null, "time desc");
 
-        return result;
+        return db.query(HISTORY_TABLE_NAME, HISTORY_ALL_COLUMNS, null,
+              null, null, null, "time desc");
     }
 
     public Cursor getHistoryByType(int type) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor result = db.query(HISTORY_TABLE_NAME, HISTORY_ALL_COLUMNS,
-                "search_type = ?", new String[] { Integer.toString(type) },
-                null, null, "time desc");
 
-        return result;
+        return db.query(HISTORY_TABLE_NAME, HISTORY_ALL_COLUMNS,
+              "search_type = ?", new String[] { Integer.toString(type) },
+              null, null, "time desc");
     }
 
     public long getHistoryCountByType(int type) {
@@ -300,38 +297,32 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
     }
 
     public List<String> getRecentHistoryByType(int type, int top) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
 
-        Cursor c = null;
-        try {
-            c = db.query(HISTORY_TABLE_NAME, new String[] {
-                    HISTORY_QUERY_STRING, HISTORY_KANJI_SEARCH_TYPE },
-                    "search_type = ?", new String[] { Integer.toString(type) },
-                    null, null, "time desc", Integer.toString(top));
-            while (c.moveToNext()) {
-                String searchQuery = c.getString(c
-                        .getColumnIndex(HISTORY_QUERY_STRING));
-                String historyStr = searchQuery;
-                if (!c.isNull(c.getColumnIndex(HISTORY_KANJI_SEARCH_TYPE))) {
-                    String kanjiSearchType = c.getString(c
-                            .getColumnIndex(HISTORY_KANJI_SEARCH_TYPE));
-                    String kanjiSearchName = HistoryUtils
-                            .lookupKanjiSearchName(kanjiSearchType,
-                                    searchQuery, context);
-                    historyStr = String.format("%s(%s)", searchQuery,
-                            kanjiSearchName);
-                }
+      try (Cursor c = db.query(HISTORY_TABLE_NAME, new String[]{
+              HISTORY_QUERY_STRING, HISTORY_KANJI_SEARCH_TYPE},
+          "search_type = ?", new String[]{Integer.toString(type)},
+          null, null, "time desc", Integer.toString(top))) {
+        while (c.moveToNext()) {
+          String searchQuery = c.getString(c
+              .getColumnIndex(HISTORY_QUERY_STRING));
+          String historyStr = searchQuery;
+          if (!c.isNull(c.getColumnIndex(HISTORY_KANJI_SEARCH_TYPE))) {
+            String kanjiSearchType = c.getString(c
+                .getColumnIndex(HISTORY_KANJI_SEARCH_TYPE));
+            String kanjiSearchName = HistoryUtils
+                .lookupKanjiSearchName(kanjiSearchType,
+                    searchQuery, context);
+            historyStr = String.format("%s(%s)", searchQuery,
+                kanjiSearchName);
+          }
 
-                result.add(historyStr);
-            }
-
-            return result;
-        } finally {
-            if (c != null) {
-                c.close();
-            }
+          result.add(historyStr);
         }
+
+        return result;
+      }
     }
 
     public List<String> getRecentDictHistory(int top) {
@@ -348,33 +339,25 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
 
     public Cursor getFavorites() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor result = db.query(FAVORITES_TABLE_NAME, FAVORITES_ALL_COLUMNS,
-                null, null, null, null, "time desc");
 
-        return result;
+        return db.query(FAVORITES_TABLE_NAME, FAVORITES_ALL_COLUMNS,
+              null, null, null, null, "time desc");
     }
 
     public List<String> getRecentFavoritesByType(int type, int top) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
 
         SQLiteDatabase db = getReadableDatabase();
-        Cursor c = null;
-        try {
-            c = db.query(FAVORITES_TABLE_NAME,
-                    new String[] { FAVORITES_HEADWORD }, "is_kanji = ?",
-                    new String[] { Integer.toString(type) }, null, null,
-                    "time desc", Integer.toString(top));
+        try (Cursor c = db.query(FAVORITES_TABLE_NAME,
+            new String[]{FAVORITES_HEADWORD}, "is_kanji = ?",
+            new String[]{Integer.toString(type)}, null, null,
+          "time desc", Integer.toString(top))) {
             while (c.moveToNext()) {
-                String searchQuery = c.getString(c
-                        .getColumnIndex(FAVORITES_HEADWORD));
+                String searchQuery = c.getString(c.getColumnIndex(FAVORITES_HEADWORD));
                 result.add(searchQuery);
             }
 
             return result;
-        } finally {
-            if (c != null) {
-                c.close();
-            }
         }
     }
 
@@ -388,11 +371,10 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
 
     public Cursor getFavoritesByType(int type) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor result = db.query(FAVORITES_TABLE_NAME, FAVORITES_ALL_COLUMNS,
-                "is_kanji = ?", new String[] { Integer.toString(type) }, null,
-                null, "time desc");
 
-        return result;
+        return db.query(FAVORITES_TABLE_NAME, FAVORITES_ALL_COLUMNS,
+              "is_kanji = ?", new String[] { Integer.toString(type) }, null,
+              null, "time desc");
     }
 
     public static SearchCriteria createCriteria(Cursor cursor) {
@@ -403,6 +385,8 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
         idx = cursor.getColumnIndex(ID);
         long id = cursor.getLong(idx);
 
+        SearchCriteria result;
+        boolean isExactMatch = false;
         switch (type) {
         case SearchCriteria.CRITERIA_TYPE_KANJI:
             idx = cursor.getColumnIndex(HISTORY_KANJI_SEARCH_TYPE);
@@ -410,7 +394,7 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
             int minStrokexIdx = cursor.getColumnIndex(HISTORY_MIN_STROKE_COUNT);
             int maxStrokesIdx = cursor.getColumnIndex(HISTORY_MAX_STROKE_COUNT);
             if (cursor.isNull(minStrokexIdx) && cursor.isNull(maxStrokesIdx)) {
-                SearchCriteria result = SearchCriteria.createForKanji(
+                result = SearchCriteria.createForKanji(
                         queryString, searchType);
                 result.setId(id);
 
@@ -426,13 +410,13 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
                 maxStrokeCount = cursor.getInt(maxStrokesIdx);
             }
 
-            SearchCriteria result = SearchCriteria.createWithStrokeCount(
+            result = SearchCriteria.createWithStrokeCount(
                     queryString, searchType, minStrokeCount, maxStrokeCount);
             result.setId(id);
 
             return result;
         case SearchCriteria.CRITERIA_TYPE_DICT:
-            boolean isExactMatch = cursor.getInt(cursor
+            isExactMatch = cursor.getInt(cursor
                     .getColumnIndex(HISTORY_IS_EXACT_MATCH)) == 1;
             boolean isRomanized = cursor.getInt(cursor
                     .getColumnIndex(HISTORY_IS_ROMANIZED_JAPANESE)) == 1;
@@ -510,24 +494,18 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
 
     public Long getFavoriteId(String headword) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = null;
-        try {
-            cursor = db.query(FAVORITES_TABLE_NAME, new String[] { ID },
-                    "headword = ?", new String[] { headword }, null, null,
-                    "time desc");
+        try (Cursor cursor = db.query(FAVORITES_TABLE_NAME, new String[]{ID},
+          "headword = ?", new String[]{headword}, null, null,
+          "time desc")) {
             int count = cursor.getCount();
             if (count == 0) {
-                return null;
+            return null;
             }
 
             int idx = cursor.getColumnIndex(ID);
             cursor.moveToFirst();
 
             return cursor.getLong(idx);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
     }
 

@@ -5,10 +5,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <!--uses-permission android:name="android.permission.CAMERA" /-->
-    <!--uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" /-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -23,6 +23,16 @@
         android:name="android.hardware.touchscreen"
         android:required="false" />
 
+    <queries>
+        <!-- Specific apps you interact with, eg: -->
+        <package android:name="org.nick.kanjirecognizer" />
+        <package android:name="net.fafla.kanjirecognizer" />
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="image/jpeg" />
+        </intent>
+    </queries>
+
     <application
         android:name="org.nick.wwwjdic.WwwjdicApplication"
         android:allowBackup="true"
@@ -36,6 +46,9 @@
         <meta-data
             android:name="android.app.default_searchable"
             android:value="org.nick.wwwjdic.DictionaryResultList" />
+
+        <meta-data android:name="google_analytics_adid_collection_enabled"
+            android:value="false" />
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -197,17 +210,19 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="org.nick.wwwjdic.widgets.GetKanjiService" />
-        <service android:name="org.nick.wwwjdic.history.AnkiExportService" />
+        <!--service android:name="org.nick.wwwjdic.widgets.GetKanjiService" /-->
+        <service android:name="org.nick.wwwjdic.history.AnkiExportService"
+                 android:foregroundServiceType="dataSync"/>
 
         <provider
             android:name="org.nick.wwwjdic.SearchSuggestionProvider"
             android:authorities="${searchAuthority}"
             android:exported="true" />
 
+        <!--android:authorities="${filesAuthority}"-->
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="${filesAuthority}"
+            android:authorities="net.fafla.wwwjdic.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

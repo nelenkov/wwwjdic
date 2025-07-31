@@ -4,19 +4,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
 import org.nick.wwwjdic.actionprovider.ShareActionProvider;
 import org.nick.wwwjdic.model.DictionaryEntry;
 import org.nick.wwwjdic.model.SearchCriteria;
@@ -26,15 +30,7 @@ import org.nick.wwwjdic.utils.Pair;
 import org.nick.wwwjdic.utils.StringUtils;
 import org.nick.wwwjdic.utils.UIUtils;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.regex.Matcher;
-
-import androidx.appcompat.widget.ActionMenuView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuItemCompat;
-
+@SuppressWarnings("deprecation")
 public class DictionaryEntryDetailFragment extends DetailFragment {
 
     private static final String TAG = DictionaryEntryDetailFragment.class
@@ -43,9 +39,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
     private static final int DEFAULT_MAX_NUM_EXAMPLES = 20;
 
     private LinearLayout translationsLayout;
-    private TextView entryView;
-    private CheckBox starCb;
-    private Toolbar toolbar;
+  private Toolbar toolbar;
 
     private DictionaryEntry entry;
     private String exampleSearchKey;
@@ -94,7 +88,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
             return;
         }
 
-        entryView = v.findViewById(R.id.details_word_text);
+        TextView entryView = v.findViewById(R.id.details_word_text);
         UIUtils.setJpTextLocale(entryView);
         entryView.setText(entry.getWord());
         entryView.setOnLongClickListener(this);
@@ -128,7 +122,7 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
             }
         }
 
-        starCb = v.findViewById(R.id.star_word);
+        CheckBox starCb = v.findViewById(R.id.star_word);
         starCb.setOnCheckedChangeListener(null);
         starCb.setChecked(isFavorite);
         starCb.setOnCheckedChangeListener(this);
@@ -145,19 +139,9 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
                 }
             }
 
-            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    return onOptionsItemSelected(item);
-                }
-            });
-            toolbar.setOnCreateContextMenuListener(new Toolbar.OnCreateContextMenuListener() {
+            toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+            toolbar.setOnCreateContextMenuListener((contextMenu, view, contextMenuInfo) -> {
 
-                @Override
-                public void onCreateContextMenu(ContextMenu contextMenu, View view,
-                                                ContextMenu.ContextMenuInfo contextMenuInfo) {
-
-                }
             });
         }
     }
@@ -169,10 +153,8 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
             return null;
         }
 
-        View v = inflater.inflate(R.layout.dict_entry_details_fragment,
-                container, false);
-
-        return v;
+        return inflater.inflate(R.layout.dict_entry_details_fragment,
+              container, false);
     }
 
     @Override
@@ -272,25 +254,26 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
         if (engDicts.contains(entryDictionary)) {
             return Locale.ENGLISH;
         } else {
-            if ("G".equals(entryDictionary)) {
-                return Locale.GERMAN;
-            } else if ("H".equals(entryDictionary)) {
-                return Locale.FRENCH;
-            } else if ("I".equals(entryDictionary)) {
-                return new Locale("RU");
-            } else if ("J".equals(entryDictionary)) {
-                return new Locale("SE");
-            } else if ("K".equals(entryDictionary)) {
-                return new Locale("HU");
-            } else if ("L".equals(entryDictionary)) {
-                return new Locale("ES");
-            } else if ("M".equals(entryDictionary)) {
-                return new Locale("NL");
-            } else if ("N".equals(entryDictionary)) {
-                return new Locale("SL");
-            } else if ("O".equals(entryDictionary)) {
-                return new Locale("IT");
-            }
+          switch (entryDictionary) {
+            case "G":
+              return Locale.GERMAN;
+            case "H":
+              return Locale.FRENCH;
+            case "I":
+              return new Locale("RU");
+            case "J":
+              return new Locale("SE");
+            case "K":
+              return new Locale("HU");
+            case "L":
+              return new Locale("ES");
+            case "M":
+              return new Locale("NL");
+            case "N":
+              return new Locale("SL");
+            case "O":
+              return new Locale("IT");
+          }
         }
 
         return null;
@@ -357,16 +340,13 @@ public class DictionaryEntryDetailFragment extends DetailFragment {
                 return;
             }
 
-            speakButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (jpTts == null) {
-                        return;
-                    }
-
-                    pronounce(entry.getReading() != null ? entry.getReading()
-                            : entry.getHeadword());
+            speakButton.setOnClickListener(v1 -> {
+                if (jpTts == null) {
+                    return;
                 }
+
+                pronounce(entry.getReading() != null ? entry.getReading()
+                        : entry.getHeadword());
             });
         }
     }

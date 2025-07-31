@@ -34,10 +34,10 @@ public class JisGenerator implements KanjiGenerator {
 
     private static final int OFFSET = 0x20;
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
-    private boolean isRandom;
-    private boolean limitToLevelOne;
+    private final boolean isRandom;
+    private final boolean limitToLevelOne;
     private String currentKanji;
 
     public JisGenerator(boolean isRandom, boolean limitToLevelOne) {

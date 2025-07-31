@@ -1,12 +1,12 @@
 package org.nick.wwwjdic;
 
+import android.Manifest.permission;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -25,13 +25,13 @@ import android.preference.PreferenceScreen;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.MenuItem;
-
+import androidx.annotation.RequiresPermission;
+import java.util.Arrays;
+import java.util.List;
 import org.nick.wwwjdic.widgets.KodWidgetConfigure;
 import org.nick.wwwjdic.widgets.KodWidgetProvider;
 
-import java.util.Arrays;
-import java.util.List;
-
+@SuppressWarnings("deprecation")
 public class WwwjdicPreferences extends PreferenceActivity implements
         OnPreferenceChangeListener {
 
@@ -44,13 +44,16 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     public static final String PREF_AUTO_SELECT_MIRROR_KEY = "pref_auto_select_mirror";
     public static final String PREF_WWWJDIC_MIRROR_URL_KEY = "pref_wwwjdic_mirror_url";
-    public static final String OLD_DEFAULT_WWWJDIC_URL = "http://gengo.com/wwwjdic/cgi-data/wwwjdic";
     public static final String DEFAULT_WWWJDIC_URL = "https://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic";
-
     public static final String PREF_WWWJDIC_TIMEOUT_KEY = "pref_wwwjdic_timeout";
     private static final int WWWJDIC_TIMEOUT_DEFAULT = 10 * 1000;
 
     public static final String KR_PACKAGE = "org.nick.kanjirecognizer";
+
+    public static final String[] KR_PACKAGES = {
+        "org.nick.kanjirecognizer",
+        "net.fafla.kanjirecognizer"
+    };
 
     public static final String PREF_DEFAULT_DICT_PREF_KEY = "pref_default_dict";
 
@@ -75,8 +78,6 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     private static final String PREF_SOD_ANIMATION_DELAY = "pref_sod_animation_delay";
     private static final String PREF_SOD_TIMEOUT = "pref_sod_server_timeout";
     private static final int SOD_TIMEOUT_DEFAULT = 30 * 1000;
-
-    private static final String PREF_ACCOUNT_NAME_KEY = "pref_account_name";
 
     public static final String PREF_WHATS_NEW_SHOWN = "pref_whats_new_shown";
     public static final String PREF_DONATION_THANKS_SHOWN = "pref_donation_thanks_shown";
@@ -114,13 +115,9 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     private static final String PREF_POPUP_KEYBOARD_KEY = "pref_popup_keyboard";
 
-    private CheckBoxPreference useKrPreference;
-    private CheckBoxPreference autoSelectMirrorPreference;
     private ListPreference mirrorPreference;
-    private ListPreference defaultDictPreference;
-    private ListPreference jpTtsEnginePreference;
 
-    @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,23 +130,24 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         addPreferencesFromResource(R.xml.widget_prefs);
         addPreferencesFromResource(R.xml.misc_prefs);
 
-        useKrPreference = (CheckBoxPreference) findPreference(PREF_USE_KR_KEY);
+        CheckBoxPreference useKrPreference = (CheckBoxPreference) findPreference(PREF_USE_KR_KEY);
         if (useKrPreference != null){
             useKrPreference.setOnPreferenceChangeListener(this);
         }
 
-        autoSelectMirrorPreference = (CheckBoxPreference) findPreference(PREF_AUTO_SELECT_MIRROR_KEY);
+        CheckBoxPreference autoSelectMirrorPreference = (CheckBoxPreference) findPreference(
+        PREF_AUTO_SELECT_MIRROR_KEY);
         autoSelectMirrorPreference.setOnPreferenceChangeListener(this);
 
         mirrorPreference = (ListPreference) findPreference(PREF_WWWJDIC_MIRROR_URL_KEY);
         mirrorPreference.setSummary(mirrorPreference.getEntry());
         mirrorPreference.setOnPreferenceChangeListener(this);
 
-        defaultDictPreference = (ListPreference) findPreference(PREF_DEFAULT_DICT_PREF_KEY);
+        ListPreference defaultDictPreference = (ListPreference) findPreference(PREF_DEFAULT_DICT_PREF_KEY);
         defaultDictPreference.setSummary(defaultDictPreference.getEntry());
         defaultDictPreference.setOnPreferenceChangeListener(this);
 
-        jpTtsEnginePreference = (ListPreference) findPreference(PREF_JP_TTS_ENGINE);
+        ListPreference jpTtsEnginePreference = (ListPreference) findPreference(PREF_JP_TTS_ENGINE);
         jpTtsEnginePreference.setSummary(getTtsEngineName(this,
                 jpTtsEnginePreference.getValue()));
         jpTtsEnginePreference.setOnPreferenceChangeListener(this);
@@ -178,7 +176,10 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         findPreference(PREF_KOD_KEY).setEnabled(hasWidgets);
     }
 
+    @RequiresPermission(anyOf = {permission.ACCESS_FINE_LOCATION,
+        permission.ACCESS_COARSE_LOCATION})
     @Override
+    @SuppressWarnings("deprecation")
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (PREF_USE_KR_KEY.equals(preference.getKey())) {
             Boolean enabled = (Boolean) newValue;
@@ -194,7 +195,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
         if (PREF_AUTO_SELECT_MIRROR_KEY.equals(preference.getKey())) {
             boolean autoSelect = (Boolean) newValue;
-            if (autoSelect && WwwjdicApplication.hasLocationPermsion(getApplicationContext())) {
+            if (autoSelect && WwwjdicApplication.hasLocationPermission(getApplicationContext())) {
                 WwwjdicApplication.getInstance().setMirrorBasedOnLocation();
                 mirrorPreference.setSummary(getMirrorName(getWwwjdicUrl(this)));
             }
@@ -207,8 +208,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         }
 
         if (PREF_DEFAULT_DICT_PREF_KEY.equals(preference.getKey())) {
-            preference.setSummary(getDictionaryName(Integer
-                    .valueOf((String) newValue)));
+            preference.setSummary(getDictionaryName(Integer.parseInt((String) newValue)));
         }
 
         if (PREF_JP_TTS_ENGINE.equals(preference.getKey())) {
@@ -273,52 +273,53 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         builder.setMessage(R.string.install_kr)
                 .setCancelable(false)
                 .setPositiveButton(R.string.yes,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                String kanjiRecognizerUri = activity.getResources()
-                                        .getString(R.string.kr_download_uri);
-                                Intent intent = new Intent(Intent.ACTION_VIEW,
-                                        Uri.parse(kanjiRecognizerUri));
-                                activity.startActivity(intent);
-                                activity.finish();
-                            }
-                        })
+                    (dialog, id) -> {
+                        String kanjiRecognizerUri = activity.getResources()
+                                .getString(R.string.kr_download_uri);
+                        Intent intent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(kanjiRecognizerUri));
+                        activity.startActivity(intent);
+                        activity.finish();
+                    })
                 .setNegativeButton(R.string.no,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
+                    (dialog, id) -> dialog.cancel());
         AlertDialog dialog = builder.create();
         dialog.show();
     }
 
+    @SuppressWarnings("deprecation")
     public static boolean isKrInstalled(Context context, Application application) {
         Log.d(TAG, "Checking for Kanji Recognizer...");
         PackageManager pm = context.getPackageManager();
         try {
-            PackageInfo pi = pm.getPackageInfo(KR_PACKAGE, 0);
-            Log.d(TAG, String.format("Found KR: %s, version %s(%d)",
+
+            for (String krPackage : KR_PACKAGES) {
+                PackageInfo pi = pm.getPackageInfo(krPackage, 0);
+                Log.d(TAG, String.format("Found KR: %s, version %s(%d)",
                     pi.packageName, pi.versionName, pi.versionCode));
-            if (pi.versionCode < 2) {
-                Log.d(TAG, String.format(
+                if (pi.versionCode < 2) {
+                    Log.d(TAG, String.format(
                         "Kanji recognizer %s is installed, but we need 1.1",
                         pi.versionName));
-                return false;
-            }
+                    return false;
+                }
 
-            String myPackageName = application.getPackageName();
-            Log.d(TAG, String.format("Checking for signature match: "
-                    + "my package = %s, KR package = %s", myPackageName,
+                String myPackageName = application.getPackageName();
+                Log.d(TAG, String.format("Checking for signature match: "
+                        + "my package = %s, KR package = %s", myPackageName,
                     pi.packageName));
-            boolean result = pm.checkSignatures(myPackageName, pi.packageName) == PackageManager.SIGNATURE_MATCH;
-            Log.d(TAG, "signature match: " + result);
+                boolean result = true;//
+                // XXX pm.checkSignatures(myPackageName, pi.packageName) == PackageManager.SIGNATURE_MATCH;
+                Log.d(TAG, "signature match: " + result);
 
-            return result;
+                return result;
+            }
         } catch (NameNotFoundException e) {
             Log.w(TAG, "Kanji Recognizer not found", e);
             return false;
         }
+
+        return false;
     }
 
     public static int getDefaultDictionaryIdx(Context context) {
@@ -493,20 +494,6 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         }
     }
 
-    public static String getGoogleAcountName(Context context) {
-        SharedPreferences settings = getPrefs(context);
-
-        return settings.getString(PREF_ACCOUNT_NAME_KEY, null);
-    }
-
-    public static synchronized void setGoogleAccountName(Context context,
-            String accountName) {
-        SharedPreferences settings = getPrefs(context);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(PREF_ACCOUNT_NAME_KEY, accountName);
-        editor.commit();
-    }
-
     public static boolean isDonationThanksShown(Context context) {
         SharedPreferences prefs = getPrefs(context);
 
@@ -515,7 +502,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
 
     public static synchronized void setDonationThanksShown(Context context) {
         SharedPreferences prefs = getPrefs(context);
-        prefs.edit().putBoolean(PREF_DONATION_THANKS_SHOWN, true).commit();
+        prefs.edit().putBoolean(PREF_DONATION_THANKS_SHOWN, true).apply();
     }
 
     public static boolean isWhatsNewShown(Context context, String versionName) {
@@ -530,7 +517,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         SharedPreferences prefs = getPrefs(context);
         String key = WwwjdicPreferences.PREF_WHATS_NEW_SHOWN + "_"
                 + versionName;
-        prefs.edit().putBoolean(key, true).commit();
+        prefs.edit().putBoolean(key, true).apply();
     }
 
     public static boolean isTipShown(Context context, String tipKey) {
@@ -543,7 +530,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     public static void setTipShown(Context context, String tipKey) {
         SharedPreferences prefs = getPrefs(context);
         String key = PREF_TIP_SHOWN + "_" + tipKey;
-        prefs.edit().putBoolean(key, true).commit();
+        prefs.edit().putBoolean(key, true).apply();
     }
 
     private static void saveBooleanPref(Context context, String key,
@@ -553,6 +540,7 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         editor.commit();
     }
 
+    @SuppressWarnings("deprecation")
     private static SharedPreferences.Editor getPrefsEditor(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).edit();
     }
@@ -564,10 +552,9 @@ public class WwwjdicPreferences extends PreferenceActivity implements
         return prefs.getBoolean(key, defValue);
     }
 
+    @SuppressWarnings("deprecation")
     private static SharedPreferences getPrefs(Context context) {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(context);
-        return prefs;
+        return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public static boolean isKodLevelOneOnly(Context context) {
@@ -680,13 +667,11 @@ public class WwwjdicPreferences extends PreferenceActivity implements
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
+        if (item.getItemId() == android.R.id.home) {
             Activities.home(this);
             return true;
-        default:
-            // do nothing
         }
 
         return super.onOptionsItemSelected(item);

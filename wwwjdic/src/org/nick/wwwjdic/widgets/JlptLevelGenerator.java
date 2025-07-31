@@ -7,10 +7,10 @@ import org.nick.wwwjdic.model.JlptLevels;
 
 public class JlptLevelGenerator implements KanjiGenerator {
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
-    private boolean isRandom;
-    private int jlptLevel;
+    private final boolean isRandom;
+    private final int jlptLevel;
     private String currentKanji;
 
     public JlptLevelGenerator(boolean isRandom, int jlptLevel) {

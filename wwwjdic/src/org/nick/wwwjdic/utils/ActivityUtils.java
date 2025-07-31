@@ -7,17 +7,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
-
-import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.WwwjdicApplication;
-
-import java.io.File;
-
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.FileProvider;
+import java.io.File;
+import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.WwwjdicApplication;
 
 public class ActivityUtils {
 
@@ -52,12 +48,8 @@ public class ActivityUtils {
     Uri getShareableUriForfile(@NonNull Context ctx, @NonNull String filename) {
         File file = new File(filename);
         Uri uri;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            uri = Uri.fromFile(file);
-        } else {
-            String authority = ctx.getApplicationContext().getPackageName() + ".fileprovider";
-            uri = FileProvider.getUriForFile(ctx, authority, file);
-        }
+        String authority = ctx.getApplicationContext().getPackageName() + ".fileprovider";
+        uri = FileProvider.getUriForFile(ctx, authority, file);
         return uri;
     }
 
@@ -73,14 +65,12 @@ public class ActivityUtils {
 
         Context appCtx = WwwjdicApplication.getInstance();
         PendingIntent pendingIntent = PendingIntent.getActivity(appCtx, 0,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
-        }
+        NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
+             NOTIFICATION_CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_DEFAULT);
+        notificationManager.createNotificationChannel(channel);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(appCtx, NOTIFICATION_CHANNEL_ID);
         builder.setSmallIcon(smallIconRes).setContentTitle(title).setContentText(message);
@@ -111,11 +101,10 @@ public class ActivityUtils {
                                                   @DrawableRes int smallIconRes) {
         NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
-        }
+        NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
+            NOTIFICATION_CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_DEFAULT);
+        notificationManager.createNotificationChannel(channel);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(ctx, NOTIFICATION_CHANNEL_ID);
         builder.setSmallIcon(smallIconRes);

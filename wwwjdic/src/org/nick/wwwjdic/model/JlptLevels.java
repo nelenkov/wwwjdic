@@ -183,7 +183,7 @@ public class JlptLevels {
 
     private static JlptLevels instance;
 
-    private Map<String, String> kanjiToLevel = new HashMap<String, String>();
+    private final Map<String, String> kanjiToLevel = new HashMap<>();
 
     private JlptLevels() {
         for (int i = 1; i < 6; i++) {

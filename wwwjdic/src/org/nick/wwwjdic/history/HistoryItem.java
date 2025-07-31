@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 public class HistoryItem extends CheckableLinearLayout {
 
-    private TextView searchTypeText;
-    private TextView searchKeyText;
-    private TextView criteriaDetailsText;
+    private final TextView searchTypeText;
+    private final TextView searchKeyText;
+    private final TextView criteriaDetailsText;
 
     HistoryItem(Context context) {
         super(context);
@@ -24,11 +24,11 @@ public class HistoryItem extends CheckableLinearLayout {
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.search_history_item, this);
 
-        searchTypeText = (TextView) findViewById(R.id.search_type);
+        searchTypeText = findViewById(R.id.search_type);
         UIUtils.setJpTextLocale(searchTypeText);
-        searchKeyText = (TextView) findViewById(R.id.search_key);
+        searchKeyText = findViewById(R.id.search_key);
         UIUtils.setJpTextLocale(searchKeyText);
-        criteriaDetailsText = (TextView) findViewById(R.id.criteria_details);
+        criteriaDetailsText = findViewById(R.id.criteria_details);
     }
 
     public void populate(SearchCriteria criteria) {
@@ -53,7 +53,7 @@ public class HistoryItem extends CheckableLinearLayout {
         searchKeyText.setText(searchKey);
 
         String detailStr = buildDetailString(criteria);
-        if (detailStr != null && !"".equals(detailStr)) {
+        if (detailStr != null && !detailStr.isEmpty()) {
             criteriaDetailsText.setText(detailStr);
         }
         setChecked(false);
@@ -68,7 +68,7 @@ public class HistoryItem extends CheckableLinearLayout {
     }
 
     private String buildDetailString(SearchCriteria criteria) {
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
 
         if (criteria.getType() == SearchCriteria.CRITERIA_TYPE_KANJI) {
             String kanjiSearchName = HistoryUtils.lookupKanjiSearchName(
@@ -116,7 +116,7 @@ public class HistoryItem extends CheckableLinearLayout {
     }
 
     private String buildSearchOptionsString(SearchCriteria criteria) {
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
         if (criteria.isCommonWordsOnly()) {
             buff.append(String.format(" %s", getStr(R.string.common_short)));
         }

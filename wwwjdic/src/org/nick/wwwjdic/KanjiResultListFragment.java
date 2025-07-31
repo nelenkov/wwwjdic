@@ -1,9 +1,9 @@
 package org.nick.wwwjdic;
 
 import android.annotation.SuppressLint;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.FragmentTransaction;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -15,14 +15,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
+import java.util.List;
 import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.model.SearchCriteria;
 
-import java.util.List;
-
+@SuppressWarnings("deprecation")
 public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry>
         implements OnItemLongClickListener {
 
@@ -76,8 +73,8 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry>
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.search_results_fragment, container,
                 false);
-        progressSpinner = (ProgressBar) v.findViewById(R.id.progress_spinner);
-        emptyText = (TextView) v.findViewById(android.R.id.empty);
+        progressSpinner = v.findViewById(R.id.progress_spinner);
+        emptyText = v.findViewById(android.R.id.empty);
 
         return v;
     }
@@ -134,19 +131,17 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry>
     }
 
     public void setResult(final List<KanjiEntry> result) {
-        guiThread.post(new Runnable() {
-            public void run() {
-                if (getView() == null) {
-                    return;
-                }
-
-                entries = (List<KanjiEntry>) result;
-                KanjiEntryAdapter adapter = new KanjiEntryAdapter(
-                        getActivity(), entries);
-                setListAdapter(adapter);
-                setTitleAndCurrentItem();
-                dismissProgress();
+        guiThread.post(() -> {
+            if (getView() == null) {
+                return;
             }
+
+            entries = result;
+            KanjiEntryAdapter adapter = new KanjiEntryAdapter(
+                    getActivity(), entries);
+            setListAdapter(adapter);
+            setTitleAndCurrentItem();
+            dismissProgress();
         });
     }
 
@@ -182,7 +177,7 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry>
     @SuppressLint("NewApi")
     class ContextCallback implements ActionMode.Callback {
 
-        private int position;
+        private final int position;
 
         ContextCallback(int position) {
             this.position = position;
@@ -227,6 +222,6 @@ public class KanjiResultListFragment extends ResultListFragmentBase<KanjiEntry>
             getListView().setItemChecked(position, false);
             currentActionMode = null;
         }
-    };
+    }
 
 }

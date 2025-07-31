@@ -6,18 +6,20 @@ import android.content.Intent;
 import android.view.SubMenu;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.ActionProvider;
 
 @SuppressLint("NewApi")
 public class ShareActionProvider extends ActionProvider {
 
-    private android.widget.ShareActionProvider icsActionProvider;
+    private final android.widget.ShareActionProvider icsActionProvider;
 
     public ShareActionProvider(Context context) {
         super(context);
         icsActionProvider = new android.widget.ShareActionProvider(context);
     }
 
+    @NonNull
     @Override
     public View onCreateActionView() {
         return icsActionProvider.onCreateActionView();
@@ -29,7 +31,7 @@ public class ShareActionProvider extends ActionProvider {
     }
 
     @Override
-    public void onPrepareSubMenu(final SubMenu subMenu) {
+    public void onPrepareSubMenu(@NonNull final SubMenu subMenu) {
         icsActionProvider
                 .onPrepareSubMenu(subMenu);
     }
