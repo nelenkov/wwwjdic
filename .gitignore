@@ -13,4 +13,6 @@ local.properties
 *~
 token.txt
 google-services.json
-
+*jks
+*model
+*nick
