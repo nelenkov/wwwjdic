@@ -174,14 +174,14 @@
     <string name="pref_wwwjdic_mirror">WWWJDIC mirror</string>
 
     <string-array name="wwwjdic_mirror_names">
-        <item>Australia</item>
-        <item>Germany</item>
-        <item>Sweden</item>
-        <item>USA</item>
+        <!--item>Australia</item-->
+        <item>Germany [wwwjdic.biz]</item>
+        <item>Sweden  [wwwjdic.se]</item>
+        <item>USA     [www.edrdg.org]</item>
     </string-array>
     <string-array name="wwwjdic_mirror_coords">
         <!-- Sydney -->
-        <item>033:51:35/151:12:40</item>
+        <!--item>033:51:35/151:12:40</item-->
         <!-- Berlin -->
         <item>052:31:00/013:23:00</item>
         <!-- Stockholm -->
@@ -190,7 +190,7 @@
         <item>040:43:00/074:00:00</item>
     </string-array>
     <string-array name="wwwjdic_mirror_urls">
-        <item>http://nlp.cis.unimelb.edu.au/jwb/wwwjdic/wwwjdic.cgi</item>
+        <!--item>http://nlp.cis.unimelb.edu.au/jwb/wwwjdic/wwwjdic.cgi</item-->
         <item>http://wwwjdic.biz/cgi-bin/wwwjdic</item>
         <item>http://wwwjdic.se/cgi-bin/wwwjdic.cgi</item>
         <item>https://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic</item>
