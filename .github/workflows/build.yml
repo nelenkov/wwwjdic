@@ -30,7 +30,7 @@ jobs:
       uses: gradle/actions/setup-gradle@v4
       with:
         gradle-home-cache-cleanup: true
-        gradle-version: "8.11"
+        gradle-version: "8.11.1"
 
     - name: Set up Android
       uses: android-actions/setup-android@v3
