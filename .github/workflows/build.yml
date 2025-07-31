@@ -51,8 +51,8 @@ jobs:
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: latest
+        automatic_release_tag: github-latest
         prerelease: true
         files: |
           LICENSE.txt
-          wwwjdic-android-${{ env.WWWJDIC_VER }}-${{ env.SHA_SHORT }}.apk
+          wwwjdic-android-github-${{ env.WWWJDIC_VER }}-${{ env.SHA_SHORT }}.apk
