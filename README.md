@@ -30,7 +30,7 @@ Android frontend for Jim Breen's [WWWJDIC](http://wwwjdic.net)
 
 ## Download
  * Google Play Store: [WWWJDIC for Android](https://play.google.com/store/apps/details?id=net.fafla.wwwjdic)
- * Latest WIP [development build](https://github.com/nelenkov/wwwjdic/releases/tag/latest)
+ * Latest WIP [development build](https://github.com/nelenkov/wwwjdic/releases/tag/github-latest)
 
 ## Acknowledgements
 
