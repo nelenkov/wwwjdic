@@ -47,7 +47,6 @@ android {
 
     signingConfigs {
         release {
-            //storeFile file("nick.keystore")
             storeFile file("wwwjdic-upload-keystore.jks")
         }
         ci {
