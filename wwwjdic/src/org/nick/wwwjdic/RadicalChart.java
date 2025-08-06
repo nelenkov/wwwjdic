@@ -26,7 +26,7 @@ public class RadicalChart extends ActionBarActivity implements
 
         setContentView(R.layout.radical_chart);
 
-        GridView radicalChartGrid = (GridView) findViewById(R.id.radicalChartGrid);
+        GridView radicalChartGrid = findViewById(R.id.radicalChartGrid);
         radicalChartGrid.setOnItemClickListener(this);
 
         Radicals radicals = Radicals.getInstance();
@@ -37,8 +37,8 @@ public class RadicalChart extends ActionBarActivity implements
 
     private static class RadicalAdapter extends BaseAdapter {
 
-        private Context context;
-        private Radicals radicals;
+        private final Context context;
+        private final Radicals radicals;
 
         public RadicalAdapter(Context context, Radicals radicals) {
             this.context = context;
@@ -75,9 +75,9 @@ public class RadicalChart extends ActionBarActivity implements
 
     static class RadicalView extends LinearLayout {
 
-        private TextView radicalNumberText;
-        private TextView numStrokesText;
-        private TextView radicalText;
+        private final TextView radicalNumberText;
+        private final TextView numStrokesText;
+        private final TextView radicalText;
 
         RadicalView(Context context) {
             super(context);
@@ -85,9 +85,9 @@ public class RadicalChart extends ActionBarActivity implements
             LayoutInflater inflater = LayoutInflater.from(context);
             inflater.inflate(R.layout.radicals_item, this);
 
-            radicalNumberText = (TextView) findViewById(R.id.radical_number_text);
-            numStrokesText = (TextView) findViewById(R.id.num_strokes_text);
-            radicalText = (TextView) findViewById(R.id.radical_text);
+            radicalNumberText = findViewById(R.id.radical_number_text);
+            numStrokesText = findViewById(R.id.num_strokes_text);
+            radicalText = findViewById(R.id.radical_text);
             UIUtils.setJpTextLocale(radicalText);
         }
 

@@ -4,6 +4,7 @@ import org.nick.wwwjdic.model.KanjiEntry;
 
 import android.os.Bundle;
 
+@SuppressWarnings("deprecation")
 public class KanjiEntryDetail extends DetailActivity {
 
     public static final String EXTRA_KANJI_ENTRY = "org.nick.wwwjdic.KANJI_ENTRY";
@@ -14,9 +15,7 @@ public class KanjiEntryDetail extends DetailActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        KanjiEntry entry = (KanjiEntry) getIntent().getSerializableExtra(
-                EXTRA_KANJI_ENTRY);
-        wwwjdicEntry = entry;
+        wwwjdicEntry = (KanjiEntry) getIntent().getSerializableExtra(EXTRA_KANJI_ENTRY);
 
         setContentView(R.layout.kanji_entry_details);
 

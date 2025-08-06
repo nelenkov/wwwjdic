@@ -49,24 +49,6 @@
             android:textColor="#FFF" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="4dp"
-            android:gravity="center_horizontal"
-            android:text="@string/buy_donate_version"
-            android:textColor="#FFF" />
-
-        <Button
-            android:id="@+id/buy_donate"
-            style="@style/small_button"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/donate_version" />
-
-        <TextView
             android:id="@+id/bugtrackingText"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"

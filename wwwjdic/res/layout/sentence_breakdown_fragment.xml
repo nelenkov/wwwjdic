@@ -13,7 +13,7 @@
         android:indeterminateBehavior="cycle" />
 
     <RelativeLayout
-        android:id="@+id/sentence_breakdown"
+        android:id="@+id/sentence_breakdown_container"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:paddingLeft="6dp" >

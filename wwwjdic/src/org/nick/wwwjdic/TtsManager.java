@@ -1,14 +1,9 @@
 package org.nick.wwwjdic;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Locale;
-
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -17,6 +12,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Locale;
 
 public class TtsManager implements TextToSpeech.OnInitListener {
 
@@ -37,7 +36,9 @@ public class TtsManager implements TextToSpeech.OnInitListener {
 
     private static final String MARKET_URL_TEMPLATE = "market://details?id=%s";
 
+    @SuppressLint("ObsoleteSdkInt")
     private static final boolean IS_FROYO = Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO;
+    @SuppressLint("ObsoleteSdkInt")
     private static final boolean IS_ICS = Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 
     private static Method tts_getDefaultEngine;
@@ -49,22 +50,21 @@ public class TtsManager implements TextToSpeech.OnInitListener {
             tts_getDefaultEngine = TextToSpeech.class.getMethod(
                     "getDefaultEngine", (Class[]) null);
             tts_setEngineByPackageName = TextToSpeech.class.getMethod(
-                    "setEngineByPackageName", new Class[] { String.class });
+                    "setEngineByPackageName", String.class);
             if (IS_ICS) {
                 tts_packageNameCtor = TextToSpeech.class.getConstructor(
                         Context.class, TextToSpeech.OnInitListener.class,
                         String.class);
             }
-        } catch (SecurityException e) {
-        } catch (NoSuchMethodException e) {
+        } catch (SecurityException | NoSuchMethodException e) {
         }
     }
 
-    private Context context;
-    private TtsEnabled ttsActivitiy;
+    private final Context context;
+    private final TtsEnabled ttsActivitiy;
 
     private boolean showInstallDialog = false;
-    private String ttsEnginePackage;
+    private final String ttsEnginePackage;
 
     private TextToSpeech tts;
 
@@ -89,13 +89,8 @@ public class TtsManager implements TextToSpeech.OnInitListener {
                     try {
                         tts = tts_packageNameCtor.newInstance(context, this,
                                 ttsEnginePackage);
-                    } catch (InvocationTargetException e) {
-                        disableTts(e);
-                    } catch (IllegalArgumentException e) {
-                        disableTts(e);
-                    } catch (InstantiationException e) {
-                        disableTts(e);
-                    } catch (IllegalAccessException e) {
+                    } catch (InvocationTargetException | IllegalArgumentException |
+                             InstantiationException | IllegalAccessException e) {
                         disableTts(e);
                     }
                 } else {
@@ -147,9 +142,7 @@ public class TtsManager implements TextToSpeech.OnInitListener {
                         return;
                     }
                 }
-            } catch (InvocationTargetException e) {
-                disableTts(e);
-            } catch (IllegalAccessException e) {
+            } catch (InvocationTargetException | IllegalAccessException e) {
                 disableTts(e);
             }
         }
@@ -195,41 +188,28 @@ public class TtsManager implements TextToSpeech.OnInitListener {
                 .setTitle(R.string.install_tts_data_title)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(R.string.ok,
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                    int which) {
-                                ttsActivitiy.setWantsTts(true);
-                                Intent installIntent = new Intent(
-                                        Intent.ACTION_VIEW);
-                                installIntent.setData(Uri.parse(String.format(
-                                        MARKET_URL_TEMPLATE, ttsEnginePackage)));
-                                dialog.dismiss();
-                                context.startActivity(installIntent);
-                                dialog.dismiss();
-                            }
-                        })
+                    (dialog, which) -> {
+                        ttsActivitiy.setWantsTts(true);
+                        Intent installIntent = new Intent(
+                                Intent.ACTION_VIEW);
+                        installIntent.setData(Uri.parse(String.format(
+                                MARKET_URL_TEMPLATE, ttsEnginePackage)));
+                        dialog.dismiss();
+                        context.startActivity(installIntent);
+                        dialog.dismiss();
+                    })
                 .setNegativeButton(R.string.not_now,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                    int which) {
-                                ttsActivitiy.hideTtsButtons();
-                                dialog.dismiss();
+                    (dialog, which) -> {
+                        ttsActivitiy.hideTtsButtons();
+                        dialog.dismiss();
 
-                            }
-                        })
+                    })
                 .setNeutralButton(R.string.dont_ask_again,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                    int which) {
-                                ttsActivitiy.hideTtsButtons();
-                                ttsActivitiy.setWantsTts(false);
-                                dialog.dismiss();
-                            }
-                        });
+                    (dialog, which) -> {
+                        ttsActivitiy.hideTtsButtons();
+                        ttsActivitiy.setWantsTts(false);
+                        dialog.dismiss();
+                    });
 
         return builder.create();
     }

@@ -3,6 +3,7 @@ package org.nick.wwwjdic.hkr;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -18,6 +19,7 @@ import org.nick.wwwjdic.client.EntityBasedHttpClient;
 
 import android.util.Log;
 
+@SuppressWarnings("deprecation")
 public class KanjiRecognizerClient extends EntityBasedHttpClient {
 
     private static final String TAG = KanjiRecognizerClient.class
@@ -37,7 +39,7 @@ public class KanjiRecognizerClient extends EntityBasedHttpClient {
 
     private String createRecognizerRequest(List<Stroke> strokes,
             boolean useLookAhead) {
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
         if (useLookAhead) {
             buff.append("HL ");
         } else {
@@ -67,14 +69,12 @@ public class KanjiRecognizerClient extends EntityBasedHttpClient {
         try {
             HttpResponse resp = httpClient.execute(post);
             reader = new BufferedReader(new InputStreamReader(resp.getEntity()
-                    .getContent(), "utf-8"));
+                    .getContent(), StandardCharsets.UTF_8));
 
             String response = readAllLines(reader);
             Log.d(TAG, "kanji recognizer response: " + response);
 
-            String[] result = parseResponse(response);
-
-            return result;
+             return parseResponse(response);
         } catch (HttpResponseException re) {
             Log.e(TAG, "HTTP response exception", re);
             throw new RuntimeException("HTTP request failed. Status: "
@@ -107,8 +107,7 @@ public class KanjiRecognizerClient extends EntityBasedHttpClient {
     }
 
     @Override
-    protected AbstractHttpEntity createEntity(Object... params)
-            throws IOException {
+    protected AbstractHttpEntity createEntity(Object... params) {
         return new KrEntity((String) params[0]);
     }
 }

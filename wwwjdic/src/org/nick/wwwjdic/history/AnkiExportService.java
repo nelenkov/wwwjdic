@@ -7,8 +7,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.os.Build;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -28,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 @SuppressLint("InlinedApi")
+@SuppressWarnings("deprecation")
 public class AnkiExportService extends IntentService {
 
     private static final String TAG = AnkiExportService.class.getSimpleName();
@@ -87,9 +90,7 @@ public class AnkiExportService extends IntentService {
         try {
             exportFilename = exportToAnkiDeck();
 
-            if (UIUtils.isFroyo()) {
-                MediaScannerWrapper.scanFile(this, exportFilename);
-            }
+            MediaScannerWrapper.scanFile(this, exportFilename);
 
             return true;
         } catch (Exception e) {
@@ -102,8 +103,7 @@ public class AnkiExportService extends IntentService {
 
     private String exportToAnkiDeck() throws IOException, JSONException {
         AnkiGenerator generator = new AnkiGenerator(this);
-        File exportFile = new File(WwwjdicApplication.getWwwjdicDir(),
-                exportFilename);
+        File exportFile = new File(WwwjdicApplication.getWwwjdicDir(), exportFilename);
         Log.d(TAG,
                 "exporting favorites to Anki: " + exportFile.getAbsolutePath());
 
@@ -141,7 +141,7 @@ public class AnkiExportService extends IntentService {
         Context appCtx = WwwjdicApplication.getInstance();
         Intent intent = ActivityUtils.createOpenIntent(getApplicationContext(), filename, ANKI_MIME_TYPE);
         PendingIntent pendingIntent = PendingIntent.getActivity(appCtx, 0,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         String title = appCtx.getString(R.string.export_finished);
         NotificationCompat.Builder builder = ActivityUtils.createNotification(appCtx, pendingIntent,
                 title, message, R.drawable.ic_stat_export);
@@ -151,7 +151,7 @@ public class AnkiExportService extends IntentService {
         Intent shareIntent = ActivityUtils.createShareFileIntent(appCtx,
                 filename, ANKI_MIME_TYPE);
         PendingIntent sharePendingIntent = PendingIntent.getActivity(appCtx, 1,
-                shareIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                shareIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         builder.addAction(android.R.drawable.ic_menu_share,
                 appCtx.getString(R.string.share), sharePendingIntent);
 
@@ -160,13 +160,19 @@ public class AnkiExportService extends IntentService {
 
     private void showForegroundNotification(@NonNull String message) {
         PendingIntent pendingIntent = PendingIntent.getActivity(
-                getApplicationContext(), 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
+                getApplicationContext(), 0, new Intent(),
+            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         Context appCtx = getApplicationContext();
         Notification notification = ActivityUtils.createNotification(appCtx, pendingIntent, getResources().getString(
                 R.string.exporting_to_anki), message, R.drawable.ic_stat_export).build();
 
-        startForeground(EXPORT_STARTED_NOTIFICATION_ID, notification);
-    }
+        if (Build.VERSION.SDK_INT >= 34) {
+            startForeground(EXPORT_STARTED_NOTIFICATION_ID, notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+        }else {
+            startForeground(EXPORT_STARTED_NOTIFICATION_ID, notification);
+        }
+     }
 
 }

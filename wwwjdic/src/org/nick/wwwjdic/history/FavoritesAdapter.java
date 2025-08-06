@@ -14,7 +14,7 @@ import org.nick.wwwjdic.model.WwwjdicEntry;
 
 class FavoritesAdapter extends CursorAdapter {
 
-    private FavoriteStatusChangedListener favoriteStatusChanged;
+    private final FavoriteStatusChangedListener favoriteStatusChanged;
 
     public FavoritesAdapter(Context context, Cursor c,
             FavoriteStatusChangedListener statusChangedListener) {
@@ -32,8 +32,6 @@ class FavoritesAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        FavoritesItem result = new FavoritesItem(context, favoriteStatusChanged);
-
-        return result;
+      return new FavoritesItem(context, favoriteStatusChanged);
     }
 }

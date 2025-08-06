@@ -11,19 +11,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+@SuppressWarnings("deprecation")
 public class TabsPagerAdapter extends FragmentPagerAdapter implements
         ViewPager.OnPageChangeListener, TabLayout.OnTabSelectedListener {
 
     private static final String TAG = TabsPagerAdapter.class.getSimpleName();
 
-    private final ViewPager viewPager;
     private final List<HistoryFragmentBase> tabs = new ArrayList<>();
 
     public TabsPagerAdapter(AppCompatActivity activity, ViewPager pager) {
         super(activity.getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        this.viewPager = pager;
-        this.viewPager.setAdapter(this);
-        this.viewPager.addOnPageChangeListener(this);
+      pager.setAdapter(this);
+        pager.addOnPageChangeListener(this);
     }
 
     public void addTab(HistoryFragmentBase tabFragment) {

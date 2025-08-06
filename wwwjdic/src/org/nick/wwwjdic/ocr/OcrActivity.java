@@ -488,7 +488,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
 
     private void dumpBitmap(Bitmap bitmap, String filename) {
         try {
-            File sdDir = Environment.getExternalStorageDirectory();
+            File sdDir = getExternalFilesDir(null);
             File wwwjdicDir = new File(sdDir.getAbsolutePath() + "/wwwjdic");
             if (!wwwjdicDir.exists()) {
                 wwwjdicDir.mkdir();
@@ -787,7 +787,7 @@ public class OcrActivity extends WebServiceBackedActivity implements
     }
 
     private Uri createTempFile() {
-        File sdDir = Environment.getExternalStorageDirectory();
+        File sdDir = getExternalFilesDir(null);
         if (isUseInternalStorage()) {
             sdDir = new File("/emmc");
         }

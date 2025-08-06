@@ -1,5 +1,11 @@
 package org.nick.wwwjdic;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -8,11 +14,7 @@ import org.nick.wwwjdic.model.ExampleSentence;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.model.WwwjdicQuery;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
+@SuppressWarnings("deprecation")
 public class ExampleSearchTask extends SearchTask<ExampleSentence> {
 
     private static final Pattern UL_PATTERN = Pattern.compile("^.*<ul>.*$");
@@ -20,14 +22,14 @@ public class ExampleSearchTask extends SearchTask<ExampleSentence> {
             .compile("^.*</ul>.*$");
     private static final Pattern LI_PATTERN = Pattern.compile("^.*<li>.*$");
     private static final Pattern INPUT_PATTERN = Pattern
-            .compile("^.*<INPUT.*$");
+            .compile("^.*<INPUT.*<br>$");
 
     private static final int IN_EXAMPLES_BLOCK = 0;
     private static final int EXAMPLE_FOLLOWS = 1;
     private static final int TRANSLATION_FOLLOWS = 2;
     private static final int EXAMPLES_FINISHED = 3;
 
-    private int maxNumExamples;
+    private final int maxNumExamples;
 
     public ExampleSearchTask(String url, int timeoutSeconds,
             ResultList<ExampleSentence> resultView,
@@ -38,7 +40,7 @@ public class ExampleSearchTask extends SearchTask<ExampleSentence> {
 
     @Override
     protected List<ExampleSentence> parseResult(String html) {
-        List<ExampleSentence> result = new ArrayList<ExampleSentence>();
+        List<ExampleSentence> result = new ArrayList<>();
 
         String[] lines = html.split("\n");
 
@@ -74,9 +76,9 @@ public class ExampleSearchTask extends SearchTask<ExampleSentence> {
                     result.add(new ExampleSentence(japaneseSentence,
                             englishSentence));
                 }
+                state = IN_EXAMPLES_BLOCK;
                 break;
             default:
-                continue;
             }
         }
 
@@ -89,7 +91,7 @@ public class ExampleSearchTask extends SearchTask<ExampleSentence> {
             SearchCriteria criteria = (SearchCriteria) query;
 
             HttpPost post = new HttpPost(url);
-            List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+            List<NameValuePair> pairs = new ArrayList<>();
             String searchString = criteria.getQueryString();
             if (criteria.isExactMatch()) {
                 searchString = "\\<" + searchString + "\\>";
@@ -103,9 +105,24 @@ public class ExampleSearchTask extends SearchTask<ExampleSentence> {
 
             UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs,
                     "UTF-8");
+            formEntity.setContentType("application/x-www-form-url-encoded; charset=utf-8");
+            //formEntity.setContentEncoding("");
+
+            UrlEncodedFormEntity fe = new UrlEncodedFormEntity(pairs,
+                "UTF-8");
+            System.out.println("*** " + fe.getContentEncoding());
+            System.out.println("*** " + fe.getContentType());
+
+            BufferedReader br =  new BufferedReader(new InputStreamReader(fe.getContent()));
+            String line = null;
+            while ((line=br.readLine()) != null) {
+                System.out.println("***: " + line);
+            }
+
             post.setEntity(formEntity);
 
             String responseStr = httpclient.execute(post, responseHandler);
+            System.out.println(responseStr);
 
             return responseStr;
         } catch (IOException e) {

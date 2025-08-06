@@ -10,7 +10,10 @@ local.properties
 *.iml
 *.keystore
 *.apk
+*aab
 *~
 token.txt
-google-services.json
-
+google-services.json*
+*jks
+*model
+*so

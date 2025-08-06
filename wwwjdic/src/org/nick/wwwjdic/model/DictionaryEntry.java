@@ -22,7 +22,7 @@ public class DictionaryEntry extends WwwjdicEntry implements Serializable {
 
     private String word;
     private String reading;
-    private List<String> meanings = new ArrayList<String>();
+    private final List<String> meanings = new ArrayList<>();
 
     private String tranlsationString;
 
@@ -58,12 +58,11 @@ public class DictionaryEntry extends WwwjdicEntry implements Serializable {
         }
 
         String[] meaningsArr = meaningsField.split("/");
-        for (int i = 0; i < meaningsArr.length; i++) {
-            String meaning = meaningsArr[i];
+        for (String meaning : meaningsArr) {
             if (!"".equals(meaning) && !"(P)".equals(meaning)
-                    && !meaning.startsWith(WORDNET_PREFIX)
-                    && !meaning.startsWith(WIP_MARKER_PREFIX)) {
-                result.meanings.add(meaning);
+                && !meaning.startsWith(WORDNET_PREFIX)
+                && !meaning.startsWith(WIP_MARKER_PREFIX)) {
+            result.meanings.add(meaning);
             }
         }
 

@@ -14,14 +14,11 @@ import android.graphics.PathMeasure;
 import android.graphics.PointF;
 import android.util.Log;
 import android.util.Xml;
-
-import org.nick.wwwjdic.BuildConfig;
-import org.xmlpull.v1.XmlPullParser;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import org.xmlpull.v1.XmlPullParser;
 
 public class StrokePath {
 
@@ -30,8 +27,8 @@ public class StrokePath {
     private static final float STROKE_WIDTH = 6f;
     public static final float DEFAULT_ANNOTATION_TEXT_SIZE = 12f;
 
-    private PointF moveTo;
-    private List<Curve> curves = new ArrayList<Curve>();
+    private final PointF moveTo;
+    private final List<Curve> curves = new ArrayList<>();
     private Path strokePath;
     private boolean pathScaled = false;
     private float translationDx = -1;
@@ -228,7 +225,7 @@ public class StrokePath {
         float start = 0;
         float delta = segmentLength;
 
-        List<Path> segments = new ArrayList<Path>();
+        List<Path> segments = new ArrayList<>();
         while (start <= length) {
             float end = start + delta;
             if (end > length) {
@@ -266,13 +263,13 @@ public class StrokePath {
     }
 
     public static StrokePath parsePath(String path) {
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "parsing " + path);
-        }
+        //if (BuildConfig.DEBUG) {
+        //    Log.d(TAG, "parsing " + path);
+        //}
 
         boolean isInMoveTo = false;
 
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
         Float x = null;
         Float y = null;
 
@@ -301,12 +298,12 @@ public class StrokePath {
                 // System.out.println("i: " + i);
                 // System.out.println("c: " + c);
                 // System.out.println("floastStr: " + floatStr);
-                buff = new StringBuffer();
+                buff = new StringBuilder();
                 if (c == '-') {
                     buff.append(c);
                 }
 
-                if ("".equals(floatStr)) {
+                if (floatStr.isEmpty()) {
                     continue;
                 }
 
@@ -365,7 +362,7 @@ public class StrokePath {
     }
 
     public static List<StrokePath> parseKangiVgXml(File f) {
-        List<StrokePath> strokes = new ArrayList<StrokePath>();
+        List<StrokePath> strokes = new ArrayList<>();
         XmlPullParser parser = Xml.newPullParser();
 
         try {
@@ -383,10 +380,10 @@ public class StrokePath {
                     name = parser.getName();
                     if (name.equalsIgnoreCase("stroke")) {
                         String path = parser.getAttributeValue(null, "path");
-                        if (BuildConfig.DEBUG) {
-                            Log.d(TAG, "parsing " + path);
-                        }
-                        if (path != null && !"".equals(path)) {
+                        //if (BuildConfig.DEBUG) {
+                        //    Log.d(TAG, "parsing " + path);
+                        //}
+                        if (path != null && !path.isEmpty()) {
                             StrokePath strokePath = StrokePath.parsePath(path);
                             strokes.add(strokePath);
                         }

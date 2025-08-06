@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+@SuppressWarnings("deprecation")
 public class SentenceBreakdown extends ResultListBase {
 
     public static final String EXTRA_SENTENCE = "org.nick.wwwjdic.SENTENCE";
@@ -31,7 +32,7 @@ public class SentenceBreakdown extends ResultListBase {
                     .newInstance(0, sentence, translation);
             breakDown.setArguments(getIntent().getExtras());
             getFragmentManager().beginTransaction()
-                    .add(R.id.sentence_breakdown, breakDown).commit();
+                    .add(R.id.sentence_breakdown_container, breakDown).commit();
         }
     }
 

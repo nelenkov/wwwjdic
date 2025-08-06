@@ -9,6 +9,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!--fragment
+            android:id="@+id/kanji_history_fragment"
+            android:layout_width="0px"
+            android:layout_height="0px"/-->
+
         <fragment
             android:id="@+id/kanji_lookup_fragment"
             class="org.nick.wwwjdic.KanjiLookupFragment"

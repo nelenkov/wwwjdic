@@ -1,5 +1,6 @@
 package org.nick.wwwjdic.model;
 
+import androidx.annotation.NonNull;
 import java.io.Serializable;
 
 public class SentenceBreakdownEntry implements Serializable {
@@ -9,11 +10,11 @@ public class SentenceBreakdownEntry implements Serializable {
      */
     private static final long serialVersionUID = -3859673753381220751L;
 
-    private String inflectedForm;
-    private String word;
-    private String reading;
-    private String translation;
-    private String explanation;
+    private final String inflectedForm;
+    private final String word;
+    private final String reading;
+    private final String translation;
+    private final String explanation;
 
     public static SentenceBreakdownEntry create(String inflectedForm,
             String word, String reading, String translation) {
@@ -63,6 +64,7 @@ public class SentenceBreakdownEntry implements Serializable {
         return explanation;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "SentenceBreakdownEntry{" +

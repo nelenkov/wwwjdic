@@ -22,7 +22,7 @@ public class PrefsFragment extends PreferenceFragmentCompat  {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.preferences, rootKey);
+        setPreferencesFromResource(R.xml.app_preferences, rootKey);
     }
 
 }

@@ -1,13 +1,14 @@
 package org.nick.wwwjdic.client;
 
+import android.content.Context;
+import android.util.Log;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -18,9 +19,7 @@ import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.StringUtils;
 
-import android.content.Context;
-import android.util.Log;
-
+@SuppressWarnings("deprecation")
 public class WwwjdicClient {
 
     private static final String TAG = WwwjdicClient.class.getSimpleName();
@@ -33,15 +32,14 @@ public class WwwjdicClient {
     private static final String FONT_TAG = "<font";
     private static final String BR_TAG = "<br";
 
-    private String url;
-    private int timeoutMillis;
+    private final String url;
 
-    private HttpClient httpclient;
-    private ResponseHandler<String> responseHandler;
+  private final HttpClient httpclient;
+    private final ResponseHandler<String> responseHandler;
 
     public WwwjdicClient(Context context) {
         url = WwwjdicPreferences.getWwwjdicUrl(context);
-        timeoutMillis = WwwjdicPreferences.getWwwjdicTimeoutSeconds(context) * 1000;
+        int timeoutMillis = WwwjdicPreferences.getWwwjdicTimeoutSeconds(context) * 1000;
         httpclient = HttpClientFactory.createWwwjdicHttpClient(timeoutMillis);
         responseHandler = HttpClientFactory.createWwwjdicResponseHandler();
     }
@@ -63,9 +61,8 @@ public class WwwjdicClient {
             }
 
             HttpGet get = new HttpGet(lookupUrl);
-            String responseStr = httpclient.execute(get, responseHandler);
 
-            return responseStr;
+          return httpclient.execute(get, responseHandler);
         } catch (ClientProtocolException cpe) {
             Log.e(TAG, "ClientProtocolException", cpe);
             throw new RuntimeException(cpe);
@@ -76,7 +73,7 @@ public class WwwjdicClient {
     }
 
     private List<KanjiEntry> parseKanji(String html) {
-        List<KanjiEntry> result = new ArrayList<KanjiEntry>();
+        List<KanjiEntry> result = new ArrayList<>();
 
         boolean isInPre = false;
         String[] lines = html.split("\n");
@@ -111,15 +108,13 @@ public class WwwjdicClient {
                     hasEndPre = true;
                     line = line.replaceAll(PRE_END_TAG, "");
                 }
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "dic entry line: " + line);
-                }
+                //if (BuildConfig.DEBUG) {
+                //    Log.d(TAG, "dic entry line: " + line);
+                //}
                 KanjiEntry entry = parseKanjiEntry(line);
-                if (entry != null) {
-                    result.add(entry);
-                }
+                result.add(entry);
 
-                if (hasEndPre) {
+              if (hasEndPre) {
                     break;
                 }
             }
@@ -129,7 +124,7 @@ public class WwwjdicClient {
     }
 
     public static String generateKanjiBackdoorCode(SearchCriteria criteria) {
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
         // always "1" for kanji?
         buff.append("1");
         // raw
@@ -140,13 +135,9 @@ public class WwwjdicClient {
             buff.append("M");
         }
         buff.append(criteria.getKanjiSearchType());
-        try {
-            buff.append(URLEncoder.encode(criteria.getQueryString(), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+      buff.append(URLEncoder.encode(criteria.getQueryString(), StandardCharsets.UTF_8));
 
-        // stroke count
+      // stroke count
         if (criteria.hasStrokes()) {
             buff.append("=");
         }
@@ -165,7 +156,7 @@ public class WwwjdicClient {
     }
 
     public static String generateDictionaryBackdoorCode(SearchCriteria criteria) {
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
         buff.append(criteria.getDictionaryCode());
         // raw
         buff.append("Z");
@@ -207,34 +198,28 @@ public class WwwjdicClient {
                 }
             }
         }
-        try {
-            buff.append(URLEncoder.encode(criteria.getQueryString(), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+      buff.append(URLEncoder.encode(criteria.getQueryString(), StandardCharsets.UTF_8));
 
-        return buff.toString();
+      return buff.toString();
     }
 
     public static String generateExamplesBackdoorCode(SearchCriteria criteria,
             boolean randomExamples) {
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
         // dictionary code always 1 for examples?
         buff.append("1");
         // raw
         buff.append("Z");
         // examples
-        buff.append("E");
+        // XXX: entry (E) search broken atm?
+        buff.append("T");
+        //buff.append("E");
         // Unicode
         buff.append("U");
 
-        try {
-            buff.append(URLEncoder.encode(criteria.getQueryString(), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+      buff.append(URLEncoder.encode(criteria.getQueryString(), StandardCharsets.UTF_8));
 
-        if (randomExamples) {
+      if (randomExamples) {
             // use =1= to get random examples
             buff.append("=1=");
         } else {

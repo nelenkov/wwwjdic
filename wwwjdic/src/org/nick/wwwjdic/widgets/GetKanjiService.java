@@ -1,5 +1,7 @@
 package org.nick.wwwjdic.widgets;
 
+import static org.nick.wwwjdic.WwwjdicPreferences.WWWJDIC_DEBUG;
+
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -14,7 +16,15 @@ import android.text.format.DateUtils;
 import android.text.format.Time;
 import android.util.Log;
 import android.widget.RemoteViews;
-
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -27,19 +37,8 @@ import org.nick.wwwjdic.model.KanjiEntry;
 import org.nick.wwwjdic.utils.ActivityUtils;
 import org.nick.wwwjdic.utils.StringUtils;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.nick.wwwjdic.WwwjdicPreferences.WWWJDIC_DEBUG;
-
 @SuppressLint("Registered")
+@SuppressWarnings("deprecation")
 public class GetKanjiService extends Service {
 
     private static final String TAG = GetKanjiService.class.getSimpleName();
@@ -139,7 +138,7 @@ public class GetKanjiService extends Service {
         Intent updateIntent = new Intent(this, GetKanjiService.class);
 
         PendingIntent pendingIntent = PendingIntent.getService(this, 0,
-                updateIntent, 0);
+                updateIntent, PendingIntent.FLAG_IMMUTABLE);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
@@ -274,7 +273,7 @@ public class GetKanjiService extends Service {
 
             String responseStr = httpclient.execute(get, responseHandler);
             if (BuildConfig.DEBUG) {
-                Log.d(TAG, "WWWJDIC response: " + responseStr);
+                 Log.d(TAG, "WWWJDIC response: " + responseStr);
             }
 
             return responseStr;
@@ -339,22 +338,18 @@ public class GetKanjiService extends Service {
     }
 
     private String generateBackdoorCode(String jisCode) {
-        StringBuilder buff = new StringBuilder();
-        // always "1" for kanji?
-        buff.append("1");
-        // raw
-        buff.append("Z");
-        // code
-        buff.append("K");
-        // Unicode
-        buff.append("U");
-        try {
-            buff.append(URLEncoder.encode(jisCode, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+      StringBuilder buff = new StringBuilder();
+      // always "1" for kanji?
+      buff.append("1");
+      // raw
+      buff.append("Z");
+      // code
+      buff.append("K");
+      // Unicode
+      buff.append("U");
+      buff.append(URLEncoder.encode(jisCode, StandardCharsets.UTF_8));
 
-        return buff.toString();
+      return buff.toString();
     }
 
 }

@@ -50,6 +50,7 @@ public abstract class DetailActivity extends ActionBarActivity {
     }
 
 
+    @SuppressWarnings("deprecation")
     protected void copy() {
         ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         cm.setText(wwwjdicEntry.getHeadword());

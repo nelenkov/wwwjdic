@@ -13,6 +13,7 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.nick.wwwjdic.WwwjdicApplication;
 
+@SuppressWarnings("deprecation")
 public abstract class EntityBasedHttpClient {
 
     protected String url;
@@ -63,7 +64,7 @@ public abstract class EntityBasedHttpClient {
     }
 
     protected String readAllLines(BufferedReader reader) throws IOException {
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
         String line = null;
 
         while ((line = reader.readLine()) != null) {

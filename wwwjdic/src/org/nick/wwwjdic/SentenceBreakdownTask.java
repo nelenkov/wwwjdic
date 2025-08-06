@@ -1,20 +1,19 @@
 package org.nick.wwwjdic;
 
+import android.util.Log;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.nick.wwwjdic.model.SentenceBreakdownEntry;
 import org.nick.wwwjdic.model.WwwjdicQuery;
 
-import android.util.Log;
-
+@SuppressWarnings("deprecation")
 public class SentenceBreakdownTask extends SearchTask<SentenceBreakdownEntry> {
 
     private static final Pattern SENTENCE_PART_PATTERN = Pattern.compile(
@@ -41,8 +40,8 @@ public class SentenceBreakdownTask extends SearchTask<SentenceBreakdownEntry> {
 
     @Override
     protected List<SentenceBreakdownEntry> parseResult(String html) {
-        List<SentenceBreakdownEntry> result = new ArrayList<SentenceBreakdownEntry>();
-        List<String> inflectedForms = new ArrayList<String>();
+        List<SentenceBreakdownEntry> result = new ArrayList<>();
+        List<String> inflectedForms = new ArrayList<>();
 
         String[] lines = html.split("\n");
         boolean exampleFollows = false;
@@ -140,10 +139,7 @@ public class SentenceBreakdownTask extends SearchTask<SentenceBreakdownEntry> {
                     generateBackdoorCode(query));
             HttpGet get = new HttpGet(lookupUrl);
 
-            String responseStr = httpclient.execute(get, responseHandler,
-                    localContext);
-
-            return responseStr;
+            return httpclient.execute(get, responseHandler, localContext);
         } catch (ClientProtocolException cpe) {
             Log.e("WWWJDIC", "ClientProtocolException", cpe);
             throw new RuntimeException(cpe);
@@ -154,17 +150,13 @@ public class SentenceBreakdownTask extends SearchTask<SentenceBreakdownEntry> {
     }
 
     private String generateBackdoorCode(WwwjdicQuery query) {
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
         // raw
         buff.append("9ZIG");
 
-        try {
-            buff.append(URLEncoder.encode(query.getQueryString(), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        buff.append(URLEncoder.encode(query.getQueryString(), StandardCharsets.UTF_8));
 
-        return buff.toString();
+      return buff.toString();
     }
 
 }

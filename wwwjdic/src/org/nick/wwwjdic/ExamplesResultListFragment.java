@@ -81,8 +81,8 @@ public class ExamplesResultListFragment extends
 
             private static final int HILIGHT_COLOR = 0xff427ad7;
 
-            private TextView japaneseSentenceText;
-            private TextView englishSentenceText;
+            private final TextView japaneseSentenceText;
+            private final TextView englishSentenceText;
 
             ExampleSentenceView(Context context) {
                 super(context);
@@ -278,21 +278,19 @@ public class ExamplesResultListFragment extends
 
     @Override
     public void setResult(final List<ExampleSentence> result) {
-        guiThread.post(new Runnable() {
-            public void run() {
-                // backed out before view is created
-                if (getView() == null) {
-                    return;
-                }
-
-                sentences = result;
-                ExampleSentenceAdapter adapter = new ExampleSentenceAdapter(
-                        getActivity(), sentences, criteria.getQueryString());
-                setListAdapter(adapter);
-                getListView().setTextFilterEnabled(true);
-                setTitleAndCurrentItem();
-                dismissProgress();
+        guiThread.post(() -> {
+            // backed out before view is created
+            if (getView() == null) {
+                return;
             }
+
+            sentences = result;
+            ExampleSentenceAdapter adapter = new ExampleSentenceAdapter(
+                    getActivity(), sentences, criteria.getQueryString());
+            setListAdapter(adapter);
+            getListView().setTextFilterEnabled(true);
+            setTitleAndCurrentItem();
+            dismissProgress();
         });
 
     }
@@ -329,7 +327,7 @@ public class ExamplesResultListFragment extends
     @SuppressLint("NewApi")
     class ContextCallback implements ActionMode.Callback {
 
-        private int position;
+        private final int position;
 
         ContextCallback(int position) {
             this.position = position;

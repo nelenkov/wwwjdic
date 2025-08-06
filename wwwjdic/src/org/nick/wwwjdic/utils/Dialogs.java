@@ -1,14 +1,11 @@
 package org.nick.wwwjdic.utils;
 
-import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.WwwjdicPreferences;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
+import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.WwwjdicPreferences;
 
 public class Dialogs {
 
@@ -28,12 +25,7 @@ public class Dialogs {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(messageId).setTitle(R.string.error)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(R.string.ok, new OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss());
 
         return builder.create();
     }
@@ -56,12 +48,7 @@ public class Dialogs {
         builder.setTitle(titleId);
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.setPositiveButton(R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        activity.finish();
-                    }
-                });
+            (dialog, which) -> activity.finish());
         builder.setCancelable(false);
 
         return builder.create();

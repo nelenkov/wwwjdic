@@ -12,7 +12,7 @@ import android.graphics.RectF;
 
 public class StrokedCharacter {
 
-    private List<StrokePath> strokes;
+    private final List<StrokePath> strokes;
 
     private Float canvasWidth;
     private Float canvasHeight;
@@ -24,7 +24,7 @@ public class StrokedCharacter {
     private boolean needsPaddding;
 
     public StrokedCharacter() {
-        this.strokes = new ArrayList<StrokePath>();
+        this.strokes = new ArrayList<>();
     }
 
     public StrokedCharacter(List<StrokePath> strokes, float canvasWidth,
@@ -35,7 +35,7 @@ public class StrokedCharacter {
     }
 
     public StrokedCharacter(List<Stroke> strokesList) {
-        this.strokes = new ArrayList<StrokePath>();
+        this.strokes = new ArrayList<>();
         for (Stroke s : strokesList) {
             PointF fp = s.getPoints().get(0);
             PointF firstPoint = new PointF(fp.x, fp.y);

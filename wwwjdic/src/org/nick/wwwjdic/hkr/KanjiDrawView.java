@@ -20,7 +20,7 @@ public class KanjiDrawView extends View {
     private static final float OUTLINE_WIDTH = 2f;
     private static final float ANNOTATION_TEXT_SIZE = 12f;
 
-    public static interface OnStrokesChangedListener {
+    public interface OnStrokesChangedListener {
         void strokesUpdated(int numStrokes);
     }
 
@@ -30,7 +30,7 @@ public class KanjiDrawView extends View {
     private Paint outlinePaint;
     private Rect outlineRect;
 
-    private List<Stroke> strokes = new ArrayList<Stroke>();
+    private final List<Stroke> strokes = new ArrayList<>();
     private Stroke currentStroke = null;
 
     private OnStrokesChangedListener onStrokesChangedListener;

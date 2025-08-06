@@ -174,14 +174,14 @@
     <string name="pref_wwwjdic_mirror">WWWJDIC mirror</string>
 
     <string-array name="wwwjdic_mirror_names">
-        <item>Australia</item>
-        <item>Germany</item>
-        <item>Sweden</item>
-        <item>USA</item>
+        <!--item>Australia</item-->
+        <item>Germany [wwwjdic.biz]</item>
+        <item>Sweden  [wwwjdic.se]</item>
+        <item>USA     [www.edrdg.org]</item>
     </string-array>
     <string-array name="wwwjdic_mirror_coords">
         <!-- Sydney -->
-        <item>033:51:35/151:12:40</item>
+        <!--item>033:51:35/151:12:40</item-->
         <!-- Berlin -->
         <item>052:31:00/013:23:00</item>
         <!-- Stockholm -->
@@ -190,7 +190,7 @@
         <item>040:43:00/074:00:00</item>
     </string-array>
     <string-array name="wwwjdic_mirror_urls">
-        <item>http://nihongo.monash.edu/cgi-bin/wwwjdic</item>
+        <!--item>http://nlp.cis.unimelb.edu.au/jwb/wwwjdic/wwwjdic.cgi</item-->
         <item>http://wwwjdic.biz/cgi-bin/wwwjdic</item>
         <item>http://wwwjdic.se/cgi-bin/wwwjdic.cgi</item>
         <item>https://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic</item>
@@ -264,7 +264,7 @@
     <string name="copied_jp">Copied Japanese sentence.</string>
     <string name="copy_eng">Copy English</string>
     <string name="copied_eng">Copied English translation.</string>
-    <string name="sentence_breakdown">Sentence breakdown</string>
+    <string name="sentence_breakdown_title">Sentence breakdown</string>
     <string name="sentence_translation">Sentence translation</string>
     <string name="sentence_words">Words</string>
     <string name="no_results">No results</string>
@@ -364,10 +364,7 @@
     <string name="tip">Tip</string>
     <string name="kr_usage_tip">* The \'HKR\'(\'Hand-written Kanji
  Recognition\') button offers best accuracy, but proper stroke
-        order is required.\n* The \'OCR\' (\'Optical Character
-        Recognition\') button will try to recognize the character
-        you\'ve drawn as an image. Stroke order doesn\'t matter, but
- recognition is less accurate.</string>
+        order is required.</string>
     <string name="kanji_of_the_day">Kanji of the Day</string>
     <string name="kanji_of_the_day_jp">今日の漢字</string>
     <string name="widget_loading">Loading...</string>
@@ -458,7 +455,7 @@
     <string name="dict_search_description">Search default dictionary</string>
     <string name="home">Home</string>
     <string name="show_all">Show all</string>
-    <string name="total_matches">%d matche(s)</string>
+    <string name="total_matches_templ">%d matche(s)</string>
     <string name="no_matches">No matches</string>
     <string name="kanji_multi_radical_search">Kanji multi-radical search</string>
     <string name="kanji_extra_search">Additional search methods</string>
@@ -578,4 +575,8 @@ You can enable offline recognition using the Kanji Recognizer application. Would
     <string name="ext_storage_perm_message">"You need to grant external storage permissions to use this app. External storage is used for storing backups and exported files."</string>
 
     <string name="search_suggest_authority">org.nick.wwwjdic.SearchSuggestionProvider</string>
+
+    <string name="corrupt_model_notify_title">Kanji Recognizer error -- corrupt model</string>
+    <string name="corrupt_model_notify_message">Select, \'Delete resources\' to re-download.</string>
+    <string name="kr_error">Kanji Recognizer error</string>
 </resources>

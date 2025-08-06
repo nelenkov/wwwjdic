@@ -9,7 +9,7 @@
         android:id="@+id/hwr_button_group"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="left|center_vertical"
+        android:layout_gravity="start|center_vertical"
         android:layout_marginLeft="2dip"
         android:layout_marginTop="4dip"
         android:layout_marginRight="2dip"
@@ -21,11 +21,6 @@
             android:id="@+id/recognize_button"
             style="@style/hkr_toolbar_button"
             android:text="@string/hkr_abbrev" />
-
-        <Button
-            android:id="@+id/ocr_button"
-            style="@style/hkr_toolbar_button"
-            android:text="@string/ocr" />
 
         <Button
             android:id="@+id/remove_stroke_button"

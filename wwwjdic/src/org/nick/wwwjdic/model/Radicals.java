@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Radicals {
 
-    private final List<Radical> radicals = new ArrayList<Radical>();
+    private final List<Radical> radicals = new ArrayList<>();
     private static final Radicals instance = new Radicals();
 
     private Radicals() {

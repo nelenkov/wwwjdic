@@ -53,9 +53,9 @@ public class DictionaryEntryAdapter extends BaseAdapter {
     private static final class DictionaryEntryView extends
             CheckableLinearLayout {
 
-        private TextView entryText;
-        private TextView readingText;
-        private TextView translationText;
+        private final TextView entryText;
+        private final TextView readingText;
+        private final TextView translationText;
 
         public DictionaryEntryView(Context context, DictionaryEntry entry) {
             super(context);
@@ -63,11 +63,11 @@ public class DictionaryEntryAdapter extends BaseAdapter {
             LayoutInflater inflater = LayoutInflater.from(context);
             inflater.inflate(R.layout.dict_item, this);
 
-            entryText = (TextView) findViewById(R.id.entry_text);
+            entryText = findViewById(R.id.entry_text);
             UIUtils.setJpTextLocale(entryText);
-            readingText = (TextView) findViewById(R.id.reading_text);
+            readingText = findViewById(R.id.reading_text);
             UIUtils.setJpTextLocale(readingText);
-            translationText = (TextView) findViewById(R.id.translation_text);
+            translationText = findViewById(R.id.translation_text);
         }
 
         void populate(DictionaryEntry entry) {

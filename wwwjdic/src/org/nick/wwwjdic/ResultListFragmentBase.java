@@ -113,44 +113,39 @@ public abstract class ResultListFragmentBase<T> extends ListFragment
             return;
         }
 
-        guiThread.post(new Runnable() {
-            public void run() {
-                getActivity().setTitle(getResources().getText(R.string.error));
-                dismissProgress();
+        guiThread.post(() -> {
+            getActivity().setTitle(getResources().getText(R.string.error));
+            dismissProgress();
 
-                AlertDialog.Builder alert = new AlertDialog.Builder(
-                        getActivity());
+            AlertDialog.Builder alert = new AlertDialog.Builder(
+                    getActivity());
 
-                alert.setTitle(R.string.error);
+            alert.setTitle(R.string.error);
 
-                if (ex instanceof SocketTimeoutException
-                        || ex.getCause() instanceof SocketTimeoutException) {
-                    alert.setMessage(getResources().getString(
-                            R.string.timeout_error_message));
-                } else if (ex instanceof SocketException
-                        || ex.getCause() instanceof SocketException) {
-                    alert.setMessage(getResources().getString(
-                            R.string.socket_error_message));
-                } else if (ex instanceof WwwjdicMaintenanceException) {
-                    alert.setMessage(getResources().getString(
-                            R.string.wwwjdic_maintenace_message));
-                } else {
-                    alert.setMessage(getResources().getString(
-                            R.string.generic_error_message)
-                            + "(" + ex.getMessage() + ")");
-                }
-
-                alert.setPositiveButton(getResources().getText(R.string.ok),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                    int whichButton) {
-                                dialog.dismiss();
-                                getActivity().finish();
-                            }
-                        });
-
-                alert.show();
+            if (ex instanceof SocketTimeoutException
+                    || ex.getCause() instanceof SocketTimeoutException) {
+                alert.setMessage(getResources().getString(
+                        R.string.timeout_error_message));
+            } else if (ex instanceof SocketException
+                    || ex.getCause() instanceof SocketException) {
+                alert.setMessage(getResources().getString(
+                        R.string.socket_error_message));
+            } else if (ex instanceof WwwjdicMaintenanceException) {
+                alert.setMessage(getResources().getString(
+                        R.string.wwwjdic_maintenace_message));
+            } else {
+                alert.setMessage(getResources().getString(
+                        R.string.generic_error_message)
+                        + "(" + ex.getMessage() + ")");
             }
+
+            alert.setPositiveButton(getResources().getText(R.string.ok),
+                (dialog, whichButton) -> {
+                    dialog.dismiss();
+                    getActivity().finish();
+                });
+
+            alert.show();
         });
     }
 

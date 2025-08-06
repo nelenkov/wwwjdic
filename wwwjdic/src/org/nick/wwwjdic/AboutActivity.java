@@ -1,17 +1,10 @@
 package org.nick.wwwjdic;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.TextView;
 
-public class AboutActivity extends ActionBarActivity implements OnClickListener {
-
-    private static final String DONATE_VERSION_PACKAGE = "org.nick.wwwjdic.donate";
+public class AboutActivity extends ActionBarActivity  {
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -33,26 +26,6 @@ public class AboutActivity extends ActionBarActivity implements OnClickListener 
         TextView kradfileAttributionText = findViewById(R.id.kradfile_attribution_text);
         kradfileAttributionText.setMovementMethod(LinkMovementMethod
                 .getInstance());
-
-        Button buyDonateButton = findViewById(R.id.buy_donate);
-        if (!isDonateVersion()) {
-            buyDonateButton.setOnClickListener(this);
-        } else {
-            buyDonateButton.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-        Intent intent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("https://play.google.com/store/apps/details?id=" + DONATE_VERSION_PACKAGE));
-        startActivity(intent);
-    }
-
-    private boolean isDonateVersion() {
-        String appPackage = getApplication().getPackageName();
-
-        return DONATE_VERSION_PACKAGE.equals(appPackage);
     }
 
 }

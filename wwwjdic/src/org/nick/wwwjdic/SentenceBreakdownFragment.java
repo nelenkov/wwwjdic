@@ -10,7 +10,6 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,7 +19,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import org.nick.wwwjdic.actionprovider.ShareActionProvider;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.model.SentenceBreakdownEntry;
@@ -28,14 +32,6 @@ import org.nick.wwwjdic.model.WwwjdicQuery;
 import org.nick.wwwjdic.utils.CheckableLinearLayout;
 import org.nick.wwwjdic.utils.StringUtils;
 import org.nick.wwwjdic.utils.UIUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import androidx.appcompat.widget.ActionMenuView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuItemCompat;
 
 @SuppressWarnings("deprecation")
 @SuppressLint("NewApi")
@@ -84,10 +80,10 @@ public class SentenceBreakdownFragment extends
 
         static class SentenceBreakdownEntryView extends CheckableLinearLayout {
 
-            private TextView explanationText;
-            private TextView wordText;
-            private TextView readingText;
-            private TextView translationText;
+            private final TextView explanationText;
+            private final TextView wordText;
+            private final TextView readingText;
+            private final TextView translationText;
 
             SentenceBreakdownEntryView(Context context) {
                 super(context);
@@ -214,19 +210,9 @@ public class SentenceBreakdownFragment extends
                 }
             }
 
-            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    return onOptionsItemSelected(item);
-                }
-            });
-            toolbar.setOnCreateContextMenuListener(new Toolbar.OnCreateContextMenuListener() {
+            toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+            toolbar.setOnCreateContextMenuListener((contextMenu, view, contextMenuInfo) -> {
 
-                @Override
-                public void onCreateContextMenu(ContextMenu contextMenu, View view,
-                                                ContextMenu.ContextMenuInfo contextMenuInfo) {
-
-                }
             });
         }
 
@@ -441,17 +427,15 @@ public class SentenceBreakdownFragment extends
             return;
         }
 
-        guiThread.post(new Runnable() {
-            public void run() {
-                updateEntries(result);
-                dismissProgress();
-            }
+        guiThread.post(() -> {
+            updateEntries(result);
+            dismissProgress();
         });
     }
 
     private void setTitleAndMarkSentence() {
         getActivity().setTitle(
-                sentenceTranslation != null ? R.string.sentence_breakdown
+                sentenceTranslation != null ? R.string.sentence_breakdown_title
                         : R.string.sentence_translation);
         sentenceView.setText(markedSentence);
     }

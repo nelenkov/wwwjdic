@@ -3,8 +3,8 @@ package org.nick.wwwjdic.utils;
 
 public class LoaderResult<T> {
 
-    private T data;
-    private Exception error;
+    private final T data;
+    private final Exception error;
 
     private LoaderResult(T data, Exception error) {
         this.data = data;
@@ -12,11 +12,11 @@ public class LoaderResult<T> {
     }
 
     public static <T> LoaderResult<T> create(T data) {
-        return new LoaderResult<T>(data, null);
+        return new LoaderResult<>(data, null);
     }
 
     public static <T> LoaderResult<T> createFailed(Exception error) {
-        return new LoaderResult<T>(null, error);
+        return new LoaderResult<>(null, error);
     }
 
     public T getData() {

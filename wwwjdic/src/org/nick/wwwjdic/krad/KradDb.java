@@ -15,8 +15,8 @@ public class KradDb {
 
     private static final String TAG = KradDb.class.getSimpleName();
 
-    private Map<String, Set<String>> radicalToKanjis = new HashMap<String, Set<String>>();
-    private Map<String, Set<String>> kanjiToRadicals = new HashMap<String, Set<String>>();
+    private final Map<String, Set<String>> radicalToKanjis = new HashMap<>();
+    private final Map<String, Set<String>> kanjiToRadicals = new HashMap<>();
 
     private static KradDb instance;
 
@@ -52,7 +52,7 @@ public class KradDb {
                     continue;
                 }
                 String radical = fields[0].trim();
-                Set<String> kanjis = new HashSet<String>();
+                Set<String> kanjis = new HashSet<>();
                 String[] kanjiChars = fields[2].trim().split("");
                 for (String c : kanjiChars) {
                     if ("".equals(c)) {
@@ -61,12 +61,9 @@ public class KradDb {
 
                     kanjis.add(c);
 
-                    Set<String> radicals = kanjiToRadicals.get(c);
-                    if (radicals == null) {
-                        radicals = new HashSet<String>();
-                        kanjiToRadicals.put(c, radicals);
-                    }
-                    radicals.add(radical);
+                  Set<String> radicals = kanjiToRadicals.computeIfAbsent(c,
+                      k -> new HashSet<>());
+                  radicals.add(radical);
                 }
                 radicalToKanjis.put(radical, kanjis);
             }
@@ -89,11 +86,11 @@ public class KradDb {
     public Set<String> getKanjiForRadical(String radical) {
         Set<String> result = radicalToKanjis.get(radical);
 
-        return result == null ? new HashSet<String>() : result;
+        return result == null ? new HashSet<>() : result;
     }
 
     public Set<String> getKanjisForRadicals(Set<String> radicals) {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         for (String radical : radicals) {
             Set<String> kanjis = getKanjiForRadical(radical);
             if (result.isEmpty()) {
@@ -109,11 +106,11 @@ public class KradDb {
     public Set<String> getRadicalsForKanji(String kanji) {
         Set<String> result = kanjiToRadicals.get(kanji);
 
-        return result == null ? new HashSet<String>() : result;
+        return result == null ? new HashSet<>() : result;
     }
 
     public Set<String> getRadicalsForKanjis(Set<String> kanjis) {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         for (String kanji : kanjis) {
             Set<String> radicals = getRadicalsForKanji(kanji);
             result.addAll(radicals);

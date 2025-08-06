@@ -11,10 +11,10 @@ public class ExampleSentence implements Serializable {
      */
     private static final long serialVersionUID = 1017016303787281524L;
 
-    private String japanese;
-    private String english;
+    private final String japanese;
+    private final String english;
 
-    private List<String> matches = new ArrayList<String>();
+    private final List<String> matches = new ArrayList<>();
 
     public ExampleSentence(String japanese, String english) {
         this.japanese = japanese;

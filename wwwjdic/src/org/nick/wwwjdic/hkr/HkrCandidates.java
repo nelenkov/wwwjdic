@@ -12,6 +12,7 @@ import org.nick.wwwjdic.KanjiEntryDetailFragment;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.model.KanjiEntry;
 
+@SuppressWarnings("deprecation")
 public class HkrCandidates extends ActionBarActivity implements
         HkrCandidatesFragment.HkrCandidateSelectedListener {
 

@@ -1,15 +1,5 @@
 package org.nick.wwwjdic.widgets;
 
-import java.util.List;
-
-import org.nick.wwwjdic.BuildConfig;
-import org.nick.wwwjdic.KanjiEntryDetail;
-import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.WwwjdicPreferences;
-import org.nick.wwwjdic.model.KanjiEntry;
-
-import android.annotation.TargetApi;
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -18,14 +8,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
-
-import androidx.core.content.ContextCompat;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
+import java.util.List;
+import org.nick.wwwjdic.BuildConfig;
+import org.nick.wwwjdic.KanjiEntryDetail;
+import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.WwwjdicApplication;
+import org.nick.wwwjdic.WwwjdicPreferences;
+import org.nick.wwwjdic.model.KanjiEntry;
 
 public class KodWidgetProvider extends AppWidgetProvider {
 
@@ -35,10 +32,10 @@ public class KodWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
                          int[] appWidgetIds) {
         if (BuildConfig.DEBUG) {
-            Log.d(TAG, "KOD widget udpate");
+             Log.d(TAG, "KOD widget update");
         }
 
-        ContextCompat.startForegroundService(context, new Intent(context, GetKanjiService.class));
+        updateWidget();
     }
 
     @SuppressWarnings("deprecation")
@@ -48,7 +45,7 @@ public class KodWidgetProvider extends AppWidgetProvider {
         // v1.5 fix that doesn't call onDelete Action
         final String action = intent.getAction();
         if (BuildConfig.DEBUG) {
-            Log.d(TAG, "KOD widget onReceive: " + action);
+             Log.d(TAG, "KOD widget onReceive: " + action);
         }
         if (AppWidgetManager.ACTION_APPWIDGET_DELETED.equals(action)) {
             final int appWidgetId = intent.getExtras().getInt(
@@ -81,8 +78,8 @@ public class KodWidgetProvider extends AppWidgetProvider {
                         Log.d(TAG,
                                 "KOD widget is in error state, trying to update...");
                     }
-                    ContextCompat.startForegroundService(context,
-                            new Intent(context, GetKanjiService.class));
+
+                    updateWidget();
                 }
             }
         } else {
@@ -90,10 +87,19 @@ public class KodWidgetProvider extends AppWidgetProvider {
         }
     }
 
+    private void updateWidget() {
+        WorkRequest updateWidgetRequest =
+            new OneTimeWorkRequest.Builder(GetKanjiWorker.class)
+                .build();
+        WorkManager
+            .getInstance(WwwjdicApplication.getInstance().getApplicationContext())
+            .enqueue(updateWidgetRequest);
+    }
+
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         if (BuildConfig.DEBUG) {
-            Log.d(TAG, "onDeleted");
+             Log.d(TAG, "onDeleted");
         }
 
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
@@ -101,7 +107,7 @@ public class KodWidgetProvider extends AppWidgetProvider {
                 KodWidgetProvider.class);
         int[] thisWidgetIds = manager.getAppWidgetIds(thisWidget);
         if (BuildConfig.DEBUG) {
-            Log.d(TAG, "widget IDs: " + thisWidgetIds.length);
+             Log.d(TAG, "widget IDs: " + thisWidgetIds.length);
         }
 
         if (thisWidgetIds.length == 0) {
@@ -117,12 +123,10 @@ public class KodWidgetProvider extends AppWidgetProvider {
 
                 Log.d(TAG, "cancelling update timer...");
             }
-            AlarmManager alarmManager = (AlarmManager) context
-                    .getSystemService(Context.ALARM_SERVICE);
-            Intent updateIntent = new Intent(context, GetKanjiService.class);
-            PendingIntent pendingIntent = PendingIntent.getService(context, 0,
-                    updateIntent, 0);
-            alarmManager.cancel(pendingIntent);
+
+            WorkManager wm = WorkManager
+                .getInstance(WwwjdicApplication.getInstance().getApplicationContext());
+            wm.cancelAllWork();
 
             ConnectivityMonitor.stop(context);
         }
@@ -133,8 +137,8 @@ public class KodWidgetProvider extends AppWidgetProvider {
                                           AppWidgetManager appWidgetManager, int appWidgetId,
                                           Bundle newOptions) {
         if (BuildConfig.DEBUG) {
-            Log.d(TAG, "onAppWidgetOptionsChanged " + appWidgetId);
-            Log.d(TAG, "newOptions: " + newOptions);
+             Log.d(TAG, "onAppWidgetOptionsChanged " + appWidgetId);
+             Log.d(TAG, "newOptions: " + newOptions);
         }
         for (String key : newOptions.keySet()) {
             Log.d(TAG, key + "=" + newOptions.get(key));
@@ -151,7 +155,7 @@ public class KodWidgetProvider extends AppWidgetProvider {
                 appWidgetId);
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "text size: " + textSize + "sp");
-            Log.d(TAG, "details text size: " + detailsTextSize + "sp");
+             Log.d(TAG, "details text size: " + detailsTextSize + "sp");
         }
 
         setTextSizes(views, textSize, detailsTextSize, showReadingAndMeaning);
@@ -207,7 +211,6 @@ public class KodWidgetProvider extends AppWidgetProvider {
         return ratio / 100.0f;
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     static float getTextSize(Context ctx, Bundle options, int id, float scale) {
         AppWidgetManager widgetManager = AppWidgetManager.getInstance(ctx);
         if (options == null) {
@@ -228,7 +231,6 @@ public class KodWidgetProvider extends AppWidgetProvider {
         return 1;
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     static void setTextSizes(RemoteViews views,
                              float textSize, float detailsTextSize,
                              boolean showReadingAndMeaning) {
@@ -255,8 +257,8 @@ public class KodWidgetProvider extends AppWidgetProvider {
                 showReadingAndMeaning);
         float detailsTextSize = getDetailsTextSize(context, null, widgetId);
         if (BuildConfig.DEBUG) {
-            Log.d(TAG, "text size: " + textSize + "sp");
-            Log.d(TAG, "details text size: " + detailsTextSize + "sp");
+             Log.d(TAG, "text size: " + textSize + "sp");
+             Log.d(TAG, "details text size: " + detailsTextSize + "sp");
         }
         if (textSize > 0 && detailsTextSize > 0) {
             setTextSizes(views, textSize, detailsTextSize, showReadingAndMeaning);
@@ -271,7 +273,7 @@ public class KodWidgetProvider extends AppWidgetProvider {
 
         Intent updateIntent = new Intent(context, GetKanjiService.class);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0,
-                updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                updateIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.kod_message_text, pendingIntent);
     }
 
@@ -293,15 +295,14 @@ public class KodWidgetProvider extends AppWidgetProvider {
         KanjiEntry entry = entries.get(0);
         String kod = entry.getHeadword();
         if (BuildConfig.DEBUG) {
-            Log.d(TAG, "KOD: " + kod);
+             Log.d(TAG, "KOD: " + kod);
         }
         Intent intent = new Intent(context, KanjiEntryDetail.class);
         intent.putExtra(KanjiEntryDetail.EXTRA_KANJI_ENTRY, entries.get(0));
         intent.putExtra(KanjiEntryDetail.EXTRA_KOD_WIDGET_CLICK, true);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         views.setTextViewText(R.id.kod_text, kod);
         if (showReadingAndMeaning) {

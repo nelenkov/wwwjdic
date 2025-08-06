@@ -6,14 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-public class ExampleLookupFragment extends Fragment {
+public class KanjiLookupTabFragment extends Fragment {
 
     private static View view;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // hack: avoid IllegalArgumentException: Binary XML file line #9: Duplicate id
         if (view != null) {
@@ -23,8 +24,8 @@ public class ExampleLookupFragment extends Fragment {
         }
 
         try {
-            view = inflater.inflate(R.layout.example_search_tab, container, false);
-        }  catch (InflateException ignored) {
+            return inflater.inflate(R.layout.kanji_lookup_tab, container, false);
+        } catch (InflateException ignored) {
             /* map is already there, just return view as it is */
         }
 

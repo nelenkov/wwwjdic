@@ -10,6 +10,7 @@ import java.util.concurrent.Future;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+@SuppressWarnings("deprecation")
 public abstract class WebServiceBackedActivity extends AppCompatActivity {
 
     public static abstract class WsResultHandler extends Handler {

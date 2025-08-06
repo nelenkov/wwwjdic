@@ -1,16 +1,35 @@
 
 package org.nick.wwwjdic.history;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Date;
-
 import org.nick.wwwjdic.DetailActivity;
 import org.nick.wwwjdic.DictionaryEntryDetail;
-import org.nick.wwwjdic.DictionaryResultList;
 import org.nick.wwwjdic.KanjiEntryDetail;
 import org.nick.wwwjdic.R;
 import org.nick.wwwjdic.WwwjdicApplication;
@@ -19,38 +38,14 @@ import org.nick.wwwjdic.history.FavoritesItem.FavoriteStatusChangedListener;
 import org.nick.wwwjdic.model.WwwjdicEntry;
 import org.nick.wwwjdic.utils.LoaderResult;
 import org.nick.wwwjdic.utils.MediaScannerWrapper;
-import org.nick.wwwjdic.utils.UIUtils;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.widget.CursorAdapter;
-import android.text.format.DateFormat;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
-
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-import au.com.bytecode.opencsv.CSVReader;
-import au.com.bytecode.opencsv.CSVWriter;
-
+@SuppressWarnings("deprecation")
 public class FavoritesFragment extends HistoryFragmentBase implements
         FavoriteStatusChangedListener {
 
     private static final String TAG = FavoritesFragment.class.getSimpleName();
 
-    private static final String EXPORT_FILENAME = "wwwjdic/favorites.csv";
+    private static final String EXPORT_FILENAME = "favorites.csv";
 
     private static final String FAVORITES_EXPORT_FILENAME_BASE = "wwwjdic-favorites";
     private static final String KANJI_CSV_EXPORT_FILENAME_BASE = FAVORITES_EXPORT_FILENAME_BASE
@@ -83,6 +78,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         LoaderManager.getInstance(this).initLoader(0, null, this);
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     protected void deleteAll() {
         new AsyncTask<Void, Void, Void>() {
@@ -92,20 +88,21 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
             @Override
             protected Void doInBackground(Void... arg0) {
-                Cursor c = filterCursor();
+              try (Cursor c = filterCursor()) {
 
                 db.beginTransaction();
                 try {
-                    while (c.moveToNext()) {
-                        int id = c.getInt(c.getColumnIndex("_id"));
-                        db.deleteFavorite(id);
-                    }
-                    db.setTransactionSuccessful();
+                  while (c.moveToNext()) {
+                    int id = c.getInt(c.getColumnIndex("_id"));
+                    db.deleteFavorite(id);
+                  }
+                  db.setTransactionSuccessful();
 
-                    return null;
+                  return null;
                 } finally {
-                    db.endTransaction();
+                  db.endTransaction();
                 }
+              }
             }
 
             @Override
@@ -157,14 +154,12 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         if (entry.isKanji()) {
             intent = new Intent(getActivity(), KanjiEntryDetail.class);
             intent.putExtra(KanjiEntryDetail.EXTRA_KANJI_ENTRY, entry);
-            intent.putExtra(KanjiEntryDetail.EXTRA_IS_FAVORITE, true);
-            intent.putExtra(DetailActivity.EXTRA_DETAILS_PARENT, DetailActivity.Parent.FAVORITES.ordinal());
         } else {
             intent = new Intent(getActivity(), DictionaryEntryDetail.class);
             intent.putExtra(DictionaryEntryDetail.EXTRA_DICTIONARY_ENTRY, entry);
-            intent.putExtra(DictionaryEntryDetail.EXTRA_IS_FAVORITE, true);
-            intent.putExtra(DetailActivity.EXTRA_DETAILS_PARENT, DetailActivity.Parent.FAVORITES.ordinal());
         }
+        intent.putExtra(KanjiEntryDetail.EXTRA_IS_FAVORITE, true);
+        intent.putExtra(DetailActivity.EXTRA_DETAILS_PARENT, DetailActivity.Parent.FAVORITES.ordinal());
 
         startActivity(intent);
     }
@@ -189,7 +184,11 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
     @Override
     protected String getImportExportFilename() {
-        File extStorage = Environment.getExternalStorageDirectory();
+        if (getContext() == null) {
+            return "";
+        }
+
+        File extStorage = getContext().getExternalFilesDir(null);
 
         return extStorage.getAbsolutePath() + "/" + EXPORT_FILENAME;
     }
@@ -205,21 +204,19 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.favorites_export_dialog_title);
-        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                switch (item) {
-                    case EXPORT_LOCAL_BACKUP_IDX:
-                        FavoritesFragment.super.exportItems();
-                        break;
-                    case EXPORT_LOCAL_EXPORT_IDX:
-                        exportLocalCsv(isKanji);
-                        break;
-                    case EXPORT_ANKI_IDX:
-                        exportToAnkiDeckAsync(isKanji);
-                        break;
-                    default:
-                        // do noting
-                }
+        builder.setAdapter(adapter, (dialog, item) -> {
+            switch (item) {
+                case EXPORT_LOCAL_BACKUP_IDX:
+                    FavoritesFragment.super.exportItems();
+                    break;
+                case EXPORT_LOCAL_EXPORT_IDX:
+                    exportLocalCsv(isKanji);
+                    break;
+                case EXPORT_ANKI_IDX:
+                    exportToAnkiDeckAsync(isKanji);
+                    break;
+                default:
+                    // do noting
             }
         });
         AlertDialog dialog = builder.create();
@@ -237,17 +234,13 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                     .getString(R.string.exporting_to_anki);
             Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                getActivity().startForegroundService(intent);
-            } else {
-                getActivity().startService(intent);
-            }
+            getActivity().startForegroundService(intent);
         }
     }
 
     private static class ExportItemsAdapter extends ArrayAdapter<String> {
 
-        private boolean singleType;
+        private final boolean singleType;
 
         ExportItemsAdapter(Context context, String[] items, boolean singleType) {
             super(context, android.R.layout.select_dialog_item,
@@ -274,8 +267,9 @@ public class FavoritesFragment extends HistoryFragmentBase implements
             }
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             View result = super.getView(position, convertView, parent);
             result.setEnabled(isEnabled(position));
 
@@ -284,6 +278,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void exportLocalCsv(final boolean isKanji) {
         new AsyncTask<Void, Void, Boolean>() {
             Exception exception;
@@ -307,10 +302,8 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                     count = exportToCsv(exportFile.getAbsolutePath(), writer,
                             false);
 
-                    if (UIUtils.isFroyo()) {
-                        MediaScannerWrapper.scanFile(getActivity(),
+                    MediaScannerWrapper.scanFile(getActivity(),
                                 exportFilename);
-                    }
 
                     return true;
                 } catch (Exception e) {
@@ -348,71 +341,66 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     }
 
     private int exportToCsv(String exportFile, Writer w, boolean showMessages) {
-        CSVWriter writer = null;
-        Cursor c = null;
-        try {
-            c = filterCursor();
-            writer = new CSVWriter(w);
+      CSVWriter writer = null;
+      try (Cursor c = filterCursor()) {
+        writer = new CSVWriter(w);
 
-            boolean isKanji = selectedFilter == FILTER_KANJI;
-            Resources r = getResources();
-            String[] header = isKanji ? r
-                    .getStringArray(R.array.kanji_csv_headers) : r
-                    .getStringArray(R.array.dict_csv_headers);
-            writer.writeNext(header);
+        boolean isKanji = selectedFilter == FILTER_KANJI;
+        Resources r = getResources();
+        String[] header = isKanji ? r
+            .getStringArray(R.array.kanji_csv_headers) : r
+            .getStringArray(R.array.dict_csv_headers);
+        writer.writeNext(header);
 
-            int count = 0;
-            while (c.moveToNext()) {
-                WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
-                String separatorChar = WwwjdicPreferences
-                        .getMeaningsSeparatorCharacter(getActivity());
-                // single space not allowed in resources?
-                if ("space".equals(separatorChar)) {
-                    separatorChar = " ";
-                }
-                String[] entryStr = FavoritesEntryParser.toParsedStringArray(
-                        entry, separatorChar);
-                writer.writeNext(entryStr);
-                count++;
-            }
-
-            writer.flush();
-            writer.close();
-
-            if (showMessages) {
-                String message = getResources().getString(
-                        R.string.favorites_exported);
-                Toast t = Toast.makeText(getActivity(),
-                        String.format(message, exportFile, count),
-                        Toast.LENGTH_SHORT);
-                t.show();
-            }
-
-            return count;
-
-        } catch (IOException e) {
-            Log.d(TAG, "error exporting to CSV", e);
-            if (showMessages) {
-                String message = getResources()
-                        .getString(R.string.export_error);
-                Toast.makeText(getActivity(),
-                        String.format(message, e.getMessage()),
-                        Toast.LENGTH_SHORT).show();
-            }
-
-            return 0;
-        } finally {
-            if (writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    Log.w(TAG, "error closing CSV writer", e);
-                }
-            }
-            if (c != null) {
-                c.close();
-            }
+        int count = 0;
+        while (c.moveToNext()) {
+          WwwjdicEntry entry = HistoryDbHelper.createWwwjdicEntry(c);
+          String separatorChar = WwwjdicPreferences
+              .getMeaningsSeparatorCharacter(getActivity());
+          // single space not allowed in resources?
+          if ("space".equals(separatorChar)) {
+            separatorChar = " ";
+          }
+          String[] entryStr = FavoritesEntryParser.toParsedStringArray(
+              entry, separatorChar);
+          writer.writeNext(entryStr);
+          count++;
         }
+
+        writer.flush();
+        writer.close();
+
+        if (showMessages) {
+          String message = getResources().getString(
+              R.string.favorites_exported);
+          Toast t = Toast.makeText(getActivity(),
+              String.format(message, exportFile, count),
+              Toast.LENGTH_SHORT);
+          t.show();
+        }
+
+        return count;
+
+      } catch (IOException e) {
+        Log.d(TAG, "error exporting to CSV", e);
+        if (showMessages) {
+          String message = getResources()
+              .getString(R.string.export_error);
+          Toast.makeText(getActivity(),
+              String.format(message, e.getMessage()),
+              Toast.LENGTH_SHORT).show();
+        }
+
+        return 0;
+      } finally {
+        if (writer != null) {
+          try {
+            writer.close();
+          } catch (IOException e) {
+            Log.w(TAG, "error closing CSV writer", e);
+          }
+        }
+      }
     }
 
     private String getCsvExportFilename(boolean isKanji) {
@@ -431,6 +419,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
                 dateStr, ANKI_EXPORT_FILENAME_EXT);
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     protected void doExport(final String exportFile) {
         new AsyncTask<Void, Void, Boolean>() {
@@ -444,47 +433,40 @@ public class FavoritesFragment extends HistoryFragmentBase implements
             @Override
             protected Boolean doInBackground(Void... params) {
                 CSVWriter writer = null;
-                Cursor c = null;
 
-                try {
-                    c = filterCursor();
-                    writer = new CSVWriter(new FileWriter(exportFile));
+              try (Cursor c = filterCursor()) {
+                writer = new CSVWriter(new FileWriter(exportFile));
 
-                    while (c.moveToNext()) {
-                        WwwjdicEntry entry = HistoryDbHelper
-                                .createWwwjdicEntry(c);
-                        long time = c.getLong(c.getColumnIndex("time"));
-                        String[] entryStr = FavoritesEntryParser.toStringArray(
-                                entry, time);
-                        writer.writeNext(entryStr);
-                        count++;
-                    }
-
-                    writer.flush();
-                    writer.close();
-
-                    if (UIUtils.isFroyo()) {
-                        MediaScannerWrapper.scanFile(getActivity(), exportFile);
-                    }
-
-                    return true;
-                } catch (IOException e) {
-                    Log.e(TAG, "error exporting to file", e);
-                    exception = e;
-
-                    return false;
-                } finally {
-                    if (writer != null) {
-                        try {
-                            writer.close();
-                        } catch (IOException e) {
-                            Log.w(TAG, "error closing CSV writer", e);
-                        }
-                    }
-                    if (c != null) {
-                        c.close();
-                    }
+                while (c.moveToNext()) {
+                  WwwjdicEntry entry = HistoryDbHelper
+                      .createWwwjdicEntry(c);
+                  long time = c.getLong(c.getColumnIndex("time"));
+                  String[] entryStr = FavoritesEntryParser.toStringArray(
+                      entry, time);
+                  writer.writeNext(entryStr);
+                  count++;
                 }
+
+                writer.flush();
+                writer.close();
+
+                MediaScannerWrapper.scanFile(getActivity(), exportFile);
+
+                return true;
+              } catch (IOException e) {
+                Log.e(TAG, "error exporting to file", e);
+                exception = e;
+
+                return false;
+              } finally {
+                if (writer != null) {
+                  try {
+                    writer.close();
+                  } catch (IOException e) {
+                    Log.w(TAG, "error closing CSV writer", e);
+                  }
+                }
+              }
             }
 
             @Override
@@ -515,6 +497,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     protected void doImport(final File importFile, final boolean deleteAfterImport) {
         new AsyncTask<Void, Void, Boolean>() {
@@ -523,9 +506,6 @@ public class FavoritesFragment extends HistoryFragmentBase implements
 
             @Override
             protected void onPreExecute() {
-                if (isDetached() || getActivity() == null) {
-                    return;
-                }
             }
 
             @Override
@@ -621,6 +601,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
         return getResources().getStringArray(R.array.filter_types_favorites);
     }
 
+    @NonNull
     @Override
     public Loader<LoaderResult<Cursor>> onCreateLoader(int id, Bundle args) {
         HistoryLoaderBase loader = new FavoritesLoader(getActivity(), db);
@@ -630,7 +611,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     }
 
     @Override
-    public void onLoadFinished(Loader<LoaderResult<Cursor>> loader,
+    public void onLoadFinished(@NonNull Loader<LoaderResult<Cursor>> loader,
             LoaderResult<Cursor> data) {
 
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
@@ -645,7 +626,7 @@ public class FavoritesFragment extends HistoryFragmentBase implements
     }
 
     @Override
-    public void onLoaderReset(Loader<LoaderResult<Cursor>> loader) {
+    public void onLoaderReset(@NonNull Loader<LoaderResult<Cursor>> loader) {
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(null);
     }

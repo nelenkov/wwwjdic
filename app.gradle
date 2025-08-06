@@ -10,17 +10,20 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
-    implementation project(':wwwjdic')
-    implementation 'com.google.firebase:firebase-analytics:17.6.0'
-    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation project(path: ':wwwjdic')
+    implementation 'com.google.firebase:firebase-analytics:23.0.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'com.google.android.material:material:1.12.0'
 }
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
+    namespace 'net.fafla.wwwjdic'
 
     defaultConfig {
+        applicationId 'net.fafla.nick.wwwjdic'
+
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
@@ -38,14 +41,19 @@ android {
                 "\"${searchAuthorityValue}\"")
     }
 
-    dexOptions {
-        preDexLibraries = false
-    }
+    //dexOptions {
+    //    preDexLibraries = false
+    //}
 
     signingConfigs {
         release {
-            storeFile file("nick.keystore")
+            //storeFile file("nick.keystore")
+            storeFile file("wwwjdic-upload-keystore.jks")
         }
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -58,16 +66,16 @@ android {
     productFlavors {
         free {
             dimension "version"
-            applicationId = "org.nick.wwwjdic"
+            applicationId = "net.fafla.wwwjdic"
         }
         donate {
             dimension "version"
-            applicationId = "org.nick.wwwjdic.donate"
+            applicationId = "net.fafla.wwwjdic.donate"
             //applicationIdSuffix ".donate"
         }
         ci {
             dimension "version"
-            applicationId = "org.nick.wwwjdic"
+            applicationId = "net.fafla.wwwjdic"
             //applicationIdSuffix ".donate"
         }
     }
@@ -84,6 +92,7 @@ android {
             renderscript.srcDirs = ['src']
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['jniLibs']
         }
         donate {
             manifest.srcFile 'src/donate/AndroidManifest.xml'
@@ -97,22 +106,32 @@ android {
         }
     }
 
+
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "${archivesBaseName}-${variant.name}-${variant.versionName}.apk"
+            outputFileName = "${base.archivesName.get()}-${variant.name}-${variant.versionName}.apk"
+        }
+
+        switch (variant.name) {
+            case "free":
+                variant.applicationId = "net.fafla.wwwjdic"
+                break
+            case "ci":
+                variant.applicationId = "net.fafla.wwwjdic"
+                break
+            case "donate":
+                variant.applicationId = "net.fafla.wwwjdic.donate"
+                break
         }
     }
 
-    lintOptions {
-        checkReleaseBuilds true
-        abortOnError false
-    }
+
 
     afterEvaluate {
-        generateFreeReleaseBuildConfig.enabled = false
-        generateFreeDebugBuildConfig.enabled = false
-        generateDonateReleaseBuildConfig.enabled = false
-        generateDonateDebugBuildConfig.enabled = false
+        //generateFreeReleaseBuildConfig.enabled = false
+        //generateFreeDebugBuildConfig.enabled = false
+        //generateDonateReleaseBuildConfig.enabled = false
+        //generateDonateDebugBuildConfig.enabled = false
     }
 }
 

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,22 +17,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
-
+import androidx.collection.SparseArrayCompat;
 import com.google.android.material.textfield.TextInputLayout;
-
+import java.util.concurrent.RejectedExecutionException;
 import org.nick.wwwjdic.history.HistoryDbHelper;
 import org.nick.wwwjdic.model.Radical;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.StringUtils;
 
-import java.util.concurrent.RejectedExecutionException;
-
-import androidx.collection.SparseArrayCompat;
-
+@SuppressWarnings("deprecation")
 public class  KanjiLookupFragment extends WwwjdicFragmentBase implements
-        OnClickListener, OnItemSelectedListener {
+    OnClickListener, OnItemSelectedListener {
 
     private static final String TAG = KanjiLookupFragment.class.getSimpleName();
 
@@ -43,8 +37,7 @@ public class  KanjiLookupFragment extends WwwjdicFragmentBase implements
 
     private static final SparseArrayCompat<String> IDX_TO_CODE = new SparseArrayCompat<>();
 
-    private TextInputLayout inputLayout;
-    private EditText kanjiInputText;
+  private EditText kanjiInputText;
     private Spinner kanjiSearchTypeSpinner;
 
     private EditText radicalEditText;
@@ -92,13 +85,11 @@ public class  KanjiLookupFragment extends WwwjdicFragmentBase implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.kanji_lookup, container, false);
-
-        return v;
+        return inflater.inflate(R.layout.kanji_lookup, container, false);
     }
 
     private void populateIdxToCode() {
-        if (IDX_TO_CODE.size() == 0) {
+        if (IDX_TO_CODE.isEmpty()) {
             String[] kanjiSearchCodesArray = getResources().getStringArray(
                     R.array.kanji_search_codes_array);
             for (int i = 0; i < kanjiSearchCodesArray.length; i++) {
@@ -148,25 +139,22 @@ public class  KanjiLookupFragment extends WwwjdicFragmentBase implements
 
     private void setupTabOrder() {
         strokeCountMinInput
-                .setOnEditorActionListener(new OnEditorActionListener() {
-                    public boolean onEditorAction(TextView v, int actionId,
-                            KeyEvent event) {
-                        switch (actionId) {
-                        case EditorInfo.IME_ACTION_NEXT:
-                            EditText v1 = (EditText) v
-                                    .focusSearch(View.FOCUS_RIGHT);
-                            if (v1 != null) {
-                                if (!v1.requestFocus(View.FOCUS_RIGHT)) {
-                                    throw new IllegalStateException(
-                                            "unfocucsable view");
-                                }
+                .setOnEditorActionListener((v, actionId, event) -> {
+                    switch (actionId) {
+                    case EditorInfo.IME_ACTION_NEXT:
+                        EditText v1 = (EditText) v
+                                .focusSearch(View.FOCUS_RIGHT);
+                        if (v1 != null) {
+                            if (!v1.requestFocus(View.FOCUS_RIGHT)) {
+                                throw new IllegalStateException(
+                                        "unfocucsable view");
                             }
-                            break;
-                        default:
-                            break;
                         }
-                        return true;
+                        break;
+                    default:
+                        break;
                     }
+                    return true;
                 });
     }
 
@@ -242,21 +230,17 @@ public class  KanjiLookupFragment extends WwwjdicFragmentBase implements
     }
 
     private void findViews() {
-        inputLayout = getView().findViewById(R.id.inputTextLayout);
+        TextInputLayout inputLayout = getView().findViewById(R.id.inputTextLayout);
         inputLayout.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
         kanjiInputText = getView().findViewById(R.id.kanjiInputText);
         kanjiInputText
-                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId,
-                            KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                            search();
+                .setOnEditorActionListener((v, actionId, event) -> {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        search();
 
-                            return true;
-                        }
-                        return false;
+                        return true;
                     }
+                    return false;
                 });
         kanjiSearchTypeSpinner = getView().findViewById(
                 R.id.kanjiSearchTypeSpinner);
@@ -286,11 +270,7 @@ public class  KanjiLookupFragment extends WwwjdicFragmentBase implements
             } else {
                 kanjiInputText.setInputType(InputType.TYPE_CLASS_TEXT);
             }
-            if (position != 2) {
-                toggleRadicalStrokeCountPanel(false);
-            } else {
-                toggleRadicalStrokeCountPanel(true);
-            }
+            toggleRadicalStrokeCountPanel(position == 2);
         }
     }
 

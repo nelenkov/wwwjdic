@@ -1,13 +1,8 @@
 package org.nick.wwwjdic;
 
-import org.nick.wwwjdic.history.HistoryDbHelper;
-import org.nick.wwwjdic.model.SearchCriteria;
-import org.nick.wwwjdic.utils.StringUtils;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,9 +15,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-
 import com.google.android.material.textfield.TextInputLayout;
+import org.nick.wwwjdic.history.HistoryDbHelper;
+import org.nick.wwwjdic.model.SearchCriteria;
+import org.nick.wwwjdic.utils.StringUtils;
 
 public class ExampleSearchFragment extends WwwjdicFragmentBase implements
         OnClickListener, OnItemSelectedListener {
@@ -162,17 +158,13 @@ public class ExampleSearchFragment extends WwwjdicFragmentBase implements
         inputLayout.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
         exampleSearchInputText = getView().findViewById(R.id.exampleInputText);
         exampleSearchInputText
-                .setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId,
-                            KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                            search();
+                .setOnEditorActionListener((v, actionId, event) -> {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        search();
 
-                            return true;
-                        }
-                        return false;
+                        return true;
                     }
+                    return false;
                 });
         maxNumExamplesText = getView().findViewById(R.id.maxExamplesInput);
         exampleExactMatchCb = getView().findViewById(R.id.exampleExactMatchCb);

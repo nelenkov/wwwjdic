@@ -2,6 +2,7 @@
 package org.nick.wwwjdic;
 
 import android.Manifest;
+import android.Manifest.permission;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,18 +13,16 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
-import org.nick.wwwjdic.model.Radicals;
-
+import androidx.annotation.RequiresPermission;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.nick.wwwjdic.model.Radicals;
 
 public class WwwjdicApplication extends Application {
 
@@ -41,11 +40,9 @@ public class WwwjdicApplication extends Application {
 
     private static final String NEW_JAPAN_MIRROR = WwwjdicPreferences.DEFAULT_WWWJDIC_URL;
 
-    private ExecutorService executorService;
+    private final ExecutorService executorService;
 
-    private LocationManager locationManager;
-
-    private static String version;
+  private static String version;
 
     // EDICT by default
     private String currentDictionary = "1";
@@ -55,6 +52,8 @@ public class WwwjdicApplication extends Application {
         return instance;
     }
 
+    @RequiresPermission(anyOf = {permission.ACCESS_FINE_LOCATION,
+        permission.ACCESS_COARSE_LOCATION})
     @Override
     public void onCreate() {
         super.onCreate();
@@ -69,7 +68,7 @@ public class WwwjdicApplication extends Application {
 
         initRadicals();
 
-        if (isAutoSelectMirror() && hasLocationPermsion(this)) {
+        if (isAutoSelectMirror() && hasLocationPermission(this)) {
             try {
                 setMirrorBasedOnLocation();
             } catch (Exception e) {
@@ -112,6 +111,7 @@ public class WwwjdicApplication extends Application {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void updateKanjiRecognizerUrl() {
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(this);
@@ -122,10 +122,11 @@ public class WwwjdicApplication extends Application {
                     + WwwjdicPreferences.KR_DEFAULT_URL);
             prefs.edit()
                     .putString(WwwjdicPreferences.PREF_KR_URL_KEY,
-                            WwwjdicPreferences.KR_DEFAULT_URL).commit();
+                            WwwjdicPreferences.KR_DEFAULT_URL).apply();
         }
     }
 
+    @SuppressWarnings("deprecation")
     private boolean isAutoSelectMirror() {
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(this);
@@ -134,10 +135,14 @@ public class WwwjdicApplication extends Application {
                 true);
     }
 
+    @RequiresPermission(anyOf = {permission.ACCESS_FINE_LOCATION,
+        permission.ACCESS_COARSE_LOCATION})
+    @SuppressWarnings("deprecation")
     public synchronized void setMirrorBasedOnLocation() {
         Log.d(TAG, "auto selecting mirror...");
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+      LocationManager locationManager = (LocationManager) getSystemService(
+          Context.LOCATION_SERVICE);
         Location myLocation = null;
 
         try {
@@ -170,7 +175,7 @@ public class WwwjdicApplication extends Application {
         String[] mirrorUrls = getResources().getStringArray(
                 R.array.wwwjdic_mirror_urls);
 
-        List<Float> distanceToMirrors = new ArrayList<Float>(
+        List<Float> distanceToMirrors = new ArrayList<>(
                 mirrorCoords.length);
         for (int i = 0; i < mirrorCoords.length; i++) {
             String[] latlng = mirrorCoords[i].split("/");
@@ -196,15 +201,16 @@ public class WwwjdicApplication extends Application {
                 .getDefaultSharedPreferences(this);
         prefs.edit()
                 .putString(WwwjdicPreferences.PREF_WWWJDIC_MIRROR_URL_KEY,
-                        mirrorUrls[mirrorIdx]).commit();
+                        mirrorUrls[mirrorIdx]).apply();
     }
 
+    @SuppressWarnings("deprecation")
     private void setDefaultMirror() {
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(this);
         prefs.edit()
                 .putString(WwwjdicPreferences.PREF_WWWJDIC_MIRROR_URL_KEY,
-                        WwwjdicPreferences.DEFAULT_WWWJDIC_URL).commit();
+                        WwwjdicPreferences.DEFAULT_WWWJDIC_URL).apply();
     }
 
     private void createWwwjdicDirIfNecessary() {
@@ -221,7 +227,8 @@ public class WwwjdicApplication extends Application {
     }
 
     public static File getWwwjdicDir() {
-        return new File(Environment.getExternalStorageDirectory(), WWWJDIC_DIR);
+        //return new File(getInstance().getExternalFilesDir(null), WWWJDIC_DIR);
+        return getInstance().getExternalFilesDir(null);
     }
 
     private String getVersionName() {
@@ -334,12 +341,9 @@ public class WwwjdicApplication extends Application {
         this.currentDictionaryName = currentDictionaryName;
     }
 
-    public static boolean hasLocationPermsion(Context ctx) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return ctx.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        }
-
-        return true;
+    public static boolean hasLocationPermission(Context ctx) {
+        return ctx.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED;
     }
 
 }

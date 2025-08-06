@@ -7,13 +7,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.OpenableColumns;
 import android.text.ClipboardManager;
 import android.view.ActionMode;
@@ -28,27 +25,25 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import org.nick.wwwjdic.R;
-import org.nick.wwwjdic.WwwjdicApplication;
-import org.nick.wwwjdic.utils.ActivityUtils;
-import org.nick.wwwjdic.utils.FileUtils;
-import org.nick.wwwjdic.utils.LoaderResult;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStream;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.ListFragment;
 import androidx.loader.app.LoaderManager;
 import au.com.bytecode.opencsv.CSVReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStream;
+import org.nick.wwwjdic.R;
+import org.nick.wwwjdic.WwwjdicApplication;
+import org.nick.wwwjdic.utils.ActivityUtils;
+import org.nick.wwwjdic.utils.FileUtils;
+import org.nick.wwwjdic.utils.LoaderResult;
 
+@SuppressWarnings("deprecation")
 public abstract class HistoryFragmentBase extends ListFragment
         implements LoaderManager.LoaderCallbacks<LoaderResult<Cursor>>,
         OnItemLongClickListener {
@@ -118,13 +113,11 @@ public abstract class HistoryFragmentBase extends ListFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View v = inflater.inflate(getContentView(), container, false);
-
-        return v;
+        return inflater.inflate(getContentView(), container, false);
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         // XXX -- uglish, but calling setHasOptionsMenu() any later
         // than this may result in menu shown when restored (e.g., on rotate)
@@ -153,7 +146,7 @@ public abstract class HistoryFragmentBase extends ListFragment
     protected abstract void setupAdapter();
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
         getListView().setItemChecked(position, false);
         lookup(position);
     }
@@ -177,24 +170,15 @@ public abstract class HistoryFragmentBase extends ListFragment
                     getActivity());
             builder.setTitle(R.string.select_filter_type);
             builder.setNegativeButton(R.string.cancel,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog,
-                                            int which) {
-                            dialog.dismiss();
-
-                        }
-                    });
+                (dialog, which) -> dialog.dismiss());
             builder.setSingleChoiceItems(historyFragment.getFilterTypes(),
                     historyFragment.selectedFilter + 1,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int item) {
-                            historyFragment.selectedFilter = item - 1;
-                            historyFragment.filter();
-                            getActivity().invalidateOptionsMenu();
-                            dialog.dismiss();
-                        }
-                    });
+                (dialog, item) -> {
+                    historyFragment.selectedFilter = item - 1;
+                    historyFragment.filter();
+                    getActivity().invalidateOptionsMenu();
+                    dialog.dismiss();
+                });
 
             return builder.create();
         }
@@ -214,25 +198,14 @@ public abstract class HistoryFragmentBase extends ListFragment
     protected abstract String[] getFilterTypes();
 
     protected void importItems() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Intent openIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            openIntent.addCategory(Intent.CATEGORY_OPENABLE);
-            openIntent.setType("*/*");
-            // Google drive doesn't seem to recognize CSV files
-            openIntent.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {
-                    "*/*"
-            });
-            // hidden
-            openIntent.putExtra("android.content.extra.SHOW_ADVANCED", true);
-            startActivityForResult(openIntent, REQUEST_OPEN_DOCUMENT);
-        }
-        else {
-            String importFile = getImportExportFilename();
-
-            confirmOverwriteAndImport(importFile, false);
-
-            showAll();
-        }
+        Intent openIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        openIntent.addCategory(Intent.CATEGORY_OPENABLE);
+        openIntent.setType("*/*");
+        // Google drive doesn't seem to recognize CSV files
+        openIntent.putExtra(Intent.EXTRA_MIME_TYPES, new String[] { "*/*" });
+        // hidden
+        openIntent.putExtra("android.content.extra.SHOW_ADVANCED", true);
+        startActivityForResult(openIntent, REQUEST_OPEN_DOCUMENT);
     }
 
     void confirmOverwriteAndImport(final String filename, final boolean deleteAfterImport) {
@@ -244,6 +217,7 @@ public abstract class HistoryFragmentBase extends ListFragment
 
         new DialogFragment() {
 
+            @NonNull
             @Override
             public Dialog onCreateDialog(Bundle savedInstanceState) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -251,19 +225,9 @@ public abstract class HistoryFragmentBase extends ListFragment
                 builder.setMessage(R.string.import_and_overwrite)
                         .setCancelable(false)
                         .setPositiveButton(R.string.yes,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                            int id) {
-                                        doImport(file, deleteAfterImport);
-                                    }
-                                })
+                            (dialog, id) -> doImport(file, deleteAfterImport))
                         .setNegativeButton(R.string.no,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                            int id) {
-                                        dialog.cancel();
-                                    }
-                                });
+                            (dialog, id) -> dialog.cancel());
                 return builder.create();
             }
         }.show(getFragmentManager(), "overwriteImportDialog");
@@ -294,6 +258,7 @@ public abstract class HistoryFragmentBase extends ListFragment
             this.filename = filename;
         }
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -303,19 +268,9 @@ public abstract class HistoryFragmentBase extends ListFragment
             builder.setMessage(String.format(message, filename))
                     .setCancelable(false)
                     .setPositiveButton(R.string.yes,
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                                    int id) {
-                                    historyFragment.doExport(filename);
-                                }
-                            })
+                        (dialog, id) -> historyFragment.doExport(filename))
                     .setNegativeButton(R.string.no,
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                                    int id) {
-                                    dialog.cancel();
-                                }
-                            });
+                        (dialog, id) -> dialog.cancel());
             return builder.create();
         }
     }
@@ -359,8 +314,7 @@ public abstract class HistoryFragmentBase extends ListFragment
 
     protected Cursor getCursor() {
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
-        Cursor c = adapter.getCursor();
-        return c;
+        return adapter.getCursor();
     }
 
     @Override
@@ -386,8 +340,9 @@ public abstract class HistoryFragmentBase extends ListFragment
             return result;
         }
 
+        @NonNull
         @Override
-        public Dialog onCreateDialog(@NonNull Bundle savedInstanceState) {
+        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
             return createConfirmDeleteDialog();
         }
 
@@ -396,24 +351,15 @@ public abstract class HistoryFragmentBase extends ListFragment
             builder.setMessage(R.string.delete_all_iteims)
                     .setCancelable(false)
                     .setPositiveButton(R.string.yes,
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                        int id) {
-                                    historyFragment.deleteAll();
-                                    historyFragment.getActivity()
-                                            .invalidateOptionsMenu();
-                                }
-                            })
+                        (dialog, id) -> {
+                            historyFragment.deleteAll();
+                            historyFragment.getActivity()
+                                    .invalidateOptionsMenu();
+                        })
                     .setNegativeButton(R.string.no,
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                        int id) {
-                                    dialog.cancel();
-                                }
-                            });
-            AlertDialog dialog = builder.create();
+                        (dialog, id) -> dialog.cancel());
 
-            return dialog;
+            return builder.create();
         }
     }
 
@@ -424,7 +370,7 @@ public abstract class HistoryFragmentBase extends ListFragment
     }
 
     protected void createWwwjdicDirIfNecessary() {
-        File sdDir = Environment.getExternalStorageDirectory();
+        File sdDir = getContext().getExternalFilesDir(null);
         File wwwjdicDir = new File(sdDir.getAbsolutePath() + "/wwwjdic");
         if (!wwwjdicDir.exists()) {
             wwwjdicDir.mkdir();
@@ -487,7 +433,7 @@ public abstract class HistoryFragmentBase extends ListFragment
     @SuppressLint("NewApi")
     class ContextCallback implements ActionMode.Callback {
 
-        private int position;
+        private final int position;
 
         ContextCallback(int position) {
             this.position = position;
@@ -577,17 +523,14 @@ public abstract class HistoryFragmentBase extends ListFragment
     }
 
     private boolean isCsvFile(Uri uri) {
-        Cursor cursor = getActivity().getContentResolver()
-                .query(uri, null, null, null, null);
 
-        try {
+        try (Cursor cursor = getActivity().getContentResolver()
+          .query(uri, null, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) {
-                String displayName = cursor.getString(
-                        cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                return displayName.endsWith("csv") || displayName.endsWith("CSV");
+            String displayName = cursor.getString(
+                cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+            return displayName.endsWith("csv") || displayName.endsWith("CSV");
             }
-        } finally {
-            cursor.close();
         }
 
         return false;

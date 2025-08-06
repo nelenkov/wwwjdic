@@ -19,7 +19,7 @@ public class StringUtils {
     }
 
     public static String join(String[] fields, String separator, int idx) {
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
         for (int i = idx; i < fields.length; i++) {
             buff.append(fields[i]);
             if (i != fields.length - 1) {
@@ -31,7 +31,7 @@ public class StringUtils {
     }
 
     public static String join(List<String> fields, String separator, int idx) {
-        String[] fieldsArr = fields.toArray(new String[fields.size()]);
+        String[] fieldsArr = fields.toArray(new String[0]);
 
         return join(fieldsArr, separator, idx);
     }
@@ -41,11 +41,7 @@ public class StringUtils {
             return true;
         }
 
-        if ("".equals(str)) {
-            return true;
-        }
-
-        return false;
+        return str.isEmpty();
     }
 
     public static boolean isNotEmpty(String str) {

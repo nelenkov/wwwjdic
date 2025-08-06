@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+@SuppressWarnings("deprecation")
 public class WwwjdicFragmentBase extends Fragment {
 
     protected static final int NUM_RECENT_HISTORY_ENTRIES = 5;

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.view.ActionMode;
@@ -17,17 +16,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
-
+import java.util.List;
 import org.nick.wwwjdic.history.HistoryUtils;
 import org.nick.wwwjdic.model.DictionaryEntry;
 import org.nick.wwwjdic.model.SearchCriteria;
 import org.nick.wwwjdic.utils.DictUtils;
 import org.nick.wwwjdic.utils.StringUtils;
 
-import java.util.List;
-
-import androidx.annotation.RequiresApi;
-
+@SuppressWarnings("deprecation")
 public class DictionaryResultListFragment extends
         ResultListFragmentBase<DictionaryEntry> implements
         OnItemLongClickListener {
@@ -41,7 +37,6 @@ public class DictionaryResultListFragment extends
     public DictionaryResultListFragment() {
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -167,19 +162,17 @@ public class DictionaryResultListFragment extends
     }
 
     public void setResult(final List<DictionaryEntry> result) {
-        guiThread.post(new Runnable() {
-            public void run() {
-                if (getView() == null) {
-                    return;
-                }
-
-                entries = result;
-                DictionaryEntryAdapter adapter = new DictionaryEntryAdapter(
-                        getActivity(), entries);
-                setListAdapter(adapter);
-                setTitleAndCurrentItem();
-                dismissProgress();
+        guiThread.post(() -> {
+            if (getView() == null) {
+                return;
             }
+
+            entries = result;
+            DictionaryEntryAdapter adapter = new DictionaryEntryAdapter(
+                    getActivity(), entries);
+            setListAdapter(adapter);
+            setTitleAndCurrentItem();
+            dismissProgress();
         });
     }
 
@@ -220,7 +213,7 @@ public class DictionaryResultListFragment extends
     @SuppressLint("NewApi")
     class ContextCallback implements ActionMode.Callback {
 
-        private int position;
+        private final int position;
 
         ContextCallback(int position) {
             this.position = position;

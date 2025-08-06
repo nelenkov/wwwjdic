@@ -51,10 +51,10 @@ public class KanjiEntryAdapter extends BaseAdapter {
 
     private static final class KanjiEntryView extends CheckableLinearLayout {
 
-        private TextView entryText;
-        private TextView onyomiText;
-        private TextView kunyomiText;
-        private TextView translationText;
+        private final TextView entryText;
+        private final TextView onyomiText;
+        private final TextView kunyomiText;
+        private final TextView translationText;
 
         public KanjiEntryView(Context context, KanjiEntry entry) {
             super(context);
@@ -62,13 +62,13 @@ public class KanjiEntryAdapter extends BaseAdapter {
             LayoutInflater inflater = LayoutInflater.from(context);
             inflater.inflate(R.layout.kanji_item, this);
 
-            entryText = (TextView) findViewById(R.id.kanji_text);
+            entryText = findViewById(R.id.kanji_text);
             UIUtils.setJpTextLocale(entryText);
-            onyomiText = (TextView) findViewById(R.id.onyomi_text);
+            onyomiText = findViewById(R.id.onyomi_text);
             UIUtils.setJpTextLocale(onyomiText);
-            kunyomiText = (TextView) findViewById(R.id.kunyomi_text);
+            kunyomiText = findViewById(R.id.kunyomi_text);
             UIUtils.setJpTextLocale(kunyomiText);
-            translationText = (TextView) findViewById(R.id.translation_text);
+            translationText = findViewById(R.id.translation_text);
         }
 
         void populate(KanjiEntry entry) {

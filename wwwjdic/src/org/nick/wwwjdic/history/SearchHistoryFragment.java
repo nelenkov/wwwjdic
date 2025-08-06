@@ -1,17 +1,24 @@
 
 package org.nick.wwwjdic.history;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.SearchRecentSuggestions;
 import android.util.Log;
 import android.widget.CursorAdapter;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import org.nick.wwwjdic.DictionaryResultList;
 import org.nick.wwwjdic.ExamplesResultList;
 import org.nick.wwwjdic.KanjiResultList;
@@ -24,22 +31,13 @@ import org.nick.wwwjdic.utils.LoaderResult;
 import org.nick.wwwjdic.utils.MediaScannerWrapper;
 import org.nick.wwwjdic.utils.UIUtils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
-import androidx.annotation.NonNull;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-import au.com.bytecode.opencsv.CSVReader;
-import au.com.bytecode.opencsv.CSVWriter;
-
+@SuppressWarnings("deprecation")
 public class SearchHistoryFragment extends HistoryFragmentBase {
 
     private static final String TAG = SearchHistoryFragment.class
             .getSimpleName();
 
-    private static final String EXPORT_FILENAME = "wwwjdic/search-history.csv";
+    private static final String EXPORT_FILENAME = "search-history.csv";//"wwwjdic/search-history.csv";
 
     protected void setupAdapter() {
         MatrixCursor cursor = new MatrixCursor(
@@ -52,6 +50,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
         LoaderManager.getInstance(this).initLoader(1, null, this);
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     protected void deleteAll() {
         new AsyncTask<Void, Void, Boolean>() {
@@ -68,24 +67,25 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
                         SearchSuggestionProvider.MODE);
                 suggestions.clearHistory();
 
-                Cursor c = filterCursor();
+              try (Cursor c = filterCursor()) {
 
                 db.beginTransaction();
                 try {
-                    while (c.moveToNext()) {
-                        int id = c.getInt(c.getColumnIndex("_id"));
-                        db.deleteHistoryItem(id);
-                    }
-                    db.setTransactionSuccessful();
+                  while (c.moveToNext()) {
+                    int id = c.getInt(c.getColumnIndex("_id"));
+                    db.deleteHistoryItem(id);
+                  }
+                  db.setTransactionSuccessful();
 
-                    return true;
+                  return true;
                 } catch (Exception e) {
-                    Log.e(TAG, "Error deleting history", e);
+                  Log.e(TAG, "Error deleting history", e);
 
-                    return false;
+                  return false;
                 } finally {
-                    db.endTransaction();
+                  db.endTransaction();
                 }
+              }
             }
 
             @Override
@@ -158,11 +158,15 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
 
     @Override
     protected String getImportExportFilename() {
-        File extStorage = Environment.getExternalStorageDirectory();
+        if (getContext() == null) {
+            return "";
+        }
+        File extStorage = getContext().getExternalFilesDir(null);
 
         return extStorage.getAbsolutePath() + "/" + EXPORT_FILENAME;
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     protected void doExport(final String filename) {
         new AsyncTask<Void, Void, Boolean>() {
@@ -176,45 +180,38 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
             @Override
             protected Boolean doInBackground(Void... params) {
                 CSVWriter writer = null;
-                Cursor c = null;
-                try {
-                    c = filterCursor();
+              try (Cursor c = filterCursor()) {
 
-                    writer = new CSVWriter(new FileWriter(filename));
+                writer = new CSVWriter(new FileWriter(filename));
 
-                    while (c.moveToNext()) {
-                        long time = c.getLong(c.getColumnIndex("time"));
-                        SearchCriteria criteria = HistoryDbHelper
-                                .createCriteria(c);
-                        String[] criteriaStr = SearchCriteriaParser
-                                .toStringArray(criteria, time);
-                        writer.writeNext(criteriaStr);
-                        count++;
-                    }
-
-                    if (UIUtils.isFroyo()) {
-                        MediaScannerWrapper.scanFile(getActivity(), filename);
-                    }
-
-                    return true;
-
-                } catch (IOException e) {
-                    Log.e(TAG, "error exporting history", e);
-                    exception = e;
-
-                    return false;
-                } finally {
-                    if (writer != null) {
-                        try {
-                            writer.close();
-                        } catch (IOException e) {
-                            Log.w(TAG, "error closing CSV writer", e);
-                        }
-                    }
-                    if (c != null) {
-                        c.close();
-                    }
+                while (c.moveToNext()) {
+                  long time = c.getLong(c.getColumnIndex("time"));
+                  SearchCriteria criteria = HistoryDbHelper
+                      .createCriteria(c);
+                  String[] criteriaStr = SearchCriteriaParser
+                      .toStringArray(criteria, time);
+                  writer.writeNext(criteriaStr);
+                  count++;
                 }
+
+                MediaScannerWrapper.scanFile(getActivity(), filename);
+
+                return true;
+
+              } catch (IOException e) {
+                Log.e(TAG, "error exporting history", e);
+                exception = e;
+
+                return false;
+              } finally {
+                if (writer != null) {
+                  try {
+                    writer.close();
+                  } catch (IOException e) {
+                    Log.w(TAG, "error closing CSV writer", e);
+                  }
+                }
+              }
             }
 
             @Override
@@ -244,6 +241,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     protected void doImport(final File importFile, final boolean deleteAfterImport) {
         new AsyncTask<Void, Void, Boolean>() {
@@ -362,7 +360,7 @@ public class SearchHistoryFragment extends HistoryFragmentBase {
     }
 
     @Override
-    public void onLoadFinished(Loader<LoaderResult<Cursor>> loader,
+    public void onLoadFinished(@NonNull Loader<LoaderResult<Cursor>> loader,
                                LoaderResult<Cursor> data) {
         CursorAdapter adapter = (CursorAdapter) getListAdapter();
         adapter.swapCursor(data.getData());

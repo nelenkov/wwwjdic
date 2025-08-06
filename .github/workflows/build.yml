@@ -1,0 +1,58 @@
+name: "Build and release"
+on:
+  push:
+    branches:
+    - update-sdk
+env:
+  WWWJDIC_VER: 2.6.0
+  FLAVOR: ci
+  BUILD_TYPE: debug
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v4
+
+    - name: Set up  vars
+      shell: bash
+      run: |
+         echo "SHA_SHORT=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
+
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: 23
+
+    - name: Set up Gradle
+      uses: gradle/actions/setup-gradle@v4
+      with:
+        gradle-home-cache-cleanup: true
+        gradle-version: "8.11.1"
+
+    - name: Set up Android
+      uses: android-actions/setup-android@v3
+      with:
+        packages: ''
+
+    - name: Build
+      run: gradle :wwwjdic-app:assemble${{ env.FLAVOR }}${{ env.BUILD_TYPE }}
+
+    - name: Prepare APK
+      if: success()
+      id: prepareApk
+      run: |
+         mv wwwjdic-app/build/outputs/apk/${{ env.FLAVOR }}/${{ env.BUILD_TYPE }}/*.apk \
+            wwwjdic-android-github-${{ env.WWWJDIC_VER }}-${{ env.SHA_SHORT }}.apk
+
+    - name: Release
+      uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: github-latest
+        prerelease: true
+        files: |
+          LICENSE.txt
+          wwwjdic-android-github-${{ env.WWWJDIC_VER }}-${{ env.SHA_SHORT }}.apk
