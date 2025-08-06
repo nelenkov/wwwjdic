@@ -2,9 +2,9 @@ name: "Build and release"
 on:
   push:
     branches:
-    - update-sdk
+    - 2.0
 env:
-  WWWJDIC_VER: 2.6.0
+  WWWJDIC_VER: 2.6.0-github
   FLAVOR: ci
   BUILD_TYPE: debug
 
@@ -45,7 +45,7 @@ jobs:
       id: prepareApk
       run: |
          mv wwwjdic-app/build/outputs/apk/${{ env.FLAVOR }}/${{ env.BUILD_TYPE }}/*.apk \
-            wwwjdic-android-github-${{ env.WWWJDIC_VER }}-${{ env.SHA_SHORT }}.apk
+            wwwjdic-android-${{ env.WWWJDIC_VER }}-${{ env.SHA_SHORT }}.apk
 
     - name: Release
       uses: "marvinpinto/action-automatic-releases@latest"
@@ -55,4 +55,4 @@ jobs:
         prerelease: true
         files: |
           LICENSE.txt
-          wwwjdic-android-github-${{ env.WWWJDIC_VER }}-${{ env.SHA_SHORT }}.apk
+          wwwjdic-android-${{ env.WWWJDIC_VER }}-${{ env.SHA_SHORT }}.apk
