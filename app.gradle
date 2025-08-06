@@ -50,6 +50,12 @@ android {
             //storeFile file("nick.keystore")
             storeFile file("wwwjdic-upload-keystore.jks")
         }
+        ci {
+          storeFile file('ci-keystore.jks')
+          keyAlias 'ci-key'
+          keyPassword 'cipass'
+          storePassword 'cipass'
+        }
     }
 
     buildFeatures {
@@ -71,12 +77,17 @@ android {
         donate {
             dimension "version"
             applicationId = "net.fafla.wwwjdic.donate"
-            //applicationIdSuffix ".donate"
+            def searchAuthorityValue = applicationId + ".SearchSuggestionProvider"
+            def filesAuthorityValue = applicationId + ".fileprovider"
+            manifestPlaceholders = [searchAuthority: searchAuthorityValue, filesAuthority: filesAuthorityValue]
         }
         ci {
             dimension "version"
-            applicationId = "net.fafla.wwwjdic"
-            //applicationIdSuffix ".donate"
+            applicationId = "net.fafla.wwwjdic.github"
+            def searchAuthorityValue = applicationId + ".SearchSuggestionProvider"
+            def filesAuthorityValue = applicationId + ".fileprovider"
+            manifestPlaceholders = [searchAuthority: searchAuthorityValue, filesAuthority: filesAuthorityValue]
+            signingConfig signingConfigs.ci
         }
     }
 
@@ -117,7 +128,7 @@ android {
                 variant.applicationId = "net.fafla.wwwjdic"
                 break
             case "ci":
-                variant.applicationId = "net.fafla.wwwjdic"
+                variant.applicationId = "net.fafla.wwwjdic.github"
                 break
             case "donate":
                 variant.applicationId = "net.fafla.wwwjdic.donate"

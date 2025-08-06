@@ -219,10 +219,10 @@
             android:authorities="${searchAuthority}"
             android:exported="true" />
 
-        <!--android:authorities="${filesAuthority}"-->
+        <!-- android:authorities="net.fafla.wwwjdic.fileprovider" -->
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="net.fafla.wwwjdic.fileprovider"
+            android:authorities="${filesAuthority}"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
