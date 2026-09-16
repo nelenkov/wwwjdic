@@ -50,7 +50,6 @@ public class OcrFormEntity extends AbstractHttpEntity {
             Integer numberOfTopCandidates) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream(BUFF_SIZE);
         bitmap.compress(CompressFormat.JPEG, quality, baos);
-        baos.close();
 
         buff = baos;
         int ntop = 1;
